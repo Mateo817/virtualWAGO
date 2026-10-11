@@ -1,6 +1,6 @@
 # Lokaler Agent: öffentlicher Übergabevertrag
 
-Aktueller Stand: [Referenzbestand und tatsächliche ABI, 11.10.2026](reference-abi-2026-10-11.md). Der eigene Prototyp ist selektiv importiert und die Referenz-Netzsperre lokal geprüft. Firmwaremarker, Runtime-Maps und 167 gehashte Originaldateien sind erhoben; der tatsächliche ADI-Verbraucher und sein bytegleicher DAL-Provider sind statisch belegt. Vollständige Hardwareidentität, Klemmenbestand, aktiver Projektzustand und CODESYS-Komponenten-/Mappingvertrag bleiben offen. Originalverbraucher- und virtuelle Runtimeausführung sind nicht nachgewiesen; die nachfolgenden Arbeitsregeln gelten unverändert.
+Aktueller Stand: [Referenzbestand und tatsächliche ABI](reference-abi-2026-10-11.md) sowie [Offline-Carrier-Befunde](offline-carrier-2026-10-11.md), beide vom 11.10.2026. Die hardwarefreie Suite steht bei 82 PASS. Ein eigener ARM-Layout-/Carrier-Probe lief mit originalem GNU-Lader und libc in begrenzter Namespace-Isolation; DAL, IoDrv und Runtime wurden dabei nicht ausgeführt. Vollständige Hardwareidentität, Klemmenbestand, aktiver Projektzustand und CODESYS-Komponenten-/Mappingvertrag bleiben offen. Originalverbraucher- und virtuelle Runtimeausführung sind nicht nachgewiesen.
 
 Arbeite am Repository `Mateo817/virtualWAGO`. Das Ziel ist Virtualisierung unterhalb der IEC-Anwendung, nicht ein zusätzlicher OPC-UA-Variablensimulator. Prüfe die Dokumentation kritisch, bestätige oder revidiere Annahmen anhand von Originalquellen und arbeite bis zu einem belastbaren M1/M2-Abschluss und einem möglichen begrenzten M3-Kandidaten.
 
@@ -17,11 +17,11 @@ README, AGENTS, research, ADR, roadmap, safety und package. Die vollständige pr
 ## Reihenfolge
 
 1. Git- und lokale Werkzeugumgebung frisch inventarisieren; laufende fremde Jobs/VMs erhalten. Eigentümereigene Softwarequellen nur lesend als Referenz nutzen.
-2. Paketmanifest prüfen, vorhandene 52 Tests frisch ausführen, eigenen Prototypcode selektiv im Forschungsbranch übernehmen. Keine Firmware oder privaten Anhänge committen.
+2. Paketmanifest prüfen und die aktuelle hardwarefreie Suite frisch ausführen (zuletzt 82 PASS; frühere 52-/65-Teststände sind historische Zwischenstände). Eigenen Prototypcode selektiv im Forschungsbranch übernehmen. Keine Firmware oder privaten Anhänge committen.
 3. Lokale Target-Allowlist, geschützte Ziele und Isolation praktisch absichern. Kein globaler Scan, keine unerlaubten Redirects oder automatischen Discoverypakete.
 4. Neues Referenzgerät zunächst read-only inventarisieren: Artikel, Firmware, Kernel, Runtime, Bibliotheken, Maps, Konfiguration, Gerätepfade und I/O-Bestand. Engineeringversion und Runtimeversion trennen. Keine Firmwareangleichung nur zur Vereinheitlichung.
 5. Originaldateien rechtmäßig und gehasht offline sichern, benötigte Header/DevDesc/SDKs lokalisieren. Privatmaterial aus Git und Logs heraushalten. Zuerst statische Analyse, danach begrenzte nichtinvasive Beobachtungen auf der Test-WAGO.
-6. API-Verbraucher, vollständige ABI und parallele Async-/Register-/Zeit-/Retainpfade rekonstruieren. Header nicht aus Callstellen erfinden. B+C-ADR anhand der Daten bestätigen oder ändern.
+6. API-Verbraucher, vollständige ABI und parallele Async-/Register-/Zeit-/Retainpfade rekonstruieren. Header nicht aus Callstellen erfinden. B+C bleibt eine gestützte Hypothese. Für M3 fehlen weiterhin die passenden CODESYS-INIT-/Mapping-/Komponentenverträge und vollständige Modulverträge.
 7. Bei belegter Grenze kleinen DI/DO-Originalverbraucher-PoC entwickeln. Fehlende Geräte/API-Aufrufe als negative Kontrollen. Ein Mock oder Eigenclient ist keine Originalruntime-Evidence.
 8. Erst anschließend Analog/PWM und Mehrinstanzenbetrieb. Softwareinstallationen auf dem erlaubten Testgerät nur nach safety.md; keine produktive SPS verändern.
 

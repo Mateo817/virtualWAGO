@@ -2,23 +2,71 @@ import json
 import hashlib
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
 from unittest.mock import patch
-from tools.elf_audit import inspect, parse_function_symbols
+from tools.elf_audit import inspect, parse_function_symbols, parse_interpreter, parse_search_paths
 from tools.extract_xml_inventory import extract
 ROOT = Path(__file__).resolve().parents[1]
 
 class ToolsTests(unittest.TestCase):
     def test_inspect_real_host_elf(self):
-        result = inspect(str(Path(sys.executable).resolve()))
+        binary = Path(sys.executable).resolve()
+        result = inspect(str(binary))
         self.assertEqual(result["header"]["Class"], "ELF64")
         self.assertEqual(result["runtime_execution"], "NOT_RUN")
         self.assertEqual(len(result["sha256"]),64)
         self.assertIsInstance(result["defined_function_symbols"], list)
+        self.assertIsInstance(result["interpreter"], str)
+        self.assertTrue(result["interpreter"].startswith("/"))
+
+        # Compare with a direct readelf view of this real host ELF; never execute it.
+        readelf = shutil.which("readelf")
+        self.assertIsNotNone(readelf)
+        headers = subprocess.run(
+            [readelf, "-W", "-l", "-d", "--", str(binary)],
+            capture_output=True, text=True, timeout=15, check=True,
+            env={**os.environ, "LC_ALL": "C"},
+        ).stdout
+        expected = re.search(
+            r"^\s*\[Requesting program interpreter:\s*(.*?)\]\s*$",
+            headers, re.M,
+        )
+        self.assertIsNotNone(expected)
+        self.assertEqual(result["interpreter"], expected.group(1))
+        self.assertEqual(result["rpath"], parse_search_paths(headers)["rpath"])
+        self.assertEqual(result["runpath"], parse_search_paths(headers)["runpath"])
+        self.assertIn("declared ELF metadata", result["scope"])
+
+    def test_loader_metadata_parser_handles_missing_interpreter_and_search_paths(self):
+        program_headers = """
+Elf file type is DYN (Position-Independent Executable file)
+Program Headers:
+  Type           Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   Flags Align
+  LOAD           0x000000 0x0000000000000000 0x0000000000000000 0x001000 0x001000 R E 0x1000
+"""
+        dynamic = """
+Dynamic section at offset 0x1000 contains 1 entry:
+  Tag        Type                         Name/Value
+ 0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]
+"""
+        self.assertIsNone(parse_interpreter(program_headers))
+        self.assertEqual(parse_search_paths(dynamic), {"rpath": [], "runpath": []})
+
+    def test_loader_metadata_parser_preserves_declared_path_components(self):
+        dynamic = """
+Dynamic section at offset 0x2000 contains 2 entries:
+ 0x000000000000000f (RPATH)              Library rpath: [/opt/lib::/vendor/lib]
+ 0x000000000000001d (RUNPATH)            Library runpath: [$ORIGIN/../lib:/app/lib]
+"""
+        self.assertEqual(parse_search_paths(dynamic), {
+            "rpath": ["/opt/lib", "", "/vendor/lib"],
+            "runpath": ["$ORIGIN/../lib", "/app/lib"],
+        })
     def test_function_symbol_metadata_uses_declared_size_not_next_symbol(self):
         fixture = """
 Symbol table '.dynsym' contains 4 entries:

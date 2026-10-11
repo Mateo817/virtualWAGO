@@ -22,6 +22,32 @@ SYMBOL_TABLE = re.compile(r"^Symbol table '([^']+)' contains", re.M)
 SYMBOL_ROW = re.compile(
     r"^\s*\d+:\s+([0-9a-fA-F]+)\s+((?:0[xX][0-9a-fA-F]+|\d+))\s+(\S+)\s+\S+\s+\S+\s+(\S+)(?:\s+(.*?))?\s*$"
 )
+INTERPRETER = re.compile(
+    r"^\s*\[Requesting program interpreter:\s*(.*?)\]\s*$", re.M
+)
+DYNAMIC_PATH = re.compile(
+    r"^\s*0x[0-9a-fA-F]+\s+\((RPATH|RUNPATH)\)\s+"
+    r"Library (?:rpath|runpath):\s*\[(.*?)\]\s*$", re.M
+)
+
+
+def parse_interpreter(text: str) -> str | None:
+    """Return the PT_INTERP string declared in readelf -l output, if present."""
+    match = INTERPRETER.search(text)
+    return match.group(1) if match else None
+
+
+def parse_search_paths(text: str) -> dict[str, list[str]]:
+    """Return declared DT_RPATH and DT_RUNPATH colon-separated components.
+
+    These are raw ELF declarations. Empty components are preserved, and no
+    loader lookup, variable expansion, or path resolution is attempted.
+    """
+    paths = {"rpath": [], "runpath": []}
+    for match in DYNAMIC_PATH.finditer(text):
+        key = match.group(1).lower()
+        paths[key].extend(match.group(2).split(":"))
+    return paths
 
 def parse_function_symbols(text: str) -> list[dict]:
     """Parse defined ELF function symbols from wide readelf -s output.
@@ -103,7 +129,7 @@ def inspect(path: str) -> dict:
     with tempfile.TemporaryDirectory(prefix="virtualwago-elf-") as directory:
         snapshot = Path(directory) / "input.elf"
         snapshot.write_bytes(data)
-        cmd = [readelf, "-W", "-h", "-d", "-s", "-A", "-V", "--", str(snapshot)]
+        cmd = [readelf, "-W", "-h", "-l", "-d", "-s", "-A", "-V", "--", str(snapshot)]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=15,
                                 env={**os.environ, "LC_ALL": "C"}, check=False)
     if result.returncode != 0:
@@ -113,17 +139,21 @@ def inspect(path: str) -> dict:
     for key in ("Class", "Data", "Machine", "OS/ABI", "Flags"):
         match = re.search(r"^\s*" + re.escape(key) + r":\s*(.+)$", text, re.M)
         header[key] = match.group(1) if match else None
+    search_paths = parse_search_paths(text)
     return {"path": str(p), "sha256": hashlib.sha256(data).hexdigest(),
             "bytes": len(data), "header": header,
             "needed": re.findall(r"\(NEEDED\).*?\[(.*?)\]", text),
             "soname": re.findall(r"\(SONAME\).*?\[(.*?)\]", text),
+            "interpreter": parse_interpreter(text),
+            "rpath": search_paths["rpath"],
+            "runpath": search_paths["runpath"],
             "candidate_symbol_lines": [l.strip() for l in text.splitlines()
                                        if PATTERN.search(l)],
             "defined_function_symbols": parse_function_symbols(text),
             "abi_attributes": [l.strip() for l in text.splitlines() if "Tag_" in l],
             "version_lines": [l.strip() for l in text.splitlines()
                               if "GLIBC_" in l or "GLIBCXX_" in l],
-            "scope": "static-only; symbol presence does not prove execution/interposition",
+            "scope": "static-only; declared ELF metadata, no loader-resolution claim",
             "runtime_execution": "NOT_RUN"}
 
 def main():

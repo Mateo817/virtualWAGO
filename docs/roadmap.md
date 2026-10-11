@@ -5,8 +5,8 @@ Die Roadmap ist optional zur Produktentwicklung. Ein Meilenstein ist kein PASS a
 | Stufe | Ergebnis | Abnahme |
 |---|---|---|
 | M0: Forschungsbasis | Befunde, Quellen, ADR, sichere lokale Übergabe | Dokumente konsistent; private Informationen nicht veröffentlicht |
-| M1: Lokaler Bestand und Referenzisolation | Eigenentwicklungscode importiert; freigegebenes neues Gerät eindeutig inventarisiert; Offlinekopien und Backup vorhanden | Paketquellen gegen Manifest geprüft; Tests frisch; Zielrichtlinie und Geräteidentität belegt; geschützte Anlage nicht kontaktiert |
-| M2: Tatsächliche Schnittstellengrenze | ELF-/Header-/Konfigurationsanalyse und bounded Referenzbeobachtungen | Aufrufverbraucher, ABI und notwendige Funktionen belegt; Versionsabweichungen sichtbar; ADR bestätigt oder revidiert |
+| M1: Lokaler Bestand und Referenzisolation | Eigenentwicklungscode importiert; freigegebenes neues Gerät eindeutig inventarisiert; Offlinekopien und Backup vorhanden | Paketquellen gegen Manifest geprüft; aktuelle 82 hardwarefreie Tests PASS; Zielrichtlinie und Geräteidentität belegt; geschützte Anlage nicht kontaktiert |
+| M2: Tatsächliche Schnittstellengrenze | ELF-/Header-/Konfigurationsanalyse und bounded Referenzbeobachtungen | Aufrufverbraucher, ABI und notwendige Funktionen belegt; Versionsabweichungen sichtbar; ADR bestätigt oder revidiert; dynamische Loader-/Servicekette und Komponentenverträge bleiben separat zu schließen |
 | M3: Minimaler Originalverbraucher | Virtueller 750-1405-/750-1504-Strang unter belegter Grenze | Originalverbraucher akzeptiert Initialisierung und DI/DO; negative Kontrolle; keine physischen Endpunkte |
 | M4: Originale Runtime | Unveränderte kleine IEC-Anwendung mit I/O-Mapping | Reale Runtimeausführung, Quelle/Binary gebunden; Ablauf, Restart, Watchdogs getrennt getestet; Rechte geklärt |
 | M5: Relevante Klemmenverträge | Analog-/PWM-/Diagnose-/Registerpfade | Handbuch und Referenztraces für genaue Modulrevision; unbekannte Fälle scheitern sichtbar |
@@ -15,7 +15,7 @@ Die Roadmap ist optional zur Produktentwicklung. Ein Meilenstein ist kein PASS a
 
 ## Nächster zusammenhängender Auftrag
 
-M1 und M2 abschließen und soweit die belegte Schnittstelle und Nutzungsrechte reichen einen begrenzten M3-Kandidaten entwickeln. Nicht beim ersten FW-/Modulunterschied abbrechen: Unterschiede dokumentieren und unabhängig mögliche Offlinearbeit fortsetzen. Keine vorschnelle Voll-Board-Implementierung.
+M1 und M2 bleiben teilweise offen. Als nächstes die passenden CODESYS-Generikheader (`INIT_STRUCT`, `IoConfigConnectorMap`) und DeviceDescription-Verträge für 750-1405/750-1504 ermitteln; parallel Hardwareidentität und Klemmenbestand vervollständigen. Erst danach einen begrenzten M3-Init-/Enumerationskandidaten gegen die belegte Grenze planen. Die Carrier-Prüfung qualifiziert nur die eigenen Layout-/Isolationsprobes und schließt M3 nicht negativ oder positiv ab.
 
 ## Erster Testumfang
 
@@ -23,4 +23,4 @@ Originalconsumer statt selbst geschriebenem Ersatz-Client: Geräteinit und Enume
 
 ## Checkzustände
 
-PASS = tatsächlich für den genannten Stand erfolgreich ausgeführt. FAIL = ausgeführt und fehlgeschlagen. NOT_RUN = nicht ausgeführt, Grund nennen. BLOCKED = konkrete Voraussetzung fehlt. Original-Runtime, physische Klemmen, PWM, elektrische Fehler und Last-/Timingmessungen sind beim Bootstrap NOT_RUN. Nutzungsrecht oder fehlende Dateien können einzelne Ausführungen BLOCKED machen.
+PASS = tatsächlich für den genannten Stand erfolgreich ausgeführt. FAIL = ausgeführt und fehlgeschlagen. NOT_RUN = nicht ausgeführt, Grund nennen. BLOCKED = konkrete Voraussetzung fehlt. Die 82 hardwarefreien Tests und die begrenzten eigenen Carrier-Probes sind PASS in ihrem jeweils engen Scope; sie sind kein pauschaler Firmware-Sandbox-PASS. Originalverbraucher, Original-Runtime, physische Klemmen, PWM, elektrische Fehler und Last-/Timingmessungen bleiben BLOCKED, NOT_RUN oder OFFEN wie im jeweiligen Nachweis angegeben.

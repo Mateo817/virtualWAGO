@@ -1,0 +1,274 @@
+{
+  "schema": "virtualwago-offline-carrier-evidence/1",
+  "date": "2026-10-11",
+  "development_base_revision": "4bca28bc4dc40d2602b0b6aa4763a994bf3bc889",
+  "code_binding": "Own source hashes below; published commit and CI binding in PR #2. No manufacturer binaries or private reports published.",
+  "sdk": {
+    "repository": "WAGO/pfc-firmware-sdk-G2",
+    "revision": "252209115885442bac7359a2ff1cfa4efb3a9c84",
+    "tag": "FW30-V04.08.09",
+    "header_scope": "FW30 header layout measured by own ARM probe; no claim of complete FW31 ABI"
+  },
+  "host": {
+    "os": "Debian 13.7",
+    "architecture": "x86_64",
+    "python": "3.13.5",
+    "binutils": "2.44",
+    "cross_compiler": "arm-linux-gnueabihf-gcc 14.2.0",
+    "sdk_cross_compiler": "11.3.1; not used in this run"
+  },
+  "execution": {
+    "qemu": {
+      "version": "10.0.13",
+      "sha256": "94f4d938a299230026c759b348a5c8f8eaf05969ee5d7a6819598de8c6d342bb",
+      "validation": "Static host ELF; no PT_INTERP and no DT_NEEDED"
+    },
+    "bubblewrap": {
+      "version": "0.12.0",
+      "package": "bubblewrap_0.12.0-1~deb13u1_amd64.deb",
+      "sha256": "573236e5328ac2ebb08f59ae3a9805b4f8d12bdef14be8af4450d5463294985f",
+      "installation": "Extracted only in private research directory; no global host installation"
+    },
+    "guest_rootfs": {
+      "original_regular_file_count": 4,
+      "files": [
+        {
+          "guest_path": "/lib/ld-linux-armhf.so.3",
+          "sha256": "366d9f2f5584ce374cb1a7a2222067d0c99aabee4bac6a475c160ce04ed4dd33",
+          "scope": "original GNU loader, local only"
+        },
+        {
+          "guest_path": "/opt/research/abi-layout",
+          "sha256": "5b8a9a03e8cfcfc297389ac5dc3db0e9e98b67634693f929589640840f3b2b51",
+          "scope": "own ARM probe, no DAL calls"
+        },
+        {
+          "guest_path": "/opt/research/isolation-probe",
+          "sha256": "8ce53a3d4ee1d470eb03ca5770df18f4cf4f8d8f8d33128be96650c7c14e21b5",
+          "scope": "own ARM probe, controlled local endpoints"
+        },
+        {
+          "guest_path": "/usr/lib/libc.so.6",
+          "sha256": "dc47ee066e2c2d73ff9186440787543c3020711611f09002b6ab187d97d9dfa2",
+          "scope": "original GNU C library, local only"
+        }
+      ]
+    },
+    "configuration": {
+      "timeout_seconds_each": 15,
+      "positive_and_negative_probe_private_procfs": true,
+      "layout_probe_private_procfs": false,
+      "rootfs": "Private copied snapshot bound read-only",
+      "qemu": "Private copied snapshot bound read-only",
+      "namespaces": [
+        "user",
+        "mount",
+        "net",
+        "pid",
+        "ipc",
+        "uts"
+      ],
+      "capabilities": "ALL dropped",
+      "no_new_privs": true,
+      "stdin": "closed",
+      "environment": "cleared then explicit minimal values",
+      "host_endpoints": "No host devices, host D-Bus, host Docker socket, home or sysfs bound"
+    },
+    "resource_limit_scope": "Per-process limits and bounded wall-clock supervision; no aggregate cgroup quota. Only reviewed own probes qualified."
+  },
+  "own_source_sha256": {
+    "tools/offline_sandbox.py": "36c354a3f96d53a7f88e0b2527cb239b90740fd4f216f54fa0c484b97ecde272",
+    "tools/offline_isolation_probe.c": "75e82d5bfab1814b6747adb6d979fff6406bf448aa40461a9328cae74ebeb832",
+    "tools/abi_layout_probe.c": "bcb2c39efc0ca650f13d6c363414cda87635a86a70df72bd6e9cc1648dcdd7ca",
+    "tools/elf_audit.py": "922d1499841b65ada39a9fb30ef1ce9b81e07555694f5dcf918dba37dd1739af",
+    "tests/test_offline_sandbox.py": "b91c8dedde3378063c3f4e110b674f8298a375f8251f003bff344b67dc1637da",
+    "tests/test_tools.py": "bc38b6d3cf266672651858e90bc98f1832191975bea13f6fa750ce1d1e5c0ebe"
+  },
+  "private_carrier_report_sha256": "002d3032761ca4cca98205712f6a9df6b688dbc681eec4de1ca1c3efbcd16d4a",
+  "checks": {
+    "hardware_free_python_suite": {
+      "status": "PASS",
+      "tests": 82,
+      "python": "3.13.5",
+      "scope": "Own model and tool regression suite; no vendor binaries, PLC, VM or namespace execution in CI"
+    },
+    "own_arm_carrier_and_header_layout": {
+      "status": "PASS",
+      "exit_code": 0,
+      "measurements": {
+        "bool_bytes": 1,
+        "device_id_bytes": 4,
+        "device_info_bytes": 8,
+        "event_bytes": 4,
+        "failure": -1,
+        "get_device_list_offset": 12,
+        "interface_bytes": 136,
+        "pointer_bytes": 4,
+        "read_bytes_offset": 80,
+        "scope": "own ARM probe; FW30 headers; no DAL calls",
+        "size_t_bytes": 4,
+        "success": 0,
+        "write_bytes_offset": 60
+      },
+      "scope": "Own ARM code through original GNU loader/libc; no DAL calls or original I/O consumer"
+    },
+    "own_arm_isolation_probe": {
+      "status": "PASS",
+      "exit_code": 0,
+      "observations": {
+        "abstract_denied": 1,
+        "clean_env": 1,
+        "endpoints_absent": 1,
+        "hardware_absent": 1,
+        "host_file_absent": 1,
+        "ipc_private": 1,
+        "loopback_denied": 1,
+        "mount_private": 1,
+        "net_private": 1,
+        "no_caps": 1,
+        "no_new_privs": 1,
+        "pass": 1,
+        "pid_private": 1,
+        "root_readonly": 1,
+        "scope": "own ARM probe; controlled local endpoints only",
+        "user_private": 1
+      },
+      "controlled_host_listener_baseline": "PASS",
+      "controlled_host_tcp_or_abstract_unix_listener_reached": [
+        false,
+        false
+      ],
+      "scope": "This exact rootfs, QEMU, bubblewrap and reviewed own ARM probe"
+    },
+    "own_arm_sentinel_negative_control": {
+      "status": "PASS",
+      "expected_guest_result": "FAIL",
+      "observed_guest_status": "FAIL",
+      "observed_guest_exit_code": 1,
+      "synthetic_guest_sentinel_detected": true,
+      "controlled_host_listeners_reached": [
+        false,
+        false
+      ],
+      "scope": "Artificial guest sentinel file triggers probe failure; no host file mounted and no network rule opened. Not M3 negative control."
+    },
+    "original_io_consumer_init_di_do_negative_control": {
+      "status": "BLOCKED",
+      "reason": "Exact generic CODESYS registration/connector/map types and terminal parameter contracts missing; not executed"
+    },
+    "virtual_original_runtime_iec": {
+      "status": "NOT_RUN",
+      "reason": "Separate later proof, including identity/license rights and unchanged IEC mapping"
+    },
+    "physical_bus_actuators": {
+      "status": "NOT_RUN",
+      "reason": "No bus initialization, driver replacement, master switch or physical output experiment"
+    }
+  },
+  "declared_dependency_availability": {
+    "status": "PASS",
+    "scope": "Unique SONAME/basename availability in 126 backed-up ELF files; not actual loader or service closure",
+    "private_report_sha256": "d4e1420bfe6512d9cc2ba6276bfd82676d00c985289814f9fdef7d9dd3558df8",
+    "elf_file_count": 126,
+    "consumers": {
+      "usr/bin/codesys3": {
+        "reachable_file_count": 14,
+        "missing_needed": [],
+        "ambiguous_needed": {}
+      },
+      "usr/lib/libIoDrvDal.so.1.0.2": {
+        "reachable_file_count": 14,
+        "missing_needed": [],
+        "ambiguous_needed": {}
+      },
+      "usr/lib/libIoDrvKbus.so.0.0.1": {
+        "reachable_file_count": 25,
+        "missing_needed": [],
+        "ambiguous_needed": {}
+      },
+      "usr/lib/libdal.so.1.0.1": {
+        "reachable_file_count": 9,
+        "missing_needed": [],
+        "ambiguous_needed": {}
+      }
+    },
+    "codesys3_interpreter": "/lib/ld-linux-armhf.so.3",
+    "codesys3_rpath": [],
+    "codesys3_runpath": [],
+    "remaining": [
+      "Configured dlopen components",
+      "Actual loader path/alias resolution",
+      "Symbol version contracts",
+      "Service, IPC, time and retain dependencies"
+    ]
+  },
+  "fresh_reference_metadata": {
+    "status": "PASS",
+    "scope": "Read-only exact reference SSH session; original runtime, DAL, IoDrvDal and IoDrvKbus hashes match previous backup. No configuration or services changed.",
+    "private_report_sha256": "d7992da8b89c078075814eea7f01b8a4c8e7dd9f375bfa7ca9f0c18632a34d1a"
+  },
+  "vendor_release_baseline": {
+    "status": "VERIFIZIERT",
+    "source": "https://downloadcenter.wago.com/api/uploads/2026_04_30_Release_Notes_750_8x1x_d0696a9a8d.pdf",
+    "sha256": "7504776b952f84eb93ff50f53898025f4372eea98976396e7d7cb255b4e73378",
+    "pages": [
+      2,
+      3
+    ],
+    "firmware": "04.09.01 (31)",
+    "model": "750-8213",
+    "engineering_string": "3.5.21.5",
+    "device_description_string": "2.0.9.2",
+    "scope": "Published tested release combination, not installed Windows VM inventory; strings not normalized to runtime 3.5.21.50"
+  },
+  "architecture": {
+    "status": "HYPOTHESE",
+    "decision": "Continue B+C at evidenced ADI/DAL boundary; no broad board emulation",
+    "m1": "OFFEN: complete hardware identity and physical terminal inventory",
+    "m2": "OFFEN: actual CODESYS registration, terminal parameters and complete behavior contracts"
+  },
+  "review": {
+    "self_review": {
+      "status": "PASS",
+      "scope": "Integrator executed carrier and controlled sentinel/listener checks and reviewed public disclosure"
+    },
+    "independent_review": {
+      "status": "PASS",
+      "agent": "risk_review",
+      "model": "gpt-6.1-sol",
+      "reasoning": "medium",
+      "tests_run": 82,
+      "scope": "Offline code and ELF/evidence/hash review; reviewer did not execute guest programs or hardware",
+      "findings_resolved": [
+        "Bounded exit wait after output EOF",
+        "Pinned regular-file metadata before reads",
+        "Directory descriptor leak",
+        "Static ELF validation rejects DT_NEEDED",
+        "Async connection failure waits for terminal SO_ERROR"
+      ],
+      "limitations": [
+        "Per-process resource limits",
+        "No arbitrary guest security claim",
+        "No original I/O or runtime qualification"
+      ]
+    }
+  },
+  "fw30_component_header_contracts": {
+    "status": "VERIFIZIERT",
+    "scope": "Genuine FW30 WAGO header declarations; generic CODESYS types absent; not FW31 struct identity",
+    "sdk_revision": "252209115885442bac7359a2ff1cfa4efb3a9c84",
+    "archive_sha256": "fe38a3ddd5baa7938df0134f1fc533a15253d1a270522cb9e21e1ce7638a6af9",
+    "private_review_sha256": "b213c445ef007ca84bb199cee7e7391453e98317e969cf17e723656374818221",
+    "header_sha256": {
+      "IoDrvDal.h": "30e31031d4d427f047fa17f2e9860777c174951f02926eb96401f3f11753b517",
+      "IoDrvDalSpecific.h": "aebdfa8350d990156033ff9f539c8f971394b93ff4ee677b6d2c354fb7a7a5c1",
+      "IoDrvDalDep.h": "84d4203716744fd31ddf3768b4b32ddc2f55ee8c27e3ed0f1e61e7ad1c2878a4",
+      "IoDrvKbusCItf.h": "24b74ba037849b88c39fc5fba8bb1e07394d09bf572692a52452dcb2acfe4c8e"
+    },
+    "remaining": [
+      "Actual-version INIT_STRUCT and connector/map definitions",
+      "Terminal-specific descriptor IDs and parameters",
+      "Callback thread affinity and in-flight draining"
+    ]
+  }
+}

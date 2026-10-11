@@ -7,6 +7,10 @@
 #include <stdbool.h>
 #include <dal/adi_application_interface.h>
 
+#ifdef RESEARCH_RUNTIME_LAYOUT_PROBE
+#include <stdio.h>
+#endif
+
 #if !defined(__arm__) || !defined(__ARM_EABI__) || !defined(__ARM_PCS_VFP)
 #error "Compile with an ARM EABI hard-float compiler"
 #endif
@@ -130,3 +134,24 @@ const uint32_t research_enum_BusMemberState_Configured =
     BusMemberState_Configured;
 const uint32_t research_enum_BusMemberState_Alive = BusMemberState_Alive;
 const uint32_t research_enum_BusMemberState_Faulted = BusMemberState_Faulted;
+
+#ifdef RESEARCH_RUNTIME_LAYOUT_PROBE
+/* Optional own executable: header layout only. No DAL or driver functions are
+ * linked/called. A run qualifies the ARM carrier, never an original consumer. */
+int main(void)
+{
+    printf("{\"scope\":\"own ARM probe; FW30 headers; no DAL calls\","
+           "\"pointer_bytes\":%u,\"size_t_bytes\":%u,\"bool_bytes\":%u,"
+           "\"interface_bytes\":%u,\"device_info_bytes\":%u,"
+           "\"device_id_bytes\":%u,\"event_bytes\":%u,"
+           "\"get_device_list_offset\":%u,\"read_bytes_offset\":%u,"
+           "\"write_bytes_offset\":%u,\"success\":%d,\"failure\":%d}\n",
+           research_pointer_bytes, research_size_t_bytes, research_bool_bytes,
+           research_size_tApplicationDeviceInterface, research_size_tDeviceInfo,
+           research_size_tDeviceId, research_size_tApplicationStateChangedEvent,
+           research_offset_GetDeviceList, research_offset_ReadBytes,
+           research_offset_WriteBytes, research_enum_DAL_SUCCESS,
+           research_enum_DAL_FAILURE);
+    return 0;
+}
+#endif
