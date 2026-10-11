@@ -5,8 +5,8 @@ Die Roadmap ist optional zur Produktentwicklung. Ein Meilenstein ist kein PASS a
 | Stufe | Ergebnis | Abnahme |
 |---|---|---|
 | M0: Forschungsbasis | Befunde, Quellen, ADR, sichere lokale Übergabe | Dokumente konsistent; private Informationen nicht veröffentlicht |
-| M1: Lokaler Bestand und Referenzisolation | Eigenentwicklungscode importiert; freigegebenes neues Gerät eindeutig inventarisiert; Offlinekopien und Backup vorhanden | Paketquellen gegen Manifest geprüft; aktuelle 82 hardwarefreie Tests PASS; Zielrichtlinie und Geräteidentität belegt; geschützte Anlage nicht kontaktiert |
-| M2: Tatsächliche Schnittstellengrenze | ELF-/Header-/Konfigurationsanalyse und bounded Referenzbeobachtungen | Aufrufverbraucher, ABI und notwendige Funktionen belegt; Versionsabweichungen sichtbar; ADR bestätigt oder revidiert; dynamische Loader-/Servicekette und Komponentenverträge bleiben separat zu schließen |
+| M1: Lokaler Bestand und Referenzisolation | Eigenentwicklungscode importiert; freigegebenes neues Gerät eindeutig inventarisiert; Offlinekopien und Backup vorhanden | Paketquellen gegen Manifest geprüft; aktuelle 92 hardwarefreie Tests PASS; Zielrichtlinie und Geräteidentität belegt; geschützte Anlage nicht kontaktiert |
+| M2: Tatsächliche Schnittstellengrenze | ELF-/Header-/Konfigurationsanalyse und bounded Referenzbeobachtungen | Aufrufverbraucher, ABI und notwendige Funktionen belegt; Versionsabweichungen sichtbar; ADR bestätigt oder revidiert; dynamische Loader-/Servicekette und Komponentenverträge separat schließen |
 | M3: Minimaler Originalverbraucher | Virtueller 750-1405-/750-1504-Strang unter belegter Grenze | Originalverbraucher akzeptiert Initialisierung und DI/DO; negative Kontrolle; keine physischen Endpunkte |
 | M4: Originale Runtime | Unveränderte kleine IEC-Anwendung mit I/O-Mapping | Reale Runtimeausführung, Quelle/Binary gebunden; Ablauf, Restart, Watchdogs getrennt getestet; Rechte geklärt |
 | M5: Relevante Klemmenverträge | Analog-/PWM-/Diagnose-/Registerpfade | Handbuch und Referenztraces für genaue Modulrevision; unbekannte Fälle scheitern sichtbar |
@@ -15,7 +15,7 @@ Die Roadmap ist optional zur Produktentwicklung. Ein Meilenstein ist kein PASS a
 
 ## Nächster zusammenhängender Auftrag
 
-M1 und M2 bleiben teilweise offen. Als nächstes die passenden CODESYS-Generikheader (`INIT_STRUCT`, `IoConfigConnectorMap`) und DeviceDescription-Verträge für 750-1405/750-1504 ermitteln; parallel Hardwareidentität und Klemmenbestand vervollständigen. Erst danach einen begrenzten M3-Init-/Enumerationskandidaten gegen die belegte Grenze planen. Die Carrier-Prüfung qualifiziert nur die eigenen Layout-/Isolationsprobes und schließt M3 nicht negativ oder positiv ab.
+M1 und M2 bleiben teilweise offen. Device-Descriptions für Controller und Digitalklemmen sind verfügbar; als nächstes fehlen die echten CmpIoDrvItf-/IoConfigConnectorMap- und Plattformheader sowie Lifecycle-/Mappingvertrag. Parallel Hardwareidentität und tatsächlichen Projekt-/Klemmenbestand vervollständigen. Der eigene IEC-Quellkandidat ist noch nicht kompiliert; der aktuelle Windows-Prozessschutztest scheitert an seiner positiven AppContainer-Kontrolle. Diese Grenze zuerst praktisch qualifizieren, anschließend ein neues verbindungsloses Engineeringprojekt offline erstellen/kompilieren. Erst danach einen begrenzten M3-Init-/Enumerationskandidaten planen. Parser- und Carrier-Prüfungen qualifizieren nur ihre eigenen Eingaben und Programme und schließen M3 nicht ab.
 
 ## Erster Testumfang
 
@@ -23,4 +23,4 @@ Originalconsumer statt selbst geschriebenem Ersatz-Client: Geräteinit und Enume
 
 ## Checkzustände
 
-PASS = tatsächlich für den genannten Stand erfolgreich ausgeführt. FAIL = ausgeführt und fehlgeschlagen. NOT_RUN = nicht ausgeführt, Grund nennen. BLOCKED = konkrete Voraussetzung fehlt. Die 82 hardwarefreien Tests und die begrenzten eigenen Carrier-Probes sind PASS in ihrem jeweils engen Scope; sie sind kein pauschaler Firmware-Sandbox-PASS. Originalverbraucher, Original-Runtime, physische Klemmen, PWM, elektrische Fehler und Last-/Timingmessungen bleiben BLOCKED, NOT_RUN oder OFFEN wie im jeweiligen Nachweis angegeben.
+PASS = tatsächlich für den genannten Stand erfolgreich ausgeführt. FAIL = ausgeführt und fehlgeschlagen. NOT_RUN = nicht ausgeführt, Grund nennen. BLOCKED = konkrete Voraussetzung fehlt. Die 92 hardwarefreien Tests und begrenzten Carrier-/Parser-Probes sind PASS in ihrem jeweils engen Scope; sie sind kein pauschaler Firmware-Sandbox-PASS. Originalverbraucher, Original-Runtime, IEC-Projektdownload, physische Klemmen, PWM, elektrische Fehler und Last-/Timingmessungen bleiben BLOCKED, NOT_RUN oder OFFEN wie im jeweiligen Nachweis angegeben.

@@ -2,7 +2,7 @@
 
 Forschung zur Virtualisierung einer WAGO PFC200 G2 samt originaler SPS-Runtime und virtuellen K-Bus-I/O-Modulen. Unabhängiges Forschungsprojekt; keine behauptete Herstellerfreigabe.
 
-**Stand: 11. Oktober 2026.** Das Referenzgerät meldet im Device Tree 750-8213 / ARMv7 und im Firmwaremarker 04.09.01(31). Die gesicherte Runtime enthält die Versionszeichenfolge 3.5.21.50; ein aktuelles Engineeringprofil ist damit nicht belegt. Hardwarestand, Serienidentität, Klemmenbestand und aktiver Projektzustand bleiben offen.
+**Stand: 11. Oktober 2026.** Das Referenzgerät meldet im Device Tree 750-8213 / ARMv7 und im Firmwaremarker 04.09.01(31). Die gesicherte Runtime enthält die Versionszeichenfolge 3.5.21.50. Im lokalen Engineeringbestand sind Profile/IDE 3.5.21.50 (SP21 Patch 5), ein separates Registryfeld 3.5.21.500 sowie eine im Forschungslauf nicht verwendete IDE 3.5.22.10 vorhanden. Installierte Beschreibungen und deren Grenzen stehen im [CODESYS-Vertragsbericht](docs/codesys-contract-2026-10-11.md). Hardwarestand, Serienidentität, tatsächlicher Klemmenbestand und aktiver Projektzustand bleiben offen.
 
 ## Entscheidung und Einstieg
 
@@ -21,7 +21,7 @@ Bevorzugt wird **originaler ARM-Userspace + belegte Hardwareabstraktionsgrenze (
 
 Der eigene Python-Forschungsprototyp, geprüfte synthetische Konfigurationen und Offlinewerkzeuge sind jetzt selektiv importiert. Die private Studie, Originalquellen, Herstellerheader/-binaries und Gerätezugänge bleiben außerhalb von Git. Das ist kein bereits lauffähiger Original-WAGO-Emulator.
 
-Die aktuelle hardwarefreie Suite umfasst **82 PASS**. Die ursprünglichen 52 Pakettests wurden ebenfalls frisch ausgeführt; die frühere Suite mit 65 Tests ist ein historischer Zwischenstand. GitHub Actions führt die Python-Suite aus. Backend-/Werkzeug-PASS belegt keine originale Runtime oder reale Klemmen.
+Die aktuelle hardwarefreie Suite umfasst **92 PASS**: 82 bestehende Tests plus 10 Device-Description-Parserfälle. Frühere Stände mit 52 und 65 Tests sind historische Zwischenstände, keine Fehler. Backend-/Werkzeug-PASS belegt keine originale Runtime oder reale Klemmen. Ein [eigener IEC-Testquelltext](prototype/iec/minimal_io.st) ist vorbereitet, noch nicht kompiliert oder geladen. Der eigene Windows-Schutztest ist FAIL; der CODESYS-Start im Forschungsprozess bleibt BLOCKED.
 
 Neue [FW30-ABI-Befunde](docs/abi-research-2026-10-11.md) belegen den direkten ADI-Import durch originales `libIoDrvDal`, echte Headerlayouts und den Gerätezahlvertrag von `GetDeviceList`. Die Compile-only-Sonde verwendet ARM-Hard-Float-GCC 14.2 statt SDK-GCC 11.3.1. Der [tatsächliche Referenzbestand](docs/reference-abi-2026-10-11.md) ist jetzt selektiv gesichert: Der DAL-Provider ist bytegleich zum FW30-Artefakt, die originalen I/O-Verbraucher unterscheiden sich. ADI-Import, 136-Byte-Tablecopy und indirekte Lese-/Schreibeinträge sind für den aktuellen Verbraucher statisch belegt; originale Init-/DI-/DO-Ausführung bleibt blockiert.
 
@@ -29,6 +29,7 @@ Neue [FW30-ABI-Befunde](docs/abi-research-2026-10-11.md) belegen den direkten AD
 - [M1/M2-Ausführung, Gates und nächster Einstieg](docs/execution-2026-10-11.md)
 - [Prozessbezogene Referenz-Netzsperre](docs/network-isolation.md)
 - [Offline-Carrier- und Isolationsbefunde, 11.10.2026](docs/offline-carrier-2026-10-11.md)
+- [CODESYS-Engineering- und Device-Description-Verträge, 11.10.2026](docs/codesys-contract-2026-10-11.md)
 
 ```sh
 python3 -m unittest discover -s tests -v
