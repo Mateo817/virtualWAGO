@@ -19,9 +19,22 @@ Bevorzugt wird **originaler ARM-Userspace + belegte Hardwareabstraktionsgrenze (
 
 ## Stand der Umsetzung
 
-Dieses Repository startet mit einer **Dokumentationsbasis**. Der bereits vorhandene, separat ausgelieferte Python-Forschungsprototyp ist noch nicht in diesen Git-Baum importiert. Sein vollständiger Quellcode, 52 Tests, die 46-seitige Studie und historische Evidence liegen im lokalen Übergabepaket. Das ist kein bereits lauffähiger Original-WAGO-Emulator.
+Der eigene Python-Forschungsprototyp, geprüfte synthetische Konfigurationen und Offlinewerkzeuge sind jetzt selektiv importiert. Die private Studie, Originalquellen, Herstellerheader/-binaries und Gerätezugänge bleiben außerhalb von Git. Das ist kein bereits lauffähiger Original-WAGO-Emulator.
 
-Die vorhandenen 52 Tests wurden bei der Übergabe auf dem unveränderten Paket erneut erfolgreich ausgeführt. Dieser PASS gilt nur für dessen Backend-/Werkzeugquellen, nicht für eine originale Runtime, reale Klemmen oder diesen Dokumentationscommit. Im Bootstrap sind keine GitHub-Actions-Workflows eingerichtet.
+Die 52 ursprünglichen Pakettests wurden frisch ausgeführt. Die erweiterte Suite umfasst 64 hardwarefreie Tests; zusätzlich wurde die Netzsperre lokal im Kernel geprüft. GitHub Actions führt die Python-Suite aus. Backend-/Werkzeug-PASS belegt keine originale Runtime oder reale Klemmen.
+
+Neue [FW30-ABI-Befunde](docs/abi-research-2026-10-11.md) belegen den direkten ADI-Import durch originales `libIoDrvDal`, echte Headerlayouts und den Gerätezahlvertrag von `GetDeviceList`. Die Compile-only-Sonde verwendet ARM-Hard-Float-GCC 14.2 statt SDK-GCC 11.3.1. Die tatsächliche Gerätefirmware bleibt unbestätigt.
+
+- [M1/M2-Ausführung, Gates und nächster Einstieg](docs/execution-2026-10-11.md)
+- [Prozessbezogene Referenz-Netzsperre](docs/network-isolation.md)
+
+```sh
+python3 -m unittest discover -s tests -v
+python3 -m prototype --config config/minimal.json < config/demo.jsonl
+python3 tools/closed_loop_demo.py
+```
+
+Python 3.11+ und Standardbibliothek genügen für den Modellkern; ELF-Audit benötigt Linux und Binutils. `tools/reference_netns.py` zeigt standardmäßig nur einen bereinigten Plan. Seine aktive Nutzung braucht die private Zielrichtlinie und die in der Werkzeugdokumentation genannten Linux-Werkzeuge.
 
 ## Vertraulichkeit
 

@@ -1,6 +1,6 @@
 # Lokales Übergabepaket und Prototyp
 
-Die öffentliche Repositorybasis enthält Befunde, Vorschläge und Arbeitsverträge. Das vollständige lokale Paket enthält zusätzlich die unveränderte 46-seitige Machbarkeitsstudie in PDF/Markdown/HTML, drei ausführliche Forschungs-ADRs, Quelleninventar, Prototyp, Tests, Werkzeuge und private Ausgangsunterlagen. Konkrete Gerätezuordnung und Zugangsdaten sind separat und nicht für Git bestimmt.
+Die öffentliche Repositorybasis enthält Befunde, Arbeitsverträge und inzwischen den selektiv geprüften eigenen Prototyp-/Werkzeugcode. Das vollständige lokale Paket enthält zusätzlich die unveränderte 46-seitige Machbarkeitsstudie in PDF/Markdown/HTML, drei ausführliche Forschungs-ADRs, Quelleninventar und private Ausgangsunterlagen. Konkrete Gerätezuordnung und Zugangsdaten sind separat und nicht für Git bestimmt.
 
 ## Unveränderter ursprünglicher Forschungsbestand
 
@@ -36,4 +36,6 @@ Paketinstallation in dieser Übergabe NOT_RUN, weil die Werkzeuge vorhanden ware
 
 Der lokale Agent darf den eigenen Forschungscode nach Prüfung in einen Entwicklungsbranch von virtualWAGO übernehmen. Kandidaten sind `prototype/`, `tests/`, `tools/` sowie die geprüften synthetischen `config/`-Dateien. Vorher Inhalte, Referenzen, Tests und Herkunft prüfen; private Originalquellen, Inventare, Vollstudie und Traces nicht mitkopieren. Historische Quellhashes erhalten und nach dem Import für den neuen Git-HEAD neu testen. Kein blindes Gesamtverzeichnis-Importieren.
 
-Der bestehende Collector kennt die neue Zielrichtlinie noch nicht. Sein Dry-Run ist keine durchgesetzte Remote-Hostprüfung; vor Remoteeinsatz zusätzliche Ziel-/Identitätsprüfung und lokale Netzisolation umsetzen.
+Der Import umfasst `prototype/`, die drei ursprünglichen Tests, ELF-/XML-Werkzeuge, die erweiterte eigene ABI-Sonde und die beiden Demos. `config/minimal.json` und `config/demo.jsonl` wurden als synthetisch geprüft. Das private Anlagenprofil wurde durch `config/research-layout.json` mit einem generischen Vier-Modell-Layout ersetzt; die geschlossene Demo verwendet dieses Profil und keine Produktsteuerungslogik. Neue Tests behandeln Netzrichtlinien und ELF-Dateiaustauschrennen.
+
+Der alte `reference_inventory.sh` wurde bewusst nicht importiert: sein selbst gesetztes Freigabe-Flag bindet weder Ziel noch Geräteidentität. Das neue [Referenz-Netzwerkwerkzeug](network-isolation.md) setzt eine auf seinen Prozessbereich begrenzte Sperre um, ersetzt aber keine Geräteidentität, Hostkeyprüfung oder physische Freigabe. Originalheader und ARM-Probeobjekte verbleiben privat; die öffentlichen [ABI-Befunde](abi-research-2026-10-11.md) enthalten nur eigene Analyse und Quellen-/Hashanker.

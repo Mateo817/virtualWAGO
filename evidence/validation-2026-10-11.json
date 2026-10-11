@@ -1,0 +1,31 @@
+{
+  "schema": "virtualwago-validation/1",
+  "date": "2026-10-11",
+  "source_manifest": "source-manifest.sha256",
+  "source_bundle_sha256": "d5f461575fbcb4fb1530ad4c6c1223e509898850d22e18662c50ea21885f92ea",
+  "scope": "own backend, synthetic configuration and offline/reference tooling; not firmware acceptance",
+  "host": {"os": "Debian 13.7", "arch": "x86-64", "python": "3.13.5", "binutils": "2.44"},
+  "checks": {
+    "historical_package_manifests": {"status": "PASS", "scope": "private unchanged handoff"},
+    "historical_tests": {"status": "PASS", "count": 52},
+    "final_own_tests": {"status": "PASS", "count": 64},
+    "own_model_demos": {"status": "PASS", "configs": ["config/minimal.json", "config/research-layout.json"]},
+    "reference_namespace_local_kernel_test": {"status": "PASS", "scope": "local loopback only; no protected-target contact"},
+    "original_fw30_elf_static_analysis": {"status": "PASS", "scope": "SDK 252209115885442bac7359a2ff1cfa4efb3a9c84; see ABI document"},
+    "original_header_arm32_probe": {"status": "PASS", "scope": "compile-only FW30 headers with GCC 14.2, different from SDK GCC 11.3.1"},
+    "manufacturer_example": {"status": "PASS", "scope": "compile-only, two signedness warnings; no link/execution"},
+    "reference_connection": {"status": "FAIL", "reason": "allowed SSH/web TCP connection timed out from isolated research process"},
+    "device_inventory_and_backup": {"status": "BLOCKED", "reason": "no authenticated reference connection"},
+    "actual_device_abi": {"status": "BLOCKED", "reason": "actual firmware/component inventory unavailable"},
+    "original_io_consumer": {"status": "BLOCKED", "reason": "execution environment and real module/parameter contracts unqualified"},
+    "original_runtime": {"status": "NOT_RUN", "reason": "subsequent independent gate; files and rights unqualified"},
+    "hardware_pwm_register_multi_runtime": {"status": "NOT_RUN", "reason": "no bus/actuator or runtime operation"}
+  },
+  "review": {
+    "self_review": "performed by integrator and implementation workers",
+    "independent_review": "performed by separate gpt-6.1-sol worker; 64 tests and static artifact/control-flow review",
+    "scope": "code and statically inspected artifacts; no independent build reproduction, hardware, runtime or legal signoff",
+    "findings": "identified inode/snapshot race, namespace context and ABI interpretation findings corrected and re-reviewed"
+  },
+  "ci": {"scope": "hardware-free Python 3.11 and 3.13; exact HEAD/run status recorded in PR"}
+}

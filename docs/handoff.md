@@ -1,5 +1,7 @@
 # Lokaler Agent: öffentlicher Übergabevertrag
 
+Aktueller Stand: [Ausführung 11.10.2026](execution-2026-10-11.md). Der eigene Prototyp ist selektiv importiert, der FW30-ADI-Verbraucher statisch belegt und die Referenz-Netzsperre lokal geprüft. M1-Geräteinventar und M2-Abgleich zum tatsächlichen Gerät sind weiterhin offen; die nachfolgenden Arbeitsregeln gelten unverändert.
+
 Arbeite am Repository `Mateo817/virtualWAGO`. Das Ziel ist Virtualisierung unterhalb der IEC-Anwendung, nicht ein zusätzlicher OPC-UA-Variablensimulator. Prüfe die Dokumentation kritisch, bestätige oder revidiere Annahmen anhand von Originalquellen und arbeite bis zu einem belastbaren M1/M2-Abschluss und einem möglichen begrenzten M3-Kandidaten.
 
 ## Modelle und Delegation
