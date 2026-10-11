@@ -18,6 +18,43 @@ import tempfile
 
 MAX_FILE = 256 * 1024 * 1024
 PATTERN = re.compile(r"adi_|dal_|[Kk][Bb]us|[Ii]o[Dd]rv|TscTime|Retain|[Dd]rm|clock_gettime|ioctl|mmap|dlopen")
+SYMBOL_TABLE = re.compile(r"^Symbol table '([^']+)' contains", re.M)
+SYMBOL_ROW = re.compile(
+    r"^\s*\d+:\s+([0-9a-fA-F]+)\s+((?:0[xX][0-9a-fA-F]+|\d+))\s+(\S+)\s+\S+\s+\S+\s+(\S+)(?:\s+(.*?))?\s*$"
+)
+
+def parse_function_symbols(text: str) -> list[dict]:
+    """Parse defined ELF function symbols from wide readelf -s output.
+
+    Values and sizes are the symbol table's declared fields. `value` is the raw
+    ELF symbol value, not a runtime address or normalized ARM/Thumb code
+    address. A zero size makes no range claim, and no neighboring symbol is
+    used to infer one.
+    """
+    table = None
+    symbols = []
+    for line in text.splitlines():
+        table_match = SYMBOL_TABLE.match(line)
+        if table_match:
+            table = table_match.group(1)
+            continue
+        if table is None:
+            continue
+        row = SYMBOL_ROW.match(line)
+        if not row:
+            continue
+        value, size, symbol_type, section_index, name = row.groups()
+        if symbol_type not in {"FUNC", "IFUNC", "GNU_IFUNC"} or section_index == "UND":
+            continue
+        symbols.append({
+            "table": table,
+            "name": (name or "").strip(),
+            "value": int(value, 16),
+            "size": int(size, 16) if size.lower().startswith("0x") else int(size, 10),
+            "section_index": section_index,
+            "type": symbol_type,
+        })
+    return symbols
 
 def inspect(path: str) -> dict:
     p = Path(path).absolute()
@@ -82,6 +119,7 @@ def inspect(path: str) -> dict:
             "soname": re.findall(r"\(SONAME\).*?\[(.*?)\]", text),
             "candidate_symbol_lines": [l.strip() for l in text.splitlines()
                                        if PATTERN.search(l)],
+            "defined_function_symbols": parse_function_symbols(text),
             "abi_attributes": [l.strip() for l in text.splitlines() if "Tag_" in l],
             "version_lines": [l.strip() for l in text.splitlines()
                               if "GLIBC_" in l or "GLIBCXX_" in l],

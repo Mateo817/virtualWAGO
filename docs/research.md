@@ -1,6 +1,6 @@
 # Forschungsergebnisse und Machbarkeitsentscheidung
 
-Stand: 11.10.2026. Dies ist die öffentliche, bereinigte Zusammenfassung der vorhandenen Studie, keine neue Hardwaremessung. Quellenkennungen beziehen sich auf [sources.md](sources.md). Private Projektinventare und vollständige Evidence verbleiben im lokalen Übergabepaket. Die nachfolgende Original-ELF-/Headeranalyse steht in [abi-research-2026-10-11.md](abi-research-2026-10-11.md), der aktuelle Ausführungsstand in [execution-2026-10-11.md](execution-2026-10-11.md).
+Stand: 11.10.2026. Dies ist die öffentliche, bereinigte Zusammenfassung der vorhandenen Studie, keine neue Hardwaremessung. Quellenkennungen beziehen sich auf [sources.md](sources.md). Private Projektinventare und vollständige Evidence verbleiben im lokalen Übergabepaket. Die nachfolgende Original-ELF-/Headeranalyse steht in [abi-research-2026-10-11.md](abi-research-2026-10-11.md), der aktuelle Geräte-/ABI-Stand in [reference-abi-2026-10-11.md](reference-abi-2026-10-11.md). Die erste Offline-/Verbindungsetappe bleibt in [execution-2026-10-11.md](execution-2026-10-11.md) dokumentiert.
 
 ## 1. Ziel und Ergebnis
 
@@ -72,7 +72,7 @@ Im lokalen Forschungspaket: kompletter Python-Standardbibliotheksprototyp, Tests
 
 Abgedeckt: komplette atomare Ausgangsframes, scanweise Eingangslatches, getrennte angeforderte/wirksame Ausgänge, eigene Busverlust-/Watchdogpolitik, fehlende oder eingefrorene Eingänge, Reset und Modell-Snapshot-Replay. Eigene Forschungsbelegung und Watchdogpolitik sind keine nachgewiesene WAGO-Semantik. 64 unabhängige Backendobjekte sind kein Benchmark von 64 originalen Runtimes.
 
-Die 52 Pakettests bestanden ursprünglich und erneut bei dieser Übergabe auf unveränderten Quelldateien. Kein originaler I/O-Verbraucher, keine Runtime und keine Hardware wurden damit getestet. Eigenentwicklungscode und geprüfte synthetische Konfigurationen sind inzwischen selektiv importiert; die erweiterte Suite umfasst 64 hardwarefreie Tests. Der ungebundene alte Hardwarecollector wurde nicht übernommen. [package.md](package.md)
+Die 52 Pakettests bestanden ursprünglich und erneut bei dieser Übergabe auf unveränderten Quelldateien. Kein originaler I/O-Verbraucher, keine Runtime und keine Hardware wurden damit getestet. Eigenentwicklungscode und geprüfte synthetische Konfigurationen sind inzwischen selektiv importiert; die erweiterte Suite umfasst 65 hardwarefreie Tests. Der ungebundene alte Hardwarecollector wurde nicht übernommen. [package.md](package.md)
 
 ## 7. Skalierung, Zeit und Reproduzierbarkeit
 
@@ -84,6 +84,6 @@ Realistisch qualifizierbare Ziele: Rohdaten-/Mappingfehler, Init-/Gerätefehler,
 
 ## 8. Jetzt fehlende Nachweise
 
-Neu zu erheben: tatsächlicher Artikel und Hardwarestand, vollständige Firmwarekennung, Runtime-/Libraryhashes, Kernel, geladene Komponenten, Treiber-/Devicepfade, Gerätebeschreibungen, Klemmenreihenfolge und Parameter. Ein zuvor genanntes FW31-/Engineeringprofil darf nicht auf das neue Gerät übertragen werden.
+Inzwischen erhoben sind Device-Tree-Modell, Firmwaremarker, Kernel, Runtime-/Libraryhashes, Prozess-Maps sowie ausgewählte Init-/Runtimekonfigurationen. Die [tatsächliche Referenzanalyse](reference-abi-2026-10-11.md) belegt die ADI-Grenze des originalen Verbrauchers. Weiterhin fehlen Hardwarestand, Serienidentität, Gerätebeschreibungen, Klemmenreihenfolge/-parameter, aktiver Projektzustand und der vollständige CODESYS-Komponentenvertrag. Ein historisches Engineeringprofil wird dadurch nicht zur aktuellen Installation.
 
 Die zentrale nächste Entscheidung folgt aus diesen Daten: Wo ist die kleinste vollständige emulierbare Grenze, welche Originalkomponenten bleiben unangetastet, welche Funktionen sind für einen DI/DO-Originalverbraucher notwendig? Fehlende Hardware oder Lizenzen blockieren jeweils den betroffenen Nachweis, nicht Header-, Quellen-, Modell- oder Dokumentationsarbeit insgesamt.

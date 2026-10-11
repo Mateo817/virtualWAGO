@@ -8,7 +8,7 @@ import sys
 import tempfile
 import unittest
 from unittest.mock import patch
-from tools.elf_audit import inspect
+from tools.elf_audit import inspect, parse_function_symbols
 from tools.extract_xml_inventory import extract
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -18,6 +18,35 @@ class ToolsTests(unittest.TestCase):
         self.assertEqual(result["header"]["Class"], "ELF64")
         self.assertEqual(result["runtime_execution"], "NOT_RUN")
         self.assertEqual(len(result["sha256"]),64)
+        self.assertIsInstance(result["defined_function_symbols"], list)
+    def test_function_symbol_metadata_uses_declared_size_not_next_symbol(self):
+        fixture = """
+Symbol table '.dynsym' contains 4 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+     1: 0000000000002d20   140 FUNC    GLOBAL DEFAULT   12 namefoo
+     2: 0000000000003000     0 FUNC    LOCAL  DEFAULT   12 size_unknown
+     3: 0000000000001234    16 FUNC    GLOBAL DEFAULT  UND unresolved
+Symbol table '.symtab' contains 2 entries:
+   Num:    Value          Size Type    Bind   Vis      Ndx Name
+     4: 00000000000034d0    32 FUNC    GLOBAL DEFAULT   13 later
+     5: 0000000000040000 0x20000 FUNC    GLOBAL DEFAULT   13 wide
+"""
+        symbols = parse_function_symbols(fixture)
+        foo = next(symbol for symbol in symbols if symbol["name"] == "namefoo")
+        size_unknown = next(symbol for symbol in symbols if symbol["name"] == "size_unknown")
+        later = next(symbol for symbol in symbols if symbol["name"] == "later")
+        wide = next(symbol for symbol in symbols if symbol["name"] == "wide")
+        self.assertEqual(foo, {
+            "table": ".dynsym", "name": "namefoo", "value": 0x2D20,
+            "size": 140, "section_index": "12", "type": "FUNC",
+        })
+        self.assertEqual(foo["value"] + foo["size"], 0x2DAC)
+        self.assertGreaterEqual(later["value"], foo["value"] + foo["size"])
+        self.assertEqual(later["table"], ".symtab")
+        self.assertEqual(wide["size"], 131072)
+        self.assertEqual(wide["value"], 0x40000)
+        self.assertEqual(size_unknown["size"], 0)
+        self.assertNotIn("range_end", size_unknown)
     def test_reject_non_elf(self):
         with self.assertRaises(ValueError): inspect(str(ROOT/"README.md"))
     def test_reject_device_before_open(self):

@@ -2,6 +2,7 @@
 
 Stand: 11.10.2026. Offline-Auswertung öffentlicher Herstellerquellen; keine Verbindung zu einer SPS oder Anlage, kein Firmwarestart und kein Firmwarebuild. Diese Evidence gilt ausschließlich für den unten genannten FW30-SDK-Snapshot. Sie belegt weder die FW31-Installation des Prüfstands noch die Laufzeitakzeptanz eines Shims.
 
+Aktualisierung: Dieser Bericht bleibt der revisionsgebundene FW30-Offlinebefund. Der anschließende [Abgleich zum tatsächlich erfassten Referenzgerät](reference-abi-2026-10-11.md) bestätigt dort den bytegleichen DAL-Provider, aber abweichende Verbraucher. Die unten beschriebenen damaligen Geräteblocker sind keine aktuelle Erreichbarkeitsaussage.
 ## Ergebnis
 
 **VERIFIZIERT:** Der angegebene SDK-Pin ist der öffentliche Tag `FW30-V04.08.09` im Repository [`WAGO/pfc-firmware-sdk-G2`](https://github.com/WAGO/pfc-firmware-sdk-G2/tree/252209115885442bac7359a2ff1cfa4efb3a9c84), Commit `252209115885442bac7359a2ff1cfa4efb3a9c84`. `git ls-remote` bestätigte die Tag-Auflösung auf genau diesen Commit. Das Repository war auf den Commit `252209115885442bac7359a2ff1cfa4efb3a9c84` gesetzt; seine Projekt-README warnt, Binär- und Installationspakete verschiedener Firmwarestände nicht zu mischen.

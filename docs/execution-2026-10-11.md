@@ -1,6 +1,6 @@
 # Ausführung: Offlinebestand, Zielisolation und Original-ADI-Befund
 
-Stand: 11.10.2026. Basis: `main` / `0bdddbf77d688fd9e1cce7165d718fa6a30efe2c`, Forschungsbranch `research/originalstack-m1-m2`. Der genaue veröffentlichte HEAD und seine CI-Läufe werden im PR gebunden. Die Roadmap-Abnahmen bleiben unverändert.
+Historische erste Offline-/Verbindungsetappe am 11.10.2026, gebunden an Commit `910dd9d849dfa4e1ef7d7a1725e4720b7214b520`. Die hier beschriebenen Verbindungsfehler wurden später behoben; aktueller Bestand und Checks stehen im [Referenz-/ABI-Folgebericht](reference-abi-2026-10-11.md). Basis: `main` / `0bdddbf77d688fd9e1cce7165d718fa6a30efe2c`, Forschungsbranch `research/originalstack-m1-m2`. Der genaue veröffentlichte HEAD und seine CI-Läufe werden im PR gebunden. Die Roadmap-Abnahmen bleiben unverändert.
 
 ## Tatsächlich erreicht
 
@@ -22,7 +22,7 @@ Stand: 11.10.2026. Basis: `main` / `0bdddbf77d688fd9e1cce7165d718fa6a30efe2c`, F
 
 Produktrepositories wurden über GitHub frisch als Quellen gebunden; Quellrevisionen und begrenzte Konfigurationsscreenings bleiben im privaten Evidenzbereich. Es wurden keine aktiven Produktkonfigurationen, Geräteidentitäten, privaten Schlüssel oder Lizenzen übernommen. Kein Deploymentartefakt wurde gestartet. Deshalb liegt auch kein freigegebener Installations-/Rollbacknachweis vor; dieser hängt vom noch fehlenden ursprünglichen Gerätebestand ab.
 
-## Checks und Nachweisstufen
+## Checks und Nachweisstufen der ersten Etappe
 
 | Check | Status | Konfiguration und Scope |
 |---|---|---|

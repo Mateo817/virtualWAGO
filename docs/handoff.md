@@ -1,6 +1,6 @@
 # Lokaler Agent: öffentlicher Übergabevertrag
 
-Aktueller Stand: [Ausführung 11.10.2026](execution-2026-10-11.md). Der eigene Prototyp ist selektiv importiert, der FW30-ADI-Verbraucher statisch belegt und die Referenz-Netzsperre lokal geprüft. M1-Geräteinventar und M2-Abgleich zum tatsächlichen Gerät sind weiterhin offen; die nachfolgenden Arbeitsregeln gelten unverändert.
+Aktueller Stand: [Referenzbestand und tatsächliche ABI, 11.10.2026](reference-abi-2026-10-11.md). Der eigene Prototyp ist selektiv importiert und die Referenz-Netzsperre lokal geprüft. Firmwaremarker, Runtime-Maps und 167 gehashte Originaldateien sind erhoben; der tatsächliche ADI-Verbraucher und sein bytegleicher DAL-Provider sind statisch belegt. Vollständige Hardwareidentität, Klemmenbestand, aktiver Projektzustand und CODESYS-Komponenten-/Mappingvertrag bleiben offen. Originalverbraucher- und virtuelle Runtimeausführung sind nicht nachgewiesen; die nachfolgenden Arbeitsregeln gelten unverändert.
 
 Arbeite am Repository `Mateo817/virtualWAGO`. Das Ziel ist Virtualisierung unterhalb der IEC-Anwendung, nicht ein zusätzlicher OPC-UA-Variablensimulator. Prüfe die Dokumentation kritisch, bestätige oder revidiere Annahmen anhand von Originalquellen und arbeite bis zu einem belastbaren M1/M2-Abschluss und einem möglichen begrenzten M3-Kandidaten.
 
