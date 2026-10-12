@@ -10,7 +10,7 @@ Langfristig soll eine virtuelle PFC200 nach Möglichkeit originale IEC-Logik, I/
 
 **HYPOTHESE:** Eine geeignete untere Grenze lässt sich simulieren, während der Originalstack erhalten bleibt. ADI/DAL ist ein Kandidat, kein bestätigter oder freigegebener Ersatz. Die vollständig virtuelle Steuerung ist ein nachgelagertes Ziel. Eine zusätzliche Runtime-Lizenz für eine virtuelle Instanz blockiert das erste reale Referenzziel nicht pauschal; Rechte für konkrete Software-/Bus-/Bibliotheksänderungen bleiben eigenständige Gates. Kein fertiger Emulator wird behauptet.
 
-**Aktuelle Zustandsschranke:** Laut Eigentümerauskunft ist eine Anwendung nur im RAM geladen und gestoppt; ihr Arbeitsverzeichnis wurde gelöscht und kein wiederherstellbares Bootprojekt gesichert. Kein blindes Neustarten, Löschen, Überschreiben oder anderer zustandsverändernder Schritt, bis Anwendung und persistenter Zustand sicher verstanden und gesichert sind. Das ist kein Anlass, unabhängige Offlinearbeit einzustellen.
+**Aktuelle Zustandsschranke:** Die vorhandene Anwendung bleibt STOP; ihr Prozess-CWD ist weiterhin gelöscht. Root hat nun online Bootdateien erzeugt und privat mit bytegleichen Kopierhashes gesichert. Restore und kontrollierter STOP-Wiederanlauf sind nicht getestet; [Fortsetzung](adi-digital8-continuation-2026-10-12.md). Kein blindes Neustarten, Löschen, Überschreiben oder anderer zustandsverändernder Schritt, bis Anwendung und persistenter Zustand sicher verstanden und gesichert sind. Das ist kein Anlass, unabhängige Offlinearbeit einzustellen.
 
 ## 2. Belegte Referenzarchitektur
 

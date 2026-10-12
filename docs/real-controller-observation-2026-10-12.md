@@ -59,3 +59,7 @@ Die authentischen cached `read_table_9`- und `get_kbus_status`-Handler sind zus�
 Integratorprüfung: **Self-Review**. Tatsächliche Luna-Worker bearbeiteten offline Dokumente, Diagnostikquellen und Parser; gezielter Sol-Worker prüfte die passiven FW31-D-Bus-Blätter und den Plan. Kein Worker führte Hardware-/VM-Tests aus. Statische Analyse, Review und Root-Ausführung sind getrennte Nachweisstufen.
 
 **BLOCKED / NOT_RUN:** Adaptereinbau, Provider-/Masterwechsel, Original-I/O gegen Simulation und Wiederanlauf. Konkrete Gates: wiederherstellbare bisherige Anwendung, Modul-/Projektzuordnung, vollständiger Ersatzschnitt und Parallel-/Fehlervertrag, qualifizierter Prozessschutz/Adapter sowie separate Freigabe des fertigen Wechselpayloads. Zusätzliche vollständig virtuelle Runtime-Lizenz ist kein pauschaler Blocker dieses ersten Ziels. [Versuchsplan und Rückweg](real-controller-plan-2026-10-12.md). Kein Merge.
+
+## Spätere Fortsetzung desselben Tages
+
+[Digital-8-Fortsetzung](adi-digital8-continuation-2026-10-12.md): zusätzliche statische VCall-Reichweite ergibt 22 beobachtete ADI-Slots; authentische 430/530-Descriptions und tatsächlicher Offline-BYTE-Build; neue eigene Thread-/Zeit-/Fehlertests. Root hat online Bootdateien der weiterhin gestoppten vorhandenen Anwendung erzeugt und privat gesichert. Wiederanlauf bleibt NOT_RUN; Original-I/O gegen Simulation ebenfalls NOT_RUN. Dieser Nachtrag erweitert den historischen Testscope oben nicht. Der [aktuelle Plan](real-controller-plan-2026-10-12.md) ersetzt die frühere Aussage, es gebe keinen Bootbestand.

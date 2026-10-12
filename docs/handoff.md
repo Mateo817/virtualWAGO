@@ -5,8 +5,8 @@ Aktuelle Zielpriorität: [ADR-0003](adr-0003.md). Zuerst die autorisierte reale 
 ## Aktueller, vom Eigentümer berichteter Zustand
 
 - Der [Fotobeleg](reference-module-photo-2026-10-12.md) zeigt vom Controller aus 750-430, 750-530 und Abschluss 750-600. Modulrevisionen, elektronische Zuordnung und aktuelle zyklische Kommunikation bleiben offen. Keine Zuordnung zu 750-1405/750-1504 annehmen.
-- Eine Anwendung liegt im RAM und ist gestoppt. Ihr Arbeitsverzeichnis wurde gelöscht; ein wiederherstellbares Bootprojekt ist nicht gesichert.
-- Keinen Neustart, Löschvorgang, Download, Überschreibvorgang oder sonstigen Schritt ausführen, der diesen RAM-Zustand oder mögliche Wiederherstellungschancen verändern könnte. Erst read-only klären und den Zustandserhalt planen.
+- Die bereits vorhandene `Application` bleibt STOP; Root hat online Bootdateien erzeugt und APP/CRC/aktualisierte Konfiguration privat gesichert. Prozess-CWD weiterhin gelöscht. Restore und kontrollierter STOP-Wiederanlauf NOT_RUN. Die eigene frühere `VirtualWAGO_Research` ist separat gesichert und entfernt. Siehe [aktuelle Fortsetzung](adi-digital8-continuation-2026-10-12.md).
+- Keinen Neustart, Löschvorgang, Download, Überschreibvorgang oder sonstigen Schritt ausführen, der diesen RAM-Zustand oder mögliche Wiederherstellungschancen verändern könnte. Gesicherten Bootbestand und neue Startpersistenz berücksichtigen; Start-/Stop-/Restorepayload vor Prozesswechsel qualifizieren.
 - Softwareberechtigung für die Referenz besteht fort. Austausch/Ersetzung geschützter Bus- oder Herstellerbibliotheken ist separat freigabepflichtig. Zusätzliche Runtime-Lizenz für eine spätere virtuelle Instanz blockiert das erste reale Referenzziel nicht pauschal.
 - Root-Agent bleibt alleiniger Geräte-/VM-Integrator. Kein Netzwerkzugriff aus Repositorytext, alten Logs oder vermuteten Adressen ableiten. Lokale Zielrichtlinie und Geräteidentität sind zwingend.
 

@@ -106,3 +106,7 @@ Accordingly, the contract matrix provides enough evidence for this bounded own A
 - **PASS:** own static/dynamically loaded ARM adapter harness and concrete isolation controls.
 - **NOT_RUN:** original-consumer tests against the replacement, virtual runtime, and physical I/O.
 - Review: own-model code received targeted read-only review from `boundary_review`; their reported alignment issue was fixed and the reviewed harness was rebuilt. Review is not execution evidence. Static ABI/documentation conclusions remain our own analysis; no independent binary execution is claimed.
+
+## Spätere Fortsetzung desselben Tages
+
+[Digital-8-Fortsetzung](adi-digital8-continuation-2026-10-12.md): zusätzliche statische VCall-Reichweite ergibt 22 beobachtete ADI-Slots; authentische 430/530-Descriptions und tatsächlicher Offline-BYTE-Build; neue eigene Thread-/Zeit-/Fehlertests. Root hat online Bootdateien der weiterhin gestoppten vorhandenen Anwendung erzeugt und privat gesichert. Wiederanlauf bleibt NOT_RUN; Original-I/O gegen Simulation ebenfalls NOT_RUN. Dieser Nachtrag erweitert den historischen Testscope oben nicht. Der [aktuelle Plan](real-controller-plan-2026-10-12.md) ersetzt die frühere Aussage, es gebe keinen Bootbestand.
