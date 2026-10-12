@@ -30,7 +30,7 @@ sudo apt-get update
 sudo apt-get install --no-install-recommends python3 binutils
 ```
 
-Paketinstallation in dieser Übergabe NOT_RUN, weil die Werkzeuge vorhanden waren. Windows-Ausführung NOT_RUN. Keine Hardware wurde kontaktiert.
+Paketinstallation in dieser Übergabe NOT_RUN, weil die Werkzeuge vorhanden waren. Windows-Ausführung und Hardwarekontakt waren in diesem ursprünglichen Paketcheck NOT_RUN. Spätere getrennte Engineering-/Referenzbefunde stehen im [Nachweis vom 12.10.2026](codesys-engineering-2026-10-12.md).
 
 ## Selektiver Codeimport
 
@@ -39,3 +39,5 @@ Der lokale Agent darf den eigenen Forschungscode nach Prüfung in einen Entwickl
 Der Import umfasst `prototype/`, die drei ursprünglichen Tests, ELF-/XML-Werkzeuge, die erweiterte eigene ABI-Sonde und die beiden Demos. `config/minimal.json` und `config/demo.jsonl` wurden als synthetisch geprüft. Das private Anlagenprofil wurde durch `config/research-layout.json` mit einem generischen Vier-Modell-Layout ersetzt; die geschlossene Demo verwendet dieses Profil und keine Produktsteuerungslogik. Neue Tests behandeln Netzrichtlinien und ELF-Dateiaustauschrennen.
 
 Der alte `reference_inventory.sh` wurde bewusst nicht importiert: sein selbst gesetztes Freigabe-Flag bindet weder Ziel noch Geräteidentität. Das neue [Referenz-Netzwerkwerkzeug](network-isolation.md) setzt eine auf seinen Prozessbereich begrenzte Sperre um, ersetzt aber keine Geräteidentität, Hostkeyprüfung oder physische Freigabe. Originalheader und ARM-Probeobjekte verbleiben privat; die öffentlichen [ABI-Befunde](abi-research-2026-10-11.md) enthalten nur eigene Analyse und Quellen-/Hashanker.
+
+Der eigene [CODESYS-Offline-Builder](../tools/codesys_offline_candidate.py) ergänzt den Forschungscode. Er benötigt die installierte, inventarisierte CODESYS-ScriptEngine und die gepinnten Beschreibungen; die Python-Standardbibliothek allein genügt dafür nicht. Der öffentliche Builder wurde tatsächlich mit der IDE 3.5.21.50 ausgeführt und fehlerfrei kompiliert. Er enthält keine Zielverbindung, die Herstellerbeschreibungen und nativen Projekt-/APP-Ausgaben bleiben privat. Die hardwarefreie CI führt ihn nicht als CODESYS-Programm aus.

@@ -1,6 +1,6 @@
 # CODESYS-Engineering- und Device-Description-Verträge
 
-Stand: 11.10.2026. Öffentliche Zusammenfassung einer read-only Inventaraufnahme und statischen Offlineanalyse. Dieser Bericht enthält keine Hersteller-XML, Header, privaten Pfade, GUIDs, Benutzer- oder Lizenzidentitäten. Bereinigte Hash- und Statusdaten: [codesys-contract-validation-2026-10-11.json](../evidence/codesys-contract-validation-2026-10-11.json).
+Historischer Stand: 11.10.2026. Aktuelle Ergänzung: [Engineering-Baseline vom 12.10.2026](codesys-engineering-2026-10-12.md). Öffentliche Zusammenfassung einer read-only Inventaraufnahme und statischen Offlineanalyse. Dieser Bericht enthält keine Hersteller-XML, Header, privaten Pfade, GUIDs, Benutzer- oder Lizenzidentitäten. Bereinigte Hash- und Statusdaten: [codesys-contract-validation-2026-10-11.json](../evidence/codesys-contract-validation-2026-10-11.json).
 
 ## Versionsbefunde
 
