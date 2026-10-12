@@ -18,6 +18,17 @@ Zielpriorität gemäß [ADR-0003](adr-0003.md): zuerst ein realer, autorisierter
 
 ## Aktueller Einstieg
 
+Der Eigentümer beauftragt zusätzlich den [Modulkatalog](module-catalog-2026-10-12.md): weitere Digitalmodule, Analog und autonom konfigurierte PWM. Offlinearbeit darf parallel zur offenen vollständigen R3-Abnahme laufen und benötigt keine vollständig virtuelle Steuerung. [ADR-0007](adr-0007.md) trennt Dokumentation, Eigenmodelle, native Runtime und Hardwarevergleich.
+
+- [x] Versionierter Katalog, Kanalgrenzen und gemischte Digital-/Analog-/PWM-Signalmodelle.
+- [x] Autonomes PWM Frq in eigener logischer Zeit; angeforderte/wirksame Werte und eigene Watchdoglease getrennt.
+- [ ] Neue native Digital-8-Regression und Digital-16-Abnahme 750-1405/1504 mit frischen Artefakten/Rückweg.
+- [ ] 750-466: native Prozessabbild-/Diagnose-/Registerprojektion und Vergleich definierter Analogreize mit gebundener Modulrevision.
+- [ ] 750-677: originaler Konfigurations-/Start-/Statusvertrag, benötigte weitere Modi, native und später freigegebene Messvergleiche.
+- [ ] Weitere Artikel nach belegtem Daten-/Verhaltensvertrag freischalten; kein generisches Erfolgsstub.
+- [ ] Virtuelle serielle Kommunikation: originale FW31-SysCom-/WAGO-Komponenten und Portauswahl lesen; isolierter virtueller Endpunkt/Gegenstellenmodell, dann native Anfrage/Antwort-/Timeoutprüfung.
+- [ ] Andere PFC200-Ausstattungen: Schnittstellenfähigkeiten und Gerätebeschreibungs-/Controllertypprüfungen getrennt untersuchen. Controlleridentität erhalten; Zusatzschnittstelle ist keine vollständige andere Controlleremulation.
+
 Der [Eigentümerfotobeleg](reference-module-photo-2026-10-12.md) zeigt 750-430 → 750-530 → 750-600. Frontartikel und fotografierte Reihenfolge sind damit belegt; Revisionen, elektronische Zuordnung und aktuelle Kommunikation bleiben offen. Die vorhandene Anwendung bleibt STOP; online erzeugte Bootdateien und aktualisierte Konfiguration wurden privat gesichert. Der aktuelle gezielte STOP-Wiederanlauf ist geprüft; Geräte-Reboot bleibt NOT_RUN. Kein blinder Neustart, Löschen oder Überschreiben. [Fortsetzung](adi-digital8-continuation-2026-10-12.md): authentischer Digital-8-Offlinestand und eigene ARM-Adapterprüfungen; die spätere native Abnahme steht im aktuellen Zyklusbericht. Der Root-Agent bleibt alleiniger Geräte-/VM-Integrator. Der konkrete Ablauf steht in [next-originalstack-block.md](next-originalstack-block.md), die datierten Aufzeichnungen in [Versuchsplan](real-controller-plan-2026-10-12.md) und [Beobachtungsprotokoll](real-controller-observation-2026-10-12.md).
 
 Die bisherigen 750-1405/750-1504 Artefakte bleiben Offline-Modellkandidaten. Sie setzen nicht die tatsächliche Bestückung. Die bisherigen 99 hardwarefreien Tests, Adapter- und Harnessläufe, Offline-Engineering-Builds sowie begrenzten internen Runtimebeobachtungen bleiben PASS ausschließlich in den jeweils verlinkten, revisionsgebundenen Scopes. Sie erfüllen R0–R3 nicht.

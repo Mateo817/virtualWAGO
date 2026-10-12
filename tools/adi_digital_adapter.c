@@ -15,34 +15,10 @@
 #include <string.h>
 #include <time.h>
 #include <libpackbus.h>
+#include "adi_catalog_profiles.h"
 
 #define VIRTUAL_DEVICE_ID ((tDeviceId)1)
 #define VIRTUAL_DEVICE_NAME "libpackbus"
-
-typedef struct {
-  virtual_adi_profile profile;
-  uint32_t input_bytes;
-  uint32_t output_bytes;
-  uint32_t input_bits;
-  uint32_t output_bits;
-  uint16_t input_mask;
-  uint16_t output_mask;
-  uint32_t terminal_count;
-  uint16_t module_ids[2];
-  const char *parameter10[2];
-  const char *process_field_type;
-} virtual_profile_data;
-
-/* These are own model metadata. Parameter strings came from the supplied
- * device descriptions; no physical identity or runtime selection is implied.
- */
-static const virtual_profile_data profile_digital16 = {
-    VIRTUAL_ADI_PROFILE_DIGITAL16, 2u, 2u, 16u, 16u, 0xffffu, 0xffffu, 2u,
-    {0x9001u, 0x9002u}, {NULL, NULL}, NULL};
-static const virtual_profile_data profile_digital8 = {
-    VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8, 1u, 1u, 8u, 8u, 0x00ffu, 0x00ffu,
-    2u, {0x8801u, 0x8802u}, {"UUUU8801UUUUUUUU", "UUUU8802UUUUUUUU"},
-    "stdBYTE8bools"};
 #ifdef VIRTUALWAGO_DEFAULT_PROFILE8
 static const virtual_profile_data *default_profile = &profile_digital8;
 #else
@@ -723,15 +699,12 @@ static int32_t inner_terminal_info(uint32_t capacity, void *records,
   *(uint32_t *)count_out = count;
   if (capacity < needed) return 2;
   tKBUS_TERMINAL_INFO_32 model[2];
-  model[0].ulOffsetInput_bits = 0u;
-  model[0].ulOffsetOutput_bits = 0u;
+  model[0].ulOffsetInput_bits = selected_profile->input_offsets_bits[0];
+  model[0].ulOffsetOutput_bits = selected_profile->output_offsets_bits[0];
   model[0].ulSizeInput_bits = selected_profile->input_bits;
   model[0].ulSizeOutput_bits = 0u;
-  model[1].ulOffsetInput_bits = selected_profile->profile ==
-                                        VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8
-                                    ? 0u
-                                    : selected_profile->input_bits;
-  model[1].ulOffsetOutput_bits = 0u;
+  model[1].ulOffsetInput_bits = selected_profile->input_offsets_bits[1];
+  model[1].ulOffsetOutput_bits = selected_profile->output_offsets_bits[1];
   model[1].ulSizeInput_bits = 0u;
   model[1].ulSizeOutput_bits = selected_profile->output_bits;
   memcpy(records, model, needed);

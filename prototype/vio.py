@@ -10,40 +10,15 @@ import hashlib
 import json
 import re
 from typing import Any
+from .catalog import Catalog
+from .contracts import ContractError, Unsupported, canonical, uint, exact_keys, hexbytes
 
-VERSION = "0.1.0"
-MODELS = {
-    "750-1405.di16": ("750-1405", 2, 0),
-    "750-1504.do16": ("750-1504", 0, 2),
-    "750-466.raw6": ("750-466", 6, 0),
-    "750-677.raw12": ("750-677", 12, 12),
-}
+VERSION = "0.2.0"
+# Compatibility view; Rail resolves its own validated catalog rather than
+# trusting mutations of this exported dictionary.
+MODELS = {key: (m["article"], m["input_bytes"], m["output_bytes"])
+          for key, m in Catalog().model_specs.items()}
 MAX_IMAGE = 4096
-
-class ContractError(ValueError):
-    """Invalid request; no partial application is permitted."""
-
-class Unsupported(ContractError):
-    """Required semantics have not been implemented or verified."""
-
-def canonical(value: Any) -> bytes:
-    return json.dumps(value, sort_keys=True, separators=(",", ":"),
-                      ensure_ascii=True, allow_nan=False).encode("ascii")
-
-def uint(value: Any, name: str, maximum: int = 2**63-1) -> int:
-    if type(value) is not int or not 0 <= value <= maximum:
-        raise ContractError(f"{name}: expected integer in [0, {maximum}]")
-    return value
-
-def exact_keys(value: Any, required: set[str], name: str) -> None:
-    if type(value) is not dict or set(value) != required:
-        raise ContractError(f"{name}: expected keys {sorted(required)}")
-
-def hexbytes(value: Any, length: int, name: str) -> bytes:
-    if (type(value) is not str or len(value) != 2 * length or
-            re.fullmatch(r"[0-9a-fA-F]*", value) is None):
-        raise ContractError(f"{name}: expected exactly {length} bytes as hex")
-    return bytes.fromhex(value)
 
 def encode_ai466_standard(current_uA: int) -> int:
     """Normal range ONLY, no diagnosis generation.
@@ -86,7 +61,11 @@ class Rail:
     Bus loss/presence/watchdog affect effective outputs, NOT command history.
     After invalidation a NEW complete output frame is needed to rearm.
     """
-    def __init__(self, config: dict[str, Any]):
+    def __init__(self, config: dict[str, Any], *, catalog: Catalog | None = None):
+        self.catalog = Catalog() if catalog is None else catalog
+        if not isinstance(self.catalog, Catalog):
+            raise ContractError("validated Catalog required")
+        self.catalog_hash = self.catalog.sha256
         exact_keys(config, {"schema", "purpose", "input_size", "output_size",
                             "watchdog_ns", "modules"}, "config")
         if type(config["schema"]) is not int or config["schema"] != 1:
@@ -108,9 +87,8 @@ class Rail:
             if (type(ident) is not str or re.fullmatch(r"[A-Za-z0-9_-]{1,40}", ident) is None
                     or ident in self.modules):
                 raise ContractError("module id invalid or duplicate")
-            if type(module["model"]) is not str or module["model"] not in MODELS:
-                raise Unsupported("unknown module model")
-            article, size_i, size_o = MODELS[module["model"]]
+            spec = self.catalog.model(module["model"])
+            article, size_i, size_o = spec["article"], spec["input_bytes"], spec["output_bytes"]
             for key, length, total in (("input_offset", size_i, self.ni),
                                         ("output_offset", size_o, self.no)):
                 off = uint(module[key], key, MAX_IMAGE)
@@ -121,7 +99,8 @@ class Rail:
                     raise ContractError(f"{ident}: overlapping {key}")
                 occupied[key] |= span
             self.modules[ident] = dict(module, article=article, input_bytes=size_i,
-                                       output_bytes=size_o, kbus_uid=None)
+                                       output_bytes=size_o, kbus_uid=None,
+                                       input_mask=spec["input_mask"], output_mask=spec["output_mask"])
         self.covered_outputs = occupied["output_offset"]
         self.config = copy.deepcopy(config)
         self.config_hash = hashlib.sha256(canonical(config)).hexdigest()
@@ -171,7 +150,14 @@ class Rail:
         if not m["input_bytes"]:
             raise ContractError("output-only module has no input")
         data = hexbytes(data_hex, m["input_bytes"], "input")
+        self._validate_bits(m, data, "input")
         self.state["physical"][module_id] = data.hex()
+
+    @staticmethod
+    def _validate_bits(module, data: bytes, direction: str) -> None:
+        mask = module[direction + "_mask"]
+        if mask is not None and int.from_bytes(data, "little") & ~mask:
+            raise Unsupported("nonzero bits outside the model's digital channels")
 
     def fault(self, kind: str, active: bool, module_id: str | None = None) -> None:
         if type(active) is not bool:
@@ -205,6 +191,10 @@ class Rail:
         if out is not None and any(v and i not in self.covered_outputs
                                    for i, v in enumerate(out)):
             raise Unsupported("nonzero output in unmapped research-layout gap")
+        if out is not None:
+            for m in self.modules.values():
+                off, size = m["output_offset"], m["output_bytes"]
+                self._validate_bits(m, out[off:off+size], "output")
         if self.state["cycle"] == 2**63-1:
             raise ContractError("cycle counter overflow")
         self._expire()
@@ -232,19 +222,22 @@ class Rail:
                 "effective_hex": s["command_hex"] if s["armed"] else "00" * self.no,
                 "armed": s["armed"], "running": s["running"],
                 "bus_ok": self._bus_valid(), "config_sha256": self.config_hash,
+                "catalog_sha256": self.catalog_hash,
                 "evidence_scope": "standalone-model-NOT-original-runtime"}
 
     def snapshot(self) -> dict[str, Any]:
-        return {"format": 1, "model_version": VERSION, "config_sha256": self.config_hash,
+        return {"format": 2, "model_version": VERSION, "config_sha256": self.config_hash,
+                "catalog_sha256": self.catalog_hash,
                 "state": copy.deepcopy(self.state)}
 
     def restore(self, snapshot: dict[str, Any]) -> None:
         """Strict local-model restore; NEVER a PLC or license snapshot."""
-        exact_keys(snapshot, {"format", "model_version", "config_sha256", "state"}, "snapshot")
-        if (type(snapshot["format"]) is not int or snapshot["format"] != 1 or
+        exact_keys(snapshot, {"format", "model_version", "config_sha256", "catalog_sha256", "state"}, "snapshot")
+        if (type(snapshot["format"]) is not int or snapshot["format"] != 2 or
                 snapshot["model_version"] != VERSION or
-                snapshot["config_sha256"] != self.config_hash):
-            raise ContractError("snapshot format/model/config mismatch")
+                snapshot["config_sha256"] != self.config_hash or
+                snapshot["catalog_sha256"] != self.catalog_hash):
+            raise ContractError("snapshot format/model/config/catalog mismatch")
         s = snapshot["state"]
         exact_keys(s, set(self.state), "snapshot.state")
         for k in ("time_ns", "cycle"):
@@ -259,7 +252,14 @@ class Rail:
         for key in ("physical", "present", "frozen"):
             exact_keys(s[key], set(self.modules), key)
         for k, m in self.modules.items():
-            hexbytes(s["physical"][k], m["input_bytes"], "physical")
+            physical = hexbytes(s["physical"][k], m["input_bytes"], "physical")
+            self._validate_bits(m, physical, "input")
+            input_image = bytes.fromhex(s["input_hex"])
+            off, size = m["input_offset"], m["input_bytes"]
+            self._validate_bits(m, input_image[off:off+size], "input")
+            output_image = bytes.fromhex(s["command_hex"])
+            off, size = m["output_offset"], m["output_bytes"]
+            self._validate_bits(m, output_image[off:off+size], "output")
             if type(s["present"][k]) is not bool or type(s["frozen"][k]) is not bool:
                 raise ContractError("present/frozen: bool required")
             if s["frozen"][k] and not m["input_bytes"]:

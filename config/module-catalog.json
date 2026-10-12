@@ -1,0 +1,486 @@
+{
+  "schema": 1,
+  "revision": "2026-10-12.1",
+  "scope": "OWN_MODULE_CATALOG_NOT_HARDWARE_INVENTORY",
+  "source_report": "docs/module-catalog-sources-2026-10-12.md",
+  "modules": [
+    {
+      "article": "750-430",
+      "variant": "standard",
+      "family": "di",
+      "channels": 8,
+      "sources": [
+        {
+          "url": "https://www.wago.com/us/controllers-bus-couplers-i-o/8-channel-digital-input/p/750-430",
+          "kind": "manufacturer_product",
+          "version": null,
+          "checked_on": "2026-10-12"
+        }
+      ],
+      "descriptor": {
+        "device_id": "8801_0750043000000000",
+        "version": "2.0.0.14",
+        "sha256": "26d302678905d2e8f4c7e34880cf830c4ad56361ebd647e6ed82a9e02c81dd91",
+        "scope": "ENGINEERING_DESCRIPTION_NOT_PHYSICAL_REVISION"
+      },
+      "model": {
+        "id": "750-430.di8",
+        "input_bytes": 1,
+        "output_bytes": 0,
+        "codec": "digital",
+        "input_mask": 255,
+        "output_mask": null,
+        "layout_scope": "OWN_RESEARCH_LAYOUT_NOT_NATIVE_MAPPING"
+      },
+      "native_evidence": "docs/native-cyclic-2026-10-12.md",
+      "hardware_evidence": null,
+      "limits": [
+        "Historical native Digital-8 pair evidence only; generated adapter revision needs fresh qualification.",
+        "Electrical voltage thresholds/input filtering not modeled."
+      ]
+    },
+    {
+      "article": "750-530",
+      "variant": "standard",
+      "family": "do",
+      "channels": 8,
+      "sources": [
+        {
+          "url": "https://www.wago.com/us/controllers-bus-couplers-i-o/8-channel-digital-output/p/750-530",
+          "kind": "manufacturer_product",
+          "version": null,
+          "checked_on": "2026-10-12"
+        }
+      ],
+      "descriptor": {
+        "device_id": "8802_0750053000000000",
+        "version": "2.0.0.15",
+        "sha256": "84b4043d448c44155a36916a1b65a39f20ba0560459d3c0ffac53fba351daa5d",
+        "scope": "ENGINEERING_DESCRIPTION_NOT_PHYSICAL_REVISION"
+      },
+      "model": {
+        "id": "750-530.do8",
+        "input_bytes": 0,
+        "output_bytes": 1,
+        "codec": "digital",
+        "input_mask": null,
+        "output_mask": 255,
+        "layout_scope": "OWN_RESEARCH_LAYOUT_NOT_NATIVE_MAPPING"
+      },
+      "native_evidence": "docs/native-cyclic-2026-10-12.md",
+      "hardware_evidence": null,
+      "limits": [
+        "Historical native Digital-8 pair evidence only; generated adapter revision needs fresh qualification.",
+        "Requested/effective logic states only; no 24 V/0.5 A electrical model."
+      ]
+    },
+    {
+      "article": "750-1405",
+      "variant": "standard",
+      "family": "di",
+      "channels": 16,
+      "sources": [
+        {
+          "url": "https://www.wago.com/gb/io-systems/16-channel-digital-input/p/750-1405",
+          "kind": "manufacturer_product",
+          "version": null,
+          "checked_on": "2026-10-12"
+        },
+        {
+          "url": "https://www.elektrykasklep.pl/file%2C324554%2Cmodul.pdf",
+          "kind": "manufacturer_manual_on_mirror",
+          "version": "1.1.0",
+          "checked_on": "2026-10-12"
+        }
+      ],
+      "descriptor": {
+        "device_id": "9001_0750140500000000",
+        "version": "2.0.0.14",
+        "sha256": "2ea6fb96d1db35228450ccd94454f1e51b562a6e1982e416f34eed2feb056273",
+        "scope": "ENGINEERING_DESCRIPTION_NOT_PHYSICAL_REVISION"
+      },
+      "model": {
+        "id": "750-1405.di16",
+        "input_bytes": 2,
+        "output_bytes": 0,
+        "codec": "digital",
+        "input_mask": 65535,
+        "output_mask": null,
+        "layout_scope": "OWN_RESEARCH_LAYOUT_NOT_NATIVE_MAPPING"
+      },
+      "native_evidence": null,
+      "hardware_evidence": null,
+      "limits": [
+        "Native16 runtime NOT_RUN; electrical input filtering not modeled."
+      ]
+    },
+    {
+      "article": "750-1504",
+      "variant": "standard",
+      "family": "do",
+      "channels": 16,
+      "sources": [
+        {
+          "url": "https://www.wago.com/global/i-o-systems/16-channel-digital-output/p/750-1504",
+          "kind": "manufacturer_product",
+          "version": null,
+          "checked_on": "2026-10-12"
+        },
+        {
+          "url": "https://www.digestor.info/permanent/goods-document/65664f7c-e3d6-4719-ac8b-0ac163049b78/Wago_750_1504_manual_v101.pdf",
+          "kind": "manufacturer_manual_on_mirror",
+          "version": "1.0.1",
+          "checked_on": "2026-10-12"
+        }
+      ],
+      "descriptor": {
+        "device_id": "9002_0750150400000000",
+        "version": "2.0.0.14",
+        "sha256": "207e7d654f98a180b06cb75117e282ac2a85f956cbb5d057113d76846a6dc991",
+        "scope": "ENGINEERING_DESCRIPTION_NOT_PHYSICAL_REVISION"
+      },
+      "model": {
+        "id": "750-1504.do16",
+        "input_bytes": 0,
+        "output_bytes": 2,
+        "codec": "digital",
+        "input_mask": null,
+        "output_mask": 65535,
+        "layout_scope": "OWN_RESEARCH_LAYOUT_NOT_NATIVE_MAPPING"
+      },
+      "native_evidence": null,
+      "hardware_evidence": null,
+      "limits": [
+        "Native16 runtime NOT_RUN; documented older manual, exact future hardware revision remains open."
+      ]
+    },
+    {
+      "article": "750-466",
+      "variant": "standard",
+      "family": "ai",
+      "channels": 2,
+      "sources": [
+        {
+          "url": "https://www.wago.com/global/i-o-systems/2-channel-analog-input/p/750-466",
+          "kind": "manufacturer_product",
+          "version": null,
+          "checked_on": "2026-10-12"
+        },
+        {
+          "url": "https://www.anv-tech.ru/assets/docs/m07500466_xxxxxxxx_0en.pdf",
+          "kind": "manufacturer_manual_on_mirror",
+          "version": "1.4.0",
+          "checked_on": "2026-10-12"
+        }
+      ],
+      "descriptor": null,
+      "model": {
+        "id": "750-466.raw6",
+        "input_bytes": 6,
+        "output_bytes": 0,
+        "codec": "ai466_standard",
+        "input_mask": null,
+        "output_mask": null,
+        "layout_scope": "OWN_RESEARCH_LAYOUT_NOT_NATIVE_MAPPING"
+      },
+      "native_evidence": null,
+      "hardware_evidence": null,
+      "limits": [
+        "Standard variant only, not 753-466 or /000-200.",
+        "Normal range encoder only; floor quantization is own assumption.",
+        "Six-byte status0/word0LE/status1/word1LE projection is research-only; controller native packing/diagnosis/registers NOT_RUN."
+      ]
+    },
+    {
+      "article": "750-677",
+      "variant": "standard",
+      "family": "pwm",
+      "channels": 4,
+      "sources": [
+        {
+          "url": "https://www.wago.com/de/io-systeme/4-pulsweitenausgaenge/p/750-677",
+          "kind": "manufacturer_product",
+          "version": null,
+          "checked_on": "2026-10-12"
+        },
+        {
+          "url": "https://www.manualslib.de/manual/909172/Wago-750-677.html",
+          "kind": "manufacturer_manual_on_mirror",
+          "version": "1.0.0",
+          "checked_on": "2026-10-12"
+        }
+      ],
+      "descriptor": null,
+      "model": {
+        "id": "750-677.raw12",
+        "input_bytes": 12,
+        "output_bytes": 12,
+        "codec": "pwm677_frq",
+        "input_mask": null,
+        "output_mask": null,
+        "layout_scope": "OWN_RESEARCH_LAYOUT_NOT_NATIVE_MAPPING"
+      },
+      "native_evidence": null,
+      "hardware_evidence": null,
+      "limits": [
+        "Only PWM Frq mode; this is not the default PWM DC mode or XTR /040-000.",
+        "Register configuration/status generation/other modes unsupported; raw input bytes must be explicitly injected.",
+        "Autonomous pulse integration in own logical time; gate/retune/phase policies own assumptions."
+      ]
+    },
+    {
+      "article": "750-400",
+      "variant": "standard",
+      "family": "di",
+      "channels": 2,
+      "sources": [
+        {
+          "url": "https://www.wago.com/global/i-o-systems/2-channel-digital-input/p/750-400",
+          "kind": "manufacturer_product",
+          "version": null,
+          "checked_on": "2026-10-12"
+        }
+      ],
+      "descriptor": null,
+      "model": {
+        "id": "750-400.di2",
+        "input_bytes": 1,
+        "output_bytes": 0,
+        "codec": "digital",
+        "input_mask": 3,
+        "output_mask": null,
+        "layout_scope": "OWN_RESEARCH_LAYOUT_NOT_NATIVE_MAPPING"
+      },
+      "native_evidence": null,
+      "hardware_evidence": null,
+      "limits": [
+        "Own padded low-two-bit byte model only; native bitpacking/module ID/descriptor unqualified.",
+        "Electrical input filtering not modeled."
+      ]
+    },
+    {
+      "article": "750-402",
+      "variant": "standard",
+      "family": "di",
+      "channels": 4,
+      "sources": [
+        {
+          "url": "https://www.wago.com/in/io-systems/4-channel-digital-input/p/750-402",
+          "kind": "manufacturer_product",
+          "version": null,
+          "checked_on": "2026-10-12"
+        }
+      ],
+      "descriptor": null,
+      "model": {
+        "id": "750-402.di4",
+        "input_bytes": 1,
+        "output_bytes": 0,
+        "codec": "digital",
+        "input_mask": 15,
+        "output_mask": null,
+        "layout_scope": "OWN_RESEARCH_LAYOUT_NOT_NATIVE_MAPPING"
+      },
+      "native_evidence": null,
+      "hardware_evidence": null,
+      "limits": [
+        "Own padded low-four-bit byte model only; native bitpacking/module ID/descriptor unqualified.",
+        "Electrical input filtering not modeled."
+      ]
+    },
+    {
+      "article": "750-504",
+      "variant": "standard",
+      "family": "do",
+      "channels": 4,
+      "sources": [
+        {
+          "url": "https://www.wago.com/au/io-systems/4-channel-digital-output/p/750-504",
+          "kind": "manufacturer_product",
+          "version": null,
+          "checked_on": "2026-10-12"
+        }
+      ],
+      "descriptor": null,
+      "model": {
+        "id": "750-504.do4",
+        "input_bytes": 0,
+        "output_bytes": 1,
+        "codec": "digital",
+        "input_mask": null,
+        "output_mask": 15,
+        "layout_scope": "OWN_RESEARCH_LAYOUT_NOT_NATIVE_MAPPING"
+      },
+      "native_evidence": null,
+      "hardware_evidence": null,
+      "limits": [
+        "Own padded low-four-bit byte model only; native bitpacking/module ID/descriptor unqualified.",
+        "No electrical output or short-circuit model."
+      ]
+    },
+    {
+      "article": "750-454",
+      "variant": "standard",
+      "family": "ai",
+      "channels": 2,
+      "sources": [
+        {
+          "url": "https://www.wago.com/us/controllers-bus-couplers-i-o/2-channel-analog-input/p/750-454",
+          "kind": "manufacturer_product",
+          "version": null,
+          "checked_on": "2026-10-12"
+        }
+      ],
+      "descriptor": null,
+      "model": null,
+      "native_evidence": null,
+      "hardware_evidence": null,
+      "limits": [
+        "Documentation-only: 4-20 mA differential; codec/native profile unsupported."
+      ]
+    },
+    {
+      "article": "750-455",
+      "variant": "standard",
+      "family": "ai",
+      "channels": 4,
+      "sources": [
+        {
+          "url": "https://www.wago.com/us/controllers-bus-couplers-i-o/4-channel-analog-input/p/750-455",
+          "kind": "manufacturer_product",
+          "version": null,
+          "checked_on": "2026-10-12"
+        }
+      ],
+      "descriptor": null,
+      "model": null,
+      "native_evidence": null,
+      "hardware_evidence": null,
+      "limits": [
+        "Documentation-only: 4-20 mA single-ended; codec/native profile unsupported."
+      ]
+    },
+    {
+      "article": "750-550",
+      "variant": "standard",
+      "family": "ao",
+      "channels": 2,
+      "sources": [
+        {
+          "url": "https://www.wago.com/global/i-o-systems/2-channel-analog-output/p/750-550",
+          "kind": "manufacturer_product",
+          "version": null,
+          "checked_on": "2026-10-12"
+        }
+      ],
+      "descriptor": null,
+      "model": null,
+      "native_evidence": null,
+      "hardware_evidence": null,
+      "limits": [
+        "Documentation-only: 0-10 V; scaling/status/native profile unsupported."
+      ]
+    },
+    {
+      "article": "750-600",
+      "variant": "standard",
+      "family": "passive",
+      "channels": 0,
+      "sources": [
+        {
+          "url": "https://www.wago.com/us/controllers-bus-couplers-i-o/end-module/p/750-600",
+          "kind": "manufacturer_product",
+          "version": null,
+          "checked_on": "2026-10-12"
+        }
+      ],
+      "descriptor": null,
+      "model": null,
+      "native_evidence": null,
+      "hardware_evidence": null,
+      "limits": [
+        "Passive end module; no invented ADI enumeration record or active process data."
+      ]
+    },
+    {
+      "article": "750-652",
+      "variant": "standard",
+      "family": "serial",
+      "channels": null,
+      "sources": [
+        {
+          "url": "https://www.wago.com/be-de/io-systeme/serielle-schnittstelle-rs-232-485/p/750-652",
+          "kind": "manufacturer_product",
+          "version": null,
+          "checked_on": "2026-10-12"
+        }
+      ],
+      "descriptor": null,
+      "model": null,
+      "native_evidence": null,
+      "hardware_evidence": null,
+      "limits": [
+        "Documentation-only serial interface; register/handshake/frame/native contract unsupported.",
+        "Virtual onboard RS485 is a separate future interface path, not this K-Bus module."
+      ]
+    }
+  ],
+  "native_profiles": [
+    {
+      "name": "digital8",
+      "c_enum": "VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8",
+      "modules": [
+        "750-430",
+        "750-530"
+      ],
+      "input_bits": 8,
+      "output_bits": 8,
+      "module_ids": [
+        34817,
+        34818
+      ],
+      "parameter10": [
+        "UUUU8801UUUUUUUU",
+        "UUUU8802UUUUUUUU"
+      ],
+      "process_field_type": "stdBYTE8bools",
+      "input_offsets_bits": [
+        0,
+        0
+      ],
+      "output_offsets_bits": [
+        0,
+        0
+      ],
+      "scope": "OWN_MODEL_METADATA_BOUND_TO_DESCRIPTORS_NOT_PHYSICAL_BUS"
+    },
+    {
+      "name": "digital16",
+      "c_enum": "VIRTUAL_ADI_PROFILE_DIGITAL16",
+      "modules": [
+        "750-1405",
+        "750-1504"
+      ],
+      "input_bits": 16,
+      "output_bits": 16,
+      "module_ids": [
+        36865,
+        36866
+      ],
+      "parameter10": [
+        null,
+        null
+      ],
+      "process_field_type": null,
+      "input_offsets_bits": [
+        0,
+        16
+      ],
+      "output_offsets_bits": [
+        0,
+        0
+      ],
+      "scope": "OWN_MODEL_METADATA_BOUND_TO_DESCRIPTORS_NOT_PHYSICAL_BUS"
+    }
+  ]
+}
