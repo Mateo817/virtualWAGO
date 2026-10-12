@@ -11,6 +11,7 @@ Bevorzugt wird **originaler ARM-Userspace + belegte Hardwareabstraktionsgrenze (
 - [Forschungsbefunde und Grenzen](docs/research.md)
 - [Architekturentscheidung](docs/adr-0001.md)
 - [Roadmap und Abnahmekriterien](docs/roadmap.md)
+- [Konkreter nächster Originalstack-Block](docs/next-originalstack-block.md)
 - [Sicherheits- und Zugriffsvertrag](docs/safety.md)
 - [Öffentliche Quellen](docs/sources.md)
 - [Lokaler Agent: Übergabe ohne Zugangsdaten](docs/handoff.md)

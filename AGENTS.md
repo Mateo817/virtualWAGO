@@ -4,7 +4,7 @@
 
 GitHub ist Source of Truth für dieses Forschungsprojekt. Vor Änderungen Default-Branch, offene PRs, Regeln, relevante Quellen, Tests und CI frisch lesen. Entwicklung auf eigenem Branch; zusammenhängende Änderungen über PR. Keine direkten Entwicklungscommits auf main, kein Force-Push, keine Änderungen an fremden Produktrepositories. Die erstmalige Übernahme der Forschungsdokumentation nach main wurde vom Eigentümer beauftragt; daraus folgt keine pauschale Freigabe späterer Entwicklungsmerges.
 
-Lies README.md, docs/research.md, docs/adr-0001.md, docs/roadmap.md, docs/safety.md und docs/handoff.md. Ältere Studien und Übergaben sind revisionsgebundene Ausgangsinformationen, keine Live-Inventare.
+Lies README.md, docs/research.md, docs/adr-0001.md, docs/roadmap.md, docs/safety.md und docs/handoff.md sowie docs/next-originalstack-block.md. Ältere Studien und Übergaben sind revisionsgebundene Ausgangsinformationen, keine Live-Inventare.
 
 ## Verbindliche Grenzen
 
@@ -16,6 +16,8 @@ Lies README.md, docs/research.md, docs/adr-0001.md, docs/roadmap.md, docs/safety
 - Kein Lizenzbypass und kein Klonen geschützter Identitäten. Herstellerdateien nur bei geklärten Rechten verwenden; nicht in dieses öffentliche Repository hochladen.
 
 ## Technik und Evidence
+
+Der bevorzugte Originalstack-Pfad erhält Runtime, nativen I/O-Manager und originale I/O-Treiber; ersetzt wird nur die belegte untere Hardwareanbindung. Fehlende interne CODESYS-Header sind keine pauschale Voraussetzung, solange deren Objekte durch den Originalmanager bereitgestellt werden. Ein Standalone-Harness ist optional und darf keinen Umweg mit erfundenen Strukturen erzwingen. Der Vertrag der tatsächlich ersetzten Grenze muss weiterhin belegt werden.
 
 Keine erfundenen APIs, Structlayouts, Offsets, Modulkennungen oder Tools. FW30-Quellen nicht als FW31-ABI behandeln. Ein Exportname ist kein vollständiger Funktionsvertrag. Backend-Mock, Herstellerbeispiel, originaler I/O-Verbraucher, Runtime und Hardware sind getrennte Nachweisstufen.
 
