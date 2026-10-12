@@ -100,7 +100,7 @@
       "d30cd15f062ce964a303a71d882ec78c1cb28ceed35b8118802dcecab809925b",
       "99657891bd0ebcdc9bf3ccfc44b7cca7dfdc22a06f2aedd48aa7f103ca92fd47",
       "15942275ded94862b4ce0b34aeb3c8b10a941a527be6d5e5067d56c699ec1394",
-      "1d88456afb8692ec52cf60e7001252f95a670859d917f0a92731de59b7c100f0"
+      "3ba6facb6d52c1d54e7ebfb058b6bc8628c82922f635889326f30da55d1a2076"
     ],
     "current_lifecycle_delta": "PASS independent offline Sol source/lock-order review; Root own ARM test receipt audited, not independently reexecuted",
     "public_evidence": "PASS independent offline Sol scope/privacy/source-hash review"
