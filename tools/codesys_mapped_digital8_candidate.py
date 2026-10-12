@@ -206,6 +206,24 @@ def native_byte_mapping_readback(terminal, parameter_name, expected_id, expected
     return facts
 
 
+def select_disabled_tcm(local_bus):
+    matches = []
+    for connector in local_bus.connectors:
+        for parameter in connector.host_parameters:
+            if int(parameter.id) == 41:
+                matches.append(parameter)
+    if len(matches) != 1:
+        fail("TCM parameter41 needs unique original connector binding: " + str(len(matches)))
+    parameter = matches[0]
+    before = str(parameter.value)
+    default = str(parameter.default_value)
+    parameter.value = "0"
+    after = str(parameter.value)
+    if int(after, 0) != 0:
+        fail("TCM disabled value readback mismatch: " + after)
+    print("VIRTUALWAGO_TCM_OFFLINE_READBACK:" + json.dumps({"id": int(parameter.id), "param_type": str(parameter.param_type), "default": default, "before": before, "after": after}))
+
+
 def run():
     if not OUTPUT_DIR:
         fail("set VIRTUALWAGO_PRIVATE_BUILD_DIR to a fresh private directory")
@@ -231,6 +249,7 @@ def run():
     if len(buses) != 1:
         fail("expected exactly one pinned LocalBus: " + str(len(buses)))
     local_bus = buses[0]
+    select_disabled_tcm(local_bus)
 
     for index, (name, ident, version) in enumerate(TERMINALS):
         allowed = local_bus.allowed_interfaces_at(index)
