@@ -4,7 +4,7 @@ Stand: 12.10.2026. Diese Reihenfolge setzt [ADR-0003](adr-0003.md) um. Erstes Zi
 
 ## Gegenwärtig bekannte Grenzen
 
-Der Eigentümer berichtet, dass zwei reale Module verbunden sind; Typen, Revisionen, Reihenfolge/Position und Kommunikationszustand sind noch unbekannt. Die 750-1405/750-1504-Kandidaten in bisherigen Offlineprojekten sagen nichts über den echten Bestand aus. Eine Anwendung ist im RAM geladen und gestoppt. Das Arbeitsverzeichnis wurde gelöscht und ein wiederherstellbares Bootprojekt ist nicht gesichert. Deshalb sind Neustart, Löschen, Download oder Überschreiben bis zur sicheren Bestands- und Wiederherstellungsklärung ausgeschlossen.
+Der [Eigentümerfotobeleg](reference-module-photo-2026-10-12.md) zeigt die Frontartikel und Reihenfolge 750-430 → 750-530 → 750-600. Revisionen, elektronische Zuordnung und Kommunikationszustand bleiben offen. Die 750-1405/750-1504-Kandidaten in bisherigen Offlineprojekten sagen nichts über den echten Bestand aus. Eine Anwendung ist im RAM geladen und gestoppt. Das Arbeitsverzeichnis wurde gelöscht und ein wiederherstellbares Bootprojekt ist nicht gesichert. Deshalb sind Neustart, Löschen, Download oder Überschreiben bis zur sicheren Bestands- und Wiederherstellungsklärung ausgeschlossen.
 
 Softwarearbeit auf dem autorisierten Referenzgerät ist weiterhin erlaubt. Diese Erlaubnis schließt keine Veränderung der geschützten Bus-/Bibliotheksgrenze ein: deren Ersatz benötigt einen konkreten, separat freigegebenen Plan. Eine zusätzliche Lizenz für eine spätere virtuelle Runtimeinstanz ist kein pauschaler Blocker des ersten realen Referenzziels. Root bleibt alleiniger Geräte-/VM-Integrator; kein Netzwerkzugriff aus alten Dokumenten ableiten.
 
@@ -30,7 +30,7 @@ Die bisherigen FW30-Header-, FW31-Verbraucher- und ADI/DAL-Befunde sind historis
 
 ## Block D: gezielte Simulation unterhalb des Originalstacks
 
-Erst nach Block A–C und Freigabe den minimalen eigenen Adapter/Modellkern für die tatsächlich identifizierten Module planen. Originalruntime, nativer Manager und originale Treiber bleiben erhalten. Ein bewusst gewählter virtueller 1405/1504-Testbaum bleibt möglich; er wird nicht ohne Gerätebeleg zur Zuordnung des realen Bestands erklärt. Modell beschreibt Signale und physikalische Reaktionen, keine nachgeschriebene SPS-Logik. Angeforderte und wirksame Ausgänge sowie Fehler-/Watchdogreaktion bleiben getrennt.
+Der reale Zielstrang für die Offline-Vertragsarbeit ist nach Fotobeleg 750-430/750-530 (je acht Kanäle); Abschluss 750-600. Authentische Device Descriptions, Parameter und aktive Mappingbindung sind noch zu schließen. Erst nach Block A–C und Freigabe den qualifizierten Adapter/Modellkern einsetzen. Originalruntime, nativer Manager und originale Treiber bleiben erhalten. Ein bewusst gewählter virtueller 1405/1504-Testbaum bleibt möglich; er wird nicht ohne Gerätebeleg zur Zuordnung des realen Bestands erklärt. Modell beschreibt Signale und physikalische Reaktionen, keine nachgeschriebene SPS-Logik. Angeforderte und wirksame Ausgänge sowie Fehler-/Watchdogreaktion bleiben getrennt.
 
 Zuerst mit vollständiger Isolation gegen den Originalconsumer, dann den originalen Runtime-I/O-Pfad qualifizieren. Keine Hostgeräte, realen Klemmen, Host-D-Bus, Hostservices oder physischen Busse als Fallback. Praktische Netz-, Datei-, Geräte- und IPC-Isolation wird für den konkreten Prozess geprüft; Dokumentation allein implementiert keine Sperre.
 

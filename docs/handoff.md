@@ -4,7 +4,7 @@ Aktuelle Zielpriorität: [ADR-0003](adr-0003.md). Zuerst die autorisierte reale 
 
 ## Aktueller, vom Eigentümer berichteter Zustand
 
-- Zwei reale Module sind verbunden. Typ, Revision, Reihenfolge/Position und Kommunikationszustand sind unbekannt. Keine Zuordnung zu 750-1405/750-1504 annehmen.
+- Der [Fotobeleg](reference-module-photo-2026-10-12.md) zeigt vom Controller aus 750-430, 750-530 und Abschluss 750-600. Modulrevisionen, elektronische Zuordnung und aktuelle zyklische Kommunikation bleiben offen. Keine Zuordnung zu 750-1405/750-1504 annehmen.
 - Eine Anwendung liegt im RAM und ist gestoppt. Ihr Arbeitsverzeichnis wurde gelöscht; ein wiederherstellbares Bootprojekt ist nicht gesichert.
 - Keinen Neustart, Löschvorgang, Download, Überschreibvorgang oder sonstigen Schritt ausführen, der diesen RAM-Zustand oder mögliche Wiederherstellungschancen verändern könnte. Erst read-only klären und den Zustandserhalt planen.
 - Softwareberechtigung für die Referenz besteht fort. Austausch/Ersetzung geschützter Bus- oder Herstellerbibliotheken ist separat freigabepflichtig. Zusätzliche Runtime-Lizenz für eine spätere virtuelle Instanz blockiert das erste reale Referenzziel nicht pauschal.

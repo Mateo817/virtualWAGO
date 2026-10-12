@@ -39,6 +39,8 @@ Die ersten vier Positionswörter stammen aus den vier 32-Bit-SSC-Cachefeldern un
 
 **VERIFIZIERT als Eigentümeraussage:** zwei physisch angeschlossene Module und fortgeltende elektrische Aktortrennung. **VERIFIZIERT im Cache-Scope:** bestehende Runtime meldet zwei Terminals. **OFFEN:** genaue Artikelnummern, Revisionen, physische Reihenfolge, elektrische Verdrahtung und erfolgreiche aktuelle zyklische Kommunikation. Cachecount und Recordform ersetzen diese Belege nicht. Es wird insbesondere keine Bestückung mit 750-1405/750-1504 behauptet.
 
+**Späterer Fotonachtrag:** [Frontartikel und fotografierte Reihenfolge](reference-module-photo-2026-10-12.md) sind jetzt 750-430 → 750-530 → 750-600. Die obigen offenen Artikel-/Reihenfolgenangaben beschreiben den früheren Leselauf vor diesem Foto. Revisionen, elektronische Zuordnung und zyklische Kommunikation bleiben offen; der Cache-PASS wird dadurch nicht erweitert. Quellhashes des ursprünglichen Berichts im damaligen Evidence-Manifest gelten für Commit `eee18baafd9bfa815b42ccb49f33358c9adda221`.
+
 ## Konsequenzen für den Adaptervertrag
 
 1. Der vorhandene 16-Bit-DI/16-Bit-DO-Adapter samt 2-Byte-Packung bildet einen bewusst eigenen 1405/1504-Kandidaten ab. Die neue 8-Bit-Cacheform qualifiziert diesen Kandidaten nicht für den beobachteten Bestand und darf dessen Typen nicht automatisch festlegen. Eine neue Belegung benötigt Identitäts-, Größen- und Parameterbelege.
