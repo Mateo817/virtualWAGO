@@ -1,0 +1,289 @@
+{
+  "created_host_utc": "2026-10-12T10:14:18.850276+00:00",
+  "repository": "Mateo817/virtualWAGO",
+  "baseline_head": "acff577c59dc3235247b14a47eacbd2cd4066cf6",
+  "base": "0bdddbf77d688fd9e1cce7165d718fa6a30efe2c",
+  "goal": "Real authorized reference controller + original Runtime/manager/IoDrv + simulated IO at evidenced lower boundary; fully virtual later",
+  "observations": {
+    "inventory": "OFFEN",
+    "communication": "OFFEN",
+    "integration_qualification": false,
+    "observations": {
+      "components": {
+        "evidence": "component_observed",
+        "libraries": [
+          "IoDrvDal",
+          "IoDrvKbus",
+          "dal",
+          "diagnostic",
+          "packbus",
+          "wago_dbus"
+        ]
+      },
+      "endpoints": {
+        "evidence": "endpoint_observed",
+        "kbus0_fd_present": true,
+        "uio_mapping_present": true
+      },
+      "threads": {
+        "evidence": "thread_observed",
+        "counts": {
+          "DAL": 2,
+          "KBUS": 2,
+          "WagoAsync": 12,
+          "wdbw": 1
+        }
+      },
+      "cwd": {
+        "evidence": "cwd_observed",
+        "deleted": true
+      }
+    }
+  },
+  "device": {
+    "model": "750-8213",
+    "firmware_marker": "04.09.01(31)",
+    "kernel": "6.6.94-rt56-w05.08.02",
+    "runtime_version_string_bound_to_unchanged_binary": "3.5.21.50",
+    "serial": "OFFEN",
+    "hardware_revision": "OFFEN",
+    "original_hashes": {
+      "/usr/bin/codesys3": "b56c6296faabae9eb73f0463fd068c535c03109ced347f0c2a643b69a7ee1ab5",
+      "/usr/lib/libdal.so.1.0.1": "c163ac57805409921ce783f9c4f17f52891864be333c3df4945a128d253994f5",
+      "/usr/lib/libIoDrvDal.so.1.0.2": "853d3ad6eb1b2477b43502d562a6bbfa854b8029e85989b6166f961167188c7d",
+      "/usr/lib/libIoDrvKbus.so.0.0.1": "543e8b1d2d19352030fe804a7e667ca30c1d9ba80069f2df3158c77c544789b8",
+      "/usr/lib/dal/libpackbus.so": "3b7b7ca4fa14e5994552040a7b40b1cfbbf43e0649a4ad9277ece421fd4bc5d6",
+      "/etc/codesys3.d/IoDrvDal.cfg": "91fc4013c5bd87fab459f13bba60787e9f1256d4423cfd47eefdef307161af13",
+      "/home/codesys_root/CODESYSControl.cfg": "03e38bf715bf085cfa7e6e514c01511a10a5c3c5fef01eff7ea5df419c549dd7",
+      "/etc/specific/kbusconf.xml": "c840da670a32255f20000621a5cc00b5a5fe8731c6e8b9f916d34b45b1195ca2"
+    }
+  },
+  "keep": {
+    "ide_exit": 0,
+    "script_sha256": "14385e084d2217d6026f98e4948f5ce482ebd2fe9c1f18cc2b51edffbeb01162",
+    "profile_sha256": "fb09099380f40dc0270e35a7555c50b9b271a2e977a03675aed812c09b33ca1b",
+    "own_ide_remaining": 0
+  },
+  "application": {
+    "login_option": "Keep",
+    "delete_foreign_apps": false,
+    "application_state": "stop",
+    "operation_state": "program_loaded",
+    "is_logged_in": true
+  },
+  "cache": {
+    "owner_bound_to_existing_runtime": true,
+    "service": "wago.kbus",
+    "status_pi0": [
+      32,
+      2,
+      0,
+      0,
+      0,
+      0,
+      0,
+      8,
+      8
+    ],
+    "offset_pi0": [
+      0,
+      0
+    ],
+    "positions_selector0": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "positions_selector1": [
+      [
+        0,
+        0,
+        8,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        8,
+        0
+      ]
+    ],
+    "terminal_count": 2,
+    "raw_fifth_word_is_not_module_id": true,
+    "physical_module_types_revisions_order": "OFFEN",
+    "current_cyclic_communication": "OFFEN",
+    "request_count": 4,
+    "no_master_or_mode_switch_requested": true,
+    "reply_timeout_ms": 2000,
+    "snapshot_atomicity": "OFFEN"
+  },
+  "clock_scope": "host capture date UTC; device/log/DBus timestamps are uncalibrated and differ; not evidence of host UTC time",
+  "scope": {
+    "root_integrator_only": true,
+    "protected_target_contact_requested": false,
+    "device_node_opened_by_collector": false,
+    "device_program_or_software_changes_requested": false,
+    "global_or_vm_firewall_changed": false,
+    "physical_isolation": "Owner statement, no independent electrical measurement",
+    "adapter_installed": false,
+    "runtime_restart_requested": false
+  },
+  "tests": {
+    "python": {
+      "status": "PASS",
+      "version": "3.13.5",
+      "count": 116,
+      "parser_count": 17,
+      "log": {
+        "sha256": "9d72be5bc55b7166428e4bafa4fc479cb9117821ea8e4124007f62c60fa5e95d",
+        "bytes": 14974
+      }
+    },
+    "own_arm_adapter": "NOT_RUN on this change; earlier acff577 qualification remains historical",
+    "native_build": "NOT_RUN on this change; unchanged earlier project remains candidate",
+    "network_self_test": {
+      "status": "PASS",
+      "scope": "local loopback listener/output-hook counter only"
+    },
+    "read_only_snapshot": {
+      "status": "PASS"
+    },
+    "cached_queries": {
+      "status": "PASS",
+      "scope": "existing runtime instance cache only"
+    },
+    "keep_state": {
+      "status": "PASS"
+    },
+    "adapter_original_consumer": "BLOCKED",
+    "restore_old_ram_application": "BLOCKED"
+  },
+  "failed_capture_attempts": [
+    {
+      "status": "FAIL",
+      "reason": "/etc/RELEASE absent",
+      "artifact": {
+        "sha256": "600135c4a37fea66ee542dea68459347306f32c1781d678dcec534095bfed9f9",
+        "bytes": 53
+      }
+    },
+    {
+      "status": "FAIL",
+      "reason": "/usr/bin/config-tools absent after complete process sections",
+      "artifact": {
+        "sha256": "7cbf7a04327b0275d1649e118e1a021c059ea0041b3f1963877fc45c547a4215",
+        "bytes": 48969
+      }
+    },
+    {
+      "status": "FAIL",
+      "reason": "/etc/dbus-1/system.d absent after library/tool hashes",
+      "artifact": {
+        "sha256": "79f62342f5e1da41f43c5afad0f7c6de8cec865babfcd2e6eae946699237cfd7",
+        "bytes": 404
+      }
+    }
+  ],
+  "artifacts": {
+    "real-controller-complete-snapshot-2026-10-12": {
+      "sha256": "b6377ca2a70f507a5c56eacc5afe8ed5b016a3c0460811df1091b7d0c924ebf4",
+      "bytes": 48817
+    },
+    "real-controller-final-snapshot-2026-10-12": {
+      "sha256": "b6377ca2a70f507a5c56eacc5afe8ed5b016a3c0460811df1091b7d0c924ebf4",
+      "bytes": 48817
+    },
+    "real-controller-dbus-owner-2026-10-12": {
+      "sha256": "a9a6153afb59f0077d925bd96eb7010eacfb2cc4380533307a8b4746f677665b",
+      "bytes": 149
+    },
+    "real-controller-dbus-owner-pid-2026-10-12": {
+      "sha256": "9ed16a759f6a9a3a694a676480e6ab716d1a9a09ed6557769c2c52765333ce2f",
+      "bytes": 184
+    },
+    "real-controller-dbus-status-2026-10-12": {
+      "sha256": "3c0c1b58be344a632974006f56ab6f0460aa146f83dc9c9746f0aa3d0a937a56",
+      "bytes": 224
+    },
+    "real-controller-dbus-layout-2026-10-12": {
+      "sha256": "df09c51eb1d8805c9a9dfffc739e56867c981148b4fb109deacfa484f3b99f92",
+      "bytes": 433
+    },
+    "real-controller-dbus-positions-selector1-2026-10-12": {
+      "sha256": "ea8ae2b644e2fea249fdf6cb527ec6f2c642e72efaf9b53bd27e49098268c17f",
+      "bytes": 299
+    },
+    "real-controller-cached-evidence-2026-10-12": {
+      "sha256": "d5a3395af8791a88bf873b8f474ae2224f015163869359a3c9d79ea28f86ddf3",
+      "bytes": 147960
+    },
+    "fresh_keep_output": {
+      "sha256": "6d6ab0da6c49edad35e93b3f4ad986d53bf2bfdf9b7a3dc919d6731ce3755181",
+      "bytes": 2525
+    }
+  },
+  "vm_final": {
+    "active": false,
+    "restore_pause": true,
+    "original_status": "stopped",
+    "original_saved_to_disk": true,
+    "final_status": "stopped",
+    "final_saved_to_disk": true
+  },
+  "remaining": [
+    "Recoverable existing RAM application/restore payload",
+    "Module article/revision and physical order; active application/mapping",
+    "Complete replacement boundary, callback/concurrency/error/time contracts",
+    "Qualified adapter and concrete process guard with no physical Kbus fallback",
+    "Separate scoped provider/master-switch approval after final payload review"
+  ],
+  "review": {
+    "integrator": "Self-Review",
+    "offline_workers": [
+      "Actual Luna documentation and diagnostic-source analysis",
+      "Actual Luna parser implementation plus root remediation",
+      "Actual Sol independent FW31 passive DBus path audit",
+      "Actual Sol final plan/parser/observation review; initial reader mustfix remediated; no remaining mustfix in scope"
+    ],
+    "independent_parser_test": {
+      "status": "PASS",
+      "count": 17,
+      "python": "3.13.5",
+      "parser_sha256": "3f0f697aa0ec1461ab19667d73b51d939ecd8f8bf5c1c4b8410968cad52182bb",
+      "tests_sha256": "8e237f6904a914f0c66915d0d419a4b52db30d5a0032ef84de677c788f2bd6c8"
+    },
+    "hardware_workers": false
+  },
+  "merge": {
+    "authorized": false,
+    "performed": false
+  },
+  "source_manifest": {
+    "README.md": "dff122a182494af09384fdbc114117c293d8ae9737f47c4619f0167577b96a28",
+    "docs/adi-contract-2026-10-12.md": "d2b8eebb91832988c2f5f454a938a0f98ffdd935f55137980ecc04f29453e235",
+    "docs/adr-0001.md": "7f979ff2414c0fee2fe21a7c579c52d78a8f760ad8a3b67f620831c11278a284",
+    "docs/adr-0002.md": "aa0ccf1e1935b1393b80b128a6211f30f4f34ff9dd7fc2d33adf4db77e583a64",
+    "docs/adr-0003.md": "d028b019dc99e7ea805ecd8045fb9657b771be72f2fa98ca29d5c1b99686eaee",
+    "docs/handoff.md": "c78b0724f6c24b782ed30594b1c09ffc8e6776a6e63727ff28bc502380275a0d",
+    "docs/next-originalstack-block.md": "7452b1cf8f07ed4180283c187276f02e33af34fb4c66128bb989e3f8d09fa54c",
+    "docs/research.md": "49ced67bc35d320baa30bb7dceb5e947d7f0350041d4e208cf8bf13cd12e21b6",
+    "docs/roadmap.md": "53d2d06b035fb8bf066f4d4eff4b62a29a62f3cc1c0a131c249ed1828c77c4ce",
+    "docs/real-controller-observation-2026-10-12.md": "12dc6e2e78d86c67d9e53d46be39337fb775d385f3eee176fa137d7a6a057db2",
+    "docs/real-controller-plan-2026-10-12.md": "ea671075df1e3bf82c32ccd1a0af36b0c33f546847912db902064194ca7ab39e",
+    "tools/runtime_observation.py": "3f0f697aa0ec1461ab19667d73b51d939ecd8f8bf5c1c4b8410968cad52182bb",
+    "tests/test_runtime_observation.py": "8e237f6904a914f0c66915d0d419a4b52db30d5a0032ef84de677c788f2bd6c8"
+  }
+}
