@@ -8,9 +8,9 @@
     "tools/real_runtime_sandbox.py": "36d5abb0629d234b2a9898e18b22f2f9f40a72b1b14882621fe25dcfb8378584",
     "tests/test_readonly_metadata_broker.py": "315e677e85752f7726a093fc0f176dd2e3b549d46d282059a978dfad8ff12276",
     "tests/test_real_runtime_sandbox.py": "17c2bcd5920d67a932a366f396da8c4a2c80523cf5dd888801062f3b8fb19091",
-    ".github/workflows/python.yml": "44787ce56f32b163da810d40225cd599181b8d0343d7c1b54f766ee6f05c1d25"
+    ".github/workflows/python.yml": "5f4b98f004acd27f1906254a3f63bddbd7283be393f8d1916202053262d1e474"
   },
-  "scope": "same-real-controller genuine metadata read plus separate isolated Runtime initialization attempts and own broker correction; no module hardware access, no virtual DI/DO acceptance",
+  "scope": "Historical genuine metadata/own-broker qualification and separate initialization attempts; no physical module access. Successful current native cyclic phase is bound separately in native-cyclic-2026-10-12.json.",
   "owner_provider_bus_switch_authorized": true,
   "endpoint_metadata": {
     "status": "VERIFIZIERT",
@@ -110,10 +110,10 @@
   "kernel_source_equivalence": "OFFEN: upstream Linux6.6.94 comparator, exact FW31 source unavailable as archive (SDK path is LFS pointer)",
   "genuine_physical_scope": "controller EEPROM I2C reads and possible power-management activity; no actuator/module access",
   "remaining": {
-    "minimal_component_manager_closure": "OFFEN: all-minus-four named/ELF closure supports bounded inittrial; numeric/computed dependencies/order need native qualification",
+    "minimal_component_manager_closure": "qualifiedactualinit/cyclicforcurrent36component Digital8scope; broadernumeric/computeddeps remainOPEN",
     "native_runtime_signature_check_new_path": "OFFEN: genuine metadata mediated, no explicit full signature acceptance result",
-    "native_io_initialization_new_path": "FAIL: actual stable originalRuntime, nativeKbusUpdateConfiguration Error16, providerconfigured0",
-    "virtual_di_do_acceptance": "NOT_RUN",
+    "native_io_initialization_new_path": "PASS limitedDigital8 withTCM0, notgeneralcontracts",
+    "virtual_di_do_acceptance": "PASS_FOR_NATIVE_REQUESTED_OUTPUTS_WITH_MODEL_GATE0; effectivegate1/generalSEM OPEN",
     "physical_module_revision_and_current_communication": "OFFEN"
   },
   "vm_used": false,
@@ -298,6 +298,30 @@
       "provider_binary_sha256": "30c4affe1ae10f543fa7c2a7189d4aded8d2818ee4922e89c0797a9269070a5c",
       "preexecution_independent_review_sha256": "a04de97d63db1632ae4a967db3190bdfe66570340d1da41ec39f87feae2499dc",
       "vm_used": false
+    },
+    {
+      "date": "2026-10-12",
+      "scope": "actual Root init-only TCM0 original Runtime + nativeIOdrivers + ownprovider; noRUN/virtualcyclic orphysicalactuators",
+      "status": "PASS_FOR_INIT_CONFIGURATION_ONLY",
+      "script_sha256": "2f8d73d4ea67a71bf9942dead4701d0d26439ac493b2414a231faa7e96fcd2ce",
+      "stdout_sha256": "7df4ffdd478ff83d48414e99bd623fa6c93b872fae7eede6cd51aab55f5ec12b",
+      "native_update_configuration_error": "none recorded; previousError16absent",
+      "own_provider": "opened1/configured1/fault0/frames0/running0/permit0/input0/requested0/effective0",
+      "original_app_state_queries": [
+        "STOP",
+        "STOP",
+        "STOP"
+      ],
+      "native_own_bootapp_loaded": true,
+      "native_start_denied_by_setting": true,
+      "full_signature_acceptance": "OFFEN: no explicit signature-pass report",
+      "broker": "exit0/notified942/continued939/protected3/mediated3/pathErrors0/killReason0/childSignal0",
+      "ownapp_sha256": "f746fae0a9a42a009978d4c3f9631a24078fe8d156391b843dc20795429aeacd",
+      "owncrc_sha256": "45727427ebfe3d500868c52d3072629570c9ea487681ab83ad92619919f9cf55",
+      "owncfg_pretrial_sha256": "49c4a8614f892932f4ecc8cd52756f4190916b7590a26ef0a598ad62b315e711",
+      "restore": "PASS",
+      "fresh_post_receipt_sha256": "15f0e10d33f9ab8bf885dac7f1a8640c61aa6a8e071a78d1ccc5b70316638b6b",
+      "cyclicDI_DO": "NOT_RUN"
     }
   ],
   "post_runtime_restore": {
@@ -306,5 +330,13 @@
     "single_original_runtime": true,
     "original_APP_CRC_Config_and_binaries_unchanged": true,
     "private_receipt_sha256": "fcf9dd65a913388490317d554beb947d933a87aeffa345ca58decef6cec44b9f"
+  },
+  "current_followup": "native-cyclic-2026-10-12.json: TCM0 nativeinit andcyclicIECinput/command proofmodelgate0 PASS; priorFAILretained",
+  "source_snapshot_scope": "currentownsource hashes; historical library/probe/build receipts preserve deployedsource versions separately",
+  "latest_post_runtime_restore": {
+    "status": "PASS",
+    "state": "STOP",
+    "original_APP_CRC_Config_andbinaries_unchanged": true,
+    "private_receipt_sha256": "6c442d7347dcd23c644db62535da4c5a551ec27e777758eef224978554d531bb"
   }
 }

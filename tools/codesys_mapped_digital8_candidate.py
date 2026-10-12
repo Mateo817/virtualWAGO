@@ -37,6 +37,7 @@ DESCRIPTOR_SHA256 = {
     "750-530": "84b4043d448c44155a36916a1b65a39f20ba0560459d3c0ffac53fba351daa5d",
 }
 AUDIT_SHA256 = "1bc897fb198e4720c00390ee62db5d382f7a132604d67efc587c158c4f7df000"
+OUTPUT_PERMIT_INITIAL = False
 SOURCE_SHA256 = "8004d8ef15ec5fea33ef096896c82f102e58f8a6326ff1846a5327fa09052fa8"
 
 
@@ -346,7 +347,7 @@ def run():
         "descriptor_audit_sha256": AUDIT_SHA256,
         "terminal_order": actual_order,
         "diagnostics": {"prebuild": before, "rebuild": rebuilt, "codegen": generated, "final": final},
-        "task_interval_ms": 20, "output_permit_initial": False,
+        "task_interval_ms": 20, "output_permit_initial": OUTPUT_PERMIT_INITIAL,
         "requested_parent_mappings": requested_mappings, "mapping": mapping_result,
         "native_byte_mappings": native_mappings,
         "report_counts": {"parent_bytes": 2, "digital_inputs": 8, "digital_outputs": 8},
