@@ -25,16 +25,11 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install --yes bubblewrap
-      - name: Prepare scoped namespace launcher
-        run: |
-          # The hosted runner restricts unprivileged loopback setup. Only the
-          # namespace launcher uses its existing sudo; Python stays unprivileged.
-          # Tests still require private namespaces and drop all child capabilities.
-          cat > "$RUNNER_TEMP/virtualwago-ci-bwrap" <<'SH'
-          #!/bin/sh
-          exec sudo -n -- /usr/bin/bwrap "$@"
-          SH
-          chmod 700 "$RUNNER_TEMP/virtualwago-ci-bwrap"
-          echo "VIRTUALWAGO_TEST_BWRAP=$RUNNER_TEMP/virtualwago-ci-bwrap" >> "$GITHUB_ENV"
       - name: Run hardware-free unit tests
-        run: python -m unittest discover -s tests -v
+        env:
+          VIRTUALWAGO_TEST_BWRAP: /usr/bin/bwrap
+        # Namespace setup needs the hosted runner's existing sudo. Creating
+        # fixtures and memfds in that same process preserves their ownership
+        # and descriptors across user-namespace setup. No global policy change.
+        # This job runs repository tests as root; isolated children drop all caps.
+        run: sudo -n --preserve-env=VIRTUALWAGO_TEST_BWRAP,LD_LIBRARY_PATH -- "$(command -v python)" -m unittest discover -s tests -v
