@@ -1,5 +1,7 @@
 # Nächster Originalstack-Block und Übergabe
 
+**Fortsetzung, 12.10.2026:** [Genuine Controllerdaten mit Schreibschutz](controller-metadata-2026-10-12.md): korrigierter eigener Vermittler und Schutzprobes PASS; anschließende originale Runtime stabil mit originalen I/O-Treibern und schreibgeschütztem Controllerzugang gestartet. Native I/O-Konfiguration FAIL16, Modell geöffnet1/konfiguriert0/Frames0, virtuelle DI/DO-Abnahme NOT_RUN. Original-STOP-Rücknahme und frische APP-/CRC-/Config-/Binary-Hashes PASS. Die früheren Abbrüche bleiben separat dokumentiert. Alle virtuellen Moduldaten kommen künftig aus dem Modell; die echte Controlleridentität bleibt auf derselben Platine.
+
 **Aktueller Nachweis, 12.10.2026:** [Modellkanal und geschützter Runtimeversuch](runtime-bridge-2026-10-12.md). Der konkret freigegebene Providerwechsel wurde versucht: originale Runtime und I/O-Treiber luden den Eigenprovider, native Initialisierung **FAIL**, DI/DO-Abnahme **NOT_RUN**. Die gezielte Rücknahme und der frische originale STOP-Wiederanlauf sind **PASS**; bestehende APP/CRC/Config und Originalbinaries sind hashgleich. Der aktuelle Prozess arbeitet im vorhandenen Runtimehome; das frühere gelöschte CWD ist historisch. Konkrete Blocker sind originale Boardmetadaten-/Signatur- und Hilfskomponentenabhängigkeiten, keine fehlende pauschale Software- oder Umschaltfreigabe.
 
 
