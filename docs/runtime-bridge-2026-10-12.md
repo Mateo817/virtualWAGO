@@ -1,0 +1,42 @@
+# Modellkanal und erster geschützter Originalruntimeversuch
+
+Stand: 12.10.2026. **Providerauflösung VERIFIZIERT, native Initialisierung FAIL, virtuelle DI/DO-Abnahme NOT_RUN.** Auf der autorisierten realen Referenz liefen die bytegleichen originale Runtime, IoDrvDal und IoDrvKbus mit unserem privaten ADI-Provider. Der Versuch erreichte keinen konfigurierten zyklischen Betrieb. Die anschließende Rücknahme stellte genau eine originale Runtime in STOP her; APP, CRC, Konfiguration und Originalbinaries hatten ihre gesicherten Hashes. Der frische Nachweis gilt für einen Runtimeprozess-Wiederanlauf, nicht für einen Geräte-Reboot, die Wiederherstellung unbekannter Retains oder die Zuordnung aller bestehenden Variablen. [Evidence](../evidence/runtime-bridge-2026-10-12.json), [ADR-0005](adr-0005.md).
+
+## Eigener Modellkanal
+
+`tools/adi_model_bridge.c` ergänzt den Eigenadapter optional, mit `VIRTUALWAGO_ENABLE_MODEL_BRIDGE`. Für den konkreten Lauf wurden außerdem `VIRTUALWAGO_DEFAULT_PROFILE8` und `VIRTUALWAGO_DEFAULT_CLOCK_MONOTONIC` gesetzt. Ohne `VIRTUALWAGO_MODEL_SOCKET` bleibt der Kanal deaktiviert; ein explizit angegebener ungültiger Pfad lässt Init scheitern. Der Pfad liegt in einem eigenen 0700-Verzeichnis, der AF_UNIX-SOCK_SEQPACKET-Socket hat 0600. Nur dieselbe effektive UID wird akzeptiert. Vorhandene Pfade werden nicht überschrieben; Cleanup entfernt ausschließlich den gebundenen eigenen Socket-Inode.
+
+Der eigene Client `tools/adi_model_client.c` sendet begrenzte `INPUT 0..255`, `PERMIT 0/1`, `STATUS` und `FAULT`. Er kann keine SPS-Anwendung starten, Ausgänge direkt schreiben oder einen verriegelten Fehler zurücksetzen. STATUS liest unter dem Adaptermutex Eingänge, angeforderte/wirksame Ausgänge, Gates, Generation und die Zahl abgeschlossener Ausgangsframes. `running` ist der eigene ADI-Anwendungszustand, kein unabhängiger nativer STOP-Nachweis. Ein Client wird sequenziell bedient; 500 ms Inaktivität, Disconnect oder Workerfehler entziehen das eigene Permit. Diese Zeiten und Fehlerregeln sind Modellpolitik, keine bestätigte WAGO-Semantik.
+
+Der öffentliche Transporttest verwendet nur eigene Testdoubles. Der private ARM-Integrationstest verwendet den echten Eigenadapter mit der Brücke; DI 128 wird über den Socket gesetzt und über ADI gelesen, ein eigener Ausgangsframe beobachtet, FAULT und Disconnect führen zu wirksam null. Eigene Profile16- und Profile8/MONOTONIC-Regressionsclients bestanden ebenfalls. Kein solcher PASS qualifiziert die Originalruntime. Nach dem Zielversuch wurde zusätzlich ein eigener Init-/Exit-Rennfall behoben: Ein Lifecycle-Mutex hält die Wiederinitialisierung bis zum vollständigen Bridge-Join zurück. Ein neuer isolierter ARM-Shared-Client prüfte 64 gleichzeitige Init-/Exit-Paare mit anschließend funktionierendem STATUS-Socket. Dieser spätere Quellstand wurde nicht erneut auf der Referenz eingesetzt; die Evidence trennt seine eigenen Tests ausdrücklich vom früheren Zielprovider.
+
+## Praktisch geprüfte Abschottung
+
+`tools/real_runtime_sandbox.py` erzeugt Argumente und startet selbst keine Geräteprozesse. Root baute privat bubblewrap 0.12.0 für ARMHF und die tatsächliche Referenz-libc; Herstellerheader/-binaries werden nicht veröffentlicht. Die Zielprüfung verwendet private Mount-, Netzwerk-, IPC-, PID- und UTS-Sichten, read-only Systemdateien, ein eigenes beschreibbares Home und ein frisches `/dev`, `/run`, `/tmp` und eingeschränktes `/sys`. Capabilities sind null und no_new_privs ist gesetzt. Der User-Namespace bleibt derselbe; dies ist keine Grenze zwischen beliebigen nicht vertrauenswürdigen Rootprozessen.
+
+Die eigene native Zielprobe bestätigte vier private Namespaces, fehlende physische Geräte-/Host-D-Bus-Endpunkte und die Unerreichbarkeit zweier zuvor positiv getesteter eigener Hostlistener (Loopback-TCP und abstraktes Unix). Eine absichtlich sichtbare eigene Datei wurde von der Negativkontrolle erkannt. Keine globale oder VM-weite Firewalländerung. Das gilt für die geprüften Probes und den gebundenen Aufbau; keine pauschale Qualifikation aller dynamischen Runtimepfade.
+
+Die ursprüngliche `libdal.so` wurde ausschließlich im Mount-Namespace an ihrer tatsächlichen Datei überbunden. Originalkomponenten nutzen DEEPBIND; LD_PRELOAD allein genügt nicht. Die private IoDrvDal-Konfiguration wählte einen K-Bus-Strang, und positive simulierte Retain-Größe vermied den statisch belegten physischen SRAM-Ereignispfad. Die vollständige tatsächliche Komponentenmenge blieb im Lauf relevant: auch IoDrvSerial wurde gemappt. Ein ausgewählter Konfigurationseintrag beweist keine vollständige dynamische Verbraucherbegrenzung.
+
+## Tatsächlicher Ablauf und Fehler
+
+Der Eigentümer gab die konkrete Provider-/Busumschaltung ausdrücklich frei. Der private Ablauf sicherte die vorhandenen APP-/CRC-/Configbytes, prüfte einen einzelnen Originalprozess und nativen STOP und sendete nur diesem Prozess TERM. Zwei tatsächliche Sol-Offline-Reviews korrigierten zuvor Signalbehandlung, PID-/Startzeit-/Namespace-/Herkunftsbindung, begrenztes Wrapperende und Fehlerstatus. Frühere FAIL-Berichte wurden erhalten.
+
+Der erste Zielablauf scheiterte **vor dem Providerstart**, weil das tatsächliche BusyBox-sleep keine Sekundenbruchteile akzeptiert. Der Originalprozess beendete sich danach; eine getrennte, gezielte Rücknahme startete ihn mit `Application.Start=0` in STOP und stellte nach frischem STOP die exakten Konfigurationsbytes wieder her. Keine zweite Runtime und kein eigener Master wurden parallel gestartet. Der kompatible Ganzsekundenablauf wurde separat reviewed und erneut ausgeführt.
+
+Im zweiten Lauf bestätigten Prozessmaps den Eigenprovider an der gebundenen Datei sowie die originalen IoDrvDal-/IoDrvKbus-Dateien. Der spätere Geräte-Metadaten-/Hashbeleg bindet die Providerdatei an dieselbe Device-/Inode-Kombination der Maps. Ein eigener Socket-STATUS war tatsächlich abrufbar:
+
+```text
+input=0 permit=0 requested=0 effective=0 watchdog=0 fault=1
+opened=1 configured=0 running=0 generation=1 frames=0
+```
+
+Der originale native Statusgetter meldete **NOT CONFIGURED**. Die Runtime protokollierte Initialisierungsfehler 33 und schaltete ab. Sichtbar waren `Number of supported modules out of limits`, `SysTarget signature mismatch` und Fehler von TscLED, TscRunLed, TscChCfgOnline und TscOms. Diese Fehler sind reale Beobachtungen, keine erfolgreichen I/O-Tests und kein Beleg eines pauschalen virtuellen Lizenzblockers.
+
+Die statische Analyse lokalisiert die Modulzahlmeldung im **originalen IoDrvKbus**: zunächst liest er Board-`MARKING`; fehlendes MARKING bzw. ein Wert ungleich PFC setzt denselben Fehler 40. Erst danach liest er Board-`MAXTERM` und akzeptiert 1..250. Der Eigenadapter-Terminalcount wird an dieser Stelle nicht gelesen. Den eigenen Count blind zu ändern behebt diesen Fehler daher nicht. Die exakte Typelabel-QUICK-Funktion erstellt jedes Mal ein Objekt und öffnet den EEPROM-Endpunkt O_RDWR; ein vorhandener Dateicache als sicherer Ersatz ist nicht belegt. Der originale SysTarget-Signaturpfad liest echte Boardfelder über dieselbe Bibliothek und muss erhalten bleiben. Welche echten Boardmetadaten bzw. Hilfsdienste der geschützten Sicht fehlen und welcher genaue Signaturpfad scheitert, muss vor einem weiteren Lauf quellgebunden geklärt werden. Kein EEPROM-O_RDWR-Fallback, keine Identitätskopie, kein Signatur-/Lizenzbypass.
+
+Der Versuch startete keine IEC-Anwendung und setzte weder IEC- noch Modellpermit. Kein zyklischer DI-/DO-Nachweis. Die Rücknahme prüfte das Ende des identifizierten Versuchssystems, startete genau eine Originalruntime mit originalem Provider und STOP-Bootguard und verifizierte anschließend erneut PID/Startzeit/Exe, nativen STOP sowie alle gesicherten Hashes. Das Prozess-CWD ist nun das vorhandene Runtimehome; der frühere gelöschte CWD-Zustand ist historisch.
+
+## Nächster Schritt
+
+Vor weiterem Einbau die genuine Boardmetadaten-/Signatur- und Hilfskomponentenabhängigkeit belegen und auf der selben realen Steuerung sicher erhalten. Nur authentische vorhandene Daten oder belegte Konfigurationswege verwenden; physische K-Bus-/UIO-Endpunkte bleiben gesperrt. Dann denselben begrenzten Ablauf mit gebundenen Änderungen wiederholen. Erst nach fehlerfreiem STOP-Boot folgen Enumeration, eigene IEC-Anwendung, DI-Muster und angeforderte/wirksame DO einschließlich negativer Fehlerkontrolle. Die konkrete Umschaltfreigabe besteht; diese technischen Fehler benötigen keine erneute pauschale Softwarefreigabe.

@@ -4,6 +4,9 @@
  * This is neither byte-identical DAL behavior nor a hardware/device backend.
  */
 #include "adi_digital_adapter.h"
+#ifdef VIRTUALWAGO_ENABLE_MODEL_BRIDGE
+#include "adi_model_bridge.h"
+#endif
 
 #include <limits.h>
 #include <pthread.h>
@@ -89,10 +92,17 @@ typedef struct {
   uint16_t staged_outputs;
   uint16_t staged_touched_bits;
   uint16_t effective_outputs;
+  uint64_t frame_count;
 } virtual_state;
 
 static virtual_state state;
 static pthread_mutex_t state_mutex = PTHREAD_MUTEX_INITIALIZER;
+#ifdef VIRTUALWAGO_ENABLE_MODEL_BRIDGE
+/* Serialize the full Init/Exit lifecycle, including bridge join after releasing
+ * state_mutex. The worker never takes this mutex.
+ */
+static pthread_mutex_t lifecycle_mutex = PTHREAD_MUTEX_INITIALIZER;
+#endif
 static uint64_t lifecycle_generation;
 
 static int lock_state(void) {
@@ -109,6 +119,18 @@ static void unlock_state(int *locked) {
 #define STATE_GUARD \
   int state_guard __attribute__((cleanup(unlock_state))) = lock_state(); \
   (void)state_guard
+
+#ifdef VIRTUALWAGO_ENABLE_MODEL_BRIDGE
+static void unlock_lifecycle(int *locked) {
+  if (locked != NULL && *locked && pthread_mutex_unlock(&lifecycle_mutex) != 0)
+    abort();
+}
+
+#define LIFECYCLE_GUARD \
+  int lifecycle_guard __attribute__((cleanup(unlock_lifecycle))) = \
+      (pthread_mutex_lock(&lifecycle_mutex) == 0 ? 1 : (abort(), 0)); \
+  (void)lifecycle_guard
+#endif
 
 static void bump_lifecycle_generation(void) {
   ++lifecycle_generation;
@@ -173,6 +195,32 @@ static bool owns_write(uint32_t task) {
          pthread_equal(state.write_owner, pthread_self()) != 0 &&
          state.write_generation == lifecycle_generation;
 }
+
+#ifdef VIRTUALWAGO_ENABLE_MODEL_BRIDGE
+/* Own IPC metadata only. These are not added WAGO ABI slots. */
+int32_t virtual_adi_model_snapshot(virtual_model_snapshot *snapshot) {
+  STATE_GUARD;
+  refresh_watchdog_locked();
+  if (snapshot == NULL) return DAL_FAILURE;
+  *snapshot = (virtual_model_snapshot){
+      .initialized = state.initialized, .opened = state.opened,
+      .configured = state.configured, .app_running = state.app_running,
+      .permit = state.permit, .watchdog_healthy = state.watchdog_healthy,
+      .fault_latched = state.fault_latched, .inputs = state.input_signals,
+      .requested_outputs = state.requested_outputs,
+      .effective_outputs = state.effective_outputs,
+      .generation = lifecycle_generation, .frame_count = state.frame_count};
+  return DAL_SUCCESS;
+}
+
+int32_t virtual_adi_latch_fault(void) {
+  STATE_GUARD;
+  refresh_watchdog_locked();
+  if (!state.initialized) return DAL_FAILURE;
+  latch_fault_locked();
+  return DAL_SUCCESS;
+}
+#endif
 
 void virtual_adi_reset(void) {
   STATE_GUARD;
@@ -263,9 +311,15 @@ int32_t virtual_adi_get_outputs(uint16_t *requested, uint16_t *effective) {
 }
 
 static int32_t adapter_init(void) {
+#ifdef VIRTUALWAGO_ENABLE_MODEL_BRIDGE
+  LIFECYCLE_GUARD;
+#endif
   STATE_GUARD;
   refresh_watchdog_locked();
   if (state.initialized) return DAL_FAILURE;
+#ifdef VIRTUALWAGO_ENABLE_MODEL_BRIDGE
+  if (virtual_model_bridge_start() != 0) return DAL_FAILURE;
+#endif
   memset(&state, 0, sizeof(state));
   bump_lifecycle_generation();
   state.initialized = true;
@@ -275,11 +329,20 @@ static int32_t adapter_init(void) {
 }
 
 static int32_t adapter_exit(void) {
-  STATE_GUARD;
-  refresh_watchdog_locked();
-  if (!state.initialized) return DAL_FAILURE;
-  bump_lifecycle_generation();
-  memset(&state, 0, sizeof(state));
+#ifdef VIRTUALWAGO_ENABLE_MODEL_BRIDGE
+  LIFECYCLE_GUARD;
+#endif
+  {
+    STATE_GUARD;
+    refresh_watchdog_locked();
+    if (!state.initialized) return DAL_FAILURE;
+    bump_lifecycle_generation();
+    memset(&state, 0, sizeof(state));
+  }
+#ifdef VIRTUALWAGO_ENABLE_MODEL_BRIDGE
+  /* The worker may wait for state_mutex; never join while holding it. */
+  virtual_model_bridge_stop();
+#endif
   return DAL_SUCCESS;
 }
 
@@ -506,6 +569,7 @@ static int32_t adapter_write_end(tDeviceId id, uint32_t task) {
     return DAL_FAILURE;
   }
   state.requested_outputs = state.staged_outputs;
+  if (state.frame_count != UINT64_MAX) ++state.frame_count;
   state.effective_outputs = effective_permit() ? state.staged_outputs : 0u;
   state.write_active = false;
   state.write_owner_valid = false;

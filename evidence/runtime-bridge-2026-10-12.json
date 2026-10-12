@@ -1,0 +1,137 @@
+{
+  "date": "2026-10-12",
+  "source_base": "c9b09c094b3ccec0dc5611d87b0ec25747568754",
+  "source_sha256": {
+    "tools/adi_digital_adapter.c": "5bf371c8dba01f8128a9ca3008db187f289d877c8353ece4cacdb758b7069035",
+    "tools/adi_model_bridge.c": "8a3e1fba2a82ed162cd287ddf0541ac8d2b8abf53bccb689e81975e511594b37",
+    "tools/adi_model_bridge.h": "cf770961a04cabe086810cc613d7fa78357c8ee361d39831134d4c834511d433",
+    "tools/adi_model_bridge_test.c": "2475a90f4029f7b386e3f5254497df29fe32bb1917d8de4ffc2c7b9f80b8cfc6",
+    "tools/adi_model_bridge_integration_test.c": "bccdf63b7a8bb4dab4d5c0df5f7a21ba39d42212eca7e9491fc49dc4da468f1b",
+    "tools/adi_model_client.c": "bfdd68636c87f39ea54a204eb314419011da718ce2fae38108f1fb83fde10e79",
+    "tools/real_runtime_sandbox.py": "12be39a4f5f059dc417bc34e0c1674387db805e2f87cee93385c3d28264b18c4",
+    "tools/offline_isolation_probe.c": "5482002f9e367ca8f0c16dd5715f1a18948e8f3ce2b1e4518d1734e96b8dbbe1",
+    "tools/reference_probe_runner.c": "11b935731f9d6f1d4d09d4cca44399cd26522b5ea282c85130ec9dd8038c1275",
+    "tests/test_adi_model_bridge.py": "bf86f30c4a6e8b87262603776c5feb55b547591d523f16a381a82fad0bd58367",
+    "tests/test_real_runtime_sandbox.py": "20f9f8b9137d94c85686a36f07392f1781f57bb4fa719cd96fdbf95392317041"
+  },
+  "scope": "own IPC and namespace probes plus bounded same-real-reference original-runtime startup attempt; no physical actuator test",
+  "owner_provider_bus_switch_authorized": true,
+  "local_python_tests": {
+    "status": "PASS",
+    "count": 124
+  },
+  "own_arm_profile_regressions": {
+    "status": "PASS",
+    "scope": "own profile16 and profile8/monotonic clients; no original consumer",
+    "private_receipt_sha256": "6ad4901e8b4b93a9245a4ad325ca54f54951ce8358c1d3a14d2c38d50913cabf",
+    "source_sha256": "5bf371c8dba01f8128a9ca3008db187f289d877c8353ece4cacdb758b7069035"
+  },
+  "reference_namespace_probe": {
+    "status": "PASS",
+    "mount_net_ipc_pid_private": true,
+    "user_private": false,
+    "hardware_endpoints_absent": true,
+    "capabilities": 0,
+    "no_new_privs": true,
+    "own_host_listeners_reached": 0,
+    "negative_file_detected": true,
+    "private_receipt_sha256": "65c070a5c24933131d413da0d29eb4ddef370eb37ef25d8d5ab232b75efc41ce",
+    "adapter_harness_source_sha256": {
+      "tools/adi_digital_adapter.c": "5f4680577d7c9bba4a2497b8fbe6497c6d87162fa44bcae679678d1a7e8c3b88",
+      "tools/adi_model_bridge.c": "8a3e1fba2a82ed162cd287ddf0541ac8d2b8abf53bccb689e81975e511594b37",
+      "tools/adi_model_bridge_integration_test.c": "20df0a9482190e5f468ec4a4f005fa36e6d1d786135ac5f265ec53334dfc2c49"
+    },
+    "adapter_harness_binary_sha256": "a91c5e9057118afdcfd0ce3c127994d2beb877f99599170e1506321cfa2d8d55"
+  },
+  "first_attempt": {
+    "status": "FAIL",
+    "reason": "target sleep rejected fractional seconds; abort before provider launch",
+    "private_receipt_sha256": "fb4461159287796b85be55f3db3b8b73a0b2aadd6390eed4293f363233a9428d",
+    "separate_stop_restore": "PASS",
+    "post_restore_sha256": "15572e8228d6041a40048062e57c00e89ca86ad847c0fbfbb0b66efac9e5dedd"
+  },
+  "original_runtime_trial": {
+    "initialization": "FAIL",
+    "provider_and_original_iodrv_maps": "VERIFIED",
+    "model_status": "VERIFIED",
+    "native_cached_status": "NOT CONFIGURED",
+    "initialization_error": 33,
+    "fault_latched": true,
+    "configured": false,
+    "frames": 0,
+    "requested_outputs": 0,
+    "effective_outputs": 0,
+    "permit": false,
+    "errors": [
+      "Number of supported modules out of limits",
+      "SysTarget signature mismatch",
+      "TscLED init",
+      "TscRunLed init",
+      "TscChCfgOnline init",
+      "TscOms init"
+    ],
+    "private_receipt_sha256": "a9a100a889aa74d70716ecf51294b45c5e34cb31f2eb28ec2988136ef15dc9af",
+    "staged_hash_inode_receipt_sha256": "1530244aa8a8c3532fb64620afb5295cea53591341029a0921ce333164457ef2",
+    "end_to_end_di_do": "NOT_RUN",
+    "iec_run": "NOT_RUN",
+    "deployed_source_sha256": {
+      "tools/adi_digital_adapter.c": "5f4680577d7c9bba4a2497b8fbe6497c6d87162fa44bcae679678d1a7e8c3b88",
+      "tools/adi_model_bridge.c": "8a3e1fba2a82ed162cd287ddf0541ac8d2b8abf53bccb689e81975e511594b37",
+      "tools/adi_model_bridge_integration_test.c": "20df0a9482190e5f468ec4a4f005fa36e6d1d786135ac5f265ec53334dfc2c49"
+    },
+    "provider_sha256": "a91c5e9057118afdcfd0ce3c127994d2beb877f99599170e1506321cfa2d8d55"
+  },
+  "original_runtime_restore": {
+    "status": "PASS",
+    "scope": "one original-runtime process, native cached STOP, original APP/CRC/config and runtime/provider/IoDrv hashes; not full unknown retain/application semantic restore",
+    "native_cached_status": "STOP",
+    "original_hashes_unchanged": true,
+    "fresh_after_restore_receipt_sha256": "f997579dbdcf871ec800482529daaa7ed8827429ce57e86e2a707ae330abff23",
+    "device_reboot": "NOT_RUN"
+  },
+  "reviews": {
+    "bridge": "PASS offline independent Sol targeted review",
+    "transaction_initial": "FAIL offline independent Sol preexecution review",
+    "transaction_corrected": "PASS offline independent Sol preexecution/delta reviews",
+    "worker_device_execution": false,
+    "receipt_sha256": [
+      "694a491751c42a94ac7b23bb2a21ac49664c786c8476b6705e1fffcf70e76a8b",
+      "3dece1efc4d3990af76811ac79be0a7b10f299bb4d78d8d0b9a5041adbe3ebc8",
+      "d30cd15f062ce964a303a71d882ec78c1cb28ceed35b8118802dcecab809925b",
+      "99657891bd0ebcdc9bf3ccfc44b7cca7dfdc22a06f2aedd48aa7f103ca92fd47",
+      "15942275ded94862b4ce0b34aeb3c8b10a941a527be6d5e5067d56c699ec1394",
+      "1d88456afb8692ec52cf60e7001252f95a670859d917f0a92731de59b7c100f0"
+    ],
+    "current_lifecycle_delta": "PASS independent offline Sol source/lock-order review; Root own ARM test receipt audited, not independently reexecuted",
+    "public_evidence": "PASS independent offline Sol scope/privacy/source-hash review"
+  },
+  "target_runtime_revision": "3.5.21.50, firmware 04.09.01(31)",
+  "vm_use_this_block": false,
+  "own_arm_ipc_harness_before_lifecycle_fix": {
+    "status": "PASS",
+    "provider_sha256": "a91c5e9057118afdcfd0ce3c127994d2beb877f99599170e1506321cfa2d8d55",
+    "private_receipt_sha256": "677fea58ee6f6fbef27c5794b3de795bd3bd0be3c2efe2c31ac2cf11f8d7e431",
+    "source_sha256": {
+      "tools/adi_digital_adapter.c": "5f4680577d7c9bba4a2497b8fbe6497c6d87162fa44bcae679678d1a7e8c3b88",
+      "tools/adi_model_bridge.c": "8a3e1fba2a82ed162cd287ddf0541ac8d2b8abf53bccb689e81975e511594b37",
+      "tools/adi_model_bridge_integration_test.c": "20df0a9482190e5f468ec4a4f005fa36e6d1d786135ac5f265ec53334dfc2c49"
+    }
+  },
+  "own_arm_ipc_harness_current": {
+    "status": "PASS",
+    "source_sha256": {
+      "tools/adi_digital_adapter.c": "5bf371c8dba01f8128a9ca3008db187f289d877c8353ece4cacdb758b7069035",
+      "tools/adi_model_bridge.c": "8a3e1fba2a82ed162cd287ddf0541ac8d2b8abf53bccb689e81975e511594b37",
+      "tools/adi_model_bridge_integration_test.c": "bccdf63b7a8bb4dab4d5c0df5f7a21ba39d42212eca7e9491fc49dc4da468f1b"
+    },
+    "provider_sha256": "30c4affe1ae10f543fa7c2a7189d4aded8d2818ee4922e89c0797a9269070a5c",
+    "private_receipt_sha256": "b785771a7c11719b4e568b20c8d3ec42b0bdb925a04e4f2943c9d5fd1cfb089b",
+    "init_exit_races": 64,
+    "scope": "own ARM adapter IPC integration and64 Init/Exit races in QEMU isolation; no original WAGO DAL/IoDrv/runtime",
+    "current_revision_on_reference": "NOT_RUN"
+  },
+  "native_blocker_source_analysis": {
+    "status": "VERIFIED static exact-binary analysis; dynamic causation remains scoped to observed failures",
+    "private_receipt_sha256": "65380d960110fe6ca4018cc7236694892e921ad854debb06ffbe130205829bf7"
+  }
+}

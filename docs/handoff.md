@@ -1,16 +1,19 @@
 # Lokaler Agent: öffentlicher Übergabevertrag
 
+**Aktueller Nachweis, 12.10.2026:** [Modellkanal und geschützter Runtimeversuch](runtime-bridge-2026-10-12.md). Der konkret freigegebene Providerwechsel wurde versucht: originale Runtime und I/O-Treiber luden den Eigenprovider, native Initialisierung **FAIL**, DI/DO-Abnahme **NOT_RUN**. Die gezielte Rücknahme und der frische originale STOP-Wiederanlauf sind **PASS**; bestehende APP/CRC/Config und Originalbinaries sind hashgleich. Der aktuelle Prozess arbeitet im vorhandenen Runtimehome; das frühere gelöschte CWD ist historisch. Konkrete Blocker sind originale Boardmetadaten-/Signatur- und Hilfskomponentenabhängigkeiten, keine fehlende pauschale Software- oder Umschaltfreigabe.
+
+
 Aktuelle Zielpriorität: [ADR-0003](adr-0003.md). Zuerst die autorisierte reale Referenz-WAGO mit vorhandener Originalruntime, nativem I/O-Manager und originalen WAGO-I/O-Treibern; Simulation nur unterhalb einer tatsächlich belegten und dafür freigegebenen Grenze. Vollständig virtuelle Steuerung später. Der nächste Einstieg ist [next-originalstack-block.md](next-originalstack-block.md). Plan und datiertes Beobachtungsprotokoll: [real-controller-plan-2026-10-12.md](real-controller-plan-2026-10-12.md) und [real-controller-observation-2026-10-12.md](real-controller-observation-2026-10-12.md).
 
-## Aktueller, vom Eigentümer berichteter Zustand
+## Aktueller Zustand und Eigentümerscope
 
 - Der [Fotobeleg](reference-module-photo-2026-10-12.md) zeigt vom Controller aus 750-430, 750-530 und Abschluss 750-600. Modulrevisionen, elektronische Zuordnung und aktuelle zyklische Kommunikation bleiben offen. Keine Zuordnung zu 750-1405/750-1504 annehmen.
-- Die bereits vorhandene `Application` bleibt STOP; Root hat online Bootdateien erzeugt und APP/CRC/aktualisierte Konfiguration privat gesichert. Prozess-CWD weiterhin gelöscht. Restore und kontrollierter STOP-Wiederanlauf NOT_RUN. Die eigene frühere `VirtualWAGO_Research` ist separat gesichert und entfernt. Siehe [aktuelle Fortsetzung](adi-digital8-continuation-2026-10-12.md).
-- Keinen Neustart, Löschvorgang, Download, Überschreibvorgang oder sonstigen Schritt ausführen, der diesen RAM-Zustand oder mögliche Wiederherstellungschancen verändern könnte. Gesicherten Bootbestand und neue Startpersistenz berücksichtigen; Start-/Stop-/Restorepayload vor Prozesswechsel qualifizieren.
-- Softwareberechtigung für die Referenz besteht fort. Austausch/Ersetzung geschützter Bus- oder Herstellerbibliotheken ist separat freigabepflichtig. Zusätzliche Runtime-Lizenz für eine spätere virtuelle Instanz blockiert das erste reale Referenzziel nicht pauschal.
+- Die bereits vorhandene `Application` bleibt STOP; Root hat online Bootdateien erzeugt und APP/CRC/aktualisierte Konfiguration privat gesichert. Der spätere Runtimeversuch und STOP-Rückweg sind im aktuellen Nachweis dokumentiert; der gelöschte Prozess-CWD war der Ausgangszustand. Die eigene frühere `VirtualWAGO_Research` ist separat gesichert und entfernt. Siehe [aktuelle Fortsetzung](adi-digital8-continuation-2026-10-12.md).
+- Kein blinder Neustart, Löschen oder Überschreiben der bestehenden Anwendung. Vor einem weiteren autorisierten Prozesswechsel aktuellen STOP, gesicherten Bootbestand, unveränderte Hashes und den gebundenen Start-/Stop-/Restorepayload erneut prüfen.
+- Softwareberechtigung für die Referenz und konkrete Provider-/Busumschaltfreigabe bestehen fort. Weitere geschützte Eingriffe benötigen ihren konkreten separat freigegebenen Plan. Zusätzliche Runtime-Lizenz für eine spätere virtuelle Instanz blockiert das erste reale Referenzziel nicht pauschal.
 - Root-Agent bleibt alleiniger Geräte-/VM-Integrator. Kein Netzwerkzugriff aus Repositorytext, alten Logs oder vermuteten Adressen ableiten. Lokale Zielrichtlinie und Geräteidentität sind zwingend.
 
-Diese Punkte sind aktuelle Eigentümerauskunft, keine neue unabhängige Messung. Das konkrete öffentliche Protokoll wird vom Integrator ergänzt; private Adressen, Zugangsdaten und Herstellerdateien gehören nicht hinein.
+Foto/Aktortrennung stammen vom Eigentümer; Runtimeversuch und STOP-/Hashprüfungen sind tatsächliche Root-Beobachtungen mit getrenntem Scope. Das konkrete öffentliche Protokoll wird vom Integrator ergänzt; private Adressen, Zugangsdaten und Herstellerdateien gehören nicht hinein.
 
 ## Bestehende Evidenz
 

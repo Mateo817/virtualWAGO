@@ -17,6 +17,9 @@
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <sys/un.h>
+#ifdef VIRTUALWAGO_REAL_REFERENCE_POLICY
+#include <sys/statvfs.h>
+#endif
 
 static int absent(const char *path)
 {
@@ -75,11 +78,27 @@ int main(int argc, char **argv)
     int user_private = distinct("user", argv[6]);
     int host_file_absent = absent(argv[1]);
     int hardware_absent = absent("/dev/kbus0") && absent("/dev/uio0") &&
-        absent("/dev/eeprom") && absent("/dev/ttyKbus");
+        absent("/dev/eeprom") && absent("/dev/ttyKbus") &&
+        absent("/dev/mem") && absent("/dev/uio1");
+#ifdef VIRTUALWAGO_REAL_REFERENCE_POLICY
+    /* Same-board trial: real immutable firmware identity tree is retained.
+     * Physical resource/sysfs trees and host service sockets are excluded.
+     */
+    int endpoints_absent = absent("/sys/devices") && absent("/sys/bus") &&
+        absent("/sys/class") && absent("/run/dbus/system_bus_socket") &&
+        absent("/var/run/docker.sock") && absent("/home/developer");
+#else
     int endpoints_absent = absent("/sys") && absent("/run/dbus/system_bus_socket") &&
         absent("/var/run/docker.sock") && absent("/home/developer");
+#endif
     int fd = open("/opt/research/should-not-write", O_WRONLY | O_CREAT, 0600);
     int root_readonly = fd < 0 && errno == EROFS;
+#ifdef VIRTUALWAGO_REAL_REFERENCE_POLICY
+    struct statvfs usr_mount, etc_mount;
+    root_readonly = root_readonly && statvfs("/usr", &usr_mount) == 0 &&
+        (usr_mount.f_flag & ST_RDONLY) && statvfs("/etc", &etc_mount) == 0 &&
+        (etc_mount.f_flag & ST_RDONLY);
+#endif
     if (fd >= 0) close(fd);
     int no_caps = status_is("CapEff:", 0, 16);
     int no_new_privs = status_is("NoNewPrivs:", 1, 10);
@@ -99,7 +118,14 @@ int main(int argc, char **argv)
         (socklen_t)(offsetof(struct sockaddr_un, sun_path) + 1 + strlen(argv[8])));
     if (fd >= 0) close(fd);
 
-    int okay = mount_private && net_private && ipc_private && pid_private && user_private &&
+    int required_user_isolation = user_private;
+#ifdef VIRTUALWAGO_REAL_REFERENCE_POLICY
+    /* Root on the same reference board. Identity/UID are preserved; no user
+     * namespace isolation is claimed. Caps and fresh proc remain mandatory.
+     */
+    required_user_isolation = 1;
+#endif
+    int okay = mount_private && net_private && ipc_private && pid_private && required_user_isolation &&
         host_file_absent && hardware_absent && endpoints_absent && root_readonly &&
         no_caps && no_new_privs && clean_env && loopback_denied && abstract_denied;
     printf("{\"scope\":\"own ARM probe; controlled local endpoints only\","
