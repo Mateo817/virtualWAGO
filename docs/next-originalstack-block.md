@@ -2,6 +2,10 @@
 
 Stand: 12.10.2026. Dieser Bericht konkretisiert den nächsten Arbeitsschritt für die Forschungsentscheidung B+C. Er ist keine neue Architekturentscheidung, Hardwarefreigabe oder Herstellerzusage. Die ausführliche lokale Übergabe bleibt privat.
 
+## Ausführungsstand
+
+Der [ausgeführte Blockbericht vom 12.10.2026](originalstack-block-2026-10-12.md) ergänzt diesen Plan: frische lesende Referenzbindung, natives Offline-DI/DO-Mapping, 34-Slot-Vertragsmatrix und eigener sequenzieller ARM-ADI-Adapter samt ausgeführten eigenen Vertragstests. Physische Klemmenpräsenz bleibt OFFEN. Originalverbraucher-M3 und virtuelle Runtime-M4 sind noch nicht ausgeführt; die präzisen Start-/Service-/Nebenläufigkeits-/Lizenzgates stehen im neuen Bericht. Die folgenden Blockkriterien bleiben Abnahmevorgaben und sind keine pauschale PASS-Erklärung.
+
 ## Zielbild bleibt der Originalstack
 
 Die Forschungsfrage bleibt: dieselbe CODESYS-Runtime, derselbe native CODESYS-I/O-Manager und möglichst dieselben originalen WAGO-I/O-Treiber sollen unverändert erhalten bleiben. Der virtuelle Ersatz sitzt ausschließlich an der **kleinsten tatsächlich belegten unteren Hardwaregrenze**. Aktuell führt die Evidence zu ADI/DAL und weiter zur K-Bus-Hardwareanbindung; welche untere Funktion/Komponente sich vollständig ersetzen lässt, wird erst nach dem Verbraucher-/Vertragsabgleich festgelegt. Weder eine eigene CODESYS-I/O-Schicht noch ein selbst geschriebener Ersatzverbraucher ist das Ziel.

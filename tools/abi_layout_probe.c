@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 #include <dal/adi_application_interface.h>
+#include <libpackbus.h>
 
 #ifdef RESEARCH_RUNTIME_LAYOUT_PROBE
 #include <stdio.h>
@@ -19,23 +20,126 @@ _Static_assert(sizeof(void *) == 4, "Use ARM32, not a 64-bit host ABI");
 _Static_assert(sizeof(size_t) == 4, "Expected ARM32 size_t");
 _Static_assert(sizeof(tDeviceId) == 4, "Header tDeviceId width changed");
 
-typedef int32_t (*research_get_device_list_fn)(size_t, tDeviceInfo *, size_t *);
-typedef int32_t (*research_read_bytes_fn)(tDeviceId, uint32_t, uint32_t,
-                                          uint32_t, uint8_t *);
-typedef int32_t (*research_write_bytes_fn)(tDeviceId, uint32_t, uint32_t,
+typedef int32_t (*research_adi_slot_00_fn)(void);
+typedef int32_t (*research_adi_slot_01_fn)(void);
+typedef int32_t (*research_adi_slot_02_fn)(void);
+typedef int32_t (*research_adi_slot_03_fn)(size_t, tDeviceInfo *, size_t *);
+typedef int32_t (*research_adi_slot_04_fn)(tDeviceId);
+typedef int32_t (*research_adi_slot_05_fn)(tDeviceId);
+typedef bool (*research_adi_slot_06_fn)(tDeviceId);
+typedef int32_t (*research_adi_slot_07_fn)(tDeviceId, size_t, char *, size_t *);
+typedef int32_t (*research_adi_slot_08_fn)(tDeviceId, uint32_t *);
+typedef int32_t (*research_adi_slot_09_fn)(tDeviceId, uint32_t *, uint32_t *);
+typedef int32_t (*research_adi_slot_10_fn)(tDeviceId, int32_t, void *);
+typedef int32_t (*research_adi_slot_11_fn)(tDeviceId, void *);
+typedef int32_t (*research_adi_slot_12_fn)(tDeviceId, uint32_t);
+typedef int32_t (*research_adi_slot_13_fn)(tDeviceId, uint32_t, uint32_t,
+                                           uint8_t *);
+typedef int32_t (*research_adi_slot_14_fn)(tDeviceId, uint32_t, uint32_t, bool);
+typedef int32_t (*research_adi_slot_15_fn)(tDeviceId, uint32_t, uint32_t,
                                            uint32_t, uint8_t *);
-_Static_assert(__builtin_types_compatible_p(
-                   __typeof__(((tApplicationDeviceInterface *)0)->GetDeviceList),
-                   research_get_device_list_fn),
-               "GetDeviceList header signature changed");
-_Static_assert(__builtin_types_compatible_p(
-                   __typeof__(((tApplicationDeviceInterface *)0)->ReadBytes),
-                   research_read_bytes_fn),
-               "ReadBytes header signature changed");
-_Static_assert(__builtin_types_compatible_p(
-                   __typeof__(((tApplicationDeviceInterface *)0)->WriteBytes),
-                   research_write_bytes_fn),
-               "WriteBytes header signature changed");
+typedef int32_t (*research_adi_slot_16_fn)(tDeviceId, uint32_t);
+typedef int32_t (*research_adi_slot_17_fn)(tDeviceId, uint32_t);
+typedef int32_t (*research_adi_slot_18_fn)(tDeviceId, uint32_t, uint32_t,
+                                           uint8_t *);
+typedef int32_t (*research_adi_slot_19_fn)(tDeviceId, uint32_t, uint32_t, bool *);
+typedef int32_t (*research_adi_slot_20_fn)(tDeviceId, uint32_t, uint32_t,
+                                           uint32_t, uint8_t *);
+typedef int32_t (*research_adi_slot_21_fn)(tDeviceId, uint32_t);
+typedef int32_t (*research_adi_slot_22_fn)(tDeviceId, uint32_t, uint8_t *,
+                                           tBusState *);
+typedef int32_t (*research_adi_slot_23_fn)(tDeviceId, int32_t, size_t, uint8_t *,
+                                           tDiagnoseState *);
+typedef int32_t (*research_adi_slot_24_fn)(tDeviceId, tEventHandler, void *);
+typedef int32_t (*research_adi_slot_25_fn)(tDeviceId, tEventHandler);
+typedef int32_t (*research_adi_slot_26_fn)(tDeviceId, tError *);
+typedef int32_t (*research_adi_slot_27_fn)(tApplicationStateChangedEvent);
+typedef int32_t (*research_adi_slot_28_fn)(const char *, void *, ...);
+typedef int32_t (*research_adi_slot_29_fn)(const char *, void *, va_list);
+typedef int32_t (*research_adi_slot_30_fn)(uint32_t, uint32_t);
+typedef int32_t (*research_adi_slot_31_fn)(void);
+typedef int32_t (*research_adi_slot_32_fn)(void);
+typedef int32_t (*research_adi_slot_33_fn)(void);
+
+#define ASSERT_SLOT_SIGNATURE(field, signature) \
+  _Static_assert(__builtin_types_compatible_p( \
+                     __typeof__(((tApplicationDeviceInterface *)0)->field), \
+                     signature), \
+                 #field " header signature changed")
+ASSERT_SLOT_SIGNATURE(Init, research_adi_slot_00_fn);
+ASSERT_SLOT_SIGNATURE(Exit, research_adi_slot_01_fn);
+ASSERT_SLOT_SIGNATURE(ScanDevices, research_adi_slot_02_fn);
+ASSERT_SLOT_SIGNATURE(GetDeviceList, research_adi_slot_03_fn);
+ASSERT_SLOT_SIGNATURE(OpenDevice, research_adi_slot_04_fn);
+ASSERT_SLOT_SIGNATURE(CloseDevice, research_adi_slot_05_fn);
+ASSERT_SLOT_SIGNATURE(IsDeviceOpen, research_adi_slot_06_fn);
+ASSERT_SLOT_SIGNATURE(GetDeviceName, research_adi_slot_07_fn);
+ASSERT_SLOT_SIGNATURE(GetDeviceFlags, research_adi_slot_08_fn);
+ASSERT_SLOT_SIGNATURE(GetIoSizes, research_adi_slot_09_fn);
+ASSERT_SLOT_SIGNATURE(ConfigureSubdevice, research_adi_slot_10_fn);
+ASSERT_SLOT_SIGNATURE(ConfigureDevice, research_adi_slot_11_fn);
+ASSERT_SLOT_SIGNATURE(WriteStart, research_adi_slot_12_fn);
+ASSERT_SLOT_SIGNATURE(WriteBit, research_adi_slot_13_fn);
+ASSERT_SLOT_SIGNATURE(WriteBool, research_adi_slot_14_fn);
+ASSERT_SLOT_SIGNATURE(WriteBytes, research_adi_slot_15_fn);
+ASSERT_SLOT_SIGNATURE(WriteEnd, research_adi_slot_16_fn);
+ASSERT_SLOT_SIGNATURE(ReadStart, research_adi_slot_17_fn);
+ASSERT_SLOT_SIGNATURE(ReadBit, research_adi_slot_18_fn);
+ASSERT_SLOT_SIGNATURE(ReadBool, research_adi_slot_19_fn);
+ASSERT_SLOT_SIGNATURE(ReadBytes, research_adi_slot_20_fn);
+ASSERT_SLOT_SIGNATURE(ReadEnd, research_adi_slot_21_fn);
+ASSERT_SLOT_SIGNATURE(DiagnoseGetDeviceState, research_adi_slot_22_fn);
+ASSERT_SLOT_SIGNATURE(DiagnoseGetSubdeviceState, research_adi_slot_23_fn);
+ASSERT_SLOT_SIGNATURE(RegisterEventHandler, research_adi_slot_24_fn);
+ASSERT_SLOT_SIGNATURE(UnregisterEventHandler, research_adi_slot_25_fn);
+ASSERT_SLOT_SIGNATURE(GetLastError, research_adi_slot_26_fn);
+ASSERT_SLOT_SIGNATURE(ApplicationStateChanged, research_adi_slot_27_fn);
+ASSERT_SLOT_SIGNATURE(CallDeviceSpecificFunction, research_adi_slot_28_fn);
+ASSERT_SLOT_SIGNATURE(VCallDeviceSpecificFunction, research_adi_slot_29_fn);
+ASSERT_SLOT_SIGNATURE(WatchdogSetTime, research_adi_slot_30_fn);
+ASSERT_SLOT_SIGNATURE(WatchdogStart, research_adi_slot_31_fn);
+ASSERT_SLOT_SIGNATURE(WatchdogStop, research_adi_slot_32_fn);
+ASSERT_SLOT_SIGNATURE(WatchdogTrigger, research_adi_slot_33_fn);
+
+#define ASSERT_SLOT_OFFSET(field, index) \
+  _Static_assert(offsetof(tApplicationDeviceInterface, field) == (index) * 4, \
+                 #field " slot offset changed")
+ASSERT_SLOT_OFFSET(Init, 0);
+ASSERT_SLOT_OFFSET(Exit, 1);
+ASSERT_SLOT_OFFSET(ScanDevices, 2);
+ASSERT_SLOT_OFFSET(GetDeviceList, 3);
+ASSERT_SLOT_OFFSET(OpenDevice, 4);
+ASSERT_SLOT_OFFSET(CloseDevice, 5);
+ASSERT_SLOT_OFFSET(IsDeviceOpen, 6);
+ASSERT_SLOT_OFFSET(GetDeviceName, 7);
+ASSERT_SLOT_OFFSET(GetDeviceFlags, 8);
+ASSERT_SLOT_OFFSET(GetIoSizes, 9);
+ASSERT_SLOT_OFFSET(ConfigureSubdevice, 10);
+ASSERT_SLOT_OFFSET(ConfigureDevice, 11);
+ASSERT_SLOT_OFFSET(WriteStart, 12);
+ASSERT_SLOT_OFFSET(WriteBit, 13);
+ASSERT_SLOT_OFFSET(WriteBool, 14);
+ASSERT_SLOT_OFFSET(WriteBytes, 15);
+ASSERT_SLOT_OFFSET(WriteEnd, 16);
+ASSERT_SLOT_OFFSET(ReadStart, 17);
+ASSERT_SLOT_OFFSET(ReadBit, 18);
+ASSERT_SLOT_OFFSET(ReadBool, 19);
+ASSERT_SLOT_OFFSET(ReadBytes, 20);
+ASSERT_SLOT_OFFSET(ReadEnd, 21);
+ASSERT_SLOT_OFFSET(DiagnoseGetDeviceState, 22);
+ASSERT_SLOT_OFFSET(DiagnoseGetSubdeviceState, 23);
+ASSERT_SLOT_OFFSET(RegisterEventHandler, 24);
+ASSERT_SLOT_OFFSET(UnregisterEventHandler, 25);
+ASSERT_SLOT_OFFSET(GetLastError, 26);
+ASSERT_SLOT_OFFSET(ApplicationStateChanged, 27);
+ASSERT_SLOT_OFFSET(CallDeviceSpecificFunction, 28);
+ASSERT_SLOT_OFFSET(VCallDeviceSpecificFunction, 29);
+ASSERT_SLOT_OFFSET(WatchdogSetTime, 30);
+ASSERT_SLOT_OFFSET(WatchdogStart, 31);
+ASSERT_SLOT_OFFSET(WatchdogStop, 32);
+ASSERT_SLOT_OFFSET(WatchdogTrigger, 33);
+_Static_assert(sizeof(tApplicationDeviceInterface) == 34 * 4,
+               "ADI table size changed");
 
 #define LAYOUT_SIZE(type) const uint32_t research_size_##type = sizeof(type)
 #define LAYOUT_OFFSET(field) \
@@ -57,6 +161,8 @@ LAYOUT_SIZE(tBusState);
 LAYOUT_SIZE(tDiagnoseState);
 LAYOUT_SIZE(tError);
 LAYOUT_SIZE(tCommonEvent_IoSizeChanged);
+LAYOUT_SIZE(tCONFIGURE_DEVICE);
+LAYOUT_SIZE(tKBUS_TERMINAL_INFO_32);
 
 const uint32_t research_offset_device_info_DeviceId =
     offsetof(tDeviceInfo, DeviceId);
@@ -72,6 +178,16 @@ const uint32_t research_offset_iowidths_NewInputSize =
     offsetof(tCommonEvent_IoSizeChanged, NewInputSize);
 const uint32_t research_offset_iowidths_NewOutputSize =
     offsetof(tCommonEvent_IoSizeChanged, NewOutputSize);
+const uint32_t research_offset_configure_device_uConfStru =
+      offsetof(tCONFIGURE_DEVICE, uConfStru);
+const uint32_t research_offset_terminal_info_input_bits =
+      offsetof(tKBUS_TERMINAL_INFO_32, ulOffsetInput_bits);
+const uint32_t research_offset_terminal_info_output_bits =
+      offsetof(tKBUS_TERMINAL_INFO_32, ulOffsetOutput_bits);
+const uint32_t research_offset_terminal_info_size_input_bits =
+      offsetof(tKBUS_TERMINAL_INFO_32, ulSizeInput_bits);
+const uint32_t research_offset_terminal_info_size_output_bits =
+      offsetof(tKBUS_TERMINAL_INFO_32, ulSizeOutput_bits);
 
 LAYOUT_OFFSET(Init);
 LAYOUT_OFFSET(Exit);

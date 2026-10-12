@@ -1,0 +1,169 @@
+{
+  "schema_version": 1,
+  "date_utc": "2026-10-12",
+  "review_type": "Self-Review",
+  "independent_review": "PASS scoped offline review by actual gpt-6-luna low; no must-fix",
+  "scope": "Offline native CODESYS DI/DO mapping candidate; no gateway, download, runtime, or physical I/O operation",
+  "sources": {
+    "mapped_builder_sha256": "a57fe8bf0700f8adbd51a0f94974341197b44cc3c3ef1cf3723e98aa26f43f67",
+    "iec_source_sha256": "e757410d9d9efc4f363e666190514af130d2a6be9fd46916a805cd7551588dcc",
+    "local_helper_tests_sha256": "ce7e574e3ecc63ebcfaa418512647a7e6bf8dfb496eff6b2c8ecd10a95e62c82"
+  },
+  "engineering": {
+    "version": "3.5.21.50",
+    "profile": "CODESYS V3.5 SP21 Patch 5",
+    "ide_executable_sha256": "0f483fae5ac32e25207c38b9afdf08aa12680c5959fc692062f27db050f310b2",
+    "selected_profile_sha256": "fb09099380f40dc0270e35a7555c50b9b271a2e977a03675aed812c09b33ca1b",
+    "compiler_version_getter": {
+      "finding": "VERIFIZIERT",
+      "value": "3.5.21.50",
+      "check": "PASS",
+      "scope": "Read-only reopen of saved own offline project"
+    },
+    "device_descriptions": [
+      {
+        "role": "controller descriptor",
+        "device": "750-8213",
+        "version": "6.4.6.11",
+        "sha256": "e14cf1edc7da23ce2667952739564e9a0fdfacb10cea317ac4fd1c561767dd6b"
+      },
+      {
+        "role": "LocalBus descriptor",
+        "version": "2.1.0.1",
+        "sha256": "38de77924d719300e64259b36642e73df9e67af1cdbf6a0e041dc5c2b163ed39"
+      },
+      {
+        "role": "DI terminal descriptor",
+        "device": "750-1405",
+        "version": "2.0.0.14",
+        "sha256": "2ea6fb96d1db35228450ccd94454f1e51b562a6e1982e416f34eed2feb056273"
+      },
+      {
+        "role": "DO terminal descriptor",
+        "device": "750-1504",
+        "version": "2.0.0.14",
+        "sha256": "207e7d654f98a180b06cb75117e282ac2a85f956cbb5d057113d76846a6dc991"
+      }
+    ]
+  },
+  "first_attempt": {
+    "finding": "VERIFIZIERT",
+    "check": "FAIL",
+    "builder_sha256": "6f882f61007a6ff936017ebdb398b77390a92c87ee5964c4f926187906465ad4",
+    "diagnostics": {
+      "errors": 2,
+      "warnings": 0
+    },
+    "cause": "Unqualified PLC_PRG.InputWord and PLC_PRG.OutputWord mapping expressions were rejected as invalid application references"
+  },
+  "corrected_build": {
+    "finding": "VERIFIZIERT",
+    "check": "PASS",
+    "builder_sha256": "a57fe8bf0700f8adbd51a0f94974341197b44cc3c3ef1cf3723e98aa26f43f67",
+    "build_report_sha256": "63f98383dda9e1ab79e4f3f6a1c732dd6ff3c1f1c92b9bdd8711d8ef9b370250",
+    "diagnostics": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "output_permit_initial": false,
+    "enabled_project_nodes": 3,
+    "native_mapping_readback": {
+      "check": "PASS",
+      "reopened_saved_project": true,
+      "reexported_csv_byte_identical": true,
+      "csv_bytes": 1797,
+      "project_unchanged_before_after": true,
+      "parent_parameters": [
+        {
+          "name": "_IN",
+          "channel": "Input",
+          "subelement_count": 16,
+          "iec_variable": "Application.PLC_PRG.InputWord",
+          "maps_to_existing_variable": true,
+          "child_variable_mappings": 0,
+          "mapped_iec_variable_type": "WORD",
+          "parameter_type": "local:InputField",
+          "parameter_id": 16777216
+        },
+        {
+          "name": "_OUT",
+          "channel": "Output",
+          "subelement_count": 16,
+          "iec_variable": "Application.PLC_PRG.OutputWord",
+          "maps_to_existing_variable": true,
+          "child_variable_mappings": 0,
+          "mapped_iec_variable_type": "WORD",
+          "parameter_type": "local:OutputField",
+          "parameter_id": 50331648
+        }
+      ]
+    },
+    "sample_csv_bit_channels": {
+      "finding": "VERIFIZIERT",
+      "scope": "Offline generated CSV configuration only; not physical process-image verification",
+      "di": {
+        "sample_addresses": [
+          "%IX2.0",
+          "%IX3.7"
+        ],
+        "complete_channel_count": 16
+      },
+      "do": {
+        "sample_addresses": [
+          "%QX0.0",
+          "%QX1.7"
+        ],
+        "complete_channel_count": 16
+      }
+    }
+  },
+  "saved_offline_artifacts": [
+    {
+      "name": "mapped-io-offline.project",
+      "bytes": 261392,
+      "sha256": "fba1580112f3ad9104a00881be8a2f45effbd1bc123afcdbe2f3a049e7616015"
+    },
+    {
+      "name": "mapped-io.app",
+      "bytes": 119780,
+      "sha256": "9578b892e53c65187de70eebf4900e6d2629b82c1b150824d27e97311c821fc1"
+    },
+    {
+      "name": "mapped-io.crc",
+      "bytes": 28,
+      "sha256": "8d5ec22d3a4487d4ff99df6dfc1cdd1d410d1ffe4cbc04d33ed128744548f01c"
+    },
+    {
+      "name": "mapped-io-mapping.csv",
+      "bytes": 1797,
+      "sha256": "09915d59265f2bb7c08de6a346674f830f8526933270362b29b8551fae7aa215"
+    }
+  ],
+  "reopen_validation": {
+    "finding": "VERIFIZIERT",
+    "check": "PASS",
+    "report_sha256": "dd143e6d1b841e4ee3fb5eae3115de9cb77a9e94b863c46d11acb3991cbaae92",
+    "diagnostics": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "project_sha256_before_after": "fba1580112f3ad9104a00881be8a2f45effbd1bc123afcdbe2f3a049e7616015",
+    "csv_reexport_sha256": "09915d59265f2bb7c08de6a346674f830f8526933270362b29b8551fae7aa215",
+    "csv_reexport_byte_identical": true,
+    "native_mapping_and_enabled_nodes": "PASS"
+  },
+  "helper_validation": {
+    "check": "PASS",
+    "test_count": 7,
+    "python": "3.13.5",
+    "scope": "Pure local mapping/CSV validation helpers; no CODESYS mock or hardware test",
+    "broader_suite": "PASS 99 hardware-free Python tests; source hashes in originalstack-block-validation-2026-10-12.json"
+  },
+  "limits": {
+    "physical_terminal_presence_and_identity": "OFFEN",
+    "physical_wiring_and_effective_io": "NOT_RUN",
+    "gateway_connection_download_and_runtime": "NOT_RUN",
+    "independent_review": "PASS offline source/report/CSV; no IDE/device execution by reviewer",
+    "license_or_vendor_file_rights_qualification": "NOT_RUN"
+  }
+}

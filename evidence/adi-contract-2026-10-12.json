@@ -1,0 +1,650 @@
+{
+  "date_utc": "2026-10-12",
+  "analysis": "Original WAGO binaries analyzed statically; own adapter/harness executed separately by integrator with original GNU loader/libc; no original WAGO DAL/IoDrv/packbus/runtime linked or executed",
+  "evidence_scope": {
+    "sdk": "WAGO/pfc-firmware-sdk-G2 FW30-V04.08.09",
+    "sdk_commit": "252209115885442bac7359a2ff1cfa4efb3a9c84",
+    "abi_header_sha256": "d941c172a504e4ddc3db19016c4163f844d3b5c4bf604a52cbc2d12f7d26151c",
+    "types_header_sha256": "f1956631c7bc17f95d8909762a900217bd2d2c46f5c79db1fe3ca5fb553a4fef",
+    "live_provider": {
+      "path_private": "live-reference/originals/usr/lib/libdal.so.1.0.1",
+      "sha256": "c163ac57805409921ce783f9c4f17f52891864be333c3df4945a128d253994f5",
+      "same_bytes_as_analyzed_fw30_provider": true
+    },
+    "actual_consumers": [
+      {
+        "name": "libIoDrvDal.so.1.0.2",
+        "sha256": "853d3ad6eb1b2477b43502d562a6bbfa854b8029e85989b6166f961167188c7d",
+        "architecture": "ELF32 ARM EABI5 hard-float",
+        "evidence": "ComponentEntry calls adi_GetApplicationInterface and copies 0x88 bytes"
+      },
+      {
+        "name": "libIoDrvKbus.so.0.0.1",
+        "sha256": "543e8b1d2d19352030fe804a7e667ca30c1d9ba80069f2df3158c77c544789b8",
+        "architecture": "ELF32 ARM EABI5 hard-float",
+        "needed": [
+          "libIoDrvDal.so.1",
+          "libwago_dbus.so",
+          "libdiagnostic.so",
+          "libdbus-glib-1.so.2",
+          "libdbus-1.so.3",
+          "libglib-2.0.so.0"
+        ],
+        "evidence": "direct indirect calls through ADI table enumerated below; separate Kbus D-Bus/diagnostic dependency path not traced"
+      }
+    ],
+    "table": {
+      "slots": 34,
+      "pointer_width_bytes": 4,
+      "size_bytes": 136,
+      "layout_probe_scope": "FW30 header with ARM hard-float GCC 14.2.0 compile-only; SDK toolchain identifies GCC 11.3.1"
+    },
+    "layout_probe": {
+      "source": "tools/abi_layout_probe.c",
+      "source_sha256": "f845f223aeb96a6c456197083c828adb7286ac737e03c8870395c07f6e2a7dd0",
+      "result": "PASS compile-only; no link or execution",
+      "compiler": "arm-linux-gnueabihf-gcc 14.2.0",
+      "target": "ARMv7-A EABI5 hard-float",
+      "flags": "-std=c11 -Wall -Wextra -Werror -ffreestanding -fno-common -O0 -march=armv7-a -mtune=cortex-a8 -mfpu=neon -mfloat-abi=hard",
+      "object_sha256": "7e16766da9b3648d9c3151c798557a6e8a2170c7d6b06fe17fd9727950ed7a75",
+      "assertions": "exact function-pointer types and offsets for all 34 FW30 ADI slots; table size 136 bytes; FW30 packbus config/terminal-info structure sizes and selected offsets",
+      "header_scope": "private WAGO FW30-V04.08.09 headers; not FW31 ABI proof"
+    },
+    "packbus_header_sha256": "ebde7a6efb590f56f18b6b5e146baa8c6483a1a3ba53f45b07697065ee406379",
+    "actual_fw31_packbus_sha256": "3b7b7ca4fa14e5994552040a7b40b1cfbbf43e0649a4ad9277ece421fd4bc5d6",
+    "fw30_packbus_sha256": "00537de62e3c4b19cda3f24f6e6e1308ec03dc8d0c761537690a0e7f5f3cbd47",
+    "secured_dal_configuration": {
+      "sha256": "91fc4013c5bd87fab459f13bba60787e9f1256d4423cfd47eefdef307161af13",
+      "DalName": "libpackbus",
+      "ConfigLibrary": "libIoDrvKbus",
+      "EntryFunction": "IoDrvKbus_Init",
+      "CODESYS_DeviceName": "Kbus",
+      "consumer": "IoDrvDal matches tDeviceInfo.DeviceName to DalName; model DeviceId=1 is own opaque id returned in list"
+    }
+  },
+  "use_status_meaning": "observed means a direct indirect call through the ADI table was found in either exact FW31 IoDrvDal or IoDrvKbus binary; unknown is not evidence of unused",
+  "slots": [
+    {
+      "index": 0,
+      "offset": "0x00",
+      "name": "Init",
+      "fw30_signature": "int32_t(void)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvDal 0x36b4-0x36b8"
+      ]
+    },
+    {
+      "index": 1,
+      "offset": "0x04",
+      "name": "Exit",
+      "fw30_signature": "int32_t(void)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvDal 0x42f8-0x42fc"
+      ]
+    },
+    {
+      "index": 2,
+      "offset": "0x08",
+      "name": "ScanDevices",
+      "fw30_signature": "int32_t(void)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvDal 0x36c8-0x36cc"
+      ]
+    },
+    {
+      "index": 3,
+      "offset": "0x0c",
+      "name": "GetDeviceList",
+      "fw30_signature": "int32_t(size_t,tDeviceInfo*,size_t*)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvDal 0x36e4-0x36ec; capacity=10 entries, list=sp+0x60, count=sp+0x5c",
+        "IoDrvDal 0x2f14-0x2f1c; capacity=10 entries"
+      ]
+    },
+    {
+      "index": 4,
+      "offset": "0x10",
+      "name": "OpenDevice",
+      "fw30_signature": "int32_t(tDeviceId)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvDal 0x2f50-0x2f58; after matching device name, stores DeviceId in native-driver object"
+      ]
+    },
+    {
+      "index": 5,
+      "offset": "0x14",
+      "name": "CloseDevice",
+      "fw30_signature": "int32_t(tDeviceId)",
+      "consumer_use": "unknown",
+      "sites": []
+    },
+    {
+      "index": 6,
+      "offset": "0x18",
+      "name": "IsDeviceOpen",
+      "fw30_signature": "bool(tDeviceId)",
+      "consumer_use": "unknown",
+      "sites": []
+    },
+    {
+      "index": 7,
+      "offset": "0x1c",
+      "name": "GetDeviceName",
+      "fw30_signature": "int32_t(tDeviceId,size_t,char*,size_t*)",
+      "consumer_use": "unknown",
+      "sites": []
+    },
+    {
+      "index": 8,
+      "offset": "0x20",
+      "name": "GetDeviceFlags",
+      "fw30_signature": "int32_t(tDeviceId,uint32_t*)",
+      "consumer_use": "unknown",
+      "sites": []
+    },
+    {
+      "index": 9,
+      "offset": "0x24",
+      "name": "GetIoSizes",
+      "fw30_signature": "int32_t(tDeviceId,uint32_t*,uint32_t*)",
+      "consumer_use": "unknown",
+      "sites": []
+    },
+    {
+      "index": 10,
+      "offset": "0x28",
+      "name": "ConfigureSubdevice",
+      "fw30_signature": "int32_t(tDeviceId,int32_t,void*)",
+      "consumer_use": "unknown",
+      "sites": []
+    },
+    {
+      "index": 11,
+      "offset": "0x2c",
+      "name": "ConfigureDevice",
+      "fw30_signature": "int32_t(tDeviceId,void*)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvKbus 0x3a0c-0x3a14"
+      ]
+    },
+    {
+      "index": 12,
+      "offset": "0x30",
+      "name": "WriteStart",
+      "fw30_signature": "int32_t(tDeviceId,uint32_t)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvKbus 0x64c0-0x64cc; task id zero",
+        "IoDrvDal 0x2154-0x2158; task id zero"
+      ]
+    },
+    {
+      "index": 13,
+      "offset": "0x34",
+      "name": "WriteBit",
+      "fw30_signature": "int32_t(tDeviceId,uint32_t,uint32_t,uint8_t*)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvKbus 0x5ff4-0x6008",
+        "IoDrvKbus 0x602c-0x6040",
+        "IoDrvDal 0x2274-0x227c; task id zero",
+        "IoDrvDal 0x232c-0x233c; task id zero"
+      ]
+    },
+    {
+      "index": 14,
+      "offset": "0x38",
+      "name": "WriteBool",
+      "fw30_signature": "int32_t(tDeviceId,uint32_t,uint32_t,bool)",
+      "consumer_use": "unknown",
+      "sites": []
+    },
+    {
+      "index": 15,
+      "offset": "0x3c",
+      "name": "WriteBytes",
+      "fw30_signature": "int32_t(tDeviceId,uint32_t,uint32_t,uint32_t,uint8_t*)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvKbus 0x5f38-0x5f40 helper path",
+        "IoDrvKbus 0x663c-0x6648 main output; task id zero",
+        "IoDrvDal 0x2210-0x2218; task id zero",
+        "IoDrvDal 0x2388-0x2390; one-byte write, task id zero"
+      ]
+    },
+    {
+      "index": 16,
+      "offset": "0x40",
+      "name": "WriteEnd",
+      "fw30_signature": "int32_t(tDeviceId,uint32_t)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvKbus 0x64f8-0x6508; return discarded",
+        "IoDrvDal 0x2184-0x2188; task id zero"
+      ]
+    },
+    {
+      "index": 17,
+      "offset": "0x44",
+      "name": "ReadStart",
+      "fw30_signature": "int32_t(tDeviceId,uint32_t)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvKbus 0x6138-0x6144; task id zero",
+        "IoDrvDal 0x3418-0x341c; task id zero"
+      ]
+    },
+    {
+      "index": 18,
+      "offset": "0x48",
+      "name": "ReadBit",
+      "fw30_signature": "int32_t(tDeviceId,uint32_t,uint32_t,uint8_t*)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvKbus 0x5c00-0x5c10 helper bit-input path"
+      ]
+    },
+    {
+      "index": 19,
+      "offset": "0x4c",
+      "name": "ReadBool",
+      "fw30_signature": "int32_t(tDeviceId,uint32_t,uint32_t,bool*)",
+      "consumer_use": "unknown",
+      "sites": []
+    },
+    {
+      "index": 20,
+      "offset": "0x50",
+      "name": "ReadBytes",
+      "fw30_signature": "int32_t(tDeviceId,uint32_t,uint32_t,uint32_t,uint8_t*)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvKbus 0x5c94-0x5ca4 helper path",
+        "IoDrvKbus 0x6468-0x6470 main input; task id zero",
+        "IoDrvDal 0x34d0-0x34d8; task id zero",
+        "IoDrvDal 0x351c-0x352c; task id zero"
+      ],
+      "consumer_call_sites": "IoDrvKbus helper 0x5c94/0x5ca4 and main 0x6468/0x6470; IoDrvDal 0x34d0/0x34d8 and 0x351c/0x352c; observed generic task argument zero"
+    },
+    {
+      "index": 21,
+      "offset": "0x54",
+      "name": "ReadEnd",
+      "fw30_signature": "int32_t(tDeviceId,uint32_t)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvKbus 0x6178-0x6188; return discarded",
+        "IoDrvDal 0x3440-0x3444; task id zero"
+      ]
+    },
+    {
+      "index": 22,
+      "offset": "0x58",
+      "name": "DiagnoseGetDeviceState",
+      "fw30_signature": "int32_t(tDeviceId,uint32_t,uint8_t*,tBusState*)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvKbus 0x5934-0x593c",
+        "IoDrvKbus 0x608c-0x6094",
+        "IoDrvKbus 0x61d0-0x61d8"
+      ]
+    },
+    {
+      "index": 23,
+      "offset": "0x5c",
+      "name": "DiagnoseGetSubdeviceState",
+      "fw30_signature": "int32_t(tDeviceId,int32_t,size_t,uint8_t*,tDiagnoseState*)",
+      "consumer_use": "unknown",
+      "sites": []
+    },
+    {
+      "index": 24,
+      "offset": "0x60",
+      "name": "RegisterEventHandler",
+      "fw30_signature": "int32_t(tDeviceId,tEventHandler,void*)",
+      "consumer_use": "unknown",
+      "sites": []
+    },
+    {
+      "index": 25,
+      "offset": "0x64",
+      "name": "UnregisterEventHandler",
+      "fw30_signature": "int32_t(tDeviceId,tEventHandler)",
+      "consumer_use": "unknown",
+      "sites": []
+    },
+    {
+      "index": 26,
+      "offset": "0x68",
+      "name": "GetLastError",
+      "fw30_signature": "int32_t(tDeviceId,tError*)",
+      "consumer_use": "unknown",
+      "sites": []
+    },
+    {
+      "index": 27,
+      "offset": "0x6c",
+      "name": "ApplicationStateChanged",
+      "fw30_signature": "int32_t(tApplicationStateChangedEvent)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvDal 0x23c8-0x23d0"
+      ]
+    },
+    {
+      "index": 28,
+      "offset": "0x70",
+      "name": "CallDeviceSpecificFunction",
+      "fw30_signature": "int32_t(const char*,void*,...)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvKbus direct slot calls: 0x26ac/0x26b8, 0x2754/0x2758, 0x2ba4/0x2bb4, 0x2d64/0x2d6c, 0x3084/0x3090, 0x3a3c/0x3a48, 0x5614/0x5628, 0x56a4/0x56b0, 0x56f0/0x56fc, 0x5730/0x5738, 0x5770/0x577c, 0x67ac/0x67b0, 0x7324/0x7330",
+        "IoDrvKbus loads slot function pointer at 0x7394, 0x73b0, 0x73d0, 0x7408 and passes to helper 0x6d24; shared indirect dispatcher call at 0x6d54"
+      ]
+    },
+    {
+      "index": 29,
+      "offset": "0x74",
+      "name": "VCallDeviceSpecificFunction",
+      "fw30_signature": "int32_t(const char*,void*,va_list)",
+      "consumer_use": "unknown",
+      "sites": []
+    },
+    {
+      "index": 30,
+      "offset": "0x78",
+      "name": "WatchdogSetTime",
+      "fw30_signature": "int32_t(uint32_t,uint32_t)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvDal 0x3ed8-0x3ee0"
+      ]
+    },
+    {
+      "index": 31,
+      "offset": "0x7c",
+      "name": "WatchdogStart",
+      "fw30_signature": "int32_t(void)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvDal 0x26ac-0x26b0",
+        "IoDrvDal 0x41c8-0x41cc"
+      ]
+    },
+    {
+      "index": 32,
+      "offset": "0x80",
+      "name": "WatchdogStop",
+      "fw30_signature": "int32_t(void)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvDal 0x2698-0x269c",
+        "IoDrvDal 0x2b80-0x2b84"
+      ]
+    },
+    {
+      "index": 33,
+      "offset": "0x84",
+      "name": "WatchdogTrigger",
+      "fw30_signature": "int32_t(void)",
+      "consumer_use": "observed",
+      "sites": [
+        "IoDrvDal 0x240c-0x2410",
+        "IoDrvDal 0x2504-0x2508"
+      ]
+    }
+  ],
+  "provider_behavior": {
+    "get_device_list": "capacity is entry count; total count is written; zero capacity performs no list write",
+    "read_write_bytes": "rejects uint32 offset+size overflow and end greater than configured direction extent before device-specific dispatch",
+    "get_device_name": "requires nonempty destination on examined path; bounded copy; final buffer byte set to NUL; output length is copied string length; zero copied length returns failure",
+    "event_callbacks": "register forwards handler and userData; unregister forwards device and handler; thread, concurrency, in-flight drain and post-unregister lifetime unknown",
+    "status_constants": {
+      "DAL_FAILURE": -1,
+      "DAL_SUCCESS": 0,
+      "DAL_NOTUSED": 1
+    },
+    "header_error_contract": "header comments commonly promise 0/-1; CallDeviceSpecificFunction documents outer 0/-1/1 and a separate function result through returnValue; complete FW31 mapping is unknown",
+    "cyclic_results": "Kbus checks ReadStart/WriteStart and data operation statuses. ReadEnd/WriteEnd are called, but their return values are discarded when the prior accumulated operation status is restored; no consumer failure response from end-slot errors is established.",
+    "consumer_return_handling": "Kbus branches on start and data-operation return values; Kbus discards ReadEnd/WriteEnd returns. IoDrvDal generic transaction callbacks ignore the observed return values for start, bit/byte and end calls."
+  },
+  "observed_device_specific_calls": [
+    {
+      "name": "libpackbus_get_terminal_info_32",
+      "slot_offset": "0x70",
+      "sites": [
+        "IoDrvKbus 0x26b8",
+        "IoDrvKbus 0x3a48"
+      ],
+      "status": "name resolved; exact 0x3a48 argument/handler behavior bound in observed_callsite_payloads; 0x26b8 call argument/evaluation remains not fully compared"
+    },
+    {
+      "name": "libpackbus_Push",
+      "slot_offset": "0x70",
+      "sites": [
+        "IoDrvKbus 0x2758",
+        "IoDrvKbus 0x67b0"
+      ],
+      "status": "name resolved; arguments and handler result interpretation not fully bound"
+    },
+    {
+      "name": "libpackbus_get_uid",
+      "slot_offset": "0x70",
+      "sites": [
+        "IoDrvKbus 0x2bb4",
+        "IoDrvKbus 0x3090"
+      ],
+      "status": "name resolved; arguments and handler result interpretation not fully bound"
+    },
+    {
+      "name": "libpackbus_read_conf_reg",
+      "slot_offset": "0x70",
+      "sites": [
+        "IoDrvKbus 0x2d6c",
+        "IoDrvKbus 0x56b0 (register 30)",
+        "IoDrvKbus 0x56fc (register 28)",
+        "IoDrvKbus 0x5738 (register 16)",
+        "IoDrvKbus 0x577c (register 29)",
+        "shared helper call 0x6d54; source pointer loads at 0x7394,0x73b0,0x73d0,0x7408"
+      ],
+      "status": "name and register numbers resolved at four helper transfers; complete handler signature, data and return rules remain open"
+    },
+    {
+      "name": "libpackbus_read_table_9",
+      "slot_offset": "0x70",
+      "sites": [
+        "IoDrvKbus 0x5628",
+        "IoDrvKbus 0x7330"
+      ],
+      "status": "name resolved; module-validation call parses four hex chars at string+4 and compares uint16; complete handler contract open"
+    }
+  ],
+  "other_consumer_closure": {
+    "iodrvdal_component_entry": "calls adi_GetApplicationInterface and copies 136 bytes; direct lifecycle, open-device, process-data, application-state and watchdog slot calls attributed in slot matrix; callback hookup semantics remain partly open",
+    "kbus_lower_dependencies": "libwago_dbus.so and libdiagnostic.so are DT_NEEDED; their service effects relative to process data are untraced",
+    "packbus_header_sha256": "ebde7a6efb590f56f18b6b5e146baa8c6483a1a3ba53f45b07697065ee406379",
+    "fw31_packbus_sha256": "3b7b7ca4fa14e5994552040a7b40b1cfbbf43e0649a4ad9277ece421fd4bc5d6",
+    "fw31_packbus_behavior": "terminal-info32 handler signature and capacity/return behavior statically attributed to actual FW31 packbus binary; static only",
+    "fw30_packbus_sha256": "00537de62e3c4b19cda3f24f6e6e1308ec03dc8d0c761537690a0e7f5f3cbd47"
+  },
+  "cut_assessment": {
+    "smallest_plausible_seam": "replace only the provider behind adi_GetApplicationInterface; retain original CODESYS runtime, I/O manager, IoDrvDal, and IoDrvKbus",
+    "directly_observed_slots": 21,
+    "cyclic_io_and_diagnosis_slots": 9,
+    "safe_full_original_consumer_slice": "BLOCKED: active device/module mapping, remaining callsite-specific variadic opcode argument/error contracts, and Kbus D-Bus/diagnostic path closure remain open; ConfigureDevice type-III layout and terminal-info32 handler are statically bound",
+    "smallest_complete_hardware_cut_proven": false,
+    "review": "self-review; static analysis only; no independent review claimed",
+    "execution": "NOT_RUN",
+    "consumer_slot_use_split": {
+      "IoDrvKbus": 11,
+      "IoDrvDal": 17,
+      "IoDrvDal_additional_unique": 10,
+      "union": 21
+    },
+    "provider_contract_slice": "IMPLEMENTED_OWN_MODEL: authentic header signatures and derived consumer/provider contracts; own compile, static/dynamic harness and isolation checks PASS; no original-consumer qualification"
+  },
+  "observed_callsite_payloads": [
+    {
+      "name": "ConfigureDevice type-III payload",
+      "slot_offset": "0x2c",
+      "consumer": "IoDrvKbus",
+      "consumer_sha256": "543e8b1d2d19352030fe804a7e667ca30c1d9ba80069f2df3158c77c544789b8",
+      "call": "0x3a14",
+      "payload": "12 bytes; discriminator 3 at +0; runtime-selected uint32 TCM control at +4; false byte at +8; FW30 packbus typeIII header agrees and actual FW31 packbus path branches on type discriminator 3 and copies 12 bytes",
+      "status": "VERIFIZIERT static for these consumer/provider bytes"
+    },
+    {
+      "name": "libpackbus_get_terminal_info_32",
+      "slot_offset": "0x70",
+      "consumer": "IoDrvKbus",
+      "consumer_sha256": "543e8b1d2d19352030fe804a7e667ca30c1d9ba80069f2df3158c77c544789b8",
+      "call": "0x3a48",
+      "arguments": "name; inner-result pointer; uint32 capacity=4000 bytes; records pointer; stack count pointer",
+      "result_handling": "outer ADI result and inner handler result combined with OR at 0x3a4c-0x3a50; nonzero is error on this path",
+      "handler_signature": "uint32 capacity, records pointer, count pointer; actual FW31 descriptor has three args: uint32, pointer, pointer; return is signed 32-bit",
+      "fw31_packbus_sha256": "3b7b7ca4fa14e5994552040a7b40b1cfbbf43e0649a4ad9277ece421fd4bc5d6",
+      "handler_behavior": "null records/count pointer returns 1; writes count; capacity smaller than count*16 returns 2; exact capacity copies count records; excess capacity copies records and zeroes remaining bytes",
+      "status": "VERIFIZIERT static"
+    },
+    {
+      "name": "libpackbus_Push",
+      "slot_offset": "0x70",
+      "consumer": "IoDrvKbus",
+      "consumer_sha256": "543e8b1d2d19352030fe804a7e667ca30c1d9ba80069f2df3158c77c544789b8",
+      "call": "0x2758",
+      "arguments_and_errors": "not fully bound"
+    },
+    {
+      "name": "libpackbus_get_uid",
+      "slot_offset": "0x70",
+      "consumer": "IoDrvKbus",
+      "consumer_sha256": "543e8b1d2d19352030fe804a7e667ca30c1d9ba80069f2df3158c77c544789b8",
+      "call": "0x3090",
+      "arguments_and_errors": "not fully bound"
+    },
+    {
+      "name": "WAGO device-description parameter evidence",
+      "input_sha256s": {
+        "750-1405": "2ea6fb96d1db35228450ccd94454f1e51b562a6e1982e416f34eed2feb056273",
+        "750-1504": "207e7d654f98a180b06cb75117e282ac2a85f956cbb5d057113d76846a6dc991"
+      },
+      "declarations": "static descriptor extraction shows parameter 10 defaults to UUUU9001UUUUUUUU for 750-1405 and UUUU9002UUUUUUUU for 750-1504; identifiers 9001_0750140500000000 and 9002_0750150400000000",
+      "scope": "configuration-input evidence only; does not establish active project selection, terminal presence/order, mapping or hardware"
+    },
+    {
+      "name": "module ID validation fast path",
+      "consumer": "IoDrvKbus",
+      "consumer_sha256": "543e8b1d2d19352030fe804a7e667ca30c1d9ba80069f2df3158c77c544789b8",
+      "function": "idk_Valid_ModuleCmpValue",
+      "source_call": "read_table_9 via slot 0x70 at 0x5628",
+      "behavior": "expects a 16-character module ID; parses four hex chars beginning at +4 and compares returned uint16; if returned value has bit 0x8000 set, returns success before UID and read_conf_reg checks",
+      "config_inputs": "static device-description declarations for 750-1405 and 750-1504 default to UUUU9001UUUUUUUU and UUUU9002UUUUUUUU; their type values have the high bit set",
+      "scope": "establishes a narrow consumer fast path for those declared IDs, not active configuration or terminal presence/order"
+    }
+  ],
+  "consumer_slot_use_split": {
+    "IoDrvKbus": 11,
+    "IoDrvDal": 17,
+    "IoDrvDal_additional_unique": 10,
+    "union": 21
+  },
+  "own_adapter": {
+    "source": "tools/adi_digital_adapter.c",
+    "source_sha256": "7da0d31316648041cd1818291bb209030b1b7d9b8d83d49bb2a368289a0edfff",
+    "header": "tools/adi_digital_adapter.h",
+    "header_sha256": "f4a5760093dabf5f358b6ca61b27af51d5e6460f9cd14e0b2abfff8d5ca83086",
+    "harness": "tools/adi_digital_adapter_test.c",
+    "harness_sha256": "9cfd3c287883d5730ffadec8bec335890181b22ee5f8edf592c120123a1799d5",
+    "armhf_executable_sha256": "1f612a2a5eb70f151fb83eba0511e51a287147948a13568260b90672e0d5c75c",
+    "private_header_sha256s": {
+      "adi_application_interface.h": "d941c172a504e4ddc3db19016c4163f844d3b5c4bf604a52cbc2d12f7d26151c",
+      "dal_types.h": "f1956631c7bc17f95d8909762a900217bd2d2c46f5c79db1fe3ca5fb553a4fef",
+      "libpackbus.h": "ebde7a6efb590f56f18b6b5e146baa8c6483a1a3ba53f45b07697065ee406379"
+    },
+    "compiler": "GCC 14.2.0 arm-linux-gnueabihf, ARMv7-A hard-float, compile/link own code only; not SDK GCC 11.3.1 or FW31 header provenance",
+    "device_model": {
+      "ADI_DeviceName": "libpackbus",
+      "DeviceId": 1,
+      "DeviceId_scope": "own opaque model identifier; consumer receives it via GetDeviceList; not hardware identity",
+      "input_bytes": 2,
+      "output_bytes": 2,
+      "terminal_records": "two 16-bit records; own packing offsets input 0/16 and output 0/0, with unused direction size zero",
+      "status": "own model policy derived from descriptor channel declarations; not live GetIoSizes or physical mapping evidence",
+      "configuration": "only typeIII TCM control zero and observed false new-process-image flag accepted; enabled TCM rejected"
+    },
+    "own_behaviors": [
+      "bounded one-entry list, canonical libpackbus name and own opaque device id",
+      "authentic typeIII record accepted only for TCM zero and false new-process-image flag",
+      "latched 16-bit input reads with byte/bit bounds",
+      "full 16-bit output frame required; staged transaction commits only on valid WriteEnd",
+      "invalid transfer or permit/application/watchdog eligibility transition poisons current write; a fresh WriteStart and complete frame are required",
+      "requested/effective outputs separate; own permit/application/manual-clock-watchdog fail-closed policy",
+      "CloseDevice resets configuration, gates and requested output state",
+      "terminal-info32 capacity/count behavior including null, undersize, exact capacity and excess tail",
+      "read_table_9 model IDs 0x9001 and 0x9002; Push success only in own model",
+      "explicit inner failure for UID/register queries; unknown names return outer DAL_NOTUSED",
+      "diagnosis buffer initialization; unsupported callback/subdevice methods fail"
+    ],
+    "compile_link_status": "PASS compile/link own code only against hash-bound genuine FW30 headers; no vendor binary linked",
+    "execution_status": "PASS: root executed static and dynamically loaded own ARM harness in separately validated offline roots; no original WAGO component",
+    "original_consumer_status": "BLOCKED/OFFEN on selected native project/tree/mapping, callback/lifecycle semantics, remaining opcode/error interpretation, and Kbus D-Bus/diagnostic service closure; original manager supplies its own connector/map objects",
+    "review": "targeted read-only peer review of exact final adapter/test/header hashes; harness aliasing issue fixed before final review; no execution review claimed",
+    "execution_evidence": "originalstack-block-validation-2026-10-12.json"
+  },
+  "observed_device_specific_contracts": {
+    "evidence": "FW31 libpackbus hash 3b7b7ca4fa14e5994552040a7b40b1cfbbf43e0649a4ad9277ece421fd4bc5d6; static descriptor metadata and handler inspection",
+    "descriptor_types": {
+      "libpackbus_Push": {
+        "args": [],
+        "return": "signed int32",
+        "handler_behavior": "descriptor shape bound; full handler result path not analyzed"
+      },
+      "libpackbus_read_table_9": {
+        "args": [
+          "uint8 promoted to int",
+          "uint16*"
+        ],
+        "return": "signed int32",
+        "behavior": "slot zero/out of range -1; null result pointer -2; otherwise writes module ID and returns 0 if nonzero, 2 if zero"
+      },
+      "libpackbus_read_conf_reg": {
+        "args": [
+          "uint8 promoted to int",
+          "uint8 promoted to int",
+          "uint16*"
+        ],
+        "return": "signed int32",
+        "behavior": "no rail 2; invalid slot -1; null output -3; unsupported terminal/register -2; otherwise rail helper result"
+      },
+      "libpackbus_get_uid": {
+        "args": [
+          "uint8 promoted to int",
+          "output pointer"
+        ],
+        "return": "signed int32",
+        "behavior": "validates slot/output, writes module identity via original helper and returns helper result; own virtual model fabricates no identity"
+      },
+      "libpackbus_get_terminal_info_32": {
+        "args": [
+          "uint32 capacity bytes",
+          "record pointer",
+          "uint32 count pointer"
+        ],
+        "return": "signed int32",
+        "behavior": "null records/count=1; writes count; undersize count*16=2; sufficient capacity copies records and zeros excess"
+      }
+    },
+    "terminal_info_calls": {
+      "preflight": "Kbus 0x26b8 passes capacity 0, valid temporary record buffer and count pointer; expects inner result 2",
+      "normal": "Kbus 0x3a48 passes capacity 4000; outer and inner return are ORed at 0x3a4c-0x3a50; nonzero error",
+      "additional_handler_sites": "Kbus 0x26b8 and helper-mediated operation at 0x6d54"
+    },
+    "remaining_open": "active project terminal tree/order; Push behavior; remaining service and lifecycle reachability"
+  }
+}

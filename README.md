@@ -11,7 +11,8 @@ Bevorzugt wird **originaler ARM-Userspace + belegte Hardwareabstraktionsgrenze (
 - [Forschungsbefunde und Grenzen](docs/research.md)
 - [Architekturentscheidung](docs/adr-0001.md)
 - [Roadmap und Abnahmekriterien](docs/roadmap.md)
-- [Konkreter nächster Originalstack-Block](docs/next-originalstack-block.md)
+- [Ausgeführter Mapping-/ADI-Adapterblock](docs/originalstack-block-2026-10-12.md)
+- [Konkreter Originalstack-Plan und Restgates](docs/next-originalstack-block.md)
 - [Sicherheits- und Zugriffsvertrag](docs/safety.md)
 - [Öffentliche Quellen](docs/sources.md)
 - [Lokaler Agent: Übergabe ohne Zugangsdaten](docs/handoff.md)
@@ -22,7 +23,9 @@ Bevorzugt wird **originaler ARM-Userspace + belegte Hardwareabstraktionsgrenze (
 
 Der eigene Python-Forschungsprototyp, geprüfte synthetische Konfigurationen und Offlinewerkzeuge sind jetzt selektiv importiert. Die private Studie, Originalquellen, Herstellerheader/-binaries und Gerätezugänge bleiben außerhalb von Git. Das ist kein bereits lauffähiger Original-WAGO-Emulator.
 
-Die aktuelle hardwarefreie Suite umfasst **92 PASS**: 82 bestehende Tests plus 10 Device-Description-Parserfälle. Frühere Stände mit 52 und 65 Tests sind historische Zwischenstände, keine Fehler. Backend-/Werkzeug-PASS belegt keine originale Runtime oder reale Klemmen. Der [eigene IEC-Testquelltext](prototype/iec/minimal_io.st) wurde jetzt mit CODESYS 3.5.21.50 in ein natives Projekt übernommen und fehlerfrei offline kompiliert. Der [Engineeringbericht vom 12.10.2026](docs/codesys-engineering-2026-10-12.md) belegt außerdem einen begrenzten Lauf der internen Testanwendung auf der originalen Referenzruntime. Die Anwendung wurde danach entfernt; virtuelle I/O-Akzeptanz ist noch nicht nachgewiesen. Der frühere Windows-AppContainer-Test bleibt FAIL; nach ausdrücklicher Änderung des Arbeitsauftrags wird die regulär installierte IDE verwendet.
+Die aktuelle hardwarefreie Suite umfasst **99 PASS**: die bisherigen 92 Tests plus sieben Mapping-Vertragstests. Frühere Stände mit 52 und 65 Tests sind historische Zwischenstände, keine Fehler. Backend-/Werkzeug-PASS belegt keine originale Runtime oder reale Klemmen. Der [eigene IEC-Testquelltext](prototype/iec/minimal_io.st) wurde jetzt mit CODESYS 3.5.21.50 in ein natives Projekt übernommen und fehlerfrei offline kompiliert. Der [Engineeringbericht vom 12.10.2026](docs/codesys-engineering-2026-10-12.md) belegt außerdem einen begrenzten Lauf der internen Testanwendung auf der originalen Referenzruntime. Die Anwendung wurde danach entfernt; virtuelle I/O-Akzeptanz ist noch nicht nachgewiesen. Der frühere Windows-AppContainer-Test bleibt FAIL; nach ausdrücklicher Änderung des Arbeitsauftrags wird die regulär installierte IDE verwendet.
+
+Der [neue Block](docs/originalstack-block-2026-10-12.md) ergänzt ein tatsächlich gespeichertes und wieder geöffnetes DI/DO-Mapping mit null Compilerfehlern/Warnungen. Die 34-Slot-Vertragsmatrix und der eigene ADI-Adapter sind implementiert; eigene statische und dynamisch geladene ARM-Harnessläufe sowie ihre Isolationskontrollen sind PASS. Das qualifiziert den eigenen sequenziellen Adapter, noch keinen originalen I/O-Verbraucher oder virtuellen Runtime-Lauf. [ADR-0002](docs/adr-0002.md) bindet Modellpackung, vollständige Frames und die eigene logische Watchdogzeit.
 
 Neue [FW30-ABI-Befunde](docs/abi-research-2026-10-11.md) belegen den direkten ADI-Import durch originales `libIoDrvDal`, echte Headerlayouts und den Gerätezahlvertrag von `GetDeviceList`. Die Compile-only-Sonde verwendet ARM-Hard-Float-GCC 14.2 statt SDK-GCC 11.3.1. Der [tatsächliche Referenzbestand](docs/reference-abi-2026-10-11.md) ist jetzt selektiv gesichert: Der DAL-Provider ist bytegleich zum FW30-Artefakt, die originalen I/O-Verbraucher unterscheiden sich. ADI-Import, 136-Byte-Tablecopy und indirekte Lese-/Schreibeinträge sind für den aktuellen Verbraucher statisch belegt; originale Init-/DI-/DO-Ausführung bleibt blockiert.
 
