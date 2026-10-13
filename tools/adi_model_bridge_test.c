@@ -45,7 +45,7 @@ int32_t virtual_adi_set_inputs(uint16_t input_bits) {
     pthread_mutex_unlock(&test_mutex);
     return -1;
   }
-  test_state.inputs = (uint16_t)(input_bits & 0x00ffu);
+  test_state.inputs = input_bits;
   pthread_mutex_unlock(&test_mutex);
   return 0;
 }
@@ -259,6 +259,32 @@ int main(void) {
   nanosleep(&pause, NULL);
   wait_permit_false();
   close(client);
+
+  client = connect_client(socket_path);
+  const unsigned word_values[] = {0u, 255u, 256u, 32768u, 42390u, 65535u};
+  for (size_t index = 0; index < sizeof(word_values) / sizeof(word_values[0]); ++index) {
+    char request[32], expected[80];
+    snprintf(request, sizeof(request), "INPUT %u", word_values[index]);
+    snprintf(expected, sizeof(expected), "STATUS input=%u permit=0 ", word_values[index]);
+    command(client, request, "OK INPUT");
+    command(client, "STATUS", expected);
+    check(get_test_state().inputs == word_values[index], "word input was truncated");
+  }
+  close(client);
+  wait_permit_false();
+  const char *invalid_inputs[] = {
+      "INPUT 65536", "INPUT -1", "INPUT +1", "INPUT 00", "INPUT 0255",
+      "INPUT 100000", "INPUT 4294967296", "INPUT 1x", "INPUT 65535\n", "INPUT "};
+  for (size_t index = 0; index < sizeof(invalid_inputs) / sizeof(invalid_inputs[0]); ++index) {
+    client = connect_client(socket_path);
+    command(client, "PERMIT 1", "OK PERMIT");
+    command(client, invalid_inputs[index], "ERR COMMAND");
+    close(client);
+    wait_permit_false();
+    snapshot = get_test_state();
+    check(snapshot.inputs == 65535u && snapshot.effective_outputs == 0u,
+          "invalid input changed signals or left outputs enabled");
+  }
 
   virtual_model_bridge_stop();
   check(access(socket_path, F_OK) != 0 && errno == ENOENT,

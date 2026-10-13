@@ -108,6 +108,9 @@ int main(void) {
   assert(connect(fd, (struct sockaddr *)&address,
                  (socklen_t)(offsetof(struct sockaddr_un, sun_path) + strlen(path) + 1u)) == 0);
   command(fd, "INPUT 128", "OK INPUT");
+  /* The active eight-channel profile keeps its existing low-byte mask. */
+  command(fd, "INPUT 32896", "OK INPUT");
+  command(fd, "STATUS", "STATUS input=128 permit=0 ");
   assert(adi->ReadStart(1, 0) == DAL_SUCCESS);
   uint8_t input = 0;
   assert(adi->ReadBytes(1, 0, 0, 1, &input) == DAL_SUCCESS && input == 128);
@@ -141,6 +144,34 @@ int main(void) {
   assert(adi->Init() == DAL_SUCCESS);
   test_concurrent_init_exit(adi, path);
   assert(adi->Exit() == DAL_SUCCESS);
+  assert(virtual_adi_select_profile(VIRTUAL_ADI_PROFILE_DIGITAL16) == DAL_SUCCESS);
+  assert(adi->Init() == DAL_SUCCESS && adi->OpenDevice(1) == DAL_SUCCESS);
+  assert(adi->ConfigureDevice(1, &config) == DAL_SUCCESS);
+  fd = socket(AF_UNIX, SOCK_SEQPACKET | SOCK_CLOEXEC, 0);
+  assert(fd >= 0);
+  assert(setsockopt(fd, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == 0);
+  assert(connect(fd, (struct sockaddr *)&address,
+                 (socklen_t)(offsetof(struct sockaddr_un, sun_path) + strlen(path) + 1u)) == 0);
+  command(fd, "PERMIT 0", "OK PERMIT");
+  const unsigned word_values[] = {0u, 255u, 256u, 32768u, 42390u, 65535u};
+  for (size_t index = 0; index < sizeof(word_values) / sizeof(word_values[0]); ++index) {
+    char request[32], expected[80];
+    snprintf(request, sizeof(request), "INPUT %u", word_values[index]);
+    snprintf(expected, sizeof(expected), "STATUS input=%u permit=0 ", word_values[index]);
+    command(fd, request, "OK INPUT");
+    command(fd, "STATUS", expected);
+    uint8_t input_word[2] = {0u, 0u};
+    assert(adi->ReadStart(1, 0u) == DAL_SUCCESS);
+    assert(adi->ReadBytes(1, 0u, 0u, 2u, input_word) == DAL_SUCCESS);
+    assert(input_word[0] == (word_values[index] & 0xffu));
+    assert(input_word[1] == (word_values[index] >> 8));
+    assert(adi->ReadEnd(1, 0u) == DAL_SUCCESS);
+  }
+  command(fd, "INPUT 65536", "ERR COMMAND");
+  close(fd);
+  assert(virtual_adi_model_snapshot(&snapshot) == DAL_SUCCESS);
+  assert(snapshot.inputs == 65535u && !snapshot.permit && snapshot.effective_outputs == 0u);
+  assert(adi->CloseDevice(1) == DAL_SUCCESS && adi->Exit() == DAL_SUCCESS);
   assert(access(path, F_OK) != 0 && rmdir(directory) == 0);
   puts("ADI_MODEL_BRIDGE_INTEGRATION_TEST: PASS (own adapter only)");
   return 0;

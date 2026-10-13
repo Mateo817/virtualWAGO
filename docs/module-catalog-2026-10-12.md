@@ -1,5 +1,7 @@
 # Modulkatalog und ausführbare eigene Hardwaremodelle
 
+**Fortsetzung am 13.10.2026:** [Native Digitaltests](native-digital-tests-2026-10-13.md) qualifizieren jetzt beide festen C-Digitalprofile mit der realen Originalruntime. Hardwarevergleich, weitere Digitalprofile und native Analog-/PWM-/Seriellabnahme bleiben offen. Die folgende Tabelle und die 12.10.-Evidence beschreiben den historischen Offlineausbau.
+
 Stand: 12.10.2026. **14 exakte Standardartikel, neun ausführbare Standalone-Modellprofile.** Kein Hardwareinventar. Dieser Ausbau erfolgte offline, ohne neue Geräte-/VM-/Originalruntimeversuche. Der frühere native 750-430/530-Nachweis bleibt an seine damaligen Quellen gebunden. [ADR-0007](adr-0007.md), [Quellenprüfung](module-catalog-sources-2026-10-12.md).
 
 ## Abdeckung
@@ -52,6 +54,6 @@ Der gemischte Ablauf stellt DI 133 sowie 12/20 mA bereit und übernimmt voreinge
 
 [Gebundene Evidence](../evidence/module-catalog-2026-10-12.json) dokumentiert tatsächliche lokale Tests, eigene ARM-Regression und Reviews. Der Generator erhält bestehende Modulwerte, Descriptorpins und eigene Offsets. GNU-Lader/libc laufen in der eigenen Offline-ARM-Probe; originale IoDrv/Runtime und Hardware wurden dort nicht ausgeführt. Keine Herstellerartefakte ins Git.
 
-Neue native Digital-8-Regression und Digital-16-Abnahme, Analog-/PWM-ADI-/Registerverträge sowie Hardwarevergleiche mit gebundenen Revisionen bleiben offen. Diese Standalone-Modelle sind noch nicht an den originalen Runtime-Modellkanal für Analog/PWM angeschlossen; dessen heutiges Protokoll transportiert digitale Werte. Der frühere Digital-8-PASS wird nicht übertragen.
+Zum historischen Stand12.10. blieben neue native Digital-8-Regression und Digital-16-Abnahme offen. Die [Fortsetzung13.10.](native-digital-tests-2026-10-13.md) qualifiziert inzwischen beide festen Digitalprofile bei Modellpermit0. Analog-/PWM-ADI-/Registerverträge sowie Hardwarevergleiche mit gebundenen Revisionen bleiben offen. Diese Standalone-Modelle sind noch nicht an den originalen Runtime-Modellkanal für Analog/PWM angeschlossen; dessen heutiges Protokoll transportiert digitale Werte. Der frühere Digital-8-PASS wird nicht übertragen.
 
 Virtuelle serielle Kommunikation auf der CAN-PFC200 und andere PFC200-Ausstattungen stehen in der [Roadmap](roadmap.md). Zuerst originale FW31-Komponenten, Portauswahl und Zusatzanforderungen prüfen. Die [CODESYS-Linux-Control-SL-Dokumentation](https://content.helpme-codesys.com/en/CODESYS%20Control/_rtsl_configure_modbus_rtu_linux.html) liefert einen Forschungsansatz für SysCom-Gerätedateien, keinen WAGO-FW31-Nachweis. Onboard-RS485 und K-Bus 750-652 sind verschiedene Verträge; echte Controlleridentität bleibt erhalten.

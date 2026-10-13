@@ -274,7 +274,7 @@ static bool send_response(int client_fd, const char *response) {
 
 static bool parse_input(const char *packet, size_t length, uint16_t *value) {
   static const char prefix[] = "INPUT ";
-  if (length <= sizeof(prefix) - 1u || length > sizeof(prefix) - 1u + 3u ||
+  if (length <= sizeof(prefix) - 1u || length > sizeof(prefix) - 1u + 5u ||
       memcmp(packet, prefix, sizeof(prefix) - 1u) != 0)
     return false;
   size_t digits = length - (sizeof(prefix) - 1u);
@@ -284,7 +284,7 @@ static bool parse_input(const char *packet, size_t length, uint16_t *value) {
     unsigned char byte = (unsigned char)packet[index];
     if (byte < '0' || byte > '9') return false;
     parsed = parsed * 10u + (unsigned)(byte - '0');
-    if (parsed > 255u) return false;
+    if (parsed > UINT16_MAX) return false;
   }
   *value = (uint16_t)parsed;
   return true;
@@ -294,7 +294,7 @@ static bool format_status(const virtual_model_snapshot *snapshot,
                           char *response, size_t capacity) {
   int count = snprintf(response, capacity,
                        "STATUS input=%u permit=%u requested=%u effective=%u watchdog=%u fault=%u generation=%llu frames=%llu opened=%u configured=%u running=%u",
-                       (unsigned)(snapshot->inputs & 0x00ffu),
+                       (unsigned)snapshot->inputs,
                        snapshot->permit ? 1u : 0u,
                        (unsigned)snapshot->requested_outputs,
                        (unsigned)snapshot->effective_outputs,

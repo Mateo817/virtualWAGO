@@ -1,5 +1,7 @@
 # Roadmap und objektive Abnahme
 
+**Fortsetzung, 13.10.2026:** [Neue native Digitaltests](native-digital-tests-2026-10-13.md) qualifizieren den aktuellen Digitaladapter für 750-430/530 und 750-1405/1504 bei Modellpermit 0. Der erste WORD16-Versuch fand eine eigene 8-Bit-Kanalgrenze; Korrektur und erfolgreicher vollständiger Wiederholungslauf sind getrennt dokumentiert. [Kurze neue Chat-Übergabe](new-chat-handoff-2026-10-13.md) bindet Entscheidungen und nächste Tests. Hardwarevergleich und native Analog-/PWM-/Seriellpfade bleiben offen.
+
 **Fortsetzung, 12.10.2026:** [Nativer Digital-8-Zyklus](native-cyclic-2026-10-12.md): originale Runtime, nativer I/O-Manager und Originaltreiber verarbeiten virtuelle 750-430/750-530. TCM 0 ist nativ offline gesetzt und wieder geöffnet geprüft; Init und zyklische angeforderte Ausgangsframes bei dauerhaftem Modellpermit 0 PASS. Original-STOP-Rücknahme und frische APP-/CRC-/Config-/Binary-Hashes PASS. [Controllerzugang](controller-metadata-2026-10-12.md) und frühere Abbrüche bleiben separat belegt. Sämtliche Moduldaten stammen aus dem Modell; echte Controllerdaten bleiben auf derselben Platine.
 
 **Früherer Nachweis, 12.10.2026:** [Modellkanal und geschützter Runtimeversuch](runtime-bridge-2026-10-12.md). Der konkret freigegebene Providerwechsel wurde versucht: originale Runtime und I/O-Treiber luden den Eigenprovider, native Initialisierung **FAIL**, DI/DO-Abnahme **NOT_RUN**. Die gezielte Rücknahme und der frische originale STOP-Wiederanlauf sind **PASS**; bestehende APP/CRC/Config und Originalbinaries sind hashgleich. Der aktuelle Prozess arbeitet im vorhandenen Runtimehome; das frühere gelöschte CWD ist historisch. Damals blockierten Boardmetadaten-/Signatur- und Hilfskomponentenpfade den Start. Die anschließende Controller-/TCM 0-/Zyklusqualifikation oben beschreibt den heutigen begrenzten Erfolg.
@@ -22,7 +24,7 @@ Der Eigentümer beauftragt zusätzlich den [Modulkatalog](module-catalog-2026-10
 
 - [x] Versionierter Katalog, Kanalgrenzen und gemischte Digital-/Analog-/PWM-Signalmodelle.
 - [x] Autonomes PWM Frq in eigener logischer Zeit; angeforderte/wirksame Werte und eigene Watchdoglease getrennt.
-- [ ] Neue native Digital-8-Regression und Digital-16-Abnahme 750-1405/1504 mit frischen Artefakten/Rückweg.
+- [x] Neue native Digital-8-Regression und Digital-16-Abnahme 750-1405/1504 mit frischen Artefakten/Rückweg: begrenzte Eingangs-/Ausgangsbefehlsprüfung bei Modellpermit 0; kein Hardwarevergleich.
 - [ ] 750-466: native Prozessabbild-/Diagnose-/Registerprojektion und Vergleich definierter Analogreize mit gebundener Modulrevision.
 - [ ] 750-677: originaler Konfigurations-/Start-/Statusvertrag, benötigte weitere Modi, native und später freigegebene Messvergleiche.
 - [ ] Weitere Artikel nach belegtem Daten-/Verhaltensvertrag freischalten; kein generisches Erfolgsstub.
@@ -31,7 +33,7 @@ Der Eigentümer beauftragt zusätzlich den [Modulkatalog](module-catalog-2026-10
 
 Der [Eigentümerfotobeleg](reference-module-photo-2026-10-12.md) zeigt 750-430 → 750-530 → 750-600. Frontartikel und fotografierte Reihenfolge sind damit belegt; Revisionen, elektronische Zuordnung und aktuelle Kommunikation bleiben offen. Die vorhandene Anwendung bleibt STOP; online erzeugte Bootdateien und aktualisierte Konfiguration wurden privat gesichert. Der aktuelle gezielte STOP-Wiederanlauf ist geprüft; Geräte-Reboot bleibt NOT_RUN. Kein blinder Neustart, Löschen oder Überschreiben. [Fortsetzung](adi-digital8-continuation-2026-10-12.md): authentischer Digital-8-Offlinestand und eigene ARM-Adapterprüfungen; die spätere native Abnahme steht im aktuellen Zyklusbericht. Der Root-Agent bleibt alleiniger Geräte-/VM-Integrator. Der konkrete Ablauf steht in [next-originalstack-block.md](next-originalstack-block.md), die datierten Aufzeichnungen in [Versuchsplan](real-controller-plan-2026-10-12.md) und [Beobachtungsprotokoll](real-controller-observation-2026-10-12.md).
 
-Die bisherigen 750-1405/750-1504 Artefakte bleiben Offline-Modellkandidaten. Sie setzen nicht die tatsächliche Bestückung. Die bisherigen 99 hardwarefreien Tests, Adapter- und Harnessläufe, Offline-Engineering-Builds sowie begrenzten internen Runtimebeobachtungen bleiben PASS ausschließlich in den jeweils verlinkten, revisionsgebundenen Scopes. Sie erfüllen R0–R3 nicht.
+Die virtuellen 750-1405/750-1504 sind inzwischen im begrenzten nativen WORD16-Test geprüft; Sie setzen nicht die tatsächliche Bestückung. Die bisherigen 99 hardwarefreien Tests, Adapter- und Harnessläufe, Offline-Engineering-Builds sowie begrenzten internen Runtimebeobachtungen bleiben PASS ausschließlich in den jeweils verlinkten, revisionsgebundenen Scopes. Sie erfüllen R0–R3 nicht.
 
 ## Statussprache
 
