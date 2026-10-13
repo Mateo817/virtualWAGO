@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "purpose": "research-layout-not-target-mapping",
+  "input_size": 20,
+  "output_size": 16,
+  "watchdog_ns": 100000000,
+  "modules": [
+    {"id": "analog", "model": "750-466.raw6", "input_offset": 0, "output_offset": 0},
+    {"id": "limit_inputs", "model": "750-1405.di16", "input_offset": 6, "output_offset": 0},
+    {"id": "digital_outputs", "model": "750-1504.do16", "input_offset": 0, "output_offset": 0},
+    {"id": "pwm", "model": "750-677.raw12", "input_offset": 8, "output_offset": 4}
+  ]
+}

@@ -1,12 +1,21 @@
 # Forschungsergebnisse und Machbarkeitsentscheidung
 
-Stand: 11.10.2026. Dies ist die öffentliche, bereinigte Zusammenfassung der vorhandenen Studie, keine neue Hardwaremessung. Quellenkennungen beziehen sich auf [sources.md](sources.md). Private Projektinventare und vollständige Evidence verbleiben im lokalen Übergabepaket.
+**Fortsetzung, 12.10.2026:** [Nativer Digital-8-Zyklus](native-cyclic-2026-10-12.md): originale Runtime, nativer I/O-Manager und Originaltreiber verarbeiten virtuelle 750-430/750-530. TCM 0 ist nativ offline gesetzt und wieder geöffnet geprüft; Init und zyklische angeforderte Ausgangsframes bei dauerhaftem Modellpermit 0 PASS. Original-STOP-Rücknahme und frische APP-/CRC-/Config-/Binary-Hashes PASS. [Controllerzugang](controller-metadata-2026-10-12.md) und frühere Abbrüche bleiben separat belegt. Sämtliche Moduldaten stammen aus dem Modell; echte Controllerdaten bleiben auf derselben Platine.
 
-## 1. Ziel und Ergebnis
+**Früherer Nachweis, 12.10.2026:** [Modellkanal und geschützter Runtimeversuch](runtime-bridge-2026-10-12.md). Der konkret freigegebene Providerwechsel wurde versucht: originale Runtime und I/O-Treiber luden den Eigenprovider, native Initialisierung **FAIL**, DI/DO-Abnahme **NOT_RUN**. Die gezielte Rücknahme und der frische originale STOP-Wiederanlauf sind **PASS**; bestehende APP/CRC/Config und Originalbinaries sind hashgleich. Der aktuelle Prozess arbeitet im vorhandenen Runtimehome; das frühere gelöschte CWD ist historisch. Damals blockierten Boardmetadaten-/Signatur- und Hilfskomponentenpfade den Start. Die anschließende Controller-/TCM 0-/Zyklusqualifikation oben beschreibt den heutigen begrenzten Erfolg.
 
-Eine virtuelle PFC200 soll nach Möglichkeit originale IEC-Logik, I/O-Mapping und WAGO-Gerätebaum verwenden. Die virtuelle Anbindung muss unterhalb der Anwendung liegen. Ein OPC-UA-Simulator oder ein in ST eingebautes Anlagenmodell erfüllt diesen Hardwareemulationsnachweis nicht.
 
-**HYPOTHESE / bevorzugte Forschungslinie:** Originaler ARM-Userspace mit originaler Runtime und möglichst originalen WAGO-I/O-Komponenten kann an einer begrenzten Hardwareabstraktionsgrenze virtualisiert werden. **OFFEN:** Austauschbarkeit dieser Grenze in der tatsächlich eingesetzten Firmware. **NOT_RUN:** Original-Runtimeboot und Akzeptanz virtueller Klemmen. Ein fertiger Emulator wird nicht behauptet.
+Stand: 12.10.2026. Die technischen Befunde weiter unten sind historische, revisions- und scopegebundene Forschungsergebnisse, keine neue Hardwaremessung. Die aktuelle Priorität wurde in [ADR-0003](adr-0003.md) festgelegt: zuerst die autorisierte reale Referenz-WAGO mit laufender Originalruntime, nativen I/O-Manager und originalen WAGO-I/O-Treibern; Simulation erst unterhalb einer belegten Hardwaregrenze. Eine vollständig virtuelle Steuerung folgt später. Quellenkennungen beziehen sich auf [sources.md](sources.md). Private Projektinventare und vollständige Evidence verbleiben im lokalen Übergabepaket. Die Original-ELF-/Headeranalyse steht in [abi-research-2026-10-11.md](abi-research-2026-10-11.md), der gebundene historische Geräte-/ABI-Stand in [reference-abi-2026-10-11.md](reference-abi-2026-10-11.md). Die erste Offline-/Verbindungsetappe bleibt in [execution-2026-10-11.md](execution-2026-10-11.md) dokumentiert.
+
+## 1. Forschungsziel und Priorität
+
+Langfristig soll eine virtuelle PFC200 nach Möglichkeit originale IEC-Logik, I/O-Mapping und WAGO-Gerätebaum verwenden. Der erste Nachweis erfolgt jedoch auf der realen autorisierten Referenz-WAGO mit Originalruntime und originalem I/O-Stack; eine spätere virtuelle Anbindung muss unterhalb der Anwendung liegen. Ein OPC-UA-Simulator oder ein in ST eingebautes Anlagenmodell erfüllt den Hardwareemulationsnachweis nicht.
+
+**Erstes Ziel:** Auf der autorisierten Referenz-WAGO den Originalstack mit der bereits laufenden Runtime, dem nativen I/O-Manager und originalen WAGO-I/O-Treibern untersuchen und nutzen. Erst unterhalb der kleinsten vollständig belegten Hardwaregrenze soll eine Simulation erfolgen. Der [Eigentümerfotobeleg](reference-module-photo-2026-10-12.md) identifiziert die Frontartikel und Reihenfolge 750-430 → 750-530 → 750-600. Revisionen, elektronische Zuordnung und aktueller Kommunikationszustand bleiben offen. Die Modellkandidaten 750-1405/750-1504 sind keine Annahme über diesen Bestand.
+
+**HYPOTHESE:** Eine geeignete untere Grenze lässt sich simulieren, während der Originalstack erhalten bleibt. Die konkrete ADI-Providerbindung ist freigegeben und im Startupversuch nachgewiesen; der vollständige native I/O-Vertrag bleibt offen. Die vollständig virtuelle Steuerung ist ein nachgelagertes Ziel. Eine zusätzliche Runtime-Lizenz für eine virtuelle Instanz blockiert das erste reale Referenzziel nicht pauschal; Rechte für konkrete Software-/Bus-/Bibliotheksänderungen bleiben eigenständige Gates. Kein fertiger Emulator wird behauptet.
+
+**Aktuelle Zustandsschranke:** Die vorhandene Anwendung bleibt STOP; Root hat online Bootdateien erzeugt und privat mit bytegleichen Kopierhashes gesichert. Der aktuelle kontrollierte STOP-Wiederanlauf ist PASS; die frühere Ausgangslage steht in der [Fortsetzung](adi-digital8-continuation-2026-10-12.md). Kein blindes Neustarten, Löschen, Überschreiben oder anderer zustandsverändernder Schritt, bis Anwendung und persistenter Zustand sicher verstanden und gesichert sind. Das ist kein Anlass, unabhängige Offlinearbeit einzustellen.
 
 ## 2. Belegte Referenzarchitektur
 
@@ -58,7 +67,7 @@ Der WAGO-K-Bus-Modbus-Container arbeitet auf einem realen PFC, benötigt dessen 
 
 ## 5. Virtuelle Klemmen und Layout
 
-Erster Kompatibilitätsstrang: **750-1405 + 750-1504**. Weitere Forschungsmodelle: **750-466** und **750-677**. Dies ist eine Modellpriorisierung; die Bestückung des neuen Referenzgeräts ist OFFEN. [S30–S34]
+Historische Offline-Modellpriorität: **750-1405 + 750-1504**; weitere Forschungsmodelle: **750-466** und **750-677**. Diese Kandidaten sind nicht die Priorität für den realen Referenzversuch und sagen nichts über dessen angeschlossene Module aus. Der spätere [Fotobeleg](reference-module-photo-2026-10-12.md) zeigt zwei I/O-Module 750-430/750-530 plus Abschluss 750-600. Modulrevisionen und elektronische/zyklische Zuordnung bleiben OFFEN. [S30–S34]
 
 Artikelnummer, echte Buskennung, Kanalstruktur, Modulrevision, Prozessdatenlayout und Geräteparameter sind unterschiedliche Informationen. Offsets niemals allein aus Klemmenreihenfolge, Variablennamen oder Artikelnummer ableiten. Ein passender Name im virtuellen Gerätebaum belegt keine Busidentität.
 
@@ -72,7 +81,7 @@ Im lokalen Forschungspaket: kompletter Python-Standardbibliotheksprototyp, Tests
 
 Abgedeckt: komplette atomare Ausgangsframes, scanweise Eingangslatches, getrennte angeforderte/wirksame Ausgänge, eigene Busverlust-/Watchdogpolitik, fehlende oder eingefrorene Eingänge, Reset und Modell-Snapshot-Replay. Eigene Forschungsbelegung und Watchdogpolitik sind keine nachgewiesene WAGO-Semantik. 64 unabhängige Backendobjekte sind kein Benchmark von 64 originalen Runtimes.
 
-Die 52 Pakettests bestanden ursprünglich und erneut bei dieser Übergabe auf unveränderten Quelldateien. Kein originaler I/O-Verbraucher, keine Runtime und keine Hardware wurden damit getestet. Dieser Git-Baum enthält zunächst die Dokumentation; der lokale Agent kann den separat gelieferten Eigenentwicklungscode nach Inhaltsprüfung in einem eigenen Branch importieren. [package.md](package.md)
+Die 52 Pakettests bestanden ursprünglich und erneut bei der früheren Übergabe; 65 war ein weiterer historischer Suite-Zwischenstand. Der Integrator bestätigte aktuell 92 lokale hardwarefreie Tests PASS: 82 bestehende Tests plus 10 Device-Description-Parserfälle. Die hardwarefreie CI führt die gesamte Suite auf Python 3.11 und 3.13 aus; ihr Prüfergebnis ist an die jeweilige Git-Revision gebunden. Kein originaler I/O-Verbraucher, keine Runtime und keine Hardware wurden damit getestet. Eigenentwicklungscode und geprüfte synthetische Konfigurationen sind selektiv importiert; der ungebundene alte Hardwarecollector wurde nicht übernommen. [package.md](package.md)
 
 ## 7. Skalierung, Zeit und Reproduzierbarkeit
 
@@ -82,8 +91,12 @@ Runtimezeit, Buszeit, Modellzeit und Hostmesszeit separat erfassen. Ein schnelle
 
 Realistisch qualifizierbare Ziele: Rohdaten-/Mappingfehler, Init-/Gerätefehler, ausgewählte Diagnosepfade und scanbasierte Regressionen. Weiterhin echte Referenztests nötig: elektrische Fehler, PWM-Flanken, EMV, Versorgungseinbruch, Bus-Worst-Case-Timing und mechanische Sicherheit.
 
-## 8. Jetzt fehlende Nachweise
+## 8. Historische Evidenz und aktuelle offene Punkte
 
-Neu zu erheben: tatsächlicher Artikel und Hardwarestand, vollständige Firmwarekennung, Runtime-/Libraryhashes, Kernel, geladene Komponenten, Treiber-/Devicepfade, Gerätebeschreibungen, Klemmenreihenfolge und Parameter. Ein zuvor genanntes FW31-/Engineeringprofil darf nicht auf das neue Gerät übertragen werden.
+Inzwischen erhoben sind Device-Tree-Modell, Firmwaremarker, Kernel, Runtime-/Libraryhashes, Prozess-Maps, ausgewählte Init-/Runtimekonfigurationen sowie statisch analysierte installierte CODESYS-Beschreibungen. Die [tatsächliche Referenzanalyse](reference-abi-2026-10-11.md) belegt die ADI-Grenze des originalen Verbrauchers; der [CODESYS-Vertragsbericht](codesys-contract-2026-10-11.md) dokumentiert aktuelle Engineeringprofile und Device-Description-Verträge. Die Verfügbarkeit der beiden relevanten Digitalklemmenbeschreibungen ist nicht länger ein Blocker. Weiterhin fehlen Hardwarestand, Serienidentität, aktive Projektkonfiguration, tatsächliche Klemmenreihenfolge/-position und vollständiger CODESYS-Komponentenvertrag. Ein installiertes Engineeringprofil belegt weder ein geladenes IEC-Projekt noch Runtimeakzeptanz.
 
-Die zentrale nächste Entscheidung folgt aus diesen Daten: Wo ist die kleinste vollständige emulierbare Grenze, welche Originalkomponenten bleiben unangetastet, welche Funktionen sind für einen DI/DO-Originalverbraucher notwendig? Fehlende Hardware oder Lizenzen blockieren jeweils den betroffenen Nachweis, nicht Header-, Quellen-, Modell- oder Dokumentationsarbeit insgesamt.
+Der [Engineeringnachweis vom 12.10.2026](codesys-engineering-2026-10-12.md) ergänzt inzwischen einen fehlerfreien nativen Offline-Build und einen tatsächlich ausgeführten internen IEC-Test auf der originalen Referenzruntime. Der eigene I/O-Zweig blieb dabei deaktiviert. Die Testanwendung wurde danach entfernt, die zuvor vorhandene Anwendung blieb geladen und gestoppt. Damit ist der reguläre Engineering-/Referenzpfad praktisch belegt; virtuelle Klemmenakzeptanz, Mapping, Wiederanlauf und der vollständige native I/O-Vertrag bleiben offen.
+
+Diese Absätze beschreiben die früheren Stände und behalten ihren jeweiligen Scope; spätere Referenzlauf- oder Verbindungsbefunde sind kein rückwirkender PASS. Der Fotobeleg schließt Frontartikel und fotografierte Reihenfolge. Aktuell offen sind Modulrevisionen und elektronische Zuordnung der zwei I/O-Module, Klärung des RAM-/Bootprojektzustands ohne Neustart oder Überschreiben, sowie der Vertrag und die Freigabe jeder konkret zu ersetzenden unteren Schnittstelle. Die tatsächlich verbundenen Module bestimmen den ersten realen I/O-Strang. Die 750-1405/750-1504 bleiben bewusst wählbare Modellkandidaten; eine Übereinstimmung mit dem realen Bestand ist nicht belegt. Plan und datiertes Protokoll: [Versuchsplan](real-controller-plan-2026-10-12.md), [Beobachtungsprotokoll](real-controller-observation-2026-10-12.md).
+
+Eine zusätzliche virtuelle Runtime-Lizenz ist kein pauschaler Blocker für die erste Referenz-WAGO. Softwareberechtigung für den Referenzpfad besteht fort; Austausch/Ersetzung geschützter Bus- oder Herstellerbibliotheken ist ein separater Freigabepunkt und darf nicht aus der Softwareberechtigung abgeleitet werden. Unabhängige Offlineanalyse bleibt möglich.

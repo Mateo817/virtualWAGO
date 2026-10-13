@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "purpose": "research-layout-not-target-mapping",
+  "input_size": 2,
+  "output_size": 2,
+  "watchdog_ns": 100000000,
+  "modules": [
+    {"id": "di", "model": "750-1405.di16", "input_offset": 0, "output_offset": 0},
+    {"id": "do", "model": "750-1504.do16", "input_offset": 0, "output_offset": 0}
+  ]
+}

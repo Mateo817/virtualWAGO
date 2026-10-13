@@ -1,0 +1,342 @@
+{
+  "date": "2026-10-12",
+  "source_base": "4f2a31437892a1a2af41019bf1e3d2e04cfe0c45",
+  "source_sha256": {
+    "tools/readonly_metadata_broker.c": "163d6784d9fea533753661a9763bd4c6b8fb1f2f55638015ca64e9aa267c1ff1",
+    "tools/readonly_metadata_broker_test.c": "9920b27394cfabf46c67ab24fe1ea421a5f115ddc99d2dd502096be28b01ad4c",
+    "tools/controller_typelabel_read_probe.c": "f3f7f5ec1c790fa5bc912515ddd269b39775bdf9cc743c82ddf91981a058348f",
+    "tools/real_runtime_sandbox.py": "36d5abb0629d234b2a9898e18b22f2f9f40a72b1b14882621fe25dcfb8378584",
+    "tests/test_readonly_metadata_broker.py": "315e677e85752f7726a093fc0f176dd2e3b549d46d282059a978dfad8ff12276",
+    "tests/test_real_runtime_sandbox.py": "17c2bcd5920d67a932a366f396da8c4a2c80523cf5dd888801062f3b8fb19091",
+    ".github/workflows/python.yml": "5f4b98f004acd27f1906254a3f63bddbd7283be393f8d1916202053262d1e474"
+  },
+  "scope": "Historical genuine metadata/own-broker qualification and separate initialization attempts; no physical module access. Successful current native cyclic phase is bound separately in native-cyclic-2026-10-12.json.",
+  "owner_provider_bus_switch_authorized": true,
+  "endpoint_metadata": {
+    "status": "VERIFIZIERT",
+    "file_type": "regular SYSFS file behind device symlink",
+    "bytes": 65536,
+    "driver": "at24",
+    "type": "24c512",
+    "private_receipt_sha256": "61cdb97aad5872016b47917df4068fbe5652ec070ff55b38b6f717b6131bb015",
+    "driver_metadata_receipt_sha256": "1a84a2c7ba6289dd31e4650b7655e3d0a0405944b60edac0746d8d2e152cb7bf"
+  },
+  "local_python_tests": {
+    "status": "PASS",
+    "count": 130,
+    "namespace_test": "executed with explicit native bubblewrap; no skips",
+    "private_receipt_sha256": "bdfc077606d3732c0077d2f4746229a8d3ed896c1e8e77bee46f3bda6fb9e960",
+    "scope": "own Python/native synthetic tests only; not Runtime/Hardware acceptance"
+  },
+  "first_own_arm_probe": {
+    "status": "FAIL",
+    "exit": 51,
+    "reason": "original ARM libc adds O_LARGEFILE; own allowed flag set omitted it",
+    "private_receipt_sha256": "63261e2d6f200f78dc90bc06e9ba17732c5c332aba0919b639704de32795e12e"
+  },
+  "qualified_own_arm_probe": {
+    "status": "PASS",
+    "exit": 0,
+    "scope": "own supervisor and own read-only TMPFS file; genuine metadata endpoint absent",
+    "private_receipt_sha256": "ae04ea5389e7b372ea3ffdddaa655d8ab38c92ad99eff6611a603915b3c2c3a1",
+    "broker_binary_sha256": "db11943e8c552b57c2c34c7b3d0cd91159d55184f511d32f0e878731fdd186e8",
+    "test_variant_binary_sha256": "cb3f9625436960cc59b0af89a7daea51d1a0947ed92a0413f3fc370401c7064c"
+  },
+  "first_original_library_probe": {
+    "status": "FAIL",
+    "exit": 1,
+    "scope": "own strict diagnostic criteria only; genuine original library read/sync completed",
+    "reason": "own decimal1..250/six-nonempty predicates differ from native acceptance; corrected through exact original consumer disassembly",
+    "source_sha256": "b711bc456cc40df1c3ad66ab14f7b5dfbcd5397f5db4604167e3af42f6fbbaae",
+    "binary_sha256": "e392465b8b946fe46f5e47d18a8786108349f05d30faab6e401a734ff7e2d05c",
+    "private_receipt_sha256": "91f03483971b42ebe0f8afeb2b01c11fd7231cbe4dc550fab97bda7032f52377"
+  },
+  "qualified_original_library_probe": {
+    "status": "PASS",
+    "exit": 0,
+    "scope": "original same-board opaque object Open/Sync plus original QUICK reads; not native Runtime signature acceptance",
+    "synchronized": true,
+    "marking_matches_pfc": true,
+    "maximum_present": true,
+    "maximum_nonempty": true,
+    "maximum_decimal_format": true,
+    "fields_order": [
+      "DEVICEID",
+      "SIGN",
+      "VENDORID",
+      "DEVICEMASK",
+      "WAGONRSTR",
+      "SYSDESC"
+    ],
+    "field_present": [
+      true,
+      true,
+      true,
+      false,
+      true,
+      true
+    ],
+    "field_nonempty": [
+      true,
+      true,
+      true,
+      false,
+      true,
+      true
+    ],
+    "source_sha256": "f3f7f5ec1c790fa5bc912515ddd269b39775bdf9cc743c82ddf91981a058348f",
+    "binary_sha256": "18cad8eb92eedbb25d2b8841213780bb938309d42db2b34c3b2136e0dd72b88e",
+    "private_receipt_sha256": "05bdb252f525ac7b7bf9e7fc07b795bbc904d39d789f6b2eca158776f36680f6",
+    "namespace_renderer_sha256": "6b01af98dec907bb8280bc0ebd9f00b962bfb394b4b3b72e824f284a750347b9",
+    "broker_source_sha256": "3cd450e390f94b58ac7a94ef9057efeafcf9feba9f6aaa511959f6535d46ecf3",
+    "broker_binary_sha256": "db11943e8c552b57c2c34c7b3d0cd91159d55184f511d32f0e878731fdd186e8"
+  },
+  "post_read_state": {
+    "status": "PASS",
+    "single_original_runtime": true,
+    "state": "STOP",
+    "process_identity_and_all_original_hashes_unchanged": true,
+    "runtime_restarted": false,
+    "private_receipt_sha256": "61cdb97aad5872016b47917df4068fbe5652ec070ff55b38b6f717b6131bb015"
+  },
+  "independent_offline_reviews": {
+    "scope": "Actual offline Sol reviews and Luna broker review; no hardware/VM access by reviewers",
+    "original_read_path_proof": "cc91484417e3a9f1ce873961d80d9502b1a6270fb40736923ddcea37ce4edc59",
+    "frozen_initial_source_review": "870166171514e17b49e96f4803793ed8c77c7c58f6cdffde7a590c9745e422be",
+    "largefile_delta_review": "034b99e9d721be290c0b01d607e1af7519e61dd409e391c607756721f48eaebc",
+    "diagnostic_final_review": "2ad81d8d9ed64661381e749446624bae2d9b8c6f62aa50dc0c02d9bd7fd23a14"
+  },
+  "root_self_review": "own execution and integration; distinct from independent offline reviews",
+  "kernel_source_equivalence": "OFFEN: upstream Linux6.6.94 comparator, exact FW31 source unavailable as archive (SDK path is LFS pointer)",
+  "genuine_physical_scope": "controller EEPROM I2C reads and possible power-management activity; no actuator/module access",
+  "remaining": {
+    "minimal_component_manager_closure": "qualifiedactualinit/cyclicforcurrent36component Digital8scope; broadernumeric/computeddeps remainOPEN",
+    "native_runtime_signature_check_new_path": "OFFEN: genuine metadata mediated, no explicit full signature acceptance result",
+    "native_io_initialization_new_path": "PASS limitedDigital8 withTCM0, notgeneralcontracts",
+    "virtual_di_do_acceptance": "PASS_FOR_NATIVE_REQUESTED_OUTPUTS_WITH_MODEL_GATE0; effectivegate1/generalSEM OPEN",
+    "physical_module_revision_and_current_communication": "OFFEN"
+  },
+  "vm_used": false,
+  "merge_performed": false,
+  "historical_library_probe_build": {
+    "source_base": "4f2a31437892a1a2af41019bf1e3d2e04cfe0c45",
+    "own_source_sha256": {
+      "tools/readonly_metadata_broker.c": "3cd450e390f94b58ac7a94ef9057efeafcf9feba9f6aaa511959f6535d46ecf3",
+      "tools/readonly_metadata_broker_test.c": "f67941615f3af79fd15b415c932c6e01de398aa76c6ea4291d069c8725a41439",
+      "tools/controller_typelabel_read_probe.c": "f3f7f5ec1c790fa5bc912515ddd269b39775bdf9cc743c82ddf91981a058348f",
+      "tools/real_runtime_sandbox.py": "6b01af98dec907bb8280bc0ebd9f00b962bfb394b4b3b72e824f284a750347b9"
+    },
+    "build_flags": [
+      "-std=gnu11",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror"
+    ],
+    "compiler": "arm-linux-gnueabihf-gcc (Debian 14.2.0-19) 14.2.0",
+    "binaries": [
+      {
+        "name": "readonly-metadata-broker",
+        "sha256": "db11943e8c552b57c2c34c7b3d0cd91159d55184f511d32f0e878731fdd186e8",
+        "max_glibc": "2.34"
+      },
+      {
+        "name": "readonly-metadata-broker-test",
+        "sha256": "da5b18f34f8a2f0cba1e7b09d746b91c20ef99e4d868ed8b23ef3ffc0b21587b",
+        "max_glibc": "2.34"
+      },
+      {
+        "name": "readonly-metadata-test-variant",
+        "sha256": "cb3f9625436960cc59b0af89a7daea51d1a0947ed92a0413f3fc370401c7064c",
+        "max_glibc": "2.34"
+      },
+      {
+        "name": "readonly-metadata-file-probe",
+        "sha256": "c8c835d67ba3037d30e8c67bd876eccede15f2dc4c9a787b7b026f436994e2bd",
+        "max_glibc": "2.34"
+      },
+      {
+        "name": "typelabel-read-probe",
+        "sha256": "18cad8eb92eedbb25d2b8841213780bb938309d42db2b34c3b2136e0dd72b88e",
+        "max_glibc": "2.34"
+      }
+    ],
+    "header_sha256": "61fb68ad4151c45ed43d9c91067b5f0388ec7a4389744fd7d88ac762e247d63c",
+    "scope": "compile-only ARMHF own mediator/probes; original libc symbol/version compatibility checked; no manufacturer/hardware execution"
+  },
+  "current_own_broker_build": {
+    "source_base": "4f2a31437892a1a2af41019bf1e3d2e04cfe0c45",
+    "own_source_sha256": {
+      "tools/readonly_metadata_broker.c": "163d6784d9fea533753661a9763bd4c6b8fb1f2f55638015ca64e9aa267c1ff1",
+      "tools/readonly_metadata_broker_test.c": "9920b27394cfabf46c67ab24fe1ea421a5f115ddc99d2dd502096be28b01ad4c",
+      "tools/controller_typelabel_read_probe.c": "f3f7f5ec1c790fa5bc912515ddd269b39775bdf9cc743c82ddf91981a058348f",
+      "tools/real_runtime_sandbox.py": "36d5abb0629d234b2a9898e18b22f2f9f40a72b1b14882621fe25dcfb8378584"
+    },
+    "build_flags": [
+      "-std=gnu11",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-Werror"
+    ],
+    "compiler": "arm-linux-gnueabihf-gcc (Debian 14.2.0-19) 14.2.0",
+    "binaries": [
+      {
+        "name": "readonly-metadata-broker",
+        "sha256": "0ed238ef92c4d643c53b3af1f6e7e414f22ffe821d8409ff6726dac571d153f3",
+        "max_glibc": "2.34"
+      },
+      {
+        "name": "readonly-metadata-broker-test",
+        "sha256": "15be1db31fe419520f6e05f4e2386aac29b82f05e21c32fbae1125eb5947cdc1",
+        "max_glibc": "2.34"
+      },
+      {
+        "name": "readonly-metadata-test-variant",
+        "sha256": "3c194b7f48e5e716708a05cc4074d02cb1c7e923e75b6de51479a896b028e395",
+        "max_glibc": "2.34"
+      },
+      {
+        "name": "readonly-metadata-file-probe",
+        "sha256": "6c2f6e4721a594c6e4aafd5c27ce48e9c1e41416a0c6c090b7538562416730ba",
+        "max_glibc": "2.34"
+      },
+      {
+        "name": "typelabel-read-probe",
+        "sha256": "18cad8eb92eedbb25d2b8841213780bb938309d42db2b34c3b2136e0dd72b88e",
+        "max_glibc": "2.34"
+      }
+    ],
+    "header_sha256": "61fb68ad4151c45ed43d9c91067b5f0388ec7a4389744fd7d88ac762e247d63c",
+    "scope": "compile-only ARMHF own mediator/probes; original libc symbol/version compatibility checked; no manufacturer/hardware execution"
+  },
+  "own_broker_interruption_correction": {
+    "status": "PASS",
+    "old_source_sha256": "d8f24c413d2211f41df53604efba8936b39dbfe93b58e127906976d033be8b08",
+    "new_source_sha256": "163d6784d9fea533753661a9763bd4c6b8fb1f2f55638015ca64e9aa267c1ff1",
+    "baseline_injected_failures": {
+      "single_SEND_EINTR": 137,
+      "single_ID_VALID_EINTR": 124,
+      "single_POLLERR": 137
+    },
+    "baseline_repro_receipt_sha256": "207598e35791d8578f482becd2a5d905e78c5d5a4540dbbdcf1637dbf1d91157",
+    "actual_previous_runtime_cause": "HYPOTHESE: reproduced own mechanism; exact cause of actual SIGKILL remains unknown",
+    "policy": "BPF/REG/SYSFS/RO unchanged; safe bounded SEND/ID_VALID retry; global alarm during handling; transient POLLERR backoff; atomic ADDFD_SEND never retried after ambiguous interruption",
+    "diagnostics": "numeric kill_reason=issuance by broker; child_signal=observed signal; no identity/path/argv values",
+    "implementer_self_review_receipt_sha256": "3003aee25b373f9e3d3aaf29cfdd5898ae433ec7409f590a2baffb14c1d35d5b",
+    "independent_offline_review_receipt_sha256": "2fb9ffcd53940bc4f3e2a2f561c77b62de7d162176b9715f2b4ee39b5dbd8577",
+    "scope": "own code; no manufacturer Runtime execution by reviewers"
+  },
+  "current_own_arm_probes": {
+    "status": "PASS",
+    "scope": "Root actual own ARM supervision/RO TMPFS/650ms sustained opens; real EEPROM endpoint absent",
+    "stdout_receipt_sha256": "faf0cc84f414aecd0f8838bf9f52de6534a0032a575596668ca4029c6a01376e",
+    "stderr_receipt_sha256": "b7c61dffb6a7741880c94aef07f9a7fcb3edd9b9c79cacc015246029dd32b023",
+    "broker_binary_sha256": "0ed238ef92c4d643c53b3af1f6e7e414f22ffe821d8409ff6726dac571d153f3",
+    "protected_mediations": 814,
+    "unprotected_notifications": 2875,
+    "kill_reason": 0,
+    "controls_exit": 0
+  },
+  "runtime_attempts": [
+    {
+      "phase": "originalTERM6s",
+      "status": "FAIL",
+      "scope": "originalterminationnotcomplete at6s; no secondRuntime; later separateSTOPrestorePASS"
+    },
+    {
+      "phase": "60s TERM/init",
+      "status": "FAIL",
+      "scope": "TRIAL_RUNTIME_NOT_BOUND/emptyLog; restorePASS"
+    },
+    {
+      "phase": "diagnosticP0",
+      "status": "BLOCKED",
+      "scope": "stale ownmodelsocket preventedstart; unchangedoriginalSTOP; ownSocketqualifiedquarantinePASS"
+    },
+    {
+      "host_date": "2026-10-12",
+      "scope": "Root actual isolated launch/own-supervisor diagnostics; no IEC RUN, no virtual cyclic acceptance",
+      "transaction_sha256": "00e434c22c9c92de58956c48b020f1617cd32eb0d8a9872e607caf2eb13725f7",
+      "stdout_sha256": "293df139d2f0aa1212a56e8fd43e3c3f29b39b5de858ff664d07c389c867fb5f",
+      "broker_summary": "METADATA_BROKER exit=137 notified=200 continued=199 protected=1 mediated=1 path_errors=0 last_path_errno=0",
+      "wrapper_exit": 137,
+      "startup_observation": "TRIAL_RUNTIME_NOT_BOUND",
+      "native_init": "NOT_VERIFIED",
+      "original_restore": "PASS",
+      "post_restore_receipt_sha256": "f7c17c84989c803085d2a43904798a2c691373d385a84630fb99ca902dc2a911",
+      "post_restore_process": "25604:9984231",
+      "own_mediator_source_sha256": "d8f24c413d2211f41df53604efba8936b39dbfe93b58e127906976d033be8b08",
+      "own_mediator_binary_sha256": "88ffd7ff75e3d9f6184292ab68562ba969ea1ab3aba4acbdc3e24dfa1f48b87e",
+      "kernel_metadata_scope": "no OOM messages found in currently readable ring; not proof of historical absence",
+      "kernel_memory_receipt_sha256": "9760ab1d0102ccf95d1782d6fa4341410e7149ed2c1350b2a06c5bd95040c658",
+      "suspected_own_bug": "SIGALRM interrupt may cause EINTR/POLLERR handling to kill isolated child; exact targetcause unresolved pending reason diagnostics and fix qualification"
+    },
+    {
+      "host_date": "2026-10-12",
+      "scope": "Root actual bounded init-only original Runtime plus originalSTOP restore; no IEC RUN/physicalmodule access/virtualDI-DOacceptance",
+      "outer_transaction_exit": 0,
+      "script_sha256": "cb300c3ee1c70debf0908e0acb73bda4cdf95c8530a0d15c8bfd274f524e6f51",
+      "stdout_sha256": "4d2daebbfdab2f562bf65c67383bb4370ae3272afac1d96f0ccec36363fd7f9e",
+      "trial_pid_start": "27629:10116581",
+      "restored_pid_start": "28296:10118430",
+      "original_runtime_driver_maps_present": true,
+      "original_io_manager_configuration_status": "FAIL",
+      "native_driver_update_configuration_error": 16,
+      "native_supported_modules": 250,
+      "native_signature_acceptance": "OFFEN: no signature error recorded; no explicit acceptance result",
+      "model_status": "STATUS input=0 permit=0 requested=0 effective=0 watchdog=1 fault=1 generation=1 frames=0 opened=1 configured=0 running=0",
+      "broker_summary": "METADATA_BROKER exit=0 notified=927 continued=924 protected=3 mediated=3 path_errors=0 last_path_errno=0 kill_reason=0 last_control_errno=0 child_signal=0",
+      "own_wrapper_exit": 0,
+      "bootapp_loaded": true,
+      "bootapp_start_denied_by_setting": true,
+      "restore": "PASS",
+      "fresh_poststate": "PASS: exactlyoneoriginalRuntime STOP, CWD originalHome andoriginal APP/CRC/CFG/binaries unchanged",
+      "fresh_post_receipt_sha256": "fcf9dd65a913388490317d554beb947d933a87aeffa345ca58decef6cec44b9f",
+      "broker_source_sha256": "163d6784d9fea533753661a9763bd4c6b8fb1f2f55638015ca64e9aa267c1ff1",
+      "broker_binary_sha256": "0ed238ef92c4d643c53b3af1f6e7e414f22ffe821d8409ff6726dac571d153f3",
+      "provider_binary_sha256": "30c4affe1ae10f543fa7c2a7189d4aded8d2818ee4922e89c0797a9269070a5c",
+      "preexecution_independent_review_sha256": "a04de97d63db1632ae4a967db3190bdfe66570340d1da41ec39f87feae2499dc",
+      "vm_used": false
+    },
+    {
+      "date": "2026-10-12",
+      "scope": "actual Root init-only TCM0 original Runtime + nativeIOdrivers + ownprovider; noRUN/virtualcyclic orphysicalactuators",
+      "status": "PASS_FOR_INIT_CONFIGURATION_ONLY",
+      "script_sha256": "2f8d73d4ea67a71bf9942dead4701d0d26439ac493b2414a231faa7e96fcd2ce",
+      "stdout_sha256": "7df4ffdd478ff83d48414e99bd623fa6c93b872fae7eede6cd51aab55f5ec12b",
+      "native_update_configuration_error": "none recorded; previousError16absent",
+      "own_provider": "opened1/configured1/fault0/frames0/running0/permit0/input0/requested0/effective0",
+      "original_app_state_queries": [
+        "STOP",
+        "STOP",
+        "STOP"
+      ],
+      "native_own_bootapp_loaded": true,
+      "native_start_denied_by_setting": true,
+      "full_signature_acceptance": "OFFEN: no explicit signature-pass report",
+      "broker": "exit0/notified942/continued939/protected3/mediated3/pathErrors0/killReason0/childSignal0",
+      "ownapp_sha256": "f746fae0a9a42a009978d4c3f9631a24078fe8d156391b843dc20795429aeacd",
+      "owncrc_sha256": "45727427ebfe3d500868c52d3072629570c9ea487681ab83ad92619919f9cf55",
+      "owncfg_pretrial_sha256": "49c4a8614f892932f4ecc8cd52756f4190916b7590a26ef0a598ad62b315e711",
+      "restore": "PASS",
+      "fresh_post_receipt_sha256": "15f0e10d33f9ab8bf885dac7f1a8640c61aa6a8e071a78d1ccc5b70316638b6b",
+      "cyclicDI_DO": "NOT_RUN"
+    }
+  ],
+  "post_runtime_restore": {
+    "status": "PASS",
+    "state": "STOP",
+    "single_original_runtime": true,
+    "original_APP_CRC_Config_and_binaries_unchanged": true,
+    "private_receipt_sha256": "fcf9dd65a913388490317d554beb947d933a87aeffa345ca58decef6cec44b9f"
+  },
+  "current_followup": "native-cyclic-2026-10-12.json: TCM0 nativeinit andcyclicIECinput/command proofmodelgate0 PASS; priorFAILretained",
+  "source_snapshot_scope": "currentownsource hashes; historical library/probe/build receipts preserve deployedsource versions separately",
+  "latest_post_runtime_restore": {
+    "status": "PASS",
+    "state": "STOP",
+    "original_APP_CRC_Config_andbinaries_unchanged": true,
+    "private_receipt_sha256": "6c442d7347dcd23c644db62535da4c5a551ec27e777758eef224978554d531bb"
+  }
+}

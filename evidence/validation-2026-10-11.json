@@ -1,0 +1,84 @@
+{
+  "schema": "virtualwago-validation/1",
+  "date": "2026-10-11",
+  "source_manifest": "source-manifest.sha256",
+  "source_bundle_sha256": "6ab0154817d58427a938f2c5f08e472995a1f34df82a9a8e4344cd3d1da376ee",
+  "scope": "own backend, synthetic configuration and offline/reference tooling; not firmware acceptance",
+  "host": {
+    "os": "Debian 13.7",
+    "arch": "x86-64",
+    "python": "3.13.5",
+    "binutils": "2.44"
+  },
+  "checks": {
+    "historical_package_manifests": {
+      "status": "PASS",
+      "scope": "private unchanged handoff"
+    },
+    "historical_tests": {
+      "status": "PASS",
+      "count": 52
+    },
+    "final_own_tests": {
+      "status": "PASS",
+      "count": 65
+    },
+    "own_model_demos": {
+      "status": "PASS",
+      "configs": [
+        "config/minimal.json",
+        "config/research-layout.json"
+      ]
+    },
+    "reference_namespace_local_kernel_test": {
+      "status": "PASS",
+      "scope": "local loopback only; no protected-target contact"
+    },
+    "original_fw30_elf_static_analysis": {
+      "status": "PASS",
+      "scope": "SDK 252209115885442bac7359a2ff1cfa4efb3a9c84; see ABI document"
+    },
+    "original_header_arm32_probe": {
+      "status": "PASS",
+      "scope": "compile-only FW30 headers with GCC 14.2, different from SDK GCC 11.3.1"
+    },
+    "manufacturer_example": {
+      "status": "PASS",
+      "scope": "compile-only, two signedness warnings; no link/execution"
+    },
+    "reference_connection": {
+      "status": "PASS",
+      "scope": "guarded SSH plus certificate-bound WBM authentication; historical timeout superseded"
+    },
+    "device_inventory_and_backup": {
+      "status": "PASS",
+      "scope": "selective167file backup and software metadata; fullM1 identity/project/terminal gates BLOCKED"
+    },
+    "actual_device_abi": {
+      "status": "PASS",
+      "scope": "static actualconsumer/provider analysis only; completeM2 behavior BLOCKED"
+    },
+    "original_io_consumer": {
+      "status": "BLOCKED",
+      "reason": "execution environment and real module/parameter contracts unqualified"
+    },
+    "original_runtime": {
+      "status": "NOT_RUN",
+      "reason": "virtual execution not run; existing reference runtime observed only"
+    },
+    "hardware_pwm_register_multi_runtime": {
+      "status": "NOT_RUN",
+      "reason": "no bus/actuator or runtime operation"
+    }
+  },
+  "review": {
+    "self_review": "performed by integrator and implementation workers",
+    "independent_review": "separate gpt-6.1-sol worker; prior64test run at initialcommit plus current13affected-tool tests and live-original static review",
+    "scope": "code and statically inspected artifacts; no independent build reproduction, hardware, runtime or legal signoff",
+    "findings": "initialcode fixes retained; live symbol-context, package comparator and typelabel-side-effect claims corrected; static indirectentries independently recovered"
+  },
+  "ci": {
+    "scope": "hardware-free Python 3.11 and 3.13; exact HEAD/run status recorded in PR"
+  },
+  "reference_validation": "reference-validation-2026-10-11.json"
+}

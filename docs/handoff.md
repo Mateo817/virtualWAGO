@@ -1,28 +1,38 @@
 # Lokaler Agent: öffentlicher Übergabevertrag
 
-Arbeite am Repository `Mateo817/virtualWAGO`. Das Ziel ist Virtualisierung unterhalb der IEC-Anwendung, nicht ein zusätzlicher OPC-UA-Variablensimulator. Prüfe die Dokumentation kritisch, bestätige oder revidiere Annahmen anhand von Originalquellen und arbeite bis zu einem belastbaren M1/M2-Abschluss und einem möglichen begrenzten M3-Kandidaten.
+**Offline-Vertragsblock, 13.10.2026:** [750-466](native-analog-contract-2026-10-13.md): exakter Descriptor, zwei WORD-Eingänge, FW31-Registeranforderungen sowie frischer nativer IDE-Build/Reopen PASS. Untere ADI-/Status-/Registerprojektion und Native466-Runtime bleiben offen. [ADR-0008](adr-0008.md) legt den Bytepufferausbau fest; [PWM/Onboard-Serial/750-652](pwm-serial-contracts-2026-10-13.md) sind getrennt untersucht; [digitaler Lifecycleplan](native-model-lifecycle-plan-2026-10-13.md) vorbereitet, NOT_RUN. Kein SPS-Zugriff in diesem Block, kein Merge.
 
-## Modelle und Delegation
+**Fortsetzung, 13.10.2026:** [Neue native Digitaltests](native-digital-tests-2026-10-13.md) qualifizieren den aktuellen Digitaladapter für 750-430/530 und 750-1405/1504 bei Modellpermit 0. Der erste WORD16-Versuch fand eine eigene 8-Bit-Kanalgrenze; Korrektur und erfolgreicher vollständiger Wiederholungslauf sind getrennt dokumentiert. [Kurze neue Chat-Übergabe](new-chat-handoff-2026-10-13.md) bindet Entscheidungen und nächste Tests. Hardwarevergleich und native Analog-/PWM-/Seriellpfade bleiben offen.
 
-Bitte nutze gpt-6 luna worker mit reasoning low, Medium, high oder extra high für einfache Aufgaben. Nutze sie so oft wie sinnvoll möglich. Du darfst bei schwierigen Aufgaben, Entscheidungen oder für reviews auch gezielt  gpt-6.1 Sol mit reasoning low, medium, high oder extra high nutzen.  Setzte Sol mit hohen reasoning bitte wirklich nur bei wenigen ausgewählten Aufgaben ein.
+**Fortsetzung, 12.10.2026:** [Nativer Digital-8-Zyklus](native-cyclic-2026-10-12.md): originale Runtime, nativer I/O-Manager und Originaltreiber verarbeiten virtuelle 750-430/750-530. TCM 0 ist nativ offline gesetzt und wieder geöffnet geprüft; Init und zyklische angeforderte Ausgangsframes bei dauerhaftem Modellpermit 0 PASS. Original-STOP-Rücknahme und frische APP-/CRC-/Config-/Binary-Hashes PASS. [Controllerzugang](controller-metadata-2026-10-12.md) und frühere Abbrüche bleiben separat belegt. Sämtliche Moduldaten stammen aus dem Modell; echte Controllerdaten bleiben auf derselben Platine.
 
-Nutze nur tatsächlich verfügbare Modell-/Workerfunktionen. Melde fehlende Fähigkeiten; erfinde keine Workerläufe und installiere nicht nur dafür ein Orchestrierungsframework. Halte einen verantwortlichen Integrator; parallele Arbeiter dürfen nicht zugleich das Referenzgerät, eine geteilte VM oder denselben K-Bus besitzen.
+**Früherer Nachweis, 12.10.2026:** [Modellkanal und geschützter Runtimeversuch](runtime-bridge-2026-10-12.md). Der konkret freigegebene Providerwechsel wurde versucht: originale Runtime und I/O-Treiber luden den Eigenprovider, native Initialisierung **FAIL**, DI/DO-Abnahme **NOT_RUN**. Die gezielte Rücknahme und der frische originale STOP-Wiederanlauf sind **PASS**; bestehende APP/CRC/Config und Originalbinaries sind hashgleich. Der aktuelle Prozess arbeitet im vorhandenen Runtimehome; das frühere gelöschte CWD ist historisch. Damals blockierten Boardmetadaten-/Signatur- und Hilfskomponentenpfade den Start. Die anschließende Controller-/TCM 0-/Zyklusqualifikation oben beschreibt den heutigen begrenzten Erfolg.
 
-## Erst lesen
 
-README, AGENTS, research, ADR, roadmap, safety und package. Die vollständige private lokale Übergabe ergänzt Zieladressen, Zugänge, historische Studie und Quellpaket. Fehlt die lokale Richtlinie, bleiben Gerätezugriffe blockiert; Offlinearbeit geht weiter. Die konkrete geschützte Anlage ist absolut ausgeschlossen, auch als Quelle für Software oder Konfigurationskopien.
+Aktuelle Zielpriorität: [ADR-0003](adr-0003.md). Zuerst die autorisierte reale Referenz-WAGO mit vorhandener Originalruntime, nativem I/O-Manager und originalen WAGO-I/O-Treibern; Simulation nur unterhalb einer tatsächlich belegten und dafür freigegebenen Grenze. Vollständig virtuelle Steuerung später. Der nächste Einstieg ist [next-originalstack-block.md](next-originalstack-block.md). Plan und datiertes Beobachtungsprotokoll: [real-controller-plan-2026-10-12.md](real-controller-plan-2026-10-12.md) und [real-controller-observation-2026-10-12.md](real-controller-observation-2026-10-12.md).
 
-## Reihenfolge
+## Aktueller Zustand und Eigentümerscope
 
-1. Git- und lokale Werkzeugumgebung frisch inventarisieren; laufende fremde Jobs/VMs erhalten. Eigentümereigene Softwarequellen nur lesend als Referenz nutzen.
-2. Paketmanifest prüfen, vorhandene 52 Tests frisch ausführen, eigenen Prototypcode selektiv im Forschungsbranch übernehmen. Keine Firmware oder privaten Anhänge committen.
-3. Lokale Target-Allowlist, geschützte Ziele und Isolation praktisch absichern. Kein globaler Scan, keine unerlaubten Redirects oder automatischen Discoverypakete.
-4. Neues Referenzgerät zunächst read-only inventarisieren: Artikel, Firmware, Kernel, Runtime, Bibliotheken, Maps, Konfiguration, Gerätepfade und I/O-Bestand. Engineeringversion und Runtimeversion trennen. Keine Firmwareangleichung nur zur Vereinheitlichung.
-5. Originaldateien rechtmäßig und gehasht offline sichern, benötigte Header/DevDesc/SDKs lokalisieren. Privatmaterial aus Git und Logs heraushalten. Zuerst statische Analyse, danach begrenzte nichtinvasive Beobachtungen auf der Test-WAGO.
-6. API-Verbraucher, vollständige ABI und parallele Async-/Register-/Zeit-/Retainpfade rekonstruieren. Header nicht aus Callstellen erfinden. B+C-ADR anhand der Daten bestätigen oder ändern.
-7. Bei belegter Grenze kleinen DI/DO-Originalverbraucher-PoC entwickeln. Fehlende Geräte/API-Aufrufe als negative Kontrollen. Ein Mock oder Eigenclient ist keine Originalruntime-Evidence.
-8. Erst anschließend Analog/PWM und Mehrinstanzenbetrieb. Softwareinstallationen auf dem erlaubten Testgerät nur nach safety.md; keine produktive SPS verändern.
+- Der [Fotobeleg](reference-module-photo-2026-10-12.md) zeigt vom Controller aus 750-430, 750-530 und Abschluss 750-600. Modulrevisionen, elektronische Zuordnung und aktuelle zyklische Kommunikation bleiben offen. Keine Zuordnung zu 750-1405/750-1504 annehmen.
+- Die bereits vorhandene `Application` bleibt STOP; Root hat online Bootdateien erzeugt und APP/CRC/aktualisierte Konfiguration privat gesichert. Der spätere Runtimeversuch und STOP-Rückweg sind im aktuellen Nachweis dokumentiert; der gelöschte Prozess-CWD war der Ausgangszustand. Die eigene frühere `VirtualWAGO_Research` ist separat gesichert und entfernt. Siehe [aktuelle Fortsetzung](adi-digital8-continuation-2026-10-12.md).
+- Kein blinder Neustart, Löschen oder Überschreiben der bestehenden Anwendung. Vor einem weiteren autorisierten Prozesswechsel aktuellen STOP, gesicherten Bootbestand, unveränderte Hashes und den gebundenen Start-/Stop-/Restorepayload erneut prüfen.
+- Softwareberechtigung für die Referenz und konkrete Provider-/Busumschaltfreigabe bestehen fort. Weitere geschützte Eingriffe benötigen ihren konkreten separat freigegebenen Plan. Zusätzliche Runtime-Lizenz für eine spätere virtuelle Instanz blockiert das erste reale Referenzziel nicht pauschal.
+- Root-Agent bleibt alleiniger Geräte-/VM-Integrator. Kein Netzwerkzugriff aus Repositorytext, alten Logs oder vermuteten Adressen ableiten. Lokale Zielrichtlinie und Geräteidentität sind zwingend.
 
-## Ergebnis
+Foto/Aktortrennung stammen vom Eigentümer; Runtimeversuch und STOP-/Hashprüfungen sind tatsächliche Root-Beobachtungen mit getrenntem Scope. Das konkrete öffentliche Protokoll wird vom Integrator ergänzt; private Adressen, Zugangsdaten und Herstellerdateien gehören nicht hinein.
 
-Dokumentiere Revisionen, Artefakthashes, Befunde, verworfene Varianten, tatsächliche Tests, Risiken und nächsten Einstiegspunkt. Forschungs- und Teststatus getrennt. Keine universelle Kompatibilität, Echtzeit oder Hardwarefreigabe aus Backendtests ableiten. Materialle Entscheidungen als ADR, Änderungen als PR; spätere Merges nur mit geltender Autorisierung und erfolgreicher Evidence. Bei externem Blocker unabhängige sinnvolle Arbeit abschließen statt den Gesamtauftrag abzubrechen.
+## Bestehende Evidenz
+
+Die bisherigen Reports dokumentieren ältere, eng begrenzte Befunde: Geräte-/ABI-Hashes und statische Verbraucheranalyse in [reference-abi-2026-10-11.md](reference-abi-2026-10-11.md), Engineering- und begrenzte Runtimeversuche in [codesys-engineering-2026-10-12.md](codesys-engineering-2026-10-12.md), Offline-Mapping/Adapter in [originalstack-block-2026-10-12.md](originalstack-block-2026-10-12.md), sowie Isolationsprüfungen in [network-isolation.md](network-isolation.md) und [offline-carrier-2026-10-11.md](offline-carrier-2026-10-11.md). Diese Ergebnisse gelten nicht rückwirkend für den aktuellen Geräte-/Anwendungszustand und beweisen keine Simulation realer Module unter dem Originalstack.
+
+750-1405/750-1504 besitzen jetzt begrenzte native Runtimeevidence mit geschlossenem Modellgate; 750-466/750-677 bleiben eigene Offlineartefakte. Sie sind kein aktuelles Hardwareinventar. Eine zusätzliche virtuelle Runtimeinstanz ist ein späteres Ziel.
+
+## Start jedes neuen Arbeitsschritts
+
+Arbeite am Repository `Mateo817/virtualWAGO`. Prüfe zuerst Gitstatus, Branch, HEAD, Remotezustand soweit autorisiert, AGENTS.md, README, ADR, Roadmap, Safety und aktuelle Evidence. Behandle Handoff- und Studienberichte als revisionsgebundene Quellen, nicht als Live-Inventar. Root führt alle Ziel-/VM-Aktionen allein durch. Keine private Zugangsinformation oder Herstellerartefakte ins öffentliche Repository übernehmen. Vor jedem Commit explizite Dateiauswahl und Prüfung privater Daten; kein pauschales `git add .`.
+
+Geschützte Produktionsanlage ist absolut ausgeschlossen, auch read-only, Ping, Discovery oder als Quelle. Kein Netzwerk ohne lokale Richtlinie und eindeutige Gerätezuordnung. Firmware-/Bootloaderupdates, Kernel-/Originaltreiberersetzung, K-Bus-Masterumschaltung und physische Aktortests verlangen einen konkreten separat freigegebenen Versuchsplan. Softwarefreigabe allein deckt diese Schritte nicht ab.
+
+## Delegation
+
+Root bleibt alleiniger Geräte-/VM-Integrator. Für sinnvolle Offlineaufgaben tatsächliche `gpt-6-luna`-Worker verwenden; `gpt-6.1-sol` gezielt für schwierige Entscheidungen und Reviews. Worker führen keine Geräte-/VM-Aktionen aus. Eigene Prüfung als Self-Review kennzeichnen; Reviews sind kein Hardware- oder Ausführungsnachweis.

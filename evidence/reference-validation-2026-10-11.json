@@ -1,0 +1,186 @@
+{
+  "schema": "virtualwago-reference-validation/1",
+  "date": "2026-10-11",
+  "development_base_commit": "910dd9d849dfa4e1ef7d7a1725e4720b7214b520",
+  "firmware_marker": {
+    "status": "VERIFIZIERT",
+    "value": "04.09.01(31)",
+    "source": "/etc/REVISIONS"
+  },
+  "device_model": {
+    "status": "VERIFIZIERT",
+    "value": "WAGO PFC200 750-8213",
+    "source": "device-tree model; not full serial/hardware inventory"
+  },
+  "kernel": {
+    "status": "VERIFIZIERT",
+    "value": "6.6.94-rt56-w05.08.02",
+    "source": "uname; ARMv7"
+  },
+  "runtime_versions": {
+    "package_database": "6.4.6.4",
+    "embedded_string": "3.5.21.50",
+    "scope": "independent file/package observations; Engineering profile and protocol version not verified"
+  },
+  "artifacts": {
+    "codesys3": {
+      "sha256": "b56c6296faabae9eb73f0463fd068c535c03109ced347f0c2a643b69a7ee1ab5",
+      "source": "authorized reference /usr/bin/codesys3",
+      "scope": "private original file; no redistribution or execution"
+    },
+    "libdal.so.1.0.1": {
+      "sha256": "c163ac57805409921ce783f9c4f17f52891864be333c3df4945a128d253994f5",
+      "source": "authorized reference /usr/lib/libdal.so.1.0.1",
+      "scope": "private original file; no redistribution or execution"
+    },
+    "libIoDrvDal.so.1.0.2": {
+      "sha256": "853d3ad6eb1b2477b43502d562a6bbfa854b8029e85989b6166f961167188c7d",
+      "source": "authorized reference /usr/lib/libIoDrvDal.so.1.0.2",
+      "scope": "private original file; no redistribution or execution"
+    },
+    "libIoDrvKbus.so.0.0.1": {
+      "sha256": "543e8b1d2d19352030fe804a7e667ca30c1d9ba80069f2df3158c77c544789b8",
+      "source": "authorized reference /usr/lib/libIoDrvKbus.so.0.0.1",
+      "scope": "private original file; no redistribution or execution"
+    },
+    "libCmpKbusAsyncCom.so.0.0.1": {
+      "sha256": "2564394a5925e6af923843edf8fa93be6a47bdf640d0b6567ed2c3d386e205a7",
+      "source": "authorized reference /usr/lib/libCmpKbusAsyncCom.so.0.0.1",
+      "scope": "private original file; no redistribution or execution"
+    },
+    "libTscIoDrvKbus.so.0.0.1": {
+      "sha256": "a861472653c71ff0698497707bb99bfc5b622af89127f928df75517d0c05fdaf",
+      "source": "authorized reference /usr/lib/libTscIoDrvKbus.so.0.0.1",
+      "scope": "private original file; no redistribution or execution"
+    },
+    "libTscTime.so.0.0.6": {
+      "sha256": "a6c6868de5572f10a42a86f9cb0546abc0dd61b7b056d1b9b1e4647013c8f643",
+      "source": "authorized reference /usr/lib/libTscTime.so.0.0.6",
+      "scope": "private original file; no redistribution or execution"
+    },
+    "libTscRetainUIO.so.0.0.2": {
+      "sha256": "46b3f0820a594aeaac056d1fd35899f466968d40f2501a3142151c7a1844132a",
+      "source": "authorized reference /usr/lib/libTscRetainUIO.so.0.0.2",
+      "scope": "private original file; no redistribution or execution"
+    },
+    "libTscAsyncMgr.so.0.0.1": {
+      "sha256": "11fface0c65de13ce6494e974a7298ec70884ebe5687092114bc5a552739090c",
+      "source": "authorized reference /usr/lib/libTscAsyncMgr.so.0.0.1",
+      "scope": "private original file; no redistribution or execution"
+    },
+    "REVISIONS": {
+      "sha256": "2efb783642bb019dc090d965d9ead2377c3a2a43b4caac02090a072f1b617433",
+      "source": "authorized reference /etc/REVISIONS",
+      "scope": "private original file; no redistribution or execution"
+    },
+    "SVNREVISION": {
+      "sha256": "83ec47e06c01bf98325921981a8a1174050bad2f69ddc774ef2e56172d7b5ace",
+      "source": "authorized reference /etc/SVNREVISION",
+      "scope": "private original file; no redistribution or execution"
+    },
+    "IoDrvDal.cfg": {
+      "sha256": "91fc4013c5bd87fab459f13bba60787e9f1256d4423cfd47eefdef307161af13",
+      "source": "authorized reference /etc/codesys3.d/IoDrvDal.cfg",
+      "scope": "private original file; no redistribution or execution"
+    }
+  },
+  "backup": {
+    "status": "PASS",
+    "initial_regular_files": 143,
+    "unique_regular_files_total": 167,
+    "initial_tar_sha256": "12580f43158b577b3f6e01ace8b4aec711da86342182aad92d4ec11f2f23726d",
+    "initial_before_and_after_manifest_sha256": "4f6486feb8d76076225ede6cf25d9776332261780bf6d317c953ae278678fa0e",
+    "combined_private_manifest_sha256": "bc2ece1013fed19aa6802652453dc6407439243df675ce1f7f9c81c17b467e1a",
+    "scope": "selective regular-file backup with every member matching before/after hashes; not full device restore image"
+  },
+  "provider_comparison": {
+    "status": "VERIFIZIERT",
+    "sdk_revision": "252209115885442bac7359a2ff1cfa4efb3a9c84",
+    "provider_byte_identical": true,
+    "consumer_byte_identical": false,
+    "scope": "DAL implementation identity only; no blanket FW31 compatibility"
+  },
+  "consumer_table": {
+    "status": "VERIFIZIERT",
+    "bytes_copied": 136,
+    "entry_call_site_elf_address": "0x45a4",
+    "copy_site_elf_address": "0x45bc",
+    "scope": "static original IoDrvDal, exact hash above; no original runtime execution"
+  },
+  "consumer_indirect_entries": {
+    "status": "VERIFIZIERT",
+    "read_routine_elf_address": "0x33f4",
+    "write_routine_elf_address": "0x2134",
+    "read_instance_offset": "0x34",
+    "write_instance_offset": "0x4c",
+    "instance_stride_bytes": 1596,
+    "instance_index_range": [
+      0,
+      9
+    ],
+    "scope": "static PIC-built table entries; exact interface dispatch and runtime invocation OFFEN"
+  },
+  "checks": {
+    "guarded_ssh": {
+      "status": "PASS",
+      "scope": "strict local SSH hostkey binding; exact private allowlist"
+    },
+    "admin_https": {
+      "status": "PASS",
+      "protocol": "HTTPS WBM OAuth2 authorization code + PKCE",
+      "roles": [
+        "guest",
+        "user",
+        "admin"
+      ],
+      "scope": "authenticated original role query; no write/right escalation test"
+    },
+    "own_web_session_clear": {
+      "status": "FAIL",
+      "scope": "HTTP200 logout did not prove session cleared; timeout900s in original source; no other session touched"
+    },
+    "selected_configuration_literal_screen": {
+      "status": "PASS",
+      "files": 10,
+      "scope": "no protected-target literal; not a dynamic endpoint/autostart proof"
+    },
+    "hardware_identity_and_terminals": {
+      "status": "BLOCKED",
+      "reason": "serial/hardware revision/terminal inventory unqualified"
+    },
+    "active_project_state": {
+      "status": "BLOCKED",
+      "reason": "runtime cwd is deleted empty inode, distinct from present configuration directory"
+    },
+    "original_elf_static": {
+      "status": "PASS",
+      "scope": "imports/dependencies/table copy/indirect entries and provider hash comparison"
+    },
+    "complete_m2_behavior": {
+      "status": "BLOCKED",
+      "reason": "CODESYS INIT_STRUCT, ICmpIoDrv/map contracts, dispatch/lifecycle and complete loader/service closure unavailable"
+    },
+    "original_io_consumer_m3": {
+      "status": "BLOCKED",
+      "reason": "typed lifecycle/module contracts and practical filesystem/device/IPC isolation missing"
+    },
+    "virtual_original_runtime": {
+      "status": "NOT_RUN",
+      "reason": "subsequent independent IEC/mapping/license gate"
+    },
+    "bus_master_or_actuator_test": {
+      "status": "NOT_RUN",
+      "reason": "no such device intervention"
+    }
+  },
+  "review": {
+    "self_review": "integrator plus Luna implementation/research workers",
+    "independent_review": "separate gpt-6.1-sol worker verified initial143file backup, original ELF/provider/table and symbol-bounds/identity-side-effect findings; reviewed new symbol parser and ran13tool tests",
+    "scope": "offline static artifacts/code; no hardware/electrical/runtime/license signoff"
+  },
+  "reference_state": {
+    "status": "VERIFIZIERT",
+    "operational_changes_requested": false,
+    "scope": "inventory/read-only data transfer and ordinary WBM login/session requests; no installation, service restart, password, firmware, kernel, bus-master or output changes"
+  }
+}

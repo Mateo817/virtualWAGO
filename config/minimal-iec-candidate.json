@@ -1,0 +1,84 @@
+{
+  "schema": "virtualwago.iec-test-candidate.v1",
+  "kind": "research-candidate-only",
+  "native_codesys_project": false,
+  "compiled": false,
+  "downloaded": false,
+  "hardware_mapping": "NOT_GENERATED",
+  "channel_mapping": "NOT_GENERATED",
+  "descriptor_profile": {
+    "engineering_ide": "3.5.21.50",
+    "service_pack": "SP21",
+    "patch": 5,
+    "firmware_generation": 31,
+    "runtime_target_metadata": "3.5.21.50"
+  },
+  "device_tree_candidate": [
+    {
+      "role": "controller",
+      "product": "750-8213",
+      "device_id": "1006 120C",
+      "device_type": 4096,
+      "descriptor_version": "6.4.6.11",
+      "descriptor_sha256": "e14cf1edc7da23ce2667952739564e9a0fdfacb10cea317ac4fd1c561767dd6b"
+    },
+    {
+      "role": "fixed_generic_local_bus_child",
+      "device_id": "Wago 750-Series Local Bus Interface",
+      "device_type": 32778,
+      "descriptor_version": "2.1.0.1",
+      "descriptor_sha256": "38de77924d719300e64259b36642e73df9e67af1cdbf6a0e041dc5c2b163ed39",
+      "parent_connector_module_type": 32777,
+      "child_kbus_connector_module_type": 32779
+    },
+    {
+      "role": "digital_input_terminal",
+      "product": "750-1405",
+      "device_id": "9001_0750140500000000",
+      "device_type": 32776,
+      "descriptor_version": "2.0.0.14",
+      "descriptor_sha256": "2ea6fb96d1db35228450ccd94454f1e51b562a6e1982e416f34eed2feb056273",
+      "parent_connector": "Wago.Kbus",
+      "connector_id": 0,
+      "connector_module_type": 32776,
+      "input_parameter_id": 16777216,
+      "input_parameter_id_hex": "0x01000000",
+      "channel": "input",
+      "declared_type": "WORD16_WITH_16_BOOL_SUBFIELDS"
+    },
+    {
+      "role": "digital_output_terminal",
+      "product": "750-1504",
+      "device_id": "9002_0750150400000000",
+      "device_type": 32776,
+      "descriptor_version": "2.0.0.14",
+      "descriptor_sha256": "207e7d654f98a180b06cb75117e282ac2a85f956cbb5d057113d76846a6dc991",
+      "parent_connector": "Wago.Kbus",
+      "connector_id": 0,
+      "connector_module_type": 32776,
+      "output_parameter_id": 50331648,
+      "output_parameter_id_hex": "0x03000000",
+      "channel": "output",
+      "declared_type": "WORD16_WITH_16_BOOL_SUBFIELDS"
+    }
+  ],
+  "program": {
+    "source": "prototype/iec/minimal_io.st",
+    "source_sha256": "e757410d9d9efc4f363e666190514af130d2a6be9fd46916a805cd7551588dcc",
+    "program_unit": "PLC_PRG",
+    "behavior": "OutputWord is zeroed every scan, then mirrors InputWord only while OutputPermit is TRUE; CycleCounter saturates at UDINT maximum."
+  },
+  "limits": [
+    "This file is not a backend configuration or a valid native CODESYS project.",
+    "No process-image address, device target, port, license identity, runtime mapping, or hardware endpoint is specified.",
+    "Connector and parameter fields are pinned from static Device Description analysis; their runtime behavior is not qualified.",
+    "The candidate defines research logic only and does not reproduce product or Mesokosmen application logic."
+  ],
+  "status": {
+    "native_project_creation": "NOT_RUN",
+    "offline_compile": "NOT_RUN",
+    "runtime_execution": "NOT_RUN",
+    "iec_download": "NOT_RUN",
+    "physical_io": "NOT_RUN"
+  }
+}

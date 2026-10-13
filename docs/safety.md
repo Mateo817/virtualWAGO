@@ -14,7 +14,11 @@ Die geschützte SPS ist kein Leseziel, kein Diagnoseziel, kein Quellgerät und k
 
 Ein lokaler Agent muss vor Verbindungen effektive Zieladresse, Route und Geräteidentität prüfen. Vor Deployments zusätzlich SSH-Hostschlüssel, Artikel/Seriennummer oder gleichwertige Identität festhalten. Ein IP-Text allein reicht nicht für eine gefährliche Änderung. Hostkey-Prüfung nicht pauschal deaktivieren. Alle übernommenen Endpunkte, CODESYS-Ziele, Gateways, Modbus-/OPC-UA-Clients und Autostarts auf alte Zieladressen prüfen.
 
-Diese Regeln sind **noch keine implementierte technische Sperre**. Vor aktiven Tests ist eine prozess-/VM-/Netzwerkbereich-begrenzte Egress-Absicherung zu etablieren und offline/mit harmlosen erlaubten Zielen zu prüfen. Geteilte Runner, Netze oder fremde Firewallregeln nicht global verändern. Die geschützte Anlage nicht zum Sperrtest kontaktieren.
+Diese Regeln allein sind **keine technische Sperre**. Vor aktiven Tests ist eine prozess-/VM-/Netzwerkbereich-begrenzte Egress-Absicherung zu etablieren und offline/mit harmlosen erlaubten Zielen zu prüfen. Geteilte Runner, Netze oder fremde Firewallregeln nicht global verändern. Die geschützte Anlage nicht zum Sperrtest kontaktieren.
+
+Inzwischen setzt [reference_netns.py](network-isolation.md) diese Egress-Sperre für einen eigenen, geprüften Referenzwerkzeugprozess um. Der lokale Kernel-Selbsttest ist PASS für die dokumentierte Revision/Konfiguration. Die Zielrichtlinie allein bleibt eine Vorgabe; eine bloße Plananzeige installiert keine Sperre. Geräte-/Hostkeybindung, elektrische Trennung und sichere Firmware-Dateisystem-/Geräte-/IPC-Isolation sind separate Gates. Das Werkzeug darf keine ungeprüften Hostsocket-/Proxy-/Autostartpfade verwenden und reicht allein nicht zum Firmwarestart.
+
+Die konkrete aktuelle Eigentümeranweisung hat Vorrang vor einer älteren lokalen Übergabe. Eine ausdrücklich gelockerte zusätzliche Windows-Prozessgrenze darf nicht als fortbestehender Blocker ausgegeben werden. Eine solche Änderung ist keine pauschale Erlaubnis zum Überschreiben anderer Geräte oder Originalbestände. Der Emulator-Isolationsvertrag und die private Gerätezuordnung bleiben getrennte Anforderungen.
 
 ## Freigaben und Rückfall
 

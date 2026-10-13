@@ -1,0 +1,108 @@
+{
+  "date": "2026-10-12",
+  "source_base": "08c3bcb0d225fa50c042d1ef05d3d3f4bc4317af",
+  "result": "PASS_FOR_OWN_OFFLINE_CATALOG_AND_MODELS_ONLY",
+  "catalog": {
+    "revision": "2026-10-12.1",
+    "canonical_sha256": "e001c8f610e2b677e9833fd6d9cbc650e3bdd65572366e9f8b91e2485edc8694",
+    "entries": 14,
+    "standalone_models": 9,
+    "native_profile_specifications": 2,
+    "exact_standard_articles": [
+      "750-430",
+      "750-530",
+      "750-1405",
+      "750-1504",
+      "750-466",
+      "750-677",
+      "750-400",
+      "750-402",
+      "750-504",
+      "750-454",
+      "750-455",
+      "750-550",
+      "750-600",
+      "750-652"
+    ]
+  },
+  "current_source_sha256": {
+    "config/catalog-demo.jsonl": "d7a2a44795b19fe790a1e09fdf57d55e5f768ef7a219b9dbad726c879accb332",
+    "config/module-catalog.json": "1415eb043e4d2295c82d6e7c1d2e9a2e1ba8121681868b29aa564e013521a89c",
+    "prototype/catalog.py": "8077b84d608b9407b06a6f24acd0e7b889a9e7f435303f550957477c80651e0f",
+    "prototype/contracts.py": "f10636459d73614de1b5985c5336d10fc9425dcb046769cca6919892253c5101",
+    "prototype/module_models.py": "ff9b062a14429c2f17b0b451230a69e46d62603a20e8e44b609bc34f35221ad1",
+    "prototype/module_simulation.py": "4edbf93158725b65675d7bbced87ded22da8ec1abb5e6e730e1b76843bd92373",
+    "prototype/vio.py": "5eb8c54591b8fd9c5a08fe6943b4ba22c1bf55ea62bb372e59c08c57a701fae7",
+    "tests/test_module_catalog.py": "98757af2debe7f6e29802e3c7159b03fbafb46b2dcfa21821de36baf24eacad6",
+    "tests/test_module_models.py": "4ef7b3f5ce73201d5aeae09ad1e29e554f85d5d99636b6a429d6832fe25f3ceb",
+    "tests/test_module_simulation.py": "a394396675d0fa0ce1e82582427e14047e0e16387635d7cf9189dac2b08c37b8",
+    "tests/test_native_catalog.py": "7ff99f87ccc77af709a2f5eb1d90289c159779a685724da6d1311f3661455333",
+    "tests/test_vio.py": "31630560188e7299947ff7e1b5eb032740f96e9e843f59d88816a2229d136bf9",
+    "tools/adi_catalog_profiles.h": "3e2c62c302add32418b861ae37b276f8b15353978d2f30762ead8c12558127ba",
+    "tools/adi_digital_adapter.c": "c0e1de356de1bc2be11b70bca8812971a9deaa4a17c9ce740e323d2e24c57e6b",
+    "tools/adi_digital_adapter.h": "6c949fcbba1ba3a9925c5c29eac53faac9db10cd8265d36a1d7deacaf64c92ad",
+    "tools/generate_module_catalog.py": "8b6728583bbe04ec83c35d57cd8cbece05657bffd606d0edabac4063924af796",
+    "tools/module_catalog.py": "b6ee8145b866192ee858a73cc0462288c62ee36d11d2059607cecce09514fc7c"
+  },
+  "local_tests": {
+    "result": "PASS",
+    "count": 180,
+    "root_suite": true,
+    "log_sha256": "edb36eb7f4332eb64e2231df767e5019076bdabe9a2445022b50f9e5e1b6517f",
+    "scope": "Full own Python suite including actual namespace/IPC tests; no hardware/original runtime"
+  },
+  "independent_offline_code_review": {
+    "result": "PASS_FOR_REVIEWED_OFFLINE_CODE_SCOPE",
+    "receipt_sha256": "2403589a37597111a9b96a449d93cbd089bbab198dd56c324d3560d88d7b0929",
+    "targeted_tests": 92,
+    "additional_pwm_partition_cases": 300,
+    "scope": "Actual Sol medium worker offline code review; no source edits, ARM/device/VM/runtime/hardware execution"
+  },
+  "own_arm_regression": {
+    "result": "PASS",
+    "harnesses": 2,
+    "compiler": "arm-linux-gnueabihf-gcc (Debian 14.2.0-19) 14.2.0",
+    "receipt_sha256": "6d3791e2d23a76fdc723a42c5615472695412caab5918e9b4ce30727a033bde0",
+    "harness_binaries": [
+      {
+        "name": "catalog-contract-test",
+        "sha256": "00ea0ad00dabfa44d87200b1ea0eeb1a98861bcec9aba3e3270de8fee55c93aa",
+        "execution": "PASS"
+      },
+      {
+        "name": "catalog-digital8-default-test",
+        "sha256": "c0077aada7f257aaa8dec713dd004244b09da27cf8b7702dd18f3d03fc2743a7",
+        "execution": "PASS"
+      }
+    ],
+    "shared_provider_sha256": "c4aa9da51b20722fb2bcb8f4a718d1624627a701507dd02209687fb5e4e49641",
+    "shared_provider_status": "COMPILE_LINK_PASS_ONLY",
+    "scope": "Root own ARM adapter/harness regression in offline mount/net/ipc/pid/user sandbox; original GNU loader/libc only; NO original IoDrv/runtime or hardware execution",
+    "initial_root_setup_failures": "Preserved privately: missing rootfs mountpoints/executable modes and missing own include path. Corrected setup completed all own harness/compile checks."
+  },
+  "snapshot_contract": {
+    "rail_format": 2,
+    "model_version": "0.2.0",
+    "catalog_digest_bound": true,
+    "old_format_1": "EXPLICITLY_REJECTED",
+    "whole_ModuleSimulation_snapshot": "UNSUPPORTED"
+  },
+  "native_runtime_for_this_revision": "NOT_RUN",
+  "hardware_comparison": "NOT_RUN",
+  "device_vm_actions": "NONE_IN_THIS_BLOCK",
+  "historical_native_digital8": {
+    "source_revision": "08c3bcb0d225fa50c042d1ef05d3d3f4bc4317af",
+    "evidence": "evidence/native-cyclic-2026-10-12.json",
+    "scope": "Historical original-runtime Digital8 requested-output cycles with modelgate0; no PASS transfer to catalog adapter or additional modules"
+  },
+  "ci_when_evidence_saved": "NOT_RUN_FOR_UNCOMMITTED_CATALOG; final exact commit results recorded on PR and private final-git receipt",
+  "remaining": [
+    "Fresh native regression of generated Digital8 adapter and native Digital16 application trial",
+    "Native Analog/PWM ADI/metadata/register/status paths and model-channel extension",
+    "Actual module revisions and later separately scoped hardware comparisons",
+    "Additional catalog-only module codecs and exact variants",
+    "Original FW31 serial endpoint contract, then virtual RS485/response/timeout proof",
+    "Other PFC200 capability/target checks preserving genuine controller identity"
+  ],
+  "merge": false
+}

@@ -1,0 +1,11 @@
+{"op":"enumerate"}
+{"op":"run","running":true}
+{"op":"input","module":"di","hex":"0100"}
+{"op":"cycle","outputs_hex":"0100"}
+{"op":"advance","dt_ns":20000000}
+{"op":"fault","kind":"missing","active":true,"module":"di"}
+{"op":"cycle","outputs_hex":null}
+{"op":"fault","kind":"missing","active":false,"module":"di"}
+{"op":"cycle","outputs_hex":null}
+{"op":"cycle","outputs_hex":"0200"}
+{"op":"advance","dt_ns":100000000}

@@ -1,0 +1,164 @@
+{
+  "date_utc": "2026-10-12",
+  "starting_git_head": "89f2e57a1879be144160d51e17c3ed0fd75d235b",
+  "revision_binding": "Exact selected source hashes in source-manifest.sha256; CI and final Git SHA are checked separately after commit",
+  "source_manifest": {
+    "entries": 30,
+    "sha256": "b70d01e9dd239aba6e887121c9a8aaf59f9e5a03334afa8b2d6d664490c157f1"
+  },
+  "reference_refresh": {
+    "check": "PASS",
+    "scope": "Only bound reference, metadata/hashes and read-only Keep login; no device/program/software/state writes requested",
+    "original_hashes": {
+      "/usr/bin/codesys3": "b56c6296faabae9eb73f0463fd068c535c03109ced347f0c2a643b69a7ee1ab5",
+      "/usr/lib/libdal.so.1.0.1": "c163ac57805409921ce783f9c4f17f52891864be333c3df4945a128d253994f5",
+      "/usr/lib/libIoDrvDal.so.1.0.2": "853d3ad6eb1b2477b43502d562a6bbfa854b8029e85989b6166f961167188c7d",
+      "/usr/lib/libIoDrvKbus.so.0.0.1": "543e8b1d2d19352030fe804a7e667ca30c1d9ba80069f2df3158c77c544789b8",
+      "/etc/codesys3.d/IoDrvDal.cfg": "91fc4013c5bd87fab459f13bba60787e9f1256d4423cfd47eefdef307161af13",
+      "/home/codesys_root/CODESYSControl.cfg": "03e38bf715bf085cfa7e6e514c01511a10a5c3c5fef01eff7ea5df419c549dd7"
+    },
+    "model": "750-8213",
+    "firmware": "04.09.01(31)",
+    "kernel": "6.6.94-rt56-w05.08.02",
+    "firmware_marker_sha256": "2efb783642bb019dc090d965d9ead2377c3a2a43b4caac02090a072f1b617433",
+    "first_and_final_raw_metadata_sha256": "0419a7261b9924128ff962430f7d0457075d77a88a920097c85ca7acf2bb7c21",
+    "raw_metadata_byteidentical": true,
+    "keep_report_sha256": "6589b0649c5414b5397a82e90fcdd24c5aaff2bd1cb94a328cb4af278cdf4456",
+    "application_state": "stop",
+    "operation_state": "program_loaded",
+    "last_vendor_application_metadata": {
+      "title": "Application",
+      "helper_sha256": "6488bab0f8b1056cbef67256a8eb3b720acd1a53198fc2978a14c100a7b7e078",
+      "report_sha256": "78871054306a7e8abb66e48fdbc956959ca628a9a1740695f9f330661396cbb9",
+      "scope": "Title only; no state field in vendor JSON; STOP is from separate Keep observation"
+    },
+    "runtime_cwd": "Deleted inode still present; no restart or recovery performed",
+    "physical_terminal_inventory": "OFFEN: safe sysfs/file metadata provides no terminal list; no second DAL master invoked",
+    "electrical_isolation": "VERIFIZIERT as owner statement; no own measurement",
+    "process_egress_selftest": "PASS: controlled local listener denied and nft output counter increment; no excluded target contacted"
+  },
+  "mapped_project": {
+    "check": "PASS",
+    "evidence": "codesys-mapped-validation-2026-10-12.json",
+    "compiler": "3.5.21.50",
+    "diagnostics": {
+      "errors": 0,
+      "warnings": 0
+    },
+    "source_unchanged": true,
+    "saved_reopen": "PASS"
+  },
+  "own_adapter": {
+    "check": "PASS",
+    "scope": "Only own sequential ADI model and own harness; genuine private headers; no original WAGO DAL/IoDrv/runtime/packbus code linked or executed",
+    "source_hashes": {
+      "tools/abi_layout_probe.c": "f845f223aeb96a6c456197083c828adb7286ac737e03c8870395c07f6e2a7dd0",
+      "tools/adi_digital_adapter.c": "7da0d31316648041cd1818291bb209030b1b7d9b8d83d49bb2a368289a0edfff",
+      "tools/adi_digital_adapter.h": "f4a5760093dabf5f358b6ca61b27af51d5e6460f9cd14e0b2abfff8d5ca83086",
+      "tools/adi_digital_adapter_test.c": "9cfd3c287883d5730ffadec8bec335890181b22ee5f8edf592c120123a1799d5"
+    },
+    "compiler": "ARMHF GCC14.2.0, ARMv7-A hard-float; not SDK GCC11.3.1",
+    "abi_probe": "PASS compile-only all34 signatures and offsets",
+    "linked_model_harness_sha256": "1f612a2a5eb70f151fb83eba0511e51a287147948a13568260b90672e0d5c75c",
+    "shared_object": {
+      "sha256": "b4f0c6d14710f2e4a27e890d0c1312f6e9d7cc58fd044158656c9dcfc3f450c3",
+      "soname": "libdal.so",
+      "needed": [
+        "libc.so.6"
+      ],
+      "getter_export": "adi_GetApplicationInterface",
+      "scope": "Own shared provider dynamically loaded only by own ARM harness",
+      "own_codesys_manager_objects_constructed": false
+    },
+    "dynamic_harness_sha256": "3862fd18190700f6b7be33e09f3c8ea140cdacb576a26a2f6df7a9c94e72f0c4",
+    "static_run_report_sha256": "70ce651b9e175ca2af020abce543b70f83983685e22dd756936be2ce76b54288",
+    "shared_run_report_sha256": "6aaa38a43ffc424af7758c15061eacaafe82eae7bae01643a2531e82c80f575e",
+    "static_harness_run": "PASS exit0; assertions enabled",
+    "dynamic_harness_run": "PASS exit0; assertions enabled",
+    "model_time_domain": "Own manually advanced microsecond clock, no runtime/bus/wall-clock timing claim",
+    "supported_configuration": "TCM control0, false new-process-image flag, task0, virtual1405/1504 16DI/16DO",
+    "concurrency": "Sequential singleton only; callbacks fail; not qualified for originalmanager concurrency",
+    "build_flags": {
+      "static_harness": "-std=c11 -Wall -Wextra -Werror -fno-common -O0 -march=armv7-a -mtune=cortex-a8 -mfpu=neon -mfloat-abi=hard; -I tools plus two private authenticated include roots; adapter.c and adapter_test.c; default distro PIE",
+      "shared_adapter": "-std=c11 -Wall -Wextra -Werror -O2 -fno-common -fPIC -shared -Wl,-soname,libdal.so -Wl,-z,defs -march=armv7-a -mtune=cortex-a8 -mfpu=neon -mfloat-abi=hard; genuine private includes",
+      "dynamic_harness": "same C11/Werror/O2/ARMv7/NEON/hard-float flags; adapter_test.c linked against own libdal-model.so only",
+      "abi_probe": "-std=c11 -Wall -Wextra -Werror -ffreestanding -fno-common -O0 -march=armv7-a -mtune=cortex-a8 -mfpu=neon -mfloat-abi=hard -c; private headers only"
+    }
+  },
+  "isolation": {
+    "check": "PASS for both exact own roots; not a blanket firmware-sandbox qualification",
+    "static_root_files": {
+      "lib/ld-linux-armhf.so.3": "366d9f2f5584ce374cb1a7a2222067d0c99aabee4bac6a475c160ce04ed4dd33",
+      "opt/research/adi-contract-test": "1f612a2a5eb70f151fb83eba0511e51a287147948a13568260b90672e0d5c75c",
+      "opt/research/isolation-probe": "c107ce4016827a4fe04b2a057ccb2130406b1ead5aaa0e331a6646e32e1e1cc1",
+      "usr/lib/libc.so.6": "dc47ee066e2c2d73ff9186440787543c3020711611f09002b6ab187d97d9dfa2"
+    },
+    "shared_root_files": {
+      "lib/ld-linux-armhf.so.3": "366d9f2f5584ce374cb1a7a2222067d0c99aabee4bac6a475c160ce04ed4dd33",
+      "opt/research/adi-contract-test": "3862fd18190700f6b7be33e09f3c8ea140cdacb576a26a2f6df7a9c94e72f0c4",
+      "opt/research/isolation-probe": "c107ce4016827a4fe04b2a057ccb2130406b1ead5aaa0e331a6646e32e1e1cc1",
+      "usr/lib/libc.so.6": "dc47ee066e2c2d73ff9186440787543c3020711611f09002b6ab187d97d9dfa2",
+      "usr/lib/libdal.so": "b4f0c6d14710f2e4a27e890d0c1312f6e9d7cc58fd044158656c9dcfc3f450c3"
+    },
+    "bwrap_sha256": "573236e5328ac2ebb08f59ae3a9805b4f8d12bdef14be8af4450d5463294985f",
+    "qemu_sha256": "94f4d938a299230026c759b348a5c8f8eaf05969ee5d7a6819598de8c6d342bb",
+    "positive_probe": {
+      "abstract_denied": 1,
+      "clean_env": 1,
+      "endpoints_absent": 1,
+      "hardware_absent": 1,
+      "host_file_absent": 1,
+      "ipc_private": 1,
+      "loopback_denied": 1,
+      "mount_private": 1,
+      "net_private": 1,
+      "no_caps": 1,
+      "no_new_privs": 1,
+      "pass": 1,
+      "pid_private": 1,
+      "root_readonly": 1,
+      "scope": "own ARM probe; controlled local endpoints only",
+      "user_private": 1
+    },
+    "controlled_host_listeners_reached": [
+      false,
+      false
+    ],
+    "negative_control": {
+      "check": "PASS",
+      "actual_run_status": "FAIL expected",
+      "actual_exit_code": 1,
+      "synthetic_guest_file_detected": true,
+      "host_mounts_added": false
+    },
+    "gnu_loader_libc": "Original open GNU loader/libc ran; no WAGO component executed",
+    "aggregate_cgroup_quota": "NOT_RUN; existing per-process limits only"
+  },
+  "python_suite": {
+    "check": "PASS",
+    "tests": 99,
+    "version": "3.13.5",
+    "scope": "Hardware-free Python suite; does not compile C requiring private headers",
+    "log_sha256": "f3cbec9984a241449c95faf631fcc5cbed8ee0c10aac5608ad58d326f8ad88ea"
+  },
+  "reviews": {
+    "integrator": "Self-Review",
+    "independent_mapped": "Actual gpt-6-luna low offline source/report/CSV review;7 tests PASS; no must-fix",
+    "independent_adapter": "Actual gpt-6.1-sol high targeted static ABI/code review; concrete findings fixed; final source hashes reviewed; no binary/device execution by reviewer"
+  },
+  "vm_restoration": {
+    "check": "PASS",
+    "status": "stopped",
+    "saved_to_disk": true,
+    "session_active": false,
+    "restoration": "Original saved-to-disk state restored; separate fresh status query confirmed"
+  },
+  "remaining_gates": {
+    "original_consumer": "BLOCKED: selected startup/caller and opcode paths, Kbus D-Bus/diagnostic/async service closure, concurrent/callback contracts where used",
+    "original_runtime": "NOT_RUN: licensed/use-authorized isolated instance and concrete module/service/hardware exclusion closure unavailable",
+    "physical_terminal_presence": "OFFEN",
+    "active_reference_mapping": "OFFEN; own native offline mapped tree exists but does not reveal the pre-existing application tree",
+    "private_headers_in_public_ci": "NOT_RUN intentionally; external authentic headers stay private",
+    "merge": "NOT_RUN; user explicitly forbids merge"
+  }
+}

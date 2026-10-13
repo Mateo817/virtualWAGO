@@ -1,0 +1,51 @@
+{
+  "recorded_host_utc": "2026-10-12T11:05:14.707192+00:00",
+  "source": "Owner-supplied photograph in follow-up to reference inventory question",
+  "image_sha256": "1572c35ddc80cbd75033824ddb3ef7f5ed807f2912c2264a7300afc37f5aa00d",
+  "image_bytes": 118676,
+  "baseline_revision": "eee18baafd9bfa815b42ccb49f33358c9adda221",
+  "observed_controller_article": "750-8213",
+  "observed_order_from_controller": [
+    {
+      "article": "750-430",
+      "role": "8-channel digital input; 24 V DC; manufacturer product description"
+    },
+    {
+      "article": "750-530",
+      "role": "8-channel digital output; 24 V DC; 0.5 A; manufacturer product description"
+    },
+    {
+      "article": "750-600",
+      "role": "End module; not an extra active DI/DO terminal"
+    }
+  ],
+  "identity_scope": "VERIFIZIERT: legible front article labels/order in supplied photo; owner context binds it to authorized reference; no fresh electronic read",
+  "hardware_firmware_revisions": "OFFEN: not legible from provided front photo",
+  "current_cyclic_communication": "OFFEN: photo not evidence of powered/working bus or IO behavior",
+  "cache_comparison": "HYPOTHESE: earlier two records with8DI then8DO consistent with product channel counts/order; not formal device/bus ID mapping",
+  "no_photograph_or_serial_in_git": true,
+  "device_vm_network_operations": "NOT_RUN: documentation follow-up only",
+  "adapter_change": "NOT_RUN: existing16-bit candidate retained unchanged;8-bit target requires descriptor/ABI/mapping contract",
+  "sources": [
+    "https://www.wago.com/us/controllers-bus-couplers-i-o/8-channel-digital-input/p/750-430",
+    "https://www.wago.com/us/controllers-bus-couplers-i-o/8-channel-digital-output/p/750-530",
+    "https://www.wago.com/us/controllers-bus-couplers-i-o/end-module/p/750-600"
+  ],
+  "review": "Integrator visual Self-Review plus actual independent Luna-low visual check: same readable article order; revisions not visible; no hardware actions",
+  "tests": {
+    "local_python": "NOT_RUN: documentation/metadata-only change, no code changed; prior116 PASS bound to eee18ba",
+    "ci": "Fresh CI for final commit to be checked in PR",
+    "hardware": "NOT_RUN: photo follow-up only"
+  },
+  "source_manifest": {
+    "README.md": "e1dd327c4a0a7b901dd5222dbdd603d67781b400860a70eb4c67745efce9114b",
+    "docs/adr-0003.md": "ee4cd5241c09df775501380c232231578657eb0a6150c968767d1faa97147417",
+    "docs/handoff.md": "cb103f51d8eb920ea04f4cc497e2d45f3f7f7e6d0b3c86f6e405c33a5ad69246",
+    "docs/next-originalstack-block.md": "2afd02f6ee054341a91ec5cabf1f621a31bdf7003ea1cbde1a454ea4344db727",
+    "docs/real-controller-observation-2026-10-12.md": "f61aec3d3151b65e71b34bbc29cdf41096e13838728139d74d180a72736b1539",
+    "docs/real-controller-plan-2026-10-12.md": "e4b5c255ddaf59dd6139873295921543859ea143ce089ee04c450be7eb02fccb",
+    "docs/research.md": "c8cc72575ca292b9a2602289578a0ead8f845949e11c903ba6ad271639a189e3",
+    "docs/roadmap.md": "09e9f1ffea0fc48e42940b95696ee5b6c66dbc529b569177f7aca53c1db6a853",
+    "docs/reference-module-photo-2026-10-12.md": "fd6341eeb6eb4740595dccd86583a7b4aa4683cf851cb74516db45e8f158c073"
+  }
+}

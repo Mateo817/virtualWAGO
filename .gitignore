@@ -22,6 +22,12 @@ captures/
 *.wic
 *.img
 *.zip
+*.tgz
+*.tar.gz
+*.o
+*.a
+*.so
+*.so.*
 __pycache__/
 *.py[cod]
 .venv/

@@ -1,0 +1,48 @@
+{
+  "schema": "virtualwago.windows-own-probe.v1",
+  "date": "2026-10-11",
+  "scope": "Own fixed C# process only on the inventoried Windows VM. Controlled own sentinel, loopback TCP and named-pipe fixtures. No CODESYS IDE, WAGO library, gateway operation, IEC compile, PLC connection or download. Existing VM connectivity and shared service ACLs were not changed.",
+  "os_version_api": "10.0.26100.0",
+  "compiler": {
+    "family": ".NET Framework csc x64",
+    "version": "4.8.9221.0",
+    "sha256": "46809206887326d2d24db1eff1f3064de972c3451abe766b49111450a5e08e00"
+  },
+  "source_sha256": "33306e0b9a85cb2f71e2e41f751ddfdbf16cecb8e36fe54d558cc00cc9187b36",
+  "executable_sha256": "b9be66b2b29617de0de8750b4e38f4447bf70dbc9f877e07a9a500dd32c36148",
+  "private_build_report_sha256": "ff45367deb3679cf35b519d6d7ff325ba5db4a30cb33c905666722322c6a57d3",
+  "private_probe_report_sha256": "68f75830e06a951ab0ad059611d77e1dbce5a6916c2d63b4d9c4d639c2681788",
+  "checks": {
+    "own_probe_compile": "PASS",
+    "current_user_file_tcp_pipe_baselines": "PASS",
+    "own_appcontainer_process_creation": "PASS",
+    "ordinary_appcontainer_positive_control": "FAIL",
+    "lpac_boundary_tests": "NOT_RUN",
+    "windows_process_isolation_qualification": "FAIL",
+    "program_directory_acl_restoration": "PASS",
+    "program_image_acl_restoration": "PASS",
+    "own_probe_processes_remaining": 0,
+    "work_tree_and_profile_cleanup": "PASS",
+    "original_codesys_launch": "NOT_RUN",
+    "iec_compile": "NOT_RUN",
+    "iec_download": "NOT_RUN"
+  },
+  "observed_exit": {
+    "launcher": 2,
+    "ordinary_appcontainer_child": "0x8007045A",
+    "low_word_decimal": 1114,
+    "low_word_name": "ERROR_DLL_INIT_FAILED",
+    "specific_library_or_root_cause": "OFFEN"
+  },
+  "source_for_error_name": "https://learn.microsoft.com/en-us/windows/win32/debug/system-error-codes--1000-1299-",
+  "earlier_attempts": {
+    "first_acl_restore_failure": "FAIL; own explicit package ACEs subsequently removed and zero remaining confirmed",
+    "second_createprocess_error_203": "FAIL; ACL restoration confirmed; error 203 not observed in the later environment/capture revisions"
+  },
+  "review": {
+    "independent_reviewer": "gpt-6.1-sol, medium reasoning",
+    "scope": "Actual static review of the private fixed probe, cleanup correction, and one-line exit-code diagnostic; no VM/PLC execution by reviewer. Integrator performed build and probe."
+  },
+  "codesys_next_step_status": "BLOCKED: the tested Windows process boundary is not qualified; research CODESYS execution has not started.",
+  "cleanup_evidence_scope": "Launcher reported successful private work-tree removal and DeleteAppContainerProfile; program DACL equality and zero own probe processes were separately checked by the integrator fixture."
+}

@@ -1,0 +1,9 @@
+{"op":"observe"}
+{"op":"run","running":true}
+{"op":"input","module":"m0","value":133}
+{"op":"currents","module":"m2","uA":[12000,20000]}
+{"op":"cycle","outputs_hex":"0501e80300d00701000000204e"}
+{"op":"advance","dt_ns":20000000}
+{"op":"advance","dt_ns":80000000}
+{"op":"cycle","outputs_hex":null}
+{"op":"run","running":false}

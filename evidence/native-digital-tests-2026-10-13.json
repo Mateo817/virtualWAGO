@@ -1,0 +1,403 @@
+{
+  "date": "2026-10-13",
+  "status": "PASS_FOR_TWO_NATIVE_DIGITAL_PROFILES_WITH_MODEL_GATE0",
+  "source_base": "df75c3005d8de71647f11ddd4f8effa264326446",
+  "scope": "Root actual bounded realreference originalRuntime/nativeIOmanager/originalWAGOIoDrv with own ADI boundary; model signals only; IEC transforms run in originalruntime; no physicalmodule comparison or actuator test",
+  "firmware": "04.09.01(31)",
+  "runtime_version": "3.5.21.50",
+  "current_source_sha256": {
+    "tools/adi_digital_adapter.c": "c0e1de356de1bc2be11b70bca8812971a9deaa4a17c9ce740e323d2e24c57e6b",
+    "tools/adi_catalog_profiles.h": "3e2c62c302add32418b861ae37b276f8b15353978d2f30762ead8c12558127ba",
+    "tools/adi_digital_adapter.h": "6c949fcbba1ba3a9925c5c29eac53faac9db10cd8265d36a1d7deacaf64c92ad",
+    "tools/adi_model_bridge.c": "0aa7bb093b2a8815de235779a3c54f52565d7d20d51262bc8aeb57d92b4ed662",
+    "tools/adi_model_bridge_test.c": "9a16373ebbadde88cc3a23c556c88b953c7fd8d89f4d2665acd4528f228a6e10",
+    "tools/adi_model_bridge_integration_test.c": "dec7445fccaf856936dd2cf8da4eacb3756c3ad7ebf574b32394fb5f91e88488",
+    "tools/adi_digital16_default_test.c": "3809062cf8246d1fcb3cf21f20172acbec4a2d3ebdc2d2f82cb1524a725c8a9c",
+    "tools/codesys_mapped_digital16_bridge_probe.py": "3de979a473c9ad5c20941352ece7777d1cab306929821ce8dd7ec1cc82448117",
+    "tools/codesys_mapped_digital16_reopen_probe.py": "d8ab7c94c89ba850cd25f086a0d80b511981ea10714fe8e6eda87783d274254b",
+    "prototype/iec/minimal_io_16_bridge_probe.st": "1b954ff156e2b1cedecd77a4e7152ee2ac774ef93da8b5cd65f5dc9c93d2cef6",
+    "tests/test_codesys_mapped_digital16_bridge_probe.py": "ae2bb42e0cb9bf5a95187a22212c631a19d76ad555942693cb20e324ba652781",
+    "tools/readonly_metadata_broker.c": "163d6784d9fea533753661a9763bd4c6b8fb1f2f55638015ca64e9aa267c1ff1",
+    ".github/workflows/python.yml": "5f4b98f004acd27f1906254a3f63bddbd7283be393f8d1916202053262d1e474",
+    "prototype/iec/minimal_io_8_bridge_probe.st": "6fb5bf46bf5e817bb6b8fddac1ba2cbf9129e83935a375648859e6bac9271dab",
+    "tools/codesys_mapped_digital8_bridge_probe.py": "3205f9bd4e5c6be617cc26cc58f5c252362e627caab154caa365f02fe6e19fc7",
+    "tools/codesys_mapped_digital8_candidate.py": "92e3d745a722b7bea994093a2372d85133cfa9410a67c1e96256f7fbb305774d",
+    "tools/adi_model_bridge.h": "cf770961a04cabe086810cc613d7fa78357c8ee361d39831134d4c834511d433",
+    "config/module-catalog.json": "1415eb043e4d2295c82d6e7c1d2e9a2e1ba8121681868b29aa564e013521a89c",
+    "tools/generate_module_catalog.py": "8b6728583bbe04ec83c35d57cd8cbece05657bffd606d0edabac4063924af796"
+  },
+  "native_trials": [
+    {
+      "profile": 8,
+      "articles": [
+        "750-430",
+        "750-530"
+      ],
+      "status": "PASS_FOR_NATIVE_REQUESTED_OUTPUTS_WITH_MODEL_GATE0",
+      "nativeRUN": true,
+      "samples": [
+        {
+          "input": 0,
+          "permit": 0,
+          "requested": 150,
+          "effective": 0,
+          "watchdog": 1,
+          "fault": 0,
+          "generation": 1,
+          "frames": 389,
+          "opened": 1,
+          "configured": 1,
+          "running": 1
+        },
+        {
+          "input": 129,
+          "permit": 0,
+          "requested": 23,
+          "effective": 0,
+          "watchdog": 1,
+          "fault": 0,
+          "generation": 1,
+          "frames": 457,
+          "opened": 1,
+          "configured": 1,
+          "running": 1
+        },
+        {
+          "input": 90,
+          "permit": 0,
+          "requested": 204,
+          "effective": 0,
+          "watchdog": 1,
+          "fault": 0,
+          "generation": 1,
+          "frames": 519,
+          "opened": 1,
+          "configured": 1,
+          "running": 1
+        },
+        {
+          "input": 255,
+          "permit": 0,
+          "requested": 105,
+          "effective": 0,
+          "watchdog": 1,
+          "fault": 0,
+          "generation": 1,
+          "frames": 582,
+          "opened": 1,
+          "configured": 1,
+          "running": 1
+        }
+      ],
+      "post_ownFAULT": {
+        "input": 255,
+        "permit": 0,
+        "requested": 105,
+        "effective": 0,
+        "watchdog": 1,
+        "fault": 1,
+        "generation": 1,
+        "frames": 650,
+        "opened": 1,
+        "configured": 1,
+        "running": 1
+      },
+      "fault_scope": "own latchedflag only; no nativeSTOP/generalwatchdogqualification",
+      "provider_sha256": "f4bacffbbbaf48bda97ef0a967d63fe08ca07194e323738ed6f930643e214c26",
+      "own_app_sha256": "5b21eb425eac3209fe96ada06760f1e32a852e811361dcd71c2968e28c44c207",
+      "own_crc_sha256": "e94c825a91b33bffee9439dc87cf2c759cb1060ab1a2690d5baee966889c2285",
+      "own_cfg_sha256": "81a09469016f8a0130b274aefc92fb371e07bcb866a48edd476c5cac1dfbd4fa",
+      "broker_sha256": "0ed238ef92c4d643c53b3af1f6e7e414f22ffe821d8409ff6726dac571d153f3",
+      "transaction_script_sha256": "2bca8c77173a41a01c13401fbcec9e538f9f879bd52dec6ccfd2cec8eb4379e3",
+      "raw_stdout_sha256": "715881550851a9c88f642933c09fbfbee49e8844f1a43fb10e2993184baf605d",
+      "preexecution_review_sha256": "dee4272d4947045c2710218440f79c23d6a9108767c94f1acac7f3c5cea76437",
+      "validation_receipt_sha256": "cfa03351915e5c748b70c4ca870c420c6f20fd54d816294dc2fa69486d0d618e",
+      "restore": "PASS",
+      "postrestore_read_sha256": "c780ceaea88468e46d1f01080c95509d37a2b29f85bf714e64803c212bc51a62",
+      "original_APP_CRC_CFG_Runtime_DAL_drivers_unchanged": true,
+      "isolation_scope": "fresh ownhome/provider bound within private mount/net/ipc/pid; original drivers mapped; reviewed bindings omit physicalbus/UIO/mem/hostDBus; FD/maps snapshot and processnamespace comparison passed",
+      "broker_diagnostics": [
+        "METADATA_BROKER exit=0 notified=960 continued=957 protected=3 mediated=3 path_errors=0 last_path_errno=0 kill_reason=0 last_control_errno=0 child_signal=0"
+      ],
+      "own_IEC_sha256": "6fb5bf46bf5e817bb6b8fddac1ba2cbf9129e83935a375648859e6bac9271dab",
+      "boot_build_scope": "Reused hash-bound earlier native8 XOR150 BootAPP/CRC, fresh original-runtime execution with current provider; no new8 IDE build this block"
+    },
+    {
+      "profile": 16,
+      "articles": [
+        "750-1405",
+        "750-1504"
+      ],
+      "status": "PASS_FOR_NATIVE_REQUESTED_OUTPUTS_WITH_MODEL_GATE0",
+      "nativeRUN": true,
+      "samples": [
+        {
+          "input": 0,
+          "permit": 0,
+          "requested": 42390,
+          "effective": 0,
+          "watchdog": 1,
+          "fault": 0,
+          "generation": 1,
+          "frames": 406,
+          "opened": 1,
+          "configured": 1,
+          "running": 1
+        },
+        {
+          "input": 1,
+          "permit": 0,
+          "requested": 42391,
+          "effective": 0,
+          "watchdog": 1,
+          "fault": 0,
+          "generation": 1,
+          "frames": 490,
+          "opened": 1,
+          "configured": 1,
+          "running": 1
+        },
+        {
+          "input": 129,
+          "permit": 0,
+          "requested": 42263,
+          "effective": 0,
+          "watchdog": 1,
+          "fault": 0,
+          "generation": 1,
+          "frames": 574,
+          "opened": 1,
+          "configured": 1,
+          "running": 1
+        },
+        {
+          "input": 255,
+          "permit": 0,
+          "requested": 42345,
+          "effective": 0,
+          "watchdog": 1,
+          "fault": 0,
+          "generation": 1,
+          "frames": 658,
+          "opened": 1,
+          "configured": 1,
+          "running": 1
+        },
+        {
+          "input": 256,
+          "permit": 0,
+          "requested": 42134,
+          "effective": 0,
+          "watchdog": 1,
+          "fault": 0,
+          "generation": 1,
+          "frames": 737,
+          "opened": 1,
+          "configured": 1,
+          "running": 1
+        },
+        {
+          "input": 32768,
+          "permit": 0,
+          "requested": 9622,
+          "effective": 0,
+          "watchdog": 1,
+          "fault": 0,
+          "generation": 1,
+          "frames": 805,
+          "opened": 1,
+          "configured": 1,
+          "running": 1
+        },
+        {
+          "input": 42390,
+          "permit": 0,
+          "requested": 0,
+          "effective": 0,
+          "watchdog": 1,
+          "fault": 0,
+          "generation": 1,
+          "frames": 868,
+          "opened": 1,
+          "configured": 1,
+          "running": 1
+        },
+        {
+          "input": 65535,
+          "permit": 0,
+          "requested": 23145,
+          "effective": 0,
+          "watchdog": 1,
+          "fault": 0,
+          "generation": 1,
+          "frames": 931,
+          "opened": 1,
+          "configured": 1,
+          "running": 1
+        }
+      ],
+      "post_ownFAULT": {
+        "input": 65535,
+        "permit": 0,
+        "requested": 23145,
+        "effective": 0,
+        "watchdog": 1,
+        "fault": 1,
+        "generation": 1,
+        "frames": 993,
+        "opened": 1,
+        "configured": 1,
+        "running": 1
+      },
+      "fault_scope": "own latchedflag only; no nativeSTOP/generalwatchdogqualification",
+      "provider_sha256": "855a09bae90dfa1de54e47ffc02734e49813b93b674bb78204332481d76d216e",
+      "own_app_sha256": "ec4075c503a762649a33102c8d1e677365612ff912a80c562259fc121efa4893",
+      "own_crc_sha256": "8ee70e65019d9e4280e567672130923c3051b47f2ccbc1fdc166a7966ecc31ab",
+      "own_cfg_sha256": "81a09469016f8a0130b274aefc92fb371e07bcb866a48edd476c5cac1dfbd4fa",
+      "broker_sha256": "0ed238ef92c4d643c53b3af1f6e7e414f22ffe821d8409ff6726dac571d153f3",
+      "transaction_script_sha256": "492ac3aa379961b9b55501423d9dbaf62654bd346b271fc0750911d5e325c33c",
+      "raw_stdout_sha256": "642eb280b506e844c3a3540cc371fc266a24e1e62800ba58059694d57419ec84",
+      "preexecution_review_sha256": "cea73513389b95743b7c9a1da257be6d11833e66e98e7e50e2eced313d99890f",
+      "validation_receipt_sha256": "0c5f7bf18969f61de8992a1c934a84d81f4226b5babf4d5daa61a12a1d139306",
+      "restore": "PASS",
+      "postrestore_read_sha256": "bbb0aecef58b1aa28e5e934a5bb072aaf62c69c5d41eff8bc5f2a6b45be012ac",
+      "original_APP_CRC_CFG_Runtime_DAL_drivers_unchanged": true,
+      "isolation_scope": "fresh ownhome/provider bound within private mount/net/ipc/pid; original drivers mapped; reviewed bindings omit physicalbus/UIO/mem/hostDBus; FD/maps snapshot and processnamespace comparison passed",
+      "broker_diagnostics": [
+        "METADATA_BROKER exit=0 notified=978 continued=975 protected=3 mediated=3 path_errors=0 last_path_errno=0 kill_reason=0 last_control_errno=0 child_signal=0"
+      ],
+      "own_IEC_sha256": "1b954ff156e2b1cedecd77a4e7152ee2ac774ef93da8b5cd65f5dc9c93d2cef6"
+    }
+  ],
+  "native16_offline": {
+    "status": "PASS",
+    "scope": "actual native offlineIDE build with0errors/0warnings plusreadonlyreopen; notruntime/hardware",
+    "source_sha256": "1b954ff156e2b1cedecd77a4e7152ee2ac774ef93da8b5cd65f5dc9c93d2cef6",
+    "builder_sha256": "3de979a473c9ad5c20941352ece7777d1cab306929821ce8dd7ec1cc82448117",
+    "build_raw_sha256": "ac6af23eac86b41e30a2da62bac5b1ca3ac4291a2dd624f38aad5f28455721af",
+    "reopen_raw_sha256": "f16a5a360cfb069be9448773584037d3f7a90f3399f5d45cd234917f6b758bf3",
+    "project_sha256": "36f3a0098cd1029835a7d18f47efd55b28102be182c26282de3994e1a8ae3a8d",
+    "mapping_csv_sha256": "09915d59265f2bb7c08de6a346674f830f8526933270362b29b8551fae7aa215",
+    "mapping": {
+      "digital_inputs": 16,
+      "csv_consistency": "PASS",
+      "parent_words": 2,
+      "digital_outputs": 16
+    },
+    "saved_task": {
+      "kind": "Cyclic",
+      "task_count": 1,
+      "pous": [
+        "PLC_PRG"
+      ],
+      "interval": "20",
+      "kind_is_cyclic": true,
+      "interval_unit": "ms"
+    },
+    "terminal_order": [
+      [
+        32776,
+        "9001_0750140500000000",
+        "2.0.0.14"
+      ],
+      [
+        32776,
+        "9002_0750150400000000",
+        "2.0.0.14"
+      ]
+    ],
+    "terminals": [
+      {
+        "article": "750-1405",
+        "descriptor_sha256": "2ea6fb96d1db35228450ccd94454f1e51b562a6e1982e416f34eed2feb056273",
+        "id": "9001_0750140500000000",
+        "type": 32776,
+        "version": "2.0.0.14"
+      },
+      {
+        "article": "750-1504",
+        "descriptor_sha256": "207e7d654f98a180b06cb75117e282ac2a85f956cbb5d057113d76846a6dc991",
+        "id": "9002_0750150400000000",
+        "type": 32776,
+        "version": "2.0.0.14"
+      }
+    ],
+    "tcm_value": 0,
+    "tcm_parameter_id": 41,
+    "output_transform": "InputWord XOR WORD#16#A596",
+    "project_and_mapping_unchanged_on_reopen": true,
+    "receipt_sha256": "bbc0725c0a5f8b5f960cb18e21de27b9dd42922333bac4823f25ce342057ed8e"
+  },
+  "failed_attempts": [
+    {
+      "status": "FAIL",
+      "scope": "initial native16 offline compiler",
+      "reason": "invalid UDINT hexmaximum literal;1error/2warnings, no bootapp execution; correctedsource independentlyrebuilt/reopened",
+      "receipt_sha256": "0628ad864f51d9f04902e79c1a1ad7ec73dd1f47a012bc90fed51779e59b6891"
+    },
+    {
+      "status": "FAIL",
+      "scope": "first native16 fullrange trial",
+      "reason": "nativeRUN/fourwordpatterns correct, but own INPUTmax255 rejects256; own STATUS8bitmask identified separately; corrected freshtrial native16v2passed",
+      "raw_stdout_sha256": "892f251d1ab283771beb8a3de5918e58d511d087e38f46845ae298ca598195de",
+      "restore": "PASS",
+      "postrestore_read_sha256": "a1314f172a53459e8c2053dd6f024cec19c723ea092cad2dc8e693603b2fd197",
+      "receipt_sha256": "02331bf28391a748ef5124005ff63a120928b000e8afd1458348c129ccd046fa"
+    }
+  ],
+  "own_arm": {
+    "status": "PASS",
+    "scope": "fresh bridge16 own ARM providers/contract/default16 sharedlinked client/integration8+16 under isolated localQEMU GNUloader/libc; no originalIoDrv/runtime/device",
+    "compiler": "arm-linux-gnueabihf-gcc (Debian 14.2.0-19) 14.2.0",
+    "runs": [
+      {
+        "name": "default16",
+        "status": "PASS",
+        "binary_sha256": "097fdccf441b56f06afd9221688cbf8cf7412d8f86286c740768582cdbb46a0d"
+      },
+      {
+        "name": "contract",
+        "status": "PASS",
+        "binary_sha256": "00ea0ad00dabfa44d87200b1ea0eeb1a98861bcec9aba3e3270de8fee55c93aa"
+      },
+      {
+        "name": "integration",
+        "status": "PASS",
+        "binary_sha256": "37ee6f4b6ee9ae392c924afcd54b173c4f7c014928ba5aeaf395c2b31ded4802"
+      }
+    ],
+    "receipt_sha256": "95ad84f0f39c70cd22ab040f17bbda97db832d463e834c6081702af2e95a6931",
+    "default16_compile_policy": "sharedprovider DIGITAL16 default, VIRTUALWAGO_DEFAULT_CLOCK_MONOTONIC and VIRTUALWAGO_ENABLE_MODEL_BRIDGE; integration ownlogicalclock; no originalIoDrv/runtime/device in Ownharnesses",
+    "headers_sha256": {
+      "sdk-research/extracted-dal/usr/include/dal/adi_application_interface.h": "d941c172a504e4ddc3db19016c4163f844d3b5c4bf604a52cbc2d12f7d26151c",
+      "sdk-research/extracted-libpackbus/usr/include/libpackbus.h": "ebde7a6efb590f56f18b6b5e146baa8c6483a1a3ba53f45b07697065ee406379"
+    }
+  },
+  "local_tests": {
+    "status": "PASS",
+    "count": 185,
+    "skips": 0,
+    "root_namespace_suite": true,
+    "private_log_sha256": "0aa6fba33c3602d8a58b764c56ecbeb350166af16d49aaec68b2ea62e93255ab",
+    "receipt_sha256": "1f7d49c7e4cf1938fc99a0450d2c7e815965c5cb9065d49bb55335efa996a358"
+  },
+  "independent_reviews": {
+    "bridge16_code": "5b1fd0ab507ebec20b12cee9bf40b920fd903fe35e912d710ae6a3bf9c522528",
+    "native16_builder_v2": "1735d810ca8c6a4d790083f074629829f8b962876aa75452459a9fc2c4076cba",
+    "scope": "actual offline Solmedium and Lunamedium source/evidence reviews; no workerdevice/VM/QEMU integration"
+  },
+  "limits": [
+    "Physicalmodule comparison/actual revisions/current originalbus communication OPEN; photographed430/530/600 is not1405/1504 hardwareinventory",
+    "native modelpermit1/nonzeroeffective/lease-loss transition NOT_RUN",
+    "general native WAGO STOP/watchdog/register/TCM/fault semantics OPEN; own FAULT flag only",
+    "two fixed native digitalprofiles; mixed/arbitrary digitalpackings and Analog/PWM/serial native paths NOT_RUN",
+    "taskconfigured20ms/framecounts notreal-time/frequencyqualification",
+    "genuine controllerdata still comesreadonly from sameboard; fullyvirtualcontroller/otherhardwarevariant OPEN",
+    "device reboot/Retains recovery NOT_RUN; targetedoriginal runtimeSTOPrestore only"
+  ],
+  "vm_final": {
+    "status": "STOPPED_SAVED_TO_DISK",
+    "scope": "Root started actual offline IDE and paused afterwards; freshprivate statuscheck confirms saved"
+  },
+  "merge": false
+}

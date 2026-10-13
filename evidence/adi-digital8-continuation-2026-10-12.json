@@ -1,0 +1,370 @@
+{
+  "claims_scope": "Original runtime remains original on real authorized reference; adapter never installed. Static paths and own-client qualification only.",
+  "compiler": "ARM hard-float GCC 14.2.0; GNU C11 pthread; genuine private FW30 header pins from ADI contract. No FW31 SDK toolchain claim.",
+  "date": "2026-10-12",
+  "document_sha256": {
+    "docs/adi-digital8-continuation-2026-10-12.md": "defe2e9da7e747674f32d37a9e17ff3bbfd52167b1d9405358263d9878f367c8",
+    "docs/adr-0004.md": "58b9087a861f3bfcaf1eae37099623155e4dd7c7bfa2a18cbff80480034e8d34",
+    "docs/real-controller-plan-2026-10-12.md": "1a72c95797f5739a953afede733b5499506ae22645ec4e6d9c4dbabe1cf441d7"
+  },
+  "existing_application_boot_preservation": {
+    "application_after": "STOP",
+    "application_before": "STOP/program_loaded",
+    "backup_tar_sha256": "d999887b3ad81b80914f7a3d2b3f76dd96448a587107a88d6e041c181ad5276b",
+    "boot_autostart_stop": "OFFEN",
+    "files": [
+      {
+        "bytes": 117064,
+        "name": "Application.app",
+        "sha256": "62251e107b19b9fcb9fb82608d29e01a4c9b3e768ee7bbe9ea0569d64d24aca3"
+      },
+      {
+        "bytes": 20,
+        "name": "Application.crc",
+        "sha256": "8ccb854bb678b999334741c1683450f37f14b42a1094099dbbd9a0ad37cd9bc6"
+      },
+      {
+        "bytes": 112,
+        "name": "CODESYSControl.cfg",
+        "sha256": "477570fef50ac4fcbd2fa6906ea88190e4a95dba2343f943b109e518d3dd0e8b"
+      }
+    ],
+    "original_libraries_kept": true,
+    "original_runtime_kept": true,
+    "receipt_sha256": "7e57ca0bac207997733c25f6f6de54f38645b3fd0bc0109caaf5642161bbcf3f",
+    "restore_or_reboot": "NOT_RUN",
+    "retains_and_source_project": "OFFEN",
+    "runtime_cwd_deleted": true,
+    "scope": "Actual online create_boot_application, STOP before/after, byte-identical bounded private backup. No restart/download/reset/start/delete.",
+    "startup_persistence_changed": true,
+    "status": "PASS"
+  },
+  "native_digital8_build": {
+    "IDE": "CODESYS 3.5.21.50",
+    "artifacts": [
+      {
+        "bytes": 258400,
+        "name": "mapped-digital8-offline.project",
+        "sha256": "19dfae3ac4db36a3e70982908c64d661fc2115936d788be1335ea59dbb74bc2a"
+      },
+      {
+        "bytes": 119780,
+        "name": "mapped-digital8.app",
+        "sha256": "a6d51932a5971d82781ed69cc167a4b7161d3f514feba84f7386368865c6b2a0"
+      },
+      {
+        "bytes": 28,
+        "name": "mapped-digital8.crc",
+        "sha256": "55acdc4eb3c95fbdb46293296dbec917e112fba652aff1f318e3cbae92abd820"
+      },
+      {
+        "bytes": 1109,
+        "name": "mapped-digital8-mapping.csv",
+        "sha256": "0e03637896870e8e38ab74eaac0c680fdb5aea87b53c0d916750fa37c2c75cca"
+      }
+    ],
+    "builder_sha256": "1075439b46eb2e1ce85781d60500ea6c43fa889e6291e2e650085feed6617ca7",
+    "descriptors": [
+      {
+        "article": "750-430",
+        "descriptor_sha256": "26d302678905d2e8f4c7e34880cf830c4ad56361ebd647e6ed82a9e02c81dd91",
+        "id": "8801_0750043000000000",
+        "type": 32776,
+        "version": "2.0.0.14"
+      },
+      {
+        "article": "750-530",
+        "descriptor_sha256": "84b4043d448c44155a36916a1b65a39f20ba0560459d3c0ffac53fba351daa5d",
+        "id": "8802_0750053000000000",
+        "type": 32776,
+        "version": "2.0.0.15"
+      }
+    ],
+    "diagnostics": {
+      "codegen": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "final": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "prebuild": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "rebuild": {
+        "errors": 0,
+        "warnings": 0
+      }
+    },
+    "iec_input_address": "%IB1",
+    "iec_output_address": "%QB0",
+    "native_parent_mappings": [
+      {
+        "channel_type": "Input",
+        "child_subelements": 8,
+        "child_variable_mappings": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "has_sub_elements": true,
+        "id": 16777216,
+        "mapped_variable": "Application.PLC_PRG.InputByte",
+        "maps_to_existing_variable": true,
+        "param_type": "local:InputField",
+        "parameter": "_IN",
+        "subelement_count": 8
+      },
+      {
+        "channel_type": "Output",
+        "child_subelements": 8,
+        "child_variable_mappings": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ],
+        "has_sub_elements": true,
+        "id": 50331648,
+        "mapped_variable": "Application.PLC_PRG.OutputByte",
+        "maps_to_existing_variable": true,
+        "param_type": "local:OutputField",
+        "parameter": "_OUT",
+        "subelement_count": 8
+      }
+    ],
+    "online_download": "NOT_RUN",
+    "output_permit_initial": false,
+    "receipt_sha256": "841435e0629746aac7bdb48450138ede029bc1bfb8d56beb5f82f36c8bcc8a30",
+    "source_sha256": "8004d8ef15ec5fea33ef096896c82f102e58f8a6326ff1846a5327fa09052fa8",
+    "status": "PASS",
+    "task_interval_ms": 20
+  },
+  "not_run": [
+    "provider_installation",
+    "original_IO_consumer_with_own_provider",
+    "original_runtime_simulated_IO",
+    "Kbus_master_switch",
+    "physical_actuator_test",
+    "restore_or_reboot"
+  ],
+  "remaining_blockers": [
+    "Actual process startup/stop/loader payload and Kbus/UIO/service endpoint exclusion",
+    "Original runtime model signal/observation bridge and native transaction acceptance",
+    "Controlled boot selection and STOP restoration; project reopen retry needs available IDE",
+    "Separate approval for concrete completed provider/bus switch payload"
+  ],
+  "review": {
+    "actual_models": [
+      "gpt-6-luna offline implementation",
+      "gpt-6.1-sol targeted static review and explicit remediation"
+    ],
+    "native_asan_ubsan_own_harness": "PASS by Sol; no vendor execution",
+    "receipt_sha256": "5998d8e95aee60a9b6ee1849b600c3313783f28be4dc2cd20d6d175412d3e651",
+    "reviewed_source_sha256": {
+      "tools/adi_digital_adapter.c": "e1f99b8438179d3f92d6223fcb33e0d1a7ddd015b5fa265237a6c82bb0744577",
+      "tools/adi_digital_adapter.h": "6c949fcbba1ba3a9925c5c29eac53faac9db10cd8265d36a1d7deacaf64c92ad",
+      "tools/adi_digital_adapter_test.c": "03638b5688ea818eb3a9f8c758a7009d91ed1d2335715e3cef33e60f816642f3"
+    },
+    "root": "Self-Review and actual VM/reference/ARM execution",
+    "sol_after_own_remediation": "Self-Review; independent initial finding resolved",
+    "workers_device_vm_actions": "NOT_RUN"
+  },
+  "saved_project_reopen": {
+    "corrected_retry": "BLOCKED: launcher found existing IDE, before any IDE start",
+    "corrected_retry_stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "project_source_changed": false,
+    "reason": "All preceding mapping/source/CSV assertions passed; report queried device objects after project.close, IDE exit1. No complete successful reopen receipt.",
+    "receipt_sha256": "2a6b47fbbadd906b2aab8b0e81f615dc95407d0a2b2cc56d2084ba2c680beed1",
+    "status": "FAIL"
+  },
+  "source_base_commit": "676289b002438d3cb947c83f250b2c6045853756",
+  "static_original_contract": {
+    "artifacts": {
+      "libCmpKbusAsyncCom.so.0.0.1": "2564394a5925e6af923843edf8fa93be6a47bdf640d0b6567ed2c3d386e205a7",
+      "libIoDrvDal.so.1.0.2": "853d3ad6eb1b2477b43502d562a6bbfa854b8029e85989b6166f961167188c7d",
+      "libIoDrvKbus.so.0.0.1": "543e8b1d2d19352030fe804a7e667ca30c1d9ba80069f2df3158c77c544789b8",
+      "libTscIoDrvKbus.so.0.0.1": "a861472653c71ff0698497707bb99bfc5b622af89127f928df75517d0c05fdaf",
+      "libdal.so.1.0.1": "c163ac57805409921ce783f9c4f17f52891864be333c3df4945a128d253994f5",
+      "libpackbus.so.1.0.1": "3b7b7ca4fa14e5994552040a7b40b1cfbbf43e0649a4ad9277ece421fd4bc5d6"
+    },
+    "findings": [
+      {
+        "claim": "CmpKbusAsyncCom has DT_NEEDED libpackbus.so.1 but no undefined packbus function import. Named async operation wrappers dispatch manager-resolved Dal_CallDeviceSpecificFunction.",
+        "locations": [
+          "Cmp 0xb2c-0xc08 resolves Dal_CallDeviceSpecificFunction",
+          "Cmp 0xc34-0x15e0 wrappers"
+        ],
+        "status": "VERIFIZIERT"
+      },
+      {
+        "claim": "IoDrvDal Dal_CallDeviceSpecificFunction forwards through copied ADI VCallDeviceSpecificFunction slot29 offset0x74. Correct observed union from21 to22 when Cmp wrapper reachability included.",
+        "locations": [
+          "IoDrvDal 0x45a4-0x45bc table copied to0x1a270",
+          "IoDrvDal 0x2cdc-0x2ce4 pointer load0x1a2e4",
+          "IoDrvDal 0x2ce8-0x2d00 va_list dispatch"
+        ],
+        "status": "VERIFIZIERT"
+      },
+      {
+        "claim": "Exact packbus own loader constructors have no hardware initialization. NEEDED mapping alone does not show bus access nor require I/O driver replacement.",
+        "locations": [
+          "packbus DT_INIT0x73fc ->0x8358 weak __gmon_start check",
+          "packbus INIT_ARRAY0x32aa8 value0x8478 ->0x83c0 ITM registration check"
+        ],
+        "status": "VERIFIZIERT"
+      },
+      {
+        "claim": "TscIoDrvKbus imports only libc and weak lifecycle helpers, resolving original FuIoDrv helper functions through component manager; no ADI or direct hardware import found.",
+        "locations": [
+          "Tsc exported wrappers0x894-0x980",
+          "Tsc DT_NEEDED libc only"
+        ],
+        "status": "VERIFIZIERT"
+      },
+      {
+        "claim": "Selected module IDs0x8801/0x8802 supplied by parent authenticated description retrieval take same high-bit digital enumeration branch as0x9001/0x9002. IDs are not inferred from photograph/cache.",
+        "locations": [
+          "IoDrvKbus 0x7330 read_table_9",
+          "0x7338 signed int16 load",
+          "0x734c-0x7380 high-bit branch skips register calls",
+          "rodata0x8a69 format %04X_075",
+          "idk_Valid_ModuleCmpValue0x564c-0x565c accepts high-bit after comparison"
+        ],
+        "status": "VERIFIZIERT"
+      },
+      {
+        "claim": "terminal_info32 takes selector1 parser records; genuine four fields are input offset/output offset/input bits/output bits. Count2 record shapes(0,0,8,0),(0,0,0,8) correspond to actual cached selector1 shape. Consumer native mapping uses original records and selects byte transfers for byte-aligned eight-bit extent.",
+        "locations": [
+          "packbus0x10088-0x10114 null/capacity/count/copy/tail contract",
+          "packbus0x100c0 selector1",
+          "IoDrvKbus0x285c-0x2868 four field loads",
+          "IoDrvKbus0x28dc-0x2904 byte-alignment transfer selection"
+        ],
+        "status": "VERIFIZIERT"
+      },
+      {
+        "claim": "Push descriptor zero args points to0x102d8 wrapper -> exported Push0x10130. Main handler fails -1 for missing global/observer/SCPU; serializes rwlock+process mutex; invokes hooks, watchdog timeout/error reaction and SCPU_DataExchange; normal helper result0 yields0, all nonzero helper results yield-1. Kbus Push consumer ORs outer/inner statuses.",
+        "locations": [
+          "packbus0x337f8 descriptor",
+          "packbus0x102d8-0x10320 wrapper",
+          "packbus0x10130-0x102c8 handler",
+          "IoDrvKbus0x2758-0x2768",
+          "IoDrvKbus0x67b0-0x67c8"
+        ],
+        "status": "VERIFIZIERT"
+      },
+      {
+        "claim": "ConfigureDevice consumer uses bound typeIII 12-byte config; nonzero ADI result produces native error16. Original provider typeIII selects PI with dummy bytes when flagfalse and retains supplied controlword.",
+        "locations": [
+          "IoDrvKbus0x39e4-0x3a20",
+          "packbus0xf6e4-0xf7e0 and0xf88c-0xf8a4"
+        ],
+        "status": "VERIFIZIERT"
+      },
+      {
+        "claim": "Original watchdog configured time is factor\u00d7timeout_us using32-bit multiplication; rejects zero product and product>0x3fffffff. Start and Trigger use CLOCK_MONOTONIC (clock id1); start fails when already started, trigger fails when stopped, stop idempotently clears active. Timeout checked during Push.",
+        "locations": [
+          "packbus0x14cc8-0x14d9c",
+          "0x14db8-0x14f50",
+          "0x14f94-0x15098",
+          "0x101d4-0x10200"
+        ],
+        "status": "VERIFIZIERT"
+      }
+    ],
+    "header_name": "VCallDeviceSpecificFunction",
+    "new_slot": 29,
+    "observed_ADI_slots": 22,
+    "private_analysis_sha256": "678b0f88ea545450b85af11cfcbf84611788c5761db9ec3be6f690c886bfdcf6",
+    "status": "VERIFIZIERT static only"
+  },
+  "tests": {
+    "default8_monotonic_shared": {
+      "host_hardware_and_dbus_absent": true,
+      "host_tcp_and_abstract_unix_listeners_reached": false,
+      "injected_guest_file_negative_control": "PASS expected failure",
+      "own_harness_sha256": "2cf0a33f4df498f0596d848fb866766bdbba22f4a328c860832815bbeeae53ee",
+      "own_provider_sha256": "d926242c1f33612659c7923b556d31c79cd0ffe8fae79095355e6ca203376200",
+      "positive_isolation": "PASS",
+      "private_receipt_sha256": "b9744dfe025dd6d8720315151f19dd07079eddb9cdf9db09124ce2c8b87d0b12",
+      "scope": "own ARM client/provider; original GNU loader/libc only; no original WAGO component",
+      "source_sha256": {
+        "tools/abi_layout_probe.c": "f845f223aeb96a6c456197083c828adb7286ac737e03c8870395c07f6e2a7dd0",
+        "tools/adi_digital8_default_test.c": "34447f23303b0eef427650f8394745a810aa5751fbce83c2a8022c9a17c8183e",
+        "tools/adi_digital_adapter.c": "e1f99b8438179d3f92d6223fcb33e0d1a7ddd015b5fa265237a6c82bb0744577",
+        "tools/adi_digital_adapter.h": "6c949fcbba1ba3a9925c5c29eac53faac9db10cd8265d36a1d7deacaf64c92ad",
+        "tools/adi_digital_adapter_test.c": "03638b5688ea818eb3a9f8c758a7009d91ed1d2335715e3cef33e60f816642f3",
+        "tools/offline_isolation_probe.c": "75e82d5bfab1814b6747adb6d979fff6406bf448aa40461a9328cae74ebeb832",
+        "tools/offline_sandbox.py": "36c354a3f96d53a7f88e0b2527cb239b90740fd4f216f54fa0c484b97ecde272"
+      },
+      "status": "PASS"
+    },
+    "python": {
+      "count": 121,
+      "python": "3.13.5",
+      "receipt_sha256": "0240d33686dfb991ffaeb11d5a2e6e4073ea22d778aad1ed7ca5c1ad1d023ce8",
+      "scope": "hardware-free unit tests; no vendor headers or device",
+      "source_sha256": {
+        "tests/test_codesys_mapped_digital8_candidate.py": "adec3fcde705e19e0c3c0608ea7481d958fd36a1e8524fb525cc6be0fcd4d366"
+      },
+      "status": "PASS"
+    },
+    "shared_link": {
+      "host_hardware_and_dbus_absent": true,
+      "host_tcp_and_abstract_unix_listeners_reached": false,
+      "injected_guest_file_negative_control": "PASS expected failure",
+      "own_harness_sha256": "e31439a60646ab6e4ba1f127259f85e6f67419d2652bdf883b59c5ba7a0b0702",
+      "own_provider_sha256": "4d239a3bb2c5425276f02334921dfb7057f1a181bda11db24e706a89125e85d1",
+      "positive_isolation": "PASS",
+      "private_receipt_sha256": "d89e2f3e7c5e2c1e7db78d7ff48d32f9a8f8b7b14564ba021e02149cc605e6f9",
+      "scope": "own ARM client/provider; original GNU loader/libc only; no original WAGO component",
+      "source_sha256": {
+        "tools/abi_layout_probe.c": "f845f223aeb96a6c456197083c828adb7286ac737e03c8870395c07f6e2a7dd0",
+        "tools/adi_digital_adapter.c": "e1f99b8438179d3f92d6223fcb33e0d1a7ddd015b5fa265237a6c82bb0744577",
+        "tools/adi_digital_adapter.h": "6c949fcbba1ba3a9925c5c29eac53faac9db10cd8265d36a1d7deacaf64c92ad",
+        "tools/adi_digital_adapter_test.c": "03638b5688ea818eb3a9f8c758a7009d91ed1d2335715e3cef33e60f816642f3",
+        "tools/offline_isolation_probe.c": "75e82d5bfab1814b6747adb6d979fff6406bf448aa40461a9328cae74ebeb832",
+        "tools/offline_sandbox.py": "36c354a3f96d53a7f88e0b2527cb239b90740fd4f216f54fa0c484b97ecde272"
+      },
+      "status": "PASS"
+    },
+    "static_link": {
+      "host_hardware_and_dbus_absent": true,
+      "host_tcp_and_abstract_unix_listeners_reached": false,
+      "injected_guest_file_negative_control": "PASS expected failure",
+      "own_harness_sha256": "d7580b78b90f62fd1278f0cc9cc9dc60e51a2f2750b19f94895990c5462d7a46",
+      "own_provider_sha256": null,
+      "positive_isolation": "PASS",
+      "private_receipt_sha256": "a19a20c21e62ba8eb0e8ece4dd123edbd7d6eee3e8da814f05eb64a386b9332f",
+      "scope": "own ARM client/provider; original GNU loader/libc only; no original WAGO component",
+      "source_sha256": {
+        "tools/abi_layout_probe.c": "f845f223aeb96a6c456197083c828adb7286ac737e03c8870395c07f6e2a7dd0",
+        "tools/adi_digital_adapter.c": "e1f99b8438179d3f92d6223fcb33e0d1a7ddd015b5fa265237a6c82bb0744577",
+        "tools/adi_digital_adapter.h": "6c949fcbba1ba3a9925c5c29eac53faac9db10cd8265d36a1d7deacaf64c92ad",
+        "tools/adi_digital_adapter_test.c": "03638b5688ea818eb3a9f8c758a7009d91ed1d2335715e3cef33e60f816642f3",
+        "tools/offline_isolation_probe.c": "75e82d5bfab1814b6747adb6d979fff6406bf448aa40461a9328cae74ebeb832",
+        "tools/offline_sandbox.py": "36c354a3f96d53a7f88e0b2527cb239b90740fd4f216f54fa0c484b97ecde272"
+      },
+      "status": "PASS"
+    }
+  },
+  "vm_return": {
+    "entry_status": "running",
+    "existing_ide_left_untouched": true,
+    "exit_status": "running",
+    "saved_to_disk": false,
+    "session_active": false
+  }
+}
