@@ -6,6 +6,8 @@ Forschung zur I/O-Simulation unterhalb des originalen WAGO/CODESYS-I/O-Stacks. E
 
 Das [Eigentümerfoto](docs/reference-module-photo-2026-10-12.md) belegt 750-430 →750-530 →750-600. Der [Controllerzugang](docs/controller-metadata-2026-10-12.md) liest genuine Daten derselben Platine schreibgeschützt. TCM wurde im eigenen Projekt regulär auf den dokumentierten Wert0 gesetzt; Originalruntime, nativer I/O-Manager und originale I/O-Treiber bleiben erhalten. Frühere [Initfehler](docs/runtime-bridge-2026-10-12.md) bleiben revisionsgebunden dokumentiert.
 
+Der neue [Offline-Vertragsblock für750-466](docs/native-analog-contract-2026-10-13.md) bindet zwei native WORD-Eingänge und zusätzliche FW31-Registeranforderungen. Frischer nativer IDE-Build und schreibfreies Reopen sind PASS. Native Analogausführung bleibt offen. [ADR-0008](docs/adr-0008.md) beschreibt den Bytepufferausbau; [PWM und beide seriellen Pfade](docs/pwm-serial-contracts-2026-10-13.md) sowie der [digitale Lifecycleplan](docs/native-model-lifecycle-plan-2026-10-13.md) sind getrennt vorbereitet. Dieser Block kontaktierte keine SPS.
+
 ## Entscheidung und Einstieg
 
 Priorität hat zunächst ein realer Referenzversuch: originale Runtime, nativer I/O-Manager und originale WAGO-I/O-Treiber bleiben aktiv; simuliert wird erst unterhalb der nachgewiesenen Grenze. Die vorhandene verbundene Modulbestückung wird identifiziert, nicht aus den bisherigen Offlinekandidaten abgeleitet. Der konkrete ADI-Providerwechsel wurde vom Eigentümer freigegeben und begrenzt versucht; die native zyklische Byte-/Befehlsabnahme mit geschlossenem Modellgate ist erreicht. Vollständige Controller-Virtualisierung folgt später. Eine zusätzliche Runtime-Lizenz für eine virtuelle Instanz ist kein pauschaler Blocker des ersten Referenzziels. Details und Gates: [ADR-0003](docs/adr-0003.md).
@@ -28,7 +30,7 @@ Priorität hat zunächst ein realer Referenzversuch: originale Runtime, nativer 
 
 ## Stand der Umsetzung
 
-Der neue [Modulkatalog](docs/module-catalog-2026-10-12.md) enthält 14 Standardartikel und neun ausführbare eigene Offlineprofile: Digital mit 2/4/8/16 Kanälen, normale Analogsignale der 750-466 und autonomes PWM Frq der 750-677. Gemischte Bestückungen, Kanalgrenzen und eigene Watchdoglease sind implementiert; die aktuelle lokale Suite umfasst **185 PASS**. Weitere dokumentierte Kandidaten bleiben unimplementiert. Die beiden nativen Digitalprofile sind frisch und getrennt geprüft. Native Analog-/PWM-/Seriellabnahme und Hardwarevergleich **NOT_RUN**; neun Standalone-Modelle bedeuten keine neun native Runtimeprofile. Serielle Schnittstellen und andere PFC200-Ausstattungen stehen in der Roadmap.
+Der neue [Modulkatalog](docs/module-catalog-2026-10-12.md) enthält 14 Standardartikel und neun ausführbare eigene Offlineprofile: Digital mit 2/4/8/16 Kanälen, normale Analogsignale der 750-466 und autonomes PWM Frq der 750-677. Gemischte Bestückungen, Kanalgrenzen und eigene Watchdoglease sind implementiert; die aktuelle lokale Suite umfasst **197 PASS**. Weitere dokumentierte Kandidaten bleiben unimplementiert. Die beiden nativen Digitalprofile sind frisch und getrennt geprüft. Native Analog-/PWM-/Seriellabnahme und Hardwarevergleich **NOT_RUN**; neun Standalone-Modelle bedeuten keine neun native Runtimeprofile. Serielle Schnittstellen und andere PFC200-Ausstattungen stehen in der Roadmap.
 
 ```sh
 python3 tools/module_catalog.py list

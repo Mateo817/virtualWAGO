@@ -1,0 +1,1006 @@
+{
+  "analog466_ide": {
+    "build": {
+      "artifact_sha256": [
+        "a42aff27c84173794a2b66e20420f0491fa2239a86ee5167c62d6c0e1d1d3b3f",
+        "14d6342e12896b3085626f530cbab4483adb937b74273fc38b81f3cc460ff9cc",
+        "795e8407b5779dc160bebd4a7fac61441168b02200c3551b6e3a715cdfb1b6d7",
+        "4f58b4bf60cb313571177fef4806741ec2a1757d10a0cf7dc2736766b287732b"
+      ],
+      "descriptor_sha256": "aa9bb802e2d2656ec9e101f1537aebc23f79487437513bdc9588f0d283ecca51",
+      "diagnostics": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "helper_sha256": "3de979a473c9ad5c20941352ece7777d1cab306929821ce8dd7ec1cc82448117",
+      "launcher_sha256": "43e7cb1dc04a230f0105f6fe8795be861c6f77cc7087d1a643a26b2c70dbe83e",
+      "mapping": [
+        {
+          "iec_address": "%IW1",
+          "name": "_IW 1",
+          "parameter_id": 16777216,
+          "variable": "Application.PLC_PRG.InputWord1"
+        },
+        {
+          "iec_address": "%IW2",
+          "name": "_IW 2",
+          "parameter_id": 16777217,
+          "variable": "Application.PLC_PRG.InputWord2"
+        }
+      ],
+      "native_readback": [
+        {
+          "channel": "Input",
+          "has_sub_elements": false,
+          "maps_to_existing_variable": true,
+          "name": "_IW 1",
+          "parameter_id": 16777216,
+          "type": "std:WORD",
+          "variable": "Application.PLC_PRG.InputWord1"
+        },
+        {
+          "channel": "Input",
+          "has_sub_elements": false,
+          "maps_to_existing_variable": true,
+          "name": "_IW 2",
+          "parameter_id": 16777217,
+          "type": "std:WORD",
+          "variable": "Application.PLC_PRG.InputWord2"
+        }
+      ],
+      "operation": "offline build",
+      "private_raw_sha256": "f688244aad7651ba0cf74847ea66eac788a29ed1fd6aa17cf24d23a300630272",
+      "profile_sha256": "fb09099380f40dc0270e35a7555c50b9b271a2e977a03675aed812c09b33ca1b",
+      "scope": "native IDE mapping/build or read-only reopen only; no runtime, register or hardware proof",
+      "script_sha256": "d1e7600aa1977c1fd9579a9bf453c25f5191a32fdc2dd89707bd5755fd7e4fd8",
+      "source_sha256": "f499b6c11e97e7f520b8008191eb95fc7efe224b98d86d9ec800550bf51766f8",
+      "status": "PASS",
+      "task_interval_ms": 20,
+      "tcm": 0,
+      "terminal": [
+        32776,
+        "07500466000000000400",
+        "2.0.0.9"
+      ]
+    },
+    "reopen": {
+      "artifact_sha256": [
+        "a42aff27c84173794a2b66e20420f0491fa2239a86ee5167c62d6c0e1d1d3b3f",
+        "14d6342e12896b3085626f530cbab4483adb937b74273fc38b81f3cc460ff9cc",
+        "795e8407b5779dc160bebd4a7fac61441168b02200c3551b6e3a715cdfb1b6d7",
+        "4f58b4bf60cb313571177fef4806741ec2a1757d10a0cf7dc2736766b287732b"
+      ],
+      "descriptor_sha256": "aa9bb802e2d2656ec9e101f1537aebc23f79487437513bdc9588f0d283ecca51",
+      "diagnostics": {
+        "errors": 0,
+        "warnings": 0
+      },
+      "helper_sha256": "3de979a473c9ad5c20941352ece7777d1cab306929821ce8dd7ec1cc82448117",
+      "launcher_sha256": "44defdddc98fbfd4fb9777afefb6ab7157070492d65d6c17f23c7fe21a225a50",
+      "mapping": [
+        {
+          "iec_address": "%IW1",
+          "name": "_IW 1",
+          "parameter_id": 16777216,
+          "variable": "Application.PLC_PRG.InputWord1"
+        },
+        {
+          "iec_address": "%IW2",
+          "name": "_IW 2",
+          "parameter_id": 16777217,
+          "variable": "Application.PLC_PRG.InputWord2"
+        }
+      ],
+      "native_readback": [
+        {
+          "channel": "Input",
+          "has_sub_elements": false,
+          "maps_to_existing_variable": true,
+          "name": "_IW 1",
+          "parameter_id": 16777216,
+          "type": "std:WORD",
+          "variable": "Application.PLC_PRG.InputWord1"
+        },
+        {
+          "channel": "Input",
+          "has_sub_elements": false,
+          "maps_to_existing_variable": true,
+          "name": "_IW 2",
+          "parameter_id": 16777217,
+          "type": "std:WORD",
+          "variable": "Application.PLC_PRG.InputWord2"
+        }
+      ],
+      "operation": "read-only reopen",
+      "private_raw_sha256": "1dbbc41296d5bafbc88561ee38dcb758955159f97190cd72bce62b0939483823",
+      "profile_sha256": "fb09099380f40dc0270e35a7555c50b9b271a2e977a03675aed812c09b33ca1b",
+      "scope": "native IDE mapping/build or read-only reopen only; no runtime, register or hardware proof",
+      "script_sha256": "d1e7600aa1977c1fd9579a9bf453c25f5191a32fdc2dd89707bd5755fd7e4fd8",
+      "source_sha256": "f499b6c11e97e7f520b8008191eb95fc7efe224b98d86d9ec800550bf51766f8",
+      "status": "PASS",
+      "task_interval_ms": 20,
+      "tcm": 0,
+      "terminal": [
+        32776,
+        "07500466000000000400",
+        "2.0.0.9"
+      ]
+    }
+  },
+  "descriptor_transfer_raw_sha256": "d07412a2ab8295202d335772d7a15a4643f2feb28f747ff80c89dee55c0b6385",
+  "descriptors": [
+    {
+      "bytes": 4126,
+      "channel_declarations": [
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "read",
+            "onlineaccess": "read"
+          },
+          "declared_scalar_bits": 16,
+          "default": null,
+          "parameter_id": "16777216",
+          "type": "std:WORD",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "read",
+            "onlineaccess": "read"
+          },
+          "declared_scalar_bits": 16,
+          "default": null,
+          "parameter_id": "16777217",
+          "type": "std:WORD",
+          "width_status": "VERIFIZIERT"
+        }
+      ],
+      "configuration_declarations": [
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "none"
+          },
+          "default": "'000001D200000000'",
+          "parameter_id": "10",
+          "type": "std:STRING"
+        }
+      ],
+      "connectors": [
+        {
+          "connectorId": "0",
+          "hostpath": null,
+          "interface": "Wago.Kbus",
+          "moduleType": "32776",
+          "role": "child"
+        }
+      ],
+      "declared_scalar_bit_totals": {
+        "input": 32,
+        "output": 0
+      },
+      "device_identification": {
+        "Id": "07500466000000000400",
+        "Type": "32776",
+        "Version": "2.0.0.9"
+      },
+      "device_info": {
+        "Name": "750-466#04",
+        "OrderNumber": "750-466",
+        "Vendor": "WAGO"
+      },
+      "hardware_test": "NOT_RUN",
+      "native_process_image": "OFFEN",
+      "register_contract": "OFFEN",
+      "runtime_test": "NOT_RUN",
+      "schema": "virtualwago-descriptor-channel-declarations/1",
+      "scope": "Pinned XML declarations and IEC scalar widths only; totals do not establish packing, offsets, byte order, register replies or module revision",
+      "sha256": "aa9bb802e2d2656ec9e101f1537aebc23f79487437513bdc9588f0d283ecca51",
+      "statement_status": "VERIFIZIERT",
+      "test_status": "PASS",
+      "unresolved_width_parameter_ids": []
+    },
+    {
+      "bytes": 7455,
+      "channel_declarations": [
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "none",
+            "onlineaccess": "none"
+          },
+          "declared_scalar_bits": null,
+          "default": null,
+          "parameter_id": "16777216",
+          "type": "local:DATA8",
+          "width_status": "OFFEN"
+        },
+        {
+          "attributes": {
+            "channel": "output",
+            "offlineaccess": "none",
+            "onlineaccess": "none"
+          },
+          "declared_scalar_bits": null,
+          "default": null,
+          "parameter_id": "50331648",
+          "type": "local:DATA8",
+          "width_status": "OFFEN"
+        }
+      ],
+      "configuration_declarations": [
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "none"
+          },
+          "default": "'0000028C00000000'",
+          "parameter_id": "10",
+          "type": "std:STRING"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "16777216",
+          "parameter_id": "65536",
+          "type": "std:DWORD"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "16777216",
+          "parameter_id": "65791",
+          "type": "std:DWORD"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "16777216",
+          "parameter_id": "65792",
+          "type": "std:DWORD"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "50331648",
+          "parameter_id": "131072",
+          "type": "std:DWORD"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "50331648",
+          "parameter_id": "131327",
+          "type": "std:DWORD"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "50331648",
+          "parameter_id": "131328",
+          "type": "std:DWORD"
+        }
+      ],
+      "connectors": [
+        {
+          "connectorId": "0",
+          "hostpath": null,
+          "interface": "Wago.Kbus",
+          "moduleType": "32776",
+          "role": "child"
+        }
+      ],
+      "declared_scalar_bit_totals": {
+        "input": null,
+        "output": null
+      },
+      "device_identification": {
+        "Id": "07500652000000000808",
+        "Type": "32776",
+        "Version": "2.0.0.25"
+      },
+      "device_info": {
+        "Name": "750-652#08",
+        "OrderNumber": "750-652",
+        "Vendor": "WAGO"
+      },
+      "hardware_test": "NOT_RUN",
+      "native_process_image": "OFFEN",
+      "register_contract": "OFFEN",
+      "runtime_test": "NOT_RUN",
+      "schema": "virtualwago-descriptor-channel-declarations/1",
+      "scope": "Pinned XML declarations and IEC scalar widths only; totals do not establish packing, offsets, byte order, register replies or module revision",
+      "sha256": "b8004751b9a3453880014aba36a38fb84f9b71fc1e49e783ce5a277d76c255c6",
+      "statement_status": "VERIFIZIERT",
+      "test_status": "PASS",
+      "unresolved_width_parameter_ids": [
+        "16777216",
+        "50331648"
+      ]
+    },
+    {
+      "bytes": 7466,
+      "channel_declarations": [
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "none",
+            "onlineaccess": "none"
+          },
+          "declared_scalar_bits": null,
+          "default": null,
+          "parameter_id": "16777216",
+          "type": "local:DATA24",
+          "width_status": "OFFEN"
+        },
+        {
+          "attributes": {
+            "channel": "output",
+            "offlineaccess": "none",
+            "onlineaccess": "none"
+          },
+          "declared_scalar_bits": null,
+          "default": null,
+          "parameter_id": "50331648",
+          "type": "local:DATA24",
+          "width_status": "OFFEN"
+        }
+      ],
+      "configuration_declarations": [
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "none"
+          },
+          "default": "'0000028C00000000'",
+          "parameter_id": "10",
+          "type": "std:STRING"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "16777216",
+          "parameter_id": "65536",
+          "type": "std:DWORD"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "16777216",
+          "parameter_id": "65791",
+          "type": "std:DWORD"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "16777216",
+          "parameter_id": "65792",
+          "type": "std:DWORD"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "50331648",
+          "parameter_id": "131072",
+          "type": "std:DWORD"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "50331648",
+          "parameter_id": "131327",
+          "type": "std:DWORD"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "50331648",
+          "parameter_id": "131328",
+          "type": "std:DWORD"
+        }
+      ],
+      "connectors": [
+        {
+          "connectorId": "0",
+          "hostpath": null,
+          "interface": "Wago.Kbus",
+          "moduleType": "32776",
+          "role": "child"
+        }
+      ],
+      "declared_scalar_bit_totals": {
+        "input": null,
+        "output": null
+      },
+      "device_identification": {
+        "Id": "07500652000000002424",
+        "Type": "32776",
+        "Version": "2.0.0.25"
+      },
+      "device_info": {
+        "Name": "750-652#24",
+        "OrderNumber": "750-652",
+        "Vendor": "WAGO"
+      },
+      "hardware_test": "NOT_RUN",
+      "native_process_image": "OFFEN",
+      "register_contract": "OFFEN",
+      "runtime_test": "NOT_RUN",
+      "schema": "virtualwago-descriptor-channel-declarations/1",
+      "scope": "Pinned XML declarations and IEC scalar widths only; totals do not establish packing, offsets, byte order, register replies or module revision",
+      "sha256": "853c953ca186b0743d850e906d55963f852d647cd219ad9f49162ed7ac301313",
+      "statement_status": "VERIFIZIERT",
+      "test_status": "PASS",
+      "unresolved_width_parameter_ids": [
+        "16777216",
+        "50331648"
+      ]
+    },
+    {
+      "bytes": 7466,
+      "channel_declarations": [
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "none",
+            "onlineaccess": "none"
+          },
+          "declared_scalar_bits": null,
+          "default": null,
+          "parameter_id": "16777216",
+          "type": "local:DATA48",
+          "width_status": "OFFEN"
+        },
+        {
+          "attributes": {
+            "channel": "output",
+            "offlineaccess": "none",
+            "onlineaccess": "none"
+          },
+          "declared_scalar_bits": null,
+          "default": null,
+          "parameter_id": "50331648",
+          "type": "local:DATA48",
+          "width_status": "OFFEN"
+        }
+      ],
+      "configuration_declarations": [
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "none"
+          },
+          "default": "'0000028C00000000'",
+          "parameter_id": "10",
+          "type": "std:STRING"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "16777216",
+          "parameter_id": "65536",
+          "type": "std:DWORD"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "16777216",
+          "parameter_id": "65791",
+          "type": "std:DWORD"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "16777216",
+          "parameter_id": "65792",
+          "type": "std:DWORD"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "50331648",
+          "parameter_id": "131072",
+          "type": "std:DWORD"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "50331648",
+          "parameter_id": "131327",
+          "type": "std:DWORD"
+        },
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "read"
+          },
+          "default": "50331648",
+          "parameter_id": "131328",
+          "type": "std:DWORD"
+        }
+      ],
+      "connectors": [
+        {
+          "connectorId": "0",
+          "hostpath": null,
+          "interface": "Wago.Kbus",
+          "moduleType": "32776",
+          "role": "child"
+        }
+      ],
+      "declared_scalar_bit_totals": {
+        "input": null,
+        "output": null
+      },
+      "device_identification": {
+        "Id": "07500652000000004848",
+        "Type": "32776",
+        "Version": "2.0.0.25"
+      },
+      "device_info": {
+        "Name": "750-652#48",
+        "OrderNumber": "750-652",
+        "Vendor": "WAGO"
+      },
+      "hardware_test": "NOT_RUN",
+      "native_process_image": "OFFEN",
+      "register_contract": "OFFEN",
+      "runtime_test": "NOT_RUN",
+      "schema": "virtualwago-descriptor-channel-declarations/1",
+      "scope": "Pinned XML declarations and IEC scalar widths only; totals do not establish packing, offsets, byte order, register replies or module revision",
+      "sha256": "727875912e8fb5ccc8919f44db5a52ec8e032134b270ad48d5a65f5710ca8945",
+      "statement_status": "VERIFIZIERT",
+      "test_status": "PASS",
+      "unresolved_width_parameter_ids": [
+        "16777216",
+        "50331648"
+      ]
+    },
+    {
+      "bytes": 18896,
+      "channel_declarations": [
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "read",
+            "onlineaccess": "read"
+          },
+          "declared_scalar_bits": 8,
+          "default": null,
+          "parameter_id": "16777216",
+          "type": "std:BYTE",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "read",
+            "onlineaccess": "read"
+          },
+          "declared_scalar_bits": 8,
+          "default": null,
+          "parameter_id": "16777217",
+          "type": "std:BYTE",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "read",
+            "onlineaccess": "read"
+          },
+          "declared_scalar_bits": 16,
+          "default": null,
+          "parameter_id": "16777218",
+          "type": "std:WORD",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "read",
+            "onlineaccess": "read"
+          },
+          "declared_scalar_bits": 8,
+          "default": null,
+          "parameter_id": "16777219",
+          "type": "std:BYTE",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "read",
+            "onlineaccess": "read"
+          },
+          "declared_scalar_bits": 8,
+          "default": null,
+          "parameter_id": "16777220",
+          "type": "std:BYTE",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "read",
+            "onlineaccess": "read"
+          },
+          "declared_scalar_bits": 16,
+          "default": null,
+          "parameter_id": "16777221",
+          "type": "std:WORD",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "read",
+            "onlineaccess": "read"
+          },
+          "declared_scalar_bits": 8,
+          "default": null,
+          "parameter_id": "16777222",
+          "type": "std:BYTE",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "read",
+            "onlineaccess": "read"
+          },
+          "declared_scalar_bits": 8,
+          "default": null,
+          "parameter_id": "16777223",
+          "type": "std:BYTE",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "read",
+            "onlineaccess": "read"
+          },
+          "declared_scalar_bits": 16,
+          "default": null,
+          "parameter_id": "16777224",
+          "type": "std:WORD",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "read",
+            "onlineaccess": "read"
+          },
+          "declared_scalar_bits": 8,
+          "default": null,
+          "parameter_id": "16777225",
+          "type": "std:BYTE",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "read",
+            "onlineaccess": "read"
+          },
+          "declared_scalar_bits": 8,
+          "default": null,
+          "parameter_id": "16777226",
+          "type": "std:BYTE",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "input",
+            "offlineaccess": "read",
+            "onlineaccess": "read"
+          },
+          "declared_scalar_bits": 16,
+          "default": null,
+          "parameter_id": "16777227",
+          "type": "std:WORD",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "output",
+            "offlineaccess": "readwrite",
+            "onlineaccess": "readwrite"
+          },
+          "declared_scalar_bits": 8,
+          "default": null,
+          "parameter_id": "50331648",
+          "type": "std:BYTE",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "output",
+            "offlineaccess": "readwrite",
+            "onlineaccess": "readwrite"
+          },
+          "declared_scalar_bits": 8,
+          "default": null,
+          "parameter_id": "50331649",
+          "type": "std:BYTE",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "output",
+            "offlineaccess": "readwrite",
+            "onlineaccess": "readwrite"
+          },
+          "declared_scalar_bits": 16,
+          "default": null,
+          "parameter_id": "50331650",
+          "type": "std:WORD",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "output",
+            "offlineaccess": "readwrite",
+            "onlineaccess": "readwrite"
+          },
+          "declared_scalar_bits": 8,
+          "default": null,
+          "parameter_id": "50331651",
+          "type": "std:BYTE",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "output",
+            "offlineaccess": "readwrite",
+            "onlineaccess": "readwrite"
+          },
+          "declared_scalar_bits": 8,
+          "default": null,
+          "parameter_id": "50331652",
+          "type": "std:BYTE",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "output",
+            "offlineaccess": "readwrite",
+            "onlineaccess": "readwrite"
+          },
+          "declared_scalar_bits": 16,
+          "default": null,
+          "parameter_id": "50331653",
+          "type": "std:WORD",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "output",
+            "offlineaccess": "readwrite",
+            "onlineaccess": "readwrite"
+          },
+          "declared_scalar_bits": 8,
+          "default": null,
+          "parameter_id": "50331654",
+          "type": "std:BYTE",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "output",
+            "offlineaccess": "readwrite",
+            "onlineaccess": "readwrite"
+          },
+          "declared_scalar_bits": 8,
+          "default": null,
+          "parameter_id": "50331655",
+          "type": "std:BYTE",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "output",
+            "offlineaccess": "readwrite",
+            "onlineaccess": "readwrite"
+          },
+          "declared_scalar_bits": 16,
+          "default": null,
+          "parameter_id": "50331656",
+          "type": "std:WORD",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "output",
+            "offlineaccess": "readwrite",
+            "onlineaccess": "readwrite"
+          },
+          "declared_scalar_bits": 8,
+          "default": null,
+          "parameter_id": "50331657",
+          "type": "std:BYTE",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "output",
+            "offlineaccess": "readwrite",
+            "onlineaccess": "readwrite"
+          },
+          "declared_scalar_bits": 8,
+          "default": null,
+          "parameter_id": "50331658",
+          "type": "std:BYTE",
+          "width_status": "VERIFIZIERT"
+        },
+        {
+          "attributes": {
+            "channel": "output",
+            "offlineaccess": "readwrite",
+            "onlineaccess": "readwrite"
+          },
+          "declared_scalar_bits": 16,
+          "default": null,
+          "parameter_id": "50331659",
+          "type": "std:WORD",
+          "width_status": "VERIFIZIERT"
+        }
+      ],
+      "configuration_declarations": [
+        {
+          "attributes": {
+            "channel": "none",
+            "offlineaccess": "none",
+            "onlineaccess": "none"
+          },
+          "default": "'000002A500000000'",
+          "parameter_id": "10",
+          "type": "std:STRING"
+        }
+      ],
+      "connectors": [
+        {
+          "connectorId": "0",
+          "hostpath": null,
+          "interface": "Wago.Kbus",
+          "moduleType": "32776",
+          "role": "child"
+        }
+      ],
+      "declared_scalar_bit_totals": {
+        "input": 128,
+        "output": 128
+      },
+      "device_identification": {
+        "Id": "07500677000000001616",
+        "Type": "32776",
+        "Version": "2.0.0.3"
+      },
+      "device_info": {
+        "Name": "750-677#16",
+        "OrderNumber": "750-677",
+        "Vendor": "WAGO"
+      },
+      "hardware_test": "NOT_RUN",
+      "native_process_image": "OFFEN",
+      "register_contract": "OFFEN",
+      "runtime_test": "NOT_RUN",
+      "schema": "virtualwago-descriptor-channel-declarations/1",
+      "scope": "Pinned XML declarations and IEC scalar widths only; totals do not establish packing, offsets, byte order, register replies or module revision",
+      "sha256": "15dcba17a7186fc3dd91fc2b47c806bf7016e6e0ebc949b352c9549f5124c780",
+      "statement_status": "VERIFIZIERT",
+      "test_status": "PASS",
+      "unresolved_width_parameter_ids": []
+    }
+  ],
+  "hardware_comparison": "NOT_RUN",
+  "local_validation": {
+    "bubblewrap_sha256": "573236e5328ac2ebb08f59ae3a9805b4f8d12bdef14be8af4450d5463294985f",
+    "initial_attempts": [
+      {
+        "log_sha256": "5dd9c4574732a764bcd996085ed3e0e5d5d6d201f73213982acd9404170a84f5",
+        "reason": "configured bubblewrap executable path missing",
+        "status": "FAIL"
+      },
+      {
+        "log_sha256": "6176bf773f0e8bd7acfba6151a3577e36d5012ef54e201883d700ccc54da38d3",
+        "reason": "synthetic namespace fixture under private parent directory inaccessible after namespace capability drop",
+        "status": "FAIL"
+      }
+    ],
+    "log_sha256": "bc7398a1003734c99266ace48ae32aa3f50862704e48b7e72bd5999317ae9809",
+    "python": "Python 3.13.5",
+    "resolution": "existing local bubblewrap selected; own temporary test directory with traversable parents; private directory permissions unchanged",
+    "scope": "hardware-free full repository suite; own C/namespace tests included; executed as root with synthetic tmpfs",
+    "skips": 0,
+    "status": "PASS",
+    "tests": 197
+  },
+  "merge": "NOT_ATTEMPTED",
+  "native_analog_runtime_test": "NOT_RUN",
+  "native_model_lifecycle_test": "NOT_RUN",
+  "native_pwm_runtime_test": "NOT_RUN",
+  "native_serial_runtime_test": "NOT_RUN",
+  "observed_utc": "2026-10-13T04:37:42.722629+00:00",
+  "plc_access": "NOT_ATTEMPTED",
+  "root_self_review": {
+    "scope": "selected new sources, two IDE receipts, document scope and private-data boundary; not independent review",
+    "status": "PASS"
+  },
+  "saved_artifacts_unchanged_on_reopen": true,
+  "schema": "virtualwago-native-contract-evidence/1",
+  "scope": "Pinned offline vendor snapshots and native IDE build/reopen; no PLC operation or native analog runtime test",
+  "source_sha256": {
+    "prototype/iec/native_analog466_probe.st": "f499b6c11e97e7f520b8008191eb95fc7efe224b98d86d9ec800550bf51766f8",
+    "tests/test_codesys_native_analog466_probe.py": "704ca3f8954e19704c40520caa928b007db1715922e6b1cdc9a066c2b6f4d9f6",
+    "tests/test_native_descriptor_contract.py": "88c5bc7885cc13411987ecac7567e7ab248bf0af0a2173862b8cdfae4c49f540",
+    "tools/codesys_native_analog466_probe.py": "d1e7600aa1977c1fd9579a9bf453c25f5191a32fdc2dd89707bd5755fd7e4fd8",
+    "tools/native_descriptor_contract.py": "26aa75366b9fd1405bd2479f3c369d0e872ffdf55b5e6b3675eb3338275cf31e"
+  },
+  "starting_repository_head": "f1c3d5460ea83c92724e3520374603b36a8461ee",
+  "vm_final_state": {
+    "saved_to_disk": true,
+    "scope": "fresh exact-endpoint management read after own offline IDE session; no PLC status read",
+    "status": "stopped"
+  }
+}
