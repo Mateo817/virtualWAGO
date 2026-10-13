@@ -6,7 +6,7 @@ Status: **NOT_RUN**. Dies ist ein vorbereiteter, prüfbarer Plan. Es gibt keinen
 
 Zu prüfen ist der eigene digitale Modellpfad hinter der ersetzten ADI-Grenze: Modell-Eingänge, angeforderte Ausgänge, Modellpermit, Verbindungs-Lease, Fehlerverriegelung und Rückkehr in STOP. Der vorgesehene Lauf erhält die Originalruntime, den nativen I/O-Manager und originale I/O-Treiber. Der Eigenprovider bleibt die einzige ausgewählte Änderung an der unteren Anbindung. Alle digitalen Endpunkte im Versuch sind Modellkanäle; physische K-Bus-/UIO-Endpunkte, Host-D-Bus, Hostgeräte und Egress sind in der Versuchssicht nicht vorhanden.
 
-Die Teststufen sind getrennt zu berichten: (1) Offline-Eigenadapter plus IPC-Bridge, (2) native Runtime bei Modellpermit 0 als sichere Vorstufe, (3) nativer digitaler Modellpermit-1-Versuch nur nach den unten genannten Eintrittsgates und konkreter Versuchsgenehmigung. Ein Ergebnis einer Stufe gilt nicht als Ergebnis einer späteren Stufe. Der frühere Permit-0-PASS bleibt gebundene Vorgeschichte; für neue Quellstände muss er frisch wiederholt werden.
+Die Teststufen sind getrennt zu berichten: (1) Offline-Eigenadapter plus IPC-Bridge, (2) native Runtime bei Modellpermit 0 als sichere Vorstufe, (3) nativer digitaler Modellpermit-1-Versuch nur nach den unten genannten Eintrittsgates und konkret reviewtem Versuchsumfang und dafür geltender Ziel-/Eingriffsfreigabe. Ein Ergebnis einer Stufe gilt nicht als Ergebnis einer späteren Stufe. Der frühere Permit-0-PASS bleibt gebundene Vorgeschichte; für neue Quellstände muss er frisch wiederholt werden.
 
 ## Tatsächliches Zeit- und Zustandsverhalten im aktuellen Code
 
