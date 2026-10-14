@@ -1,0 +1,2 @@
+artifact_id,address_or_offset,working_name,status,role_evidence,callers,callees,data_references,dpp_or_segment_context,evidence_ids,limitations,next_step
+EXAMPLE-DO-NOT-USE,REPLACE,unknown,OFFEN,,,,,,,E-EXAMPLE,Template row; remove before analysis,

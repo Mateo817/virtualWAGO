@@ -1,0 +1,2 @@
+artifact_id	relative_path	kind	size_bytes	sha256	source_scope	rights_status	immutability	status	notes
+EXAMPLE-DO-NOT-USE	sources/example/image.bin	raw-binary	0	REPLACE_WITH_SHA256	REPLACE_WITH_BOUND_SOURCE	OFFEN	READ_ONLY	OFFEN	Template row; replace or remove in the private manifest.
