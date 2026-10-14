@@ -53,6 +53,7 @@ Details und Gates: [ADR-0003](docs/adr-0003.md).
 - [Roadmap und Abnahmekriterien](docs/roadmap.md)
 - [Ausgeführter Mapping-/ADI-Adapterblock](docs/originalstack-block-2026-10-12.md)
 - [Konkreter Originalstack-Plan und Restgates](docs/next-originalstack-block.md)
+- [Private XE164/C166-Analyseablage und SOL/Luna-Leitprompt](analysis/xe164/README.md)
 - [Referenzversuchsplan](docs/real-controller-plan-2026-10-12.md) · [Beobachtungsprotokoll](docs/real-controller-observation-2026-10-12.md)
 - [Sicherheits- und Zugriffsvertrag](docs/safety.md)
 - [Öffentliche Quellen](docs/sources.md)
