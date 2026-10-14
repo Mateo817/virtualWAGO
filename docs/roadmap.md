@@ -1,5 +1,13 @@
 # Roadmap und objektive Abnahme
 
+**Getrennter 750-8212-Zwischenstand, 14.10.2026:** Der
+[read-only Bericht](reference-8212-2026-10-14.md) bindet einen neuen Aufbau mit
+unverändertem RUN-Zustand, sichtbarer Frontfolge 1405×2/1504×2/466/677/600 und
+abweichender Offline-Projektfolge. Er ersetzt weder den früheren
+750-8213-Digitalnachweis noch überträgt er dessen STOP-/Runtime-PASS. Für den
+8212 sind elektronische Reihenfolge, Revisionen, Runtimezuordnung und alle
+elektrischen Versuche weiter OFFEN/BLOCKED.
+
 **Offline-Vertragsblock, 13.10.2026:** [750-466](native-analog-contract-2026-10-13.md): exakter Descriptor, zwei WORD-Eingänge, FW31-Registeranforderungen sowie frischer nativer IDE-Build/Reopen PASS. Untere ADI-/Status-/Registerprojektion und Native466-Runtime bleiben offen. [ADR-0008](adr-0008.md) legt den Bytepufferausbau fest; [PWM/Onboard-Serial/750-652](pwm-serial-contracts-2026-10-13.md) sind getrennt untersucht; [digitaler Lifecycleplan](native-model-lifecycle-plan-2026-10-13.md) vorbereitet, NOT_RUN. Kein SPS-Zugriff in diesem Block, kein Merge.
 
 **Fortsetzung, 13.10.2026:** [Neue native Digitaltests](native-digital-tests-2026-10-13.md) qualifizieren den aktuellen Digitaladapter für 750-430/530 und 750-1405/1504 bei Modellpermit 0. Der erste WORD16-Versuch fand eine eigene 8-Bit-Kanalgrenze; Korrektur und erfolgreicher vollständiger Wiederholungslauf sind getrennt dokumentiert. [Kurze neue Chat-Übergabe](new-chat-handoff-2026-10-13.md) bindet Entscheidungen und nächste Tests. Hardwarevergleich und native Analog-/PWM-/Seriellpfade bleiben offen.
@@ -13,7 +21,7 @@ Zielpriorität gemäß [ADR-0003](adr-0003.md): zuerst ein realer, autorisierter
 
 | Stufe | Ergebnis | Abnahme |
 |---|---|---|
-| R0: Zustand sichern und Identität binden | Read-only Bestandsaufnahme von Runtime/Anwendung und Identität der Referenz; zwei verbundene Module identifiziert | Keine Neustarts, Löschungen, Downloads oder Überschreibungen. RAM-Anwendung, gelöschtes Arbeitsverzeichnis und fehlendes wiederherstellbares Bootprojekt nachvollziehbar bewertet; Modulart, Revision, Position und Kommunikationsbefund mit Quelle dokumentiert. Unlesbare/unsichere Merkmale bleiben OFFEN. |
+| R0: Zustand sichern und Identität binden | Read-only Bestandsaufnahme von Runtime/Anwendung und Identität des ausdrücklich benannten Referenzgeräts; dessen verbundene Module getrennt inventarisiert | Keine Neustarts, Löschungen, Downloads oder Überschreibungen. Anwendungs-/Persistenzzustand je Ziel bewertet; Modulart, Revision, Position und Kommunikationsbefund mit Quelle dokumentiert. Foto, Offlineprojekt und elektronische Enumeration bleiben getrennte Evidenzstufen; unlesbare/unsichere Merkmale bleiben OFFEN. |
 | R1: Originalstack-Vertrag am Referenzgerät | Native Runtime, I/O-Manager und originale WAGO-I/O-Treiber samt tatsächlichem Projekt-/I/O-Pfad gebunden | Quelle, Hashes/Versionen, Konfiguration, Zustände und erwartete I/O-Wirkung belegt. Nur ausdrücklich freigegebene, reversible Softwareaktionen; bestehende Ausgänge/Anlage bleiben sicher. Keine Annahmen aus Offline-Modellkandidaten. |
 | R2: Simulationsgrenze qualifizieren | Kleinste ersetzbare untere Hardwaregrenze und Simulationsadapter | Vollständiger Funktions-, ABI-, Fehler-, Lifecycle-, Callback- und Nebenläufigkeitsvertrag aus passenden Quellen und begrenzter Beobachtung; separat geklärte Berechtigung für Bus-/Bibliotheksersetzung; wirksame Isolation ohne physischen Buszugriff. Unbekannte Vertragsstellen verhindern den Simulationseinsatz. |
 | R3: Referenz-WAGO mit unterer Simulation | Originalruntime, nativer Manager und Originaltreiber bedienen nachweislich modellierte I/O unterhalb der Grenze | Zuerst konkret identifizierte reale Modultypen/Revisionen. Originalverbraucher und echter Runtime-I/O-Pfad, erwartete Eingänge/Ausgänge, Fehler- und Rückkehrfälle mit gebundenen Artefakten; keine nicht freigegebene Busumschaltung oder Aktorwirkung. |
@@ -33,12 +41,32 @@ Der Eigentümer beauftragt zusätzlich den [Modulkatalog](module-catalog-2026-10
 - [ ] Virtuelle serielle Kommunikation: originale FW31-SysCom-/WAGO-Komponenten und Portauswahl lesen; isolierter virtueller Endpunkt/Gegenstellenmodell, dann native Anfrage/Antwort-/Timeoutprüfung.
 - [ ] Andere PFC200-Ausstattungen: Schnittstellenfähigkeiten und Gerätebeschreibungs-/Controllertypprüfungen getrennt untersuchen. Controlleridentität erhalten; Zusatzschnittstelle ist keine vollständige andere Controlleremulation.
 
-Der [Eigentümerfotobeleg](reference-module-photo-2026-10-12.md) zeigt 750-430 → 750-530 → 750-600. Frontartikel und fotografierte Reihenfolge sind damit belegt; Revisionen, elektronische Zuordnung und aktuelle Kommunikation bleiben offen. Die vorhandene Anwendung bleibt STOP; online erzeugte Bootdateien und aktualisierte Konfiguration wurden privat gesichert. Der aktuelle gezielte STOP-Wiederanlauf ist geprüft; Geräte-Reboot bleibt NOT_RUN. Kein blinder Neustart, Löschen oder Überschreiben. [Fortsetzung](adi-digital8-continuation-2026-10-12.md): authentischer Digital-8-Offlinestand und eigene ARM-Adapterprüfungen; die spätere native Abnahme steht im aktuellen Zyklusbericht. Der Root-Agent bleibt alleiniger Geräte-/VM-Integrator. Der konkrete Ablauf steht in [next-originalstack-block.md](next-originalstack-block.md), die datierten Aufzeichnungen in [Versuchsplan](real-controller-plan-2026-10-12.md) und [Beobachtungsprotokoll](real-controller-observation-2026-10-12.md).
+Der [750-8213-Eigentümerfotobeleg](reference-module-photo-2026-10-12.md) zeigt
+750-430 → 750-530 → 750-600. Bei diesem früheren Ziel bleibt die vorhandene
+Anwendung STOP; online erzeugte Bootdateien und aktualisierte Konfiguration
+wurden privat gesichert. Der gezielte STOP-Wiederanlauf ist geprüft;
+Geräte-Reboot bleibt NOT_RUN. Die [750-8212-Evidence](reference-8212-2026-10-14.md)
+bindet dagegen einen separaten RUN-Bestand und die sichtbare Folge
+1405×2/1504×2/466/677/600. Ihr Backup ist kein Vollsnapshot; Projekt- und
+Fotoreihenfolge unterscheiden sich. Kein blinder Neustart, Löschen oder
+Überschreiben an irgendeinem Ziel. Root bleibt alleiniger Geräte-/VM-Integrator.
 
 Die virtuellen 750-1405/750-1504 sind inzwischen im begrenzten nativen WORD16-Test geprüft; Sie setzen nicht die tatsächliche Bestückung. Die bisherigen 99 hardwarefreien Tests, Adapter- und Harnessläufe, Offline-Engineering-Builds sowie begrenzten internen Runtimebeobachtungen bleiben PASS ausschließlich in den jeweils verlinkten, revisionsgebundenen Scopes. Sie erfüllen R0–R3 nicht.
 
 ## Statussprache
 
-PASS bedeutet tatsächlich erfolgreich für den dokumentierten Stand und Scope. FAIL bedeutet ausgeführt und fehlgeschlagen. NOT_RUN bedeutet nicht ausgeführt, mit Grund. BLOCKED benennt eine konkret fehlende Voraussetzung. Aussagen werden als VERIFIZIERT, HYPOTHESE, OFFEN oder BLOCKED gekennzeichnet. Softwareberechtigung für die Referenz bleibt bestehen; Austausch/Ersetzung geschützter Bus- oder Herstellerbibliotheken benötigt eine eigene konkrete Freigabe. Unabhängige Offlinearbeit wird durch einen Teilblocker nicht angehalten.
+PASS bedeutet tatsächlich erfolgreich für den dokumentierten Stand und Scope.
+FAIL bedeutet ausgeführt und fehlgeschlagen. NOT_RUN bedeutet nicht ausgeführt,
+mit Grund. BLOCKED benennt eine konkret fehlende Voraussetzung. Aussagen werden
+als VERIFIZIERT, HYPOTHESE, OFFEN oder BLOCKED gekennzeichnet. Zielgebundene
+Software- oder Busfreigaben werden nicht zwischen 8213 und 8212 übertragen;
+Austausch/Ersetzung geschützter Bus- oder Herstellerbibliotheken benötigt eine
+eigene konkrete Freigabe. Unabhängige Offlinearbeit wird durch einen
+Teilblocker nicht angehalten.
 
-R3 ist im begrenzten Digital-8-Byte-/Befehls-Scope mit geschlossenem Modellgate erreicht. Die vollständige R3-Abnahme bleibt offen: reale Modulrevisionen, aktive wirksame Modellausgänge sowie umfassende Fehler-/STOP-/Lifecycle- und Zeitverträge sind noch nicht bestätigt. Die ursprünglichen Abnahmekriterien werden dadurch nicht als vollständig erfüllt ausgegeben.
+R3 ist ausschließlich am früheren 750-8213 im begrenzten
+Digital-8-Byte-/Befehls-Scope mit geschlossenem Modellgate erreicht. Die
+vollständige R3-Abnahme bleibt dort offen. Der neue 750-8212 besitzt bislang
+read-only Geräte-, Foto- und Offline-Projektevidence, aber keinen nativen
+Runtime-Digitaltest. Reale Modulrevisionen, aktive wirksame Modellausgänge sowie
+umfassende Fehler-/STOP-/Lifecycle- und Zeitverträge sind nicht bestätigt.

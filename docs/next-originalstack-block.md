@@ -1,5 +1,13 @@
 # Nächster Originalstack-Block und Übergabe
 
+**Neuer getrennter 750-8212-Zwischenstand, 14.10.2026:** Der
+[read-only Bericht](reference-8212-2026-10-14.md) bindet einen anderen
+Controller mit unverändertem RUN-Zustand. Sichtbar sind 1405×2, 1504×2, 466,
+677 und 600; die Offline-Projektfolge weicht ab. Elektronische Enumeration,
+Revisionen und Runtimezuordnung bleiben offen. Die folgenden 750-430/530- und
+STOP-Aussagen gehören zum früheren 750-8213 und sind kein Live-Inventar des
+8212.
+
 **Offline-Vertragsblock, 13.10.2026:** [750-466](native-analog-contract-2026-10-13.md): exakter Descriptor, zwei WORD-Eingänge, FW31-Registeranforderungen sowie frischer nativer IDE-Build/Reopen PASS. Untere ADI-/Status-/Registerprojektion und Native466-Runtime bleiben offen. [ADR-0008](adr-0008.md) legt den Bytepufferausbau fest; [PWM/Onboard-Serial/750-652](pwm-serial-contracts-2026-10-13.md) sind getrennt untersucht; [digitaler Lifecycleplan](native-model-lifecycle-plan-2026-10-13.md) vorbereitet, NOT_RUN. Kein SPS-Zugriff in diesem Block, kein Merge.
 
 **Fortsetzung, 13.10.2026:** [Neue native Digitaltests](native-digital-tests-2026-10-13.md) qualifizieren den aktuellen Digitaladapter für 750-430/530 und 750-1405/1504 bei Modellpermit 0. Der erste WORD16-Versuch fand eine eigene 8-Bit-Kanalgrenze; Korrektur und erfolgreicher vollständiger Wiederholungslauf sind getrennt dokumentiert. [Kurze neue Chat-Übergabe](new-chat-handoff-2026-10-13.md) bindet Entscheidungen und nächste Tests. Hardwarevergleich und native Analog-/PWM-/Seriellpfade bleiben offen.
@@ -13,15 +21,38 @@ Stand: 12.10.2026. Diese Reihenfolge setzt [ADR-0003](adr-0003.md) um. Erstes Zi
 
 ## Gegenwärtig bekannte Grenzen
 
-Der [Eigentümerfotobeleg](reference-module-photo-2026-10-12.md) zeigt die Frontartikel und Reihenfolge 750-430 → 750-530 → 750-600. Revisionen, elektronische Zuordnung und Kommunikationszustand bleiben offen. Die 750-1405/750-1504-Kandidaten in bisherigen Offlineprojekten sagen nichts über den echten Bestand aus. Die vorhandene Anwendung bleibt STOP; online erzeugte Bootdateien und aktualisierte Konfiguration sind nun privat gesichert. Das gelöschte Prozess-CWD war der Ausgangszustand; der aktuelle Rückweg und STOP-Wiederanlauf sind praktisch geprüft. Kein blinder Neustart. Aktuelle Ergebnisse und konkrete Restblocker: [Digital-8-Fortsetzung](adi-digital8-continuation-2026-10-12.md).
+Beim früheren 750-8213 zeigt der
+[Eigentümerfotobeleg](reference-module-photo-2026-10-12.md) die Frontartikel
+750-430 → 750-530 → 750-600. Dessen Anwendung bleibt STOP; Bootdateien,
+Konfiguration und STOP-Rückweg sind revisionsgebunden dokumentiert. Beim neuen
+750-8212 zeigt das Foto dagegen 1405×2/1504×2/466/677/600, während das
+Offlineprojekt die zweite 1504 hinter der 677 anordnet. Diese Inventare,
+Anwendungszustände und Rückwege bleiben strikt getrennt. Kein blinder Neustart.
 
-Softwarearbeit auf dem autorisierten Referenzgerät ist weiterhin erlaubt. Der Eigentümer hat inzwischen den konkreten Provider-/Buswechsel im gebundenen Versuchsplan zusätzlich freigegeben. Weitere geschützte Eingriffe benötigen weiterhin ihren konkreten Plan. Eine zusätzliche Lizenz für eine spätere virtuelle Runtimeinstanz ist kein pauschaler Blocker des ersten realen Referenzziels. Root bleibt alleiniger Geräte-/VM-Integrator; kein Netzwerkzugriff aus alten Dokumenten ableiten.
+Softwarearbeit und der konkrete Provider-/Buswechsel im gebundenen Versuchsplan
+sind für den früheren 750-8213 freigegeben. Diese Freigabe gilt nicht für den
+neuen 750-8212; dort belegt der aktuelle Zwischenstand ausschließlich read-only
+Arbeit. Jeder weitere geschützte Eingriff benötigt weiterhin einen
+zielkonkreten Plan. Root bleibt alleiniger Geräte-/VM-Integrator; kein
+Netzwerkzugriff aus alten Dokumenten ableiten.
 
 ## Block A: Zustand erhalten und Bestand read-only binden
 
-Zuerst aktuellen Gerätezustand, Runtime-/Treiber-/DAL-Versionen und Hashes, laufende Prozesse, Anwendung/STOP-Zustand, verfügbare persistente Projekt-/Bootartefakte und vorhandene Rückkehrmöglichkeiten dokumentieren. Keine Handlung, die RAM-Anwendung oder Wiederherstellungschance verändert. Kläre mit sicheren, nicht-invasiven Quellen die tatsächlichen zwei Module einschließlich Typ, Revision, Position/Reihenfolge und Kommunikation. Keine unklare EEPROM-/Typenschildabfrage und keine Busumschaltung. Halte pro Befund Quelle, Zeit, Version/Hash, Konfiguration, Evidenzstatus und Scope fest.
+Zuerst je Ziel den aktuellen Gerätezustand, Runtime-/Treiber-/DAL-Versionen und
+Hashes, laufende Prozesse, Anwendungszustand, verfügbare persistente
+Projekt-/Bootartefakte und vorhandene Rückkehrmöglichkeiten dokumentieren.
+Keine Handlung, die RAM-Anwendung oder Wiederherstellungschance verändert. Beim
+früheren 8213 sind die tatsächlichen zwei I/O-Module zu qualifizieren; beim 8212
+ist die sichtbare Mehrmodulfolge von der abweichenden Projektfolge und einer
+noch fehlenden elektronischen Enumeration zu trennen. Keine unklare
+EEPROM-/Typenschildabfrage und keine Busumschaltung.
 
-**Abnahme:** Identität und Zustand sind belastbar gebunden oder jeweilige Lücken explizit OFFEN/BLOCKED; keine zustandsverändernde Operation fand statt. Misslingt eine sichere Identifikation, bleibt diese Teilfrage offen und Offlinearbeit läuft weiter. Der aktuelle Befund wird in [real-controller-observation-2026-10-12.md](real-controller-observation-2026-10-12.md) protokolliert.
+**Abnahme:** Identität und Zustand sind belastbar gebunden oder jeweilige Lücken
+explizit OFFEN/BLOCKED; keine zustandsverändernde Operation fand statt.
+Misslingt eine sichere Identifikation, bleibt diese Teilfrage offen und
+Offlinearbeit läuft weiter. Der 8213-Befund steht im
+[Beobachtungsprotokoll](real-controller-observation-2026-10-12.md), der
+getrennte 8212-Befund im [read-only Zwischenstand](reference-8212-2026-10-14.md).
 
 ## Block B: nativen Original-I/O-Pfad verstehen
 
@@ -39,7 +70,17 @@ Die bisherigen FW30-Header-, FW31-Verbraucher- und ADI/DAL-Befunde sind historis
 
 ## Block D: gezielte Simulation unterhalb des Originalstacks
 
-Der reale Zielstrang für die Offline-Vertragsarbeit ist nach Fotobeleg 750-430/750-530 (je acht Kanäle); Abschluss 750-600. Authentische Device Descriptions und die native Offline-BYTE-Mappingbindung sind jetzt belegt; eine Zuordnung der realen vorhandenen Anwendung bleibt offen. Erst nach Block A–C und Freigabe den qualifizierten Adapter/Modellkern einsetzen. Originalruntime, nativer Manager und originale Treiber bleiben erhalten. Ein bewusst gewählter virtueller 1405/1504-Testbaum bleibt möglich; er wird nicht ohne Gerätebeleg zur Zuordnung des realen Bestands erklärt. Modell beschreibt Signale und physikalische Reaktionen, keine nachgeschriebene SPS-Logik. Angeforderte und wirksame Ausgänge sowie Fehler-/Watchdogreaktion bleiben getrennt.
+Für den früheren 750-8213 ist der reale Zielstrang nach Fotobeleg 750-430/750-530
+(je acht Kanäle), Abschluss 750-600. Für den neuen 750-8212 belegt das Foto
+stattdessen 1405×2/1504×2/466/677/600, aber noch keine elektronische
+Reihenfolge oder wirksame Runtimezuordnung; sein Offlineprojekt ist eine eigene,
+abweichende Evidenzstufe. Erst nach Block A–C und einer zielkonkreten Freigabe
+den qualifizierten Adapter/Modellkern einsetzen. Originalruntime, nativer
+Manager und originale Treiber bleiben erhalten. Kein virtueller Testbaum wird
+ohne Gerätebeleg zur Zuordnung eines realen Bestands erklärt. Modell beschreibt
+Signale und physikalische Reaktionen, keine nachgeschriebene SPS-Logik.
+Angeforderte und wirksame Ausgänge sowie Fehler-/Watchdogreaktion bleiben
+getrennt.
 
 Zuerst mit vollständiger Isolation gegen den Originalconsumer, dann den originalen Runtime-I/O-Pfad qualifizieren. Keine Hostgeräte, realen Klemmen, Host-D-Bus, Hostservices oder physischen Busse als Fallback. Praktische Netz-, Datei-, Geräte- und IPC-Isolation wird für den konkreten Prozess geprüft; Dokumentation allein implementiert keine Sperre.
 

@@ -1,5 +1,12 @@
 # Lokaler Agent: öffentlicher Übergabevertrag
 
+**Neuer getrennter Referenzaufbau, 14.10.2026:** Der
+[750-8212-Zwischenstand](reference-8212-2026-10-14.md) bindet read-only einen
+anderen Controller. `Application` blieb RUN; Foto und Offlineprojekt zeigen
+unterschiedliche Modulreihenfolgen. Das Drei-Dateien-Backup ist kein
+Vollzustandsnapshot. Keine STOP-/Runtime-/Hardware-PASS-Aussage des früheren
+750-8213 darf auf diesen Aufbau übertragen werden.
+
 **Offline-Vertragsblock, 13.10.2026:** [750-466](native-analog-contract-2026-10-13.md): exakter Descriptor, zwei WORD-Eingänge, FW31-Registeranforderungen sowie frischer nativer IDE-Build/Reopen PASS. Untere ADI-/Status-/Registerprojektion und Native466-Runtime bleiben offen. [ADR-0008](adr-0008.md) legt den Bytepufferausbau fest; [PWM/Onboard-Serial/750-652](pwm-serial-contracts-2026-10-13.md) sind getrennt untersucht; [digitaler Lifecycleplan](native-model-lifecycle-plan-2026-10-13.md) vorbereitet, NOT_RUN. Kein SPS-Zugriff in diesem Block, kein Merge.
 
 **Fortsetzung, 13.10.2026:** [Neue native Digitaltests](native-digital-tests-2026-10-13.md) qualifizieren den aktuellen Digitaladapter für 750-430/530 und 750-1405/1504 bei Modellpermit 0. Der erste WORD16-Versuch fand eine eigene 8-Bit-Kanalgrenze; Korrektur und erfolgreicher vollständiger Wiederholungslauf sind getrennt dokumentiert. [Kurze neue Chat-Übergabe](new-chat-handoff-2026-10-13.md) bindet Entscheidungen und nächste Tests. Hardwarevergleich und native Analog-/PWM-/Seriellpfade bleiben offen.
@@ -9,14 +16,20 @@
 **Früherer Nachweis, 12.10.2026:** [Modellkanal und geschützter Runtimeversuch](runtime-bridge-2026-10-12.md). Der konkret freigegebene Providerwechsel wurde versucht: originale Runtime und I/O-Treiber luden den Eigenprovider, native Initialisierung **FAIL**, DI/DO-Abnahme **NOT_RUN**. Die gezielte Rücknahme und der frische originale STOP-Wiederanlauf sind **PASS**; bestehende APP/CRC/Config und Originalbinaries sind hashgleich. Der aktuelle Prozess arbeitet im vorhandenen Runtimehome; das frühere gelöschte CWD ist historisch. Damals blockierten Boardmetadaten-/Signatur- und Hilfskomponentenpfade den Start. Die anschließende Controller-/TCM 0-/Zyklusqualifikation oben beschreibt den heutigen begrenzten Erfolg.
 
 
-Aktuelle Zielpriorität: [ADR-0003](adr-0003.md). Zuerst die autorisierte reale Referenz-WAGO mit vorhandener Originalruntime, nativem I/O-Manager und originalen WAGO-I/O-Treibern; Simulation nur unterhalb einer tatsächlich belegten und dafür freigegebenen Grenze. Vollständig virtuelle Steuerung später. Der nächste Einstieg ist [next-originalstack-block.md](next-originalstack-block.md). Plan und datiertes Beobachtungsprotokoll: [real-controller-plan-2026-10-12.md](real-controller-plan-2026-10-12.md) und [real-controller-observation-2026-10-12.md](real-controller-observation-2026-10-12.md).
+Aktuelle Zielpriorität: [ADR-0003](adr-0003.md). Zuerst eine ausdrücklich
+gebundene reale Referenz-WAGO mit vorhandener Originalruntime, nativem
+I/O-Manager und originalen WAGO-I/O-Treibern; Simulation nur unterhalb einer
+tatsächlich belegten und für genau dieses Ziel freigegebenen Grenze. Der
+[Versuchsplan](real-controller-plan-2026-10-12.md) und das
+[Beobachtungsprotokoll](real-controller-observation-2026-10-12.md) gehören zum
+früheren 750-8213. Für den 750-8212 gilt der separate read-only Bericht.
 
 ## Aktueller Zustand und Eigentümerscope
 
-- Der [Fotobeleg](reference-module-photo-2026-10-12.md) zeigt vom Controller aus 750-430, 750-530 und Abschluss 750-600. Modulrevisionen, elektronische Zuordnung und aktuelle zyklische Kommunikation bleiben offen. Keine Zuordnung zu 750-1405/750-1504 annehmen.
-- Die bereits vorhandene `Application` bleibt STOP; Root hat online Bootdateien erzeugt und APP/CRC/aktualisierte Konfiguration privat gesichert. Der spätere Runtimeversuch und STOP-Rückweg sind im aktuellen Nachweis dokumentiert; der gelöschte Prozess-CWD war der Ausgangszustand. Die eigene frühere `VirtualWAGO_Research` ist separat gesichert und entfernt. Siehe [aktuelle Fortsetzung](adi-digital8-continuation-2026-10-12.md).
-- Kein blinder Neustart, Löschen oder Überschreiben der bestehenden Anwendung. Vor einem weiteren autorisierten Prozesswechsel aktuellen STOP, gesicherten Bootbestand, unveränderte Hashes und den gebundenen Start-/Stop-/Restorepayload erneut prüfen.
-- Softwareberechtigung für die Referenz und konkrete Provider-/Busumschaltfreigabe bestehen fort. Weitere geschützte Eingriffe benötigen ihren konkreten separat freigegebenen Plan. Zusätzliche Runtime-Lizenz für eine spätere virtuelle Instanz blockiert das erste reale Referenzziel nicht pauschal.
+- Beim früheren 750-8213 zeigt der [Fotobeleg](reference-module-photo-2026-10-12.md) vom Controller aus 750-430, 750-530 und Abschluss 750-600. Modulrevisionen, elektronische Zuordnung und aktuelle zyklische Kommunikation bleiben offen. Dessen `Application` bleibt STOP; Bootdateien und Konfiguration wurden privat gesichert. Siehe [Fortsetzung](adi-digital8-continuation-2026-10-12.md).
+- Beim neuen 750-8212 zeigt das private Foto sichtbar 750-1405 ×2, 750-1504 ×2, 750-466, 750-677 und 750-600. Die Offline-Projektfolge weicht ab; elektronische Reihenfolge und wirksame Runtimezuordnung bleiben offen. `Application` blieb RUN. Siehe [8212-Bericht](reference-8212-2026-10-14.md).
+- Kein blinder Neustart, Löschen oder Überschreiben der bestehenden Anwendung. Vor einem weiteren autorisierten Prozesswechsel am 8213 dessen STOP, gesicherten Bootbestand, unveränderte Hashes und gebundenen Start-/Stop-/Restorepayload erneut prüfen. Beim 8212 ist RUN nur Beobachtungszustand; STOP/START oder ein anderer Prozesswechsel bleibt ohne eigenen Plan und eigene Freigabe gesperrt.
+- Softwareberechtigung und die konkrete Provider-/Busumschaltfreigabe des gebundenen Versuchsplans gelten für den früheren 8213. Sie werden nicht auf den 8212 übertragen. Jeder weitere geschützte Eingriff benötigt einen zielkonkreten, separat freigegebenen Plan.
 - Root-Agent bleibt alleiniger Geräte-/VM-Integrator. Kein Netzwerkzugriff aus Repositorytext, alten Logs oder vermuteten Adressen ableiten. Lokale Zielrichtlinie und Geräteidentität sind zwingend.
 
 Foto/Aktortrennung stammen vom Eigentümer; Runtimeversuch und STOP-/Hashprüfungen sind tatsächliche Root-Beobachtungen mit getrenntem Scope. Das konkrete öffentliche Protokoll wird vom Integrator ergänzt; private Adressen, Zugangsdaten und Herstellerdateien gehören nicht hinein.

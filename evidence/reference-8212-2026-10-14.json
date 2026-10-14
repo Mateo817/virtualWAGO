@@ -221,16 +221,16 @@
     ],
     "750-677_outputs": [
       {"parameter_id": 50331648, "name": "_CTR 1", "address": "%QB4"},
-      {"parameter_id": 50331649, "name": "_RES 1", "address": "%QB5"},
+      {"parameter_id": 50331649, "name": "_RES 1@1", "address": "%QB5"},
       {"parameter_id": 50331650, "name": "_QW 1", "address": "%QW3"},
       {"parameter_id": 50331651, "name": "_CTR 2", "address": "%QB8"},
-      {"parameter_id": 50331652, "name": "_RES 2", "address": "%QB9"},
+      {"parameter_id": 50331652, "name": "_RES 2@1", "address": "%QB9"},
       {"parameter_id": 50331653, "name": "_QW 2", "address": "%QW5"},
       {"parameter_id": 50331654, "name": "_CTR 3", "address": "%QB12"},
-      {"parameter_id": 50331655, "name": "_RES 3", "address": "%QB13"},
+      {"parameter_id": 50331655, "name": "_RES 3@1", "address": "%QB13"},
       {"parameter_id": 50331656, "name": "_QW 3", "address": "%QW7"},
       {"parameter_id": 50331657, "name": "_CTR 4", "address": "%QB16"},
-      {"parameter_id": 50331658, "name": "_RES 4", "address": "%QB17"},
+      {"parameter_id": 50331658, "name": "_RES 4@1", "address": "%QB17"},
       {"parameter_id": 50331659, "name": "_QW 4", "address": "%QW9"}
     ]
   },
