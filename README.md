@@ -2,15 +2,47 @@
 
 Forschung zur I/O-Simulation unterhalb des originalen WAGO/CODESYS-I/O-Stacks. Erstes Ziel ist die autorisierte Referenz-WAGO mit ihrer bereits laufenden originalen Runtime, dem nativen I/O-Manager und originalen WAGO-I/O-Treibern; die untere Hardwareanbindung soll erst nach Beleg ihrer Schnittstelle simuliert werden. Eine vollständig virtuelle Steuerung ist ein späteres Ziel. Unabhängiges Forschungsprojekt; keine behauptete Herstellerfreigabe.
 
-**Stand: 13. Oktober 2026.** Die [reale Originalruntime verarbeitet virtuelle Digitalmodule mit acht und 16 Kanälen](docs/native-digital-tests-2026-10-13.md): 750-430/750-530 und 750-1405/750-1504. Native Konfiguration, wechselnde Eingänge und vollständige angeforderte Ausgangsframes sind bei dauerhaftem Modellpermit 0 **PASS**. Wirksame Modellausgänge bleiben0. Die ursprüngliche Anwendung wird nach jedem begrenzten Versuch unverändert in STOP wiederhergestellt; die IDE-VM ist auf Datenträger pausiert. Hardwarevergleich, reale Modulrevisionen, allgemeine Watchdog-/Fehler-/STOP-Semantik und aktives Modellgate bleiben offen.
+**Neuer getrennter Referenzaufbau, 14. Oktober 2026:** Der [read-only gebundene
+750-8212-Zwischenstand](docs/reference-8212-2026-10-14.md) hält eine bestehende
+`Application` unverändert in RUN. Das private Frontfoto belegt im sichtbaren
+Scope 750-1405 ×2, 750-1504 ×2, 750-466, 750-677 und 750-600; die abweichende
+Offline-Projektfolge ist kein elektronisches Businventar. Es gab keinen
+STOP/START, Download, Reboot, Provider-/Masterwechsel oder elektrischen I/O-Test.
 
-Das [Eigentümerfoto](docs/reference-module-photo-2026-10-12.md) belegt 750-430 →750-530 →750-600. Der [Controllerzugang](docs/controller-metadata-2026-10-12.md) liest genuine Daten derselben Platine schreibgeschützt. TCM wurde im eigenen Projekt regulär auf den dokumentierten Wert0 gesetzt; Originalruntime, nativer I/O-Manager und originale I/O-Treiber bleiben erhalten. Frühere [Initfehler](docs/runtime-bridge-2026-10-12.md) bleiben revisionsgebunden dokumentiert.
+**Früherer 750-8213-Referenzaufbau, Stand 13. Oktober 2026:** Die [reale
+Originalruntime verarbeitet virtuelle Digitalmodule mit acht und 16
+Kanälen](docs/native-digital-tests-2026-10-13.md): 750-430/750-530 und
+750-1405/750-1504. Native Konfiguration, wechselnde Eingänge und vollständige
+angeforderte Ausgangsframes sind bei dauerhaftem Modellpermit 0 **PASS**.
+Wirksame Modellausgänge bleiben 0. Die ursprüngliche Anwendung dieses
+750-8213-Aufbaus wurde nach jedem begrenzten Versuch unverändert in STOP
+wiederhergestellt; die IDE-VM ist auf Datenträger pausiert. Diese Aussagen
+beschreiben nicht den RUN-Zustand des neuen 750-8212. Hardwarevergleich, reale
+Modulrevisionen, allgemeine Watchdog-/Fehler-/STOP-Semantik und aktives
+Modellgate bleiben offen.
+
+Das [frühere 750-8213-Eigentümerfoto](docs/reference-module-photo-2026-10-12.md)
+belegt 750-430 → 750-530 → 750-600. Der damalige
+[Controllerzugang](docs/controller-metadata-2026-10-12.md) liest genuine Daten
+derselben 8213-Platine schreibgeschützt. TCM wurde im eigenen Projekt regulär
+auf den dokumentierten Wert 0 gesetzt; Originalruntime, nativer I/O-Manager und
+originale I/O-Treiber bleiben erhalten. Frühere
+[Initfehler](docs/runtime-bridge-2026-10-12.md) bleiben revisionsgebunden
+dokumentiert und werden nicht auf den 8212-Aufbau übertragen.
 
 Der neue [Offline-Vertragsblock für750-466](docs/native-analog-contract-2026-10-13.md) bindet zwei native WORD-Eingänge und zusätzliche FW31-Registeranforderungen. Frischer nativer IDE-Build und schreibfreies Reopen sind PASS. Native Analogausführung bleibt offen. [ADR-0008](docs/adr-0008.md) beschreibt den Bytepufferausbau; [PWM und beide seriellen Pfade](docs/pwm-serial-contracts-2026-10-13.md) sowie der [digitale Lifecycleplan](docs/native-model-lifecycle-plan-2026-10-13.md) sind getrennt vorbereitet. Dieser Block kontaktierte keine SPS.
 
 ## Entscheidung und Einstieg
 
-Priorität hat zunächst ein realer Referenzversuch: originale Runtime, nativer I/O-Manager und originale WAGO-I/O-Treiber bleiben aktiv; simuliert wird erst unterhalb der nachgewiesenen Grenze. Die vorhandene verbundene Modulbestückung wird identifiziert, nicht aus den bisherigen Offlinekandidaten abgeleitet. Der konkrete ADI-Providerwechsel wurde vom Eigentümer freigegeben und begrenzt versucht; die native zyklische Byte-/Befehlsabnahme mit geschlossenem Modellgate ist erreicht. Vollständige Controller-Virtualisierung folgt später. Eine zusätzliche Runtime-Lizenz für eine virtuelle Instanz ist kein pauschaler Blocker des ersten Referenzziels. Details und Gates: [ADR-0003](docs/adr-0003.md).
+Priorität hat zunächst ein realer, ausdrücklich gebundener Referenzversuch:
+originale Runtime, nativer I/O-Manager und originale WAGO-I/O-Treiber bleiben
+aktiv; simuliert wird erst unterhalb der nachgewiesenen Grenze. Bestückung,
+Zustand und Freigaben werden je Ziel gebunden, nicht aus Offlinekandidaten oder
+dem jeweils anderen Gerät abgeleitet. Der konkrete ADI-Providerwechsel und die
+native zyklische Byte-/Befehlsabnahme gehören zum früheren 750-8213. Der neue
+750-8212-Block war ausschließlich read-only und erteilt keine solche
+Umschaltfreigabe. Vollständige Controller-Virtualisierung folgt später.
+Details und Gates: [ADR-0003](docs/adr-0003.md).
 
 - [Forschungsbefunde und Grenzen](docs/research.md)
 - [Genuine Controllerdaten, Schreibschutz und nächste Abhängigkeiten](docs/controller-metadata-2026-10-12.md)

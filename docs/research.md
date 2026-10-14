@@ -1,5 +1,14 @@
 # Forschungsergebnisse und Machbarkeitsentscheidung
 
+**Getrennter neuer Referenzaufbau, 14.10.2026:** Der
+[750-8212-Zwischenstand](reference-8212-2026-10-14.md) bindet read-only einen
+anderen Controller und ein anderes Modulensemble. Dessen bestehende Anwendung
+blieb RUN; die sichtbare Frontfolge 750-1405 ×2, 750-1504 ×2, 750-466, 750-677,
+750-600 weicht von der Offline-Projektfolge ab. Weder der RUN-Zustand noch diese
+Bestückung werden auf den früheren 750-8213-Aufbau übertragen. Elektronische
+Busreihenfolge, Modulrevisionen, Runtimezuordnung und elektrische I/O bleiben
+OFFEN/BLOCKED wie im Bericht ausgewiesen.
+
 **Fortsetzung, 12.10.2026:** [Nativer Digital-8-Zyklus](native-cyclic-2026-10-12.md): originale Runtime, nativer I/O-Manager und Originaltreiber verarbeiten virtuelle 750-430/750-530. TCM 0 ist nativ offline gesetzt und wieder geöffnet geprüft; Init und zyklische angeforderte Ausgangsframes bei dauerhaftem Modellpermit 0 PASS. Original-STOP-Rücknahme und frische APP-/CRC-/Config-/Binary-Hashes PASS. [Controllerzugang](controller-metadata-2026-10-12.md) und frühere Abbrüche bleiben separat belegt. Sämtliche Moduldaten stammen aus dem Modell; echte Controllerdaten bleiben auf derselben Platine.
 
 **Früherer Nachweis, 12.10.2026:** [Modellkanal und geschützter Runtimeversuch](runtime-bridge-2026-10-12.md). Der konkret freigegebene Providerwechsel wurde versucht: originale Runtime und I/O-Treiber luden den Eigenprovider, native Initialisierung **FAIL**, DI/DO-Abnahme **NOT_RUN**. Die gezielte Rücknahme und der frische originale STOP-Wiederanlauf sind **PASS**; bestehende APP/CRC/Config und Originalbinaries sind hashgleich. Der aktuelle Prozess arbeitet im vorhandenen Runtimehome; das frühere gelöschte CWD ist historisch. Damals blockierten Boardmetadaten-/Signatur- und Hilfskomponentenpfade den Start. Die anschließende Controller-/TCM 0-/Zyklusqualifikation oben beschreibt den heutigen begrenzten Erfolg.
@@ -11,11 +20,27 @@ Stand: 12.10.2026. Die technischen Befunde weiter unten sind historische, revisi
 
 Langfristig soll eine virtuelle PFC200 nach Möglichkeit originale IEC-Logik, I/O-Mapping und WAGO-Gerätebaum verwenden. Der erste Nachweis erfolgt jedoch auf der realen autorisierten Referenz-WAGO mit Originalruntime und originalem I/O-Stack; eine spätere virtuelle Anbindung muss unterhalb der Anwendung liegen. Ein OPC-UA-Simulator oder ein in ST eingebautes Anlagenmodell erfüllt den Hardwareemulationsnachweis nicht.
 
-**Erstes Ziel:** Auf der autorisierten Referenz-WAGO den Originalstack mit der bereits laufenden Runtime, dem nativen I/O-Manager und originalen WAGO-I/O-Treibern untersuchen und nutzen. Erst unterhalb der kleinsten vollständig belegten Hardwaregrenze soll eine Simulation erfolgen. Der [Eigentümerfotobeleg](reference-module-photo-2026-10-12.md) identifiziert die Frontartikel und Reihenfolge 750-430 → 750-530 → 750-600. Revisionen, elektronische Zuordnung und aktueller Kommunikationszustand bleiben offen. Die Modellkandidaten 750-1405/750-1504 sind keine Annahme über diesen Bestand.
+**Erstes Ziel:** Auf der jeweils ausdrücklich gebundenen autorisierten
+Referenz-WAGO den Originalstack mit der bereits laufenden Runtime, dem nativen
+I/O-Manager und originalen WAGO-I/O-Treibern untersuchen und nutzen. Erst
+unterhalb der kleinsten vollständig belegten Hardwaregrenze soll eine
+Simulation erfolgen. Der [frühere 750-8213-Fotobeleg](reference-module-photo-2026-10-12.md)
+identifiziert 750-430 → 750-530 → 750-600; der
+[neue 750-8212-Fotobeleg](reference-8212-2026-10-14.md) identifiziert im
+sichtbaren Scope 750-1405 ×2, 750-1504 ×2, 750-466, 750-677, 750-600.
+Revisionen und elektronische Zuordnung bleiben bei beiden offen. Die beiden
+Inventare und Zustände dürfen nicht vermischt werden.
 
-**HYPOTHESE:** Eine geeignete untere Grenze lässt sich simulieren, während der Originalstack erhalten bleibt. Die konkrete ADI-Providerbindung ist freigegeben und im Startupversuch nachgewiesen; der vollständige native I/O-Vertrag bleibt offen. Die vollständig virtuelle Steuerung ist ein nachgelagertes Ziel. Eine zusätzliche Runtime-Lizenz für eine virtuelle Instanz blockiert das erste reale Referenzziel nicht pauschal; Rechte für konkrete Software-/Bus-/Bibliotheksänderungen bleiben eigenständige Gates. Kein fertiger Emulator wird behauptet.
+**HYPOTHESE:** Eine geeignete untere Grenze lässt sich simulieren, während der Originalstack erhalten bleibt. Am früheren 750-8213 war die konkrete ADI-Providerbindung freigegeben und im Startupversuch nachgewiesen; diese Freigabe und dieser Nachweis gelten nicht für den 750-8212. Der vollständige native I/O-Vertrag bleibt offen. Die vollständig virtuelle Steuerung ist ein nachgelagertes Ziel. Eine zusätzliche Runtime-Lizenz für eine virtuelle Instanz blockiert das erste reale Referenzziel nicht pauschal; Rechte für konkrete Software-/Bus-/Bibliotheksänderungen bleiben eigenständige Gates. Kein fertiger Emulator wird behauptet.
 
-**Aktuelle Zustandsschranke:** Die vorhandene Anwendung bleibt STOP; Root hat online Bootdateien erzeugt und privat mit bytegleichen Kopierhashes gesichert. Der aktuelle kontrollierte STOP-Wiederanlauf ist PASS; die frühere Ausgangslage steht in der [Fortsetzung](adi-digital8-continuation-2026-10-12.md). Kein blindes Neustarten, Löschen, Überschreiben oder anderer zustandsverändernder Schritt, bis Anwendung und persistenter Zustand sicher verstanden und gesichert sind. Das ist kein Anlass, unabhängige Offlinearbeit einzustellen.
+**Zustandsschranken je Ziel:** Beim früheren 750-8213 bleibt die vorhandene
+Anwendung STOP; Root hat online Bootdateien erzeugt und privat mit bytegleichen
+Kopierhashes gesichert. Der kontrollierte STOP-Wiederanlauf ist PASS; Details
+stehen in der [Fortsetzung](adi-digital8-continuation-2026-10-12.md). Beim neuen
+750-8212 blieb `Application` durchgehend RUN; dort ist das Drei-Dateien-Backup
+ausdrücklich kein Vollzustandsnapshot. Für keines der Ziele blind neu starten,
+löschen, überschreiben oder Zustände ändern. Unabhängige Offlinearbeit läuft
+weiter.
 
 ## 2. Belegte Referenzarchitektur
 
@@ -97,6 +122,16 @@ Inzwischen erhoben sind Device-Tree-Modell, Firmwaremarker, Kernel, Runtime-/Lib
 
 Der [Engineeringnachweis vom 12.10.2026](codesys-engineering-2026-10-12.md) ergänzt inzwischen einen fehlerfreien nativen Offline-Build und einen tatsächlich ausgeführten internen IEC-Test auf der originalen Referenzruntime. Der eigene I/O-Zweig blieb dabei deaktiviert. Die Testanwendung wurde danach entfernt, die zuvor vorhandene Anwendung blieb geladen und gestoppt. Damit ist der reguläre Engineering-/Referenzpfad praktisch belegt; virtuelle Klemmenakzeptanz, Mapping, Wiederanlauf und der vollständige native I/O-Vertrag bleiben offen.
 
-Diese Absätze beschreiben die früheren Stände und behalten ihren jeweiligen Scope; spätere Referenzlauf- oder Verbindungsbefunde sind kein rückwirkender PASS. Der Fotobeleg schließt Frontartikel und fotografierte Reihenfolge. Aktuell offen sind Modulrevisionen und elektronische Zuordnung der zwei I/O-Module, Klärung des RAM-/Bootprojektzustands ohne Neustart oder Überschreiben, sowie der Vertrag und die Freigabe jeder konkret zu ersetzenden unteren Schnittstelle. Die tatsächlich verbundenen Module bestimmen den ersten realen I/O-Strang. Die 750-1405/750-1504 bleiben bewusst wählbare Modellkandidaten; eine Übereinstimmung mit dem realen Bestand ist nicht belegt. Plan und datiertes Protokoll: [Versuchsplan](real-controller-plan-2026-10-12.md), [Beobachtungsprotokoll](real-controller-observation-2026-10-12.md).
+Diese Absätze beschreiben den früheren 750-8213-Stand und behalten ihren
+jeweiligen Scope; spätere Referenzlauf- oder Verbindungsbefunde sind kein
+rückwirkender PASS. Dessen Fotobeleg schließt Frontartikel und fotografierte
+Reihenfolge 750-430/530/600. Beim 8213 bleiben Modulrevisionen, elektronische
+Zuordnung der zwei I/O-Module und der RAM-/Bootprojektzustand offen. Beim neuen
+750-8212 schließt das Foto nur sichtbare Artikel/Reihenfolge; Projektfolge,
+elektronische Busreihenfolge und Runtimezuordnung weichen beziehungsweise
+bleiben offen. Die tatsächlich gebundenen Module des jeweiligen Ziels bestimmen
+den realen I/O-Strang. Plan und datiertes Protokoll für den 8213:
+[Versuchsplan](real-controller-plan-2026-10-12.md),
+[Beobachtungsprotokoll](real-controller-observation-2026-10-12.md).
 
 Eine zusätzliche virtuelle Runtime-Lizenz ist kein pauschaler Blocker für die erste Referenz-WAGO. Softwareberechtigung für den Referenzpfad besteht fort; Austausch/Ersetzung geschützter Bus- oder Herstellerbibliotheken ist ein separater Freigabepunkt und darf nicht aus der Softwareberechtigung abgeleitet werden. Unabhängige Offlineanalyse bleibt möglich.
