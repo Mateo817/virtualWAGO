@@ -12,7 +12,7 @@
     "host_identity": "PRIVATE_MANIFEST_ONLY",
     "credentials": "NOT_RECORDED",
     "raw_logs_and_vendor_artifacts": "PRIVATE_MANIFEST_ONLY",
-    "private_manifest_sha256": "4509c302f1e4793b8bce523619d2f186559597692c141b5b48d7886e957b15d6"
+    "private_manifest_sha256": "80157046b87c048d45dfeb7c50322450198998c3248be0a86517bca6e7c54663"
   },
   "observation_window": {
     "time_domain": "Europe/Berlin",
@@ -61,6 +61,7 @@
     "os_release_sha256": "0028d936e68190bf77d6e4c53578a5ceb4a8fda413fe445f17c0fd8c12037b21",
     "runtime_log_sha256": "b1a5d9661d44cf2c340fc416869001ca9d172dae4fbf6c5ba77dcdf6d4566fb8",
     "runtime_process_map_sha256": "c5d1042ad59591981970ec6cccc7788855464c117bb1befd0585bf884d0ba669",
+    "physical_front_photo_sha256": "2763fdad1e0aa8f597e0d425b51debbb78c72e0cb9247975639d55c491b967aa",
     "library_resolution_attempt_receipt_sha256": "b2fbf0cb4bc3b2d3e610db91b0b8a837796b0545c90a209b89ba19ac2998b880"
   },
   "offline_project": {
@@ -162,6 +163,35 @@
     }
   ],
   "scope_warning": "projected_modules is an offline project configuration, not an electronic or physical hardware inventory",
+  "physical_photo_inventory": {
+    "evidence_id": "REF8212-HWINV-001",
+    "result": "PASS",
+    "claim_status": "VERIFIZIERT",
+    "scope": "owner-provided front-photo visual article and left-to-right order only",
+    "photo_sha256": "2763fdad1e0aa8f597e0d425b51debbb78c72e0cb9247975639d55c491b967aa",
+    "controller_article_visible": "750-8212",
+    "visible_article_order_after_controller_connection_area": [
+      "750-1405",
+      "750-1405",
+      "750-1504",
+      "750-1504",
+      "750-466",
+      "750-677",
+      "750-600"
+    ],
+    "partially_obscured_area": "connection or supply area directly right of controller; not classified as a separate K-Bus module without a readable article label",
+    "project_order_comparison": {
+      "result": "MISMATCH_VERIFIED",
+      "detail": "the offline project places the second 750-1504 after 750-677, while the photo shows both 750-1504 modules before 750-466 and 750-677"
+    },
+    "front_field_wiring_visible": false,
+    "limitations": [
+      "module revisions, variants and production data are not readable",
+      "photo is not an electronic K-Bus inventory or runtime mapping proof",
+      "absence of visible front field wiring does not prove hidden wiring, electrical isolation or signal state",
+      "indicator semantics are not inferred from LED colors"
+    ]
+  },
   "additional_offline_engineering_nodes": [
     {"name": "COM1", "type": 32780, "id": "1006 0111", "version": "0.0.0.19"},
     {"name": "Modbus_COM_Port", "type": 92, "id": "0000 0001", "version": "4.4.0.0"},
@@ -227,7 +257,7 @@
   },
   "open_tests": [
     {"evidence_id": "REF8212-LIB-003", "result": "BLOCKED", "reason": "full ScriptEngine library resolution remains unavailable after the recorded failed attempt"},
-    {"evidence_id": "REF8212-HWINV-001", "result": "NOT_RUN", "reason": "physical/electronic module inventory path not yet qualified"},
+    {"evidence_id": "REF8212-HWREV-001", "result": "BLOCKED", "reason": "module revisions, variants and electronic K-Bus order are not established by the front photo"},
     {"evidence_id": "REF8212-AI-001", "result": "BLOCKED", "reason": "wiring, isolated current source and measurement plan missing"},
     {"evidence_id": "REF8212-PWM-001", "result": "BLOCKED", "reason": "wiring, output isolation and oscilloscope/logic analyzer plan missing"},
     {"evidence_id": "REF8212-DIG-001", "result": "BLOCKED", "reason": "actual wiring and actuator isolation not established"},
