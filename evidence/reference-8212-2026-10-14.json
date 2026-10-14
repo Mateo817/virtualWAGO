@@ -1,0 +1,237 @@
+{
+  "schema": 1,
+  "scope": "SANITIZED_REFERENCE_8212_INTERMEDIATE_EVIDENCE",
+  "date": "2026-10-14",
+  "repository": {
+    "base_branch": "research/originalstack-m1-m2",
+    "base_sha": "51041a66824edc18efdaa13c2e183d3ff15414ef",
+    "working_branch": "research/reference-8212-2026-10-13"
+  },
+  "privacy": {
+    "endpoint": "PRIVATE_MANIFEST_ONLY",
+    "host_identity": "PRIVATE_MANIFEST_ONLY",
+    "credentials": "NOT_RECORDED",
+    "raw_logs_and_vendor_artifacts": "PRIVATE_MANIFEST_ONLY",
+    "private_manifest_sha256": "4509c302f1e4793b8bce523619d2f186559597692c141b5b48d7886e957b15d6"
+  },
+  "observation_window": {
+    "time_domain": "Europe/Berlin",
+    "start": "2026-10-13T22:24:25+02:00",
+    "end": "2026-10-14T03:34:37+02:00"
+  },
+  "controller": {
+    "status": "VERIFIZIERT",
+    "model": "WAGO PFC200 750-8212",
+    "os": "WAGO PFC/PTXdist 2024.12.0",
+    "os_build_date": "2026-04-29",
+    "kernel": "6.6.94-rt56-w05.08.02",
+    "architecture": "armv7l",
+    "rtsversion_sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "revisions_sha256": "2efb783642bb019dc090d965d9ead2377c3a2a43b4caac02090a072f1b617433"
+  },
+  "preserved_state": {
+    "initial_application_state": "RUN",
+    "final_application_state": "RUN",
+    "initial_physical_switch": "run",
+    "final_physical_switch": "run",
+    "application_checksum_reported": "0xa5999842",
+    "runtime_pid_unchanged": true,
+    "operations_not_run": [
+      "application_stop_start",
+      "download",
+      "online_change",
+      "reboot",
+      "firmware_update",
+      "driver_replacement",
+      "provider_or_kbus_master_switch"
+    ],
+    "backup": {
+      "status": "PASS",
+      "scope": "three file copies with source hash comparison; not a consistent full-state snapshot",
+      "application_app_sha256": "4848335d9c0a01c5b4891962864f4fc37a87f2f35f4dbad4ecb46101a1ebf7a7",
+      "application_crc_sha256": "3caabe4de8b5bac6e468a909e3fa01351f234de6c3600dec3ae0b549970203e5",
+      "application_cfg_sha256": "477570fef50ac4fcbd2fa6906ea88190e4a95dba2343f943b109e518d3dd0e8b",
+      "restore_test": "NOT_RUN",
+      "reboot_test": "NOT_RUN",
+      "ram_retain_and_persistence_completeness": "OFFEN"
+    }
+  },
+  "private_receipt_bindings": {
+    "device_state_receipt_sha256": "7dbc41e758e91e012cd9e0b8067ed31a929bea433470a53f4e0db4729112002c",
+    "os_release_sha256": "0028d936e68190bf77d6e4c53578a5ceb4a8fda413fe445f17c0fd8c12037b21",
+    "runtime_log_sha256": "b1a5d9661d44cf2c340fc416869001ca9d172dae4fbf6c5ba77dcdf6d4566fb8",
+    "runtime_process_map_sha256": "c5d1042ad59591981970ec6cccc7788855464c117bb1befd0585bf884d0ba669",
+    "library_resolution_attempt_receipt_sha256": "b2fbf0cb4bc3b2d3e610db91b0b8a837796b0545c90a209b89ba19ac2998b880"
+  },
+  "offline_project": {
+    "evidence_id": "REF8212-IDE-001",
+    "test_result": "PASS",
+    "claim_status": "VERIFIZIERT",
+    "codesys_profile": "CODESYS V3.5 SP22 Patch 1",
+    "project_sha256_before": "0237af65c4840cb5b26b43dec1c2ef2d10bb8808e3e4a5c44d160548b97e2928",
+    "project_sha256_after": "0237af65c4840cb5b26b43dec1c2ef2d10bb8808e3e4a5c44d160548b97e2928",
+    "inventory_receipt_sha256": "ee1a13f3dbf9ac433b60e1fbcdbaae08a74a3979759fbb5d9ce39e7c7f9ddaa3",
+    "mapping_csv_sha256": "1d7dd7e0a5f58ed5df53f1b415ad1095fb9bf3866620c1717e1108f13ef8ef76",
+    "mapping_summary_sha256": "41aeaf8da71a6e22ef28d3c1df165dbde469417ce9ad2d9b191659326d841c63",
+    "operations": {
+      "save": "NOT_RUN",
+      "build": "NOT_RUN",
+      "online": "NOT_RUN",
+      "download": "NOT_RUN",
+      "start_stop": "NOT_RUN"
+    },
+    "controller": {
+      "type": 4096,
+      "id": "1006 1209",
+      "version": "6.4.6.11",
+      "descriptor_sha256": "7b6af1a84996f03ad0c9b2c47b5d812694a65585545c7a1d8688fe4f729d7c8b"
+    },
+    "local_bus": {
+      "type": 32778,
+      "id": "Wago 750-Series Local Bus Interface",
+      "version": "2.1.0.1",
+      "descriptor_sha256": "38de77924d719300e64259b36642e73df9e67af1cdbf6a0e041dc5c2b163ed39"
+    },
+    "task": {
+      "name": "MainTask",
+      "kind": "Cyclic",
+      "interval": "t#50ms",
+      "priority": "15"
+    }
+  },
+  "projected_modules": [
+    {
+      "slot_index": 0,
+      "article": "750-1405",
+      "name": "DI_16_1",
+      "descriptor_id": "9001_0750140500000000",
+      "descriptor_version": "2.0.0.14",
+      "descriptor_sha256": "2ea6fb96d1db35228450ccd94454f1e51b562a6e1982e416f34eed2feb056273",
+      "direction": "input",
+      "byte_range_inclusive": [2, 3]
+    },
+    {
+      "slot_index": 1,
+      "article": "750-1405",
+      "name": "DI_16_2",
+      "descriptor_id": "9001_0750140500000000",
+      "descriptor_version": "2.0.0.14",
+      "descriptor_sha256": "2ea6fb96d1db35228450ccd94454f1e51b562a6e1982e416f34eed2feb056273",
+      "direction": "input",
+      "byte_range_inclusive": [4, 5]
+    },
+    {
+      "slot_index": 2,
+      "article": "750-1504",
+      "name": "DO_16_1",
+      "descriptor_id": "9002_0750150400000000",
+      "descriptor_version": "2.0.0.14",
+      "descriptor_sha256": "207e7d654f98a180b06cb75117e282ac2a85f956cbb5d057113d76846a6dc991",
+      "direction": "output",
+      "byte_range_inclusive": [0, 1]
+    },
+    {
+      "slot_index": 3,
+      "article": "750-466",
+      "name": "AI_2_1",
+      "descriptor_id": "07500466000000000400",
+      "descriptor_version": "2.0.0.9",
+      "descriptor_sha256": "aa9bb802e2d2656ec9e101f1537aebc23f79487437513bdc9588f0d283ecca51",
+      "direction": "input",
+      "byte_range_inclusive": [6, 9]
+    },
+    {
+      "slot_index": 4,
+      "article": "750-677",
+      "name": "PWM_4_1",
+      "descriptor_id": "07500677000000001616",
+      "descriptor_version": "2.0.0.3",
+      "descriptor_sha256": "15dcba17a7186fc3dd91fc2b47c806bf7016e6e0ebc949b352c9549f5124c780",
+      "input_byte_range_inclusive": [10, 25],
+      "output_byte_range_inclusive": [4, 19]
+    },
+    {
+      "slot_index": 5,
+      "article": "750-1504",
+      "name": "DO_16_2",
+      "descriptor_id": "9002_0750150400000000",
+      "descriptor_version": "2.0.0.14",
+      "descriptor_sha256": "207e7d654f98a180b06cb75117e282ac2a85f956cbb5d057113d76846a6dc991",
+      "direction": "output",
+      "byte_range_inclusive": [2, 3]
+    }
+  ],
+  "scope_warning": "projected_modules is an offline project configuration, not an electronic or physical hardware inventory",
+  "additional_offline_engineering_nodes": [
+    {"name": "COM1", "type": 32780, "id": "1006 0111", "version": "0.0.0.19"},
+    {"name": "Modbus_COM_Port", "type": 92, "id": "0000 0001", "version": "4.4.0.0"},
+    {"name": "Modbus_Client_COM_Port", "type": 90, "id": "0000 0002", "version": "4.5.0.0"},
+    {"name": "Ethernet", "type": 110, "id": "0000 0002", "version": "4.2.0.0"},
+    {"name": "ModbusTCP_Server_Device_Slave", "type": 115, "id": "0000 0002", "version": "4.5.0.0"}
+  ],
+  "selected_native_mapping_rows": {
+    "scope": "sanitized rows from the privately hashed offline CODESYS mapping CSV",
+    "750-466": [
+      {"parameter_id": 16777216, "name": "_IW 1", "address": "%IW3"},
+      {"parameter_id": 16777217, "name": "_IW 2", "address": "%IW4"}
+    ],
+    "750-677_inputs": [
+      {"parameter_id": 16777216, "name": "_STA 1", "address": "%IB10"},
+      {"parameter_id": 16777217, "name": "_RES 1", "address": "%IB11"},
+      {"parameter_id": 16777218, "name": "_IW 1", "address": "%IW6"},
+      {"parameter_id": 16777219, "name": "_STA 2", "address": "%IB14"},
+      {"parameter_id": 16777220, "name": "_RES 2", "address": "%IB15"},
+      {"parameter_id": 16777221, "name": "_IW 2", "address": "%IW8"},
+      {"parameter_id": 16777222, "name": "_STA 3", "address": "%IB18"},
+      {"parameter_id": 16777223, "name": "_RES 3", "address": "%IB19"},
+      {"parameter_id": 16777224, "name": "_IW 3", "address": "%IW10"},
+      {"parameter_id": 16777225, "name": "_STA 4", "address": "%IB22"},
+      {"parameter_id": 16777226, "name": "_RES 4", "address": "%IB23"},
+      {"parameter_id": 16777227, "name": "_IW 4", "address": "%IW12"}
+    ],
+    "750-677_outputs": [
+      {"parameter_id": 50331648, "name": "_CTR 1", "address": "%QB4"},
+      {"parameter_id": 50331649, "name": "_RES 1", "address": "%QB5"},
+      {"parameter_id": 50331650, "name": "_QW 1", "address": "%QW3"},
+      {"parameter_id": 50331651, "name": "_CTR 2", "address": "%QB8"},
+      {"parameter_id": 50331652, "name": "_RES 2", "address": "%QB9"},
+      {"parameter_id": 50331653, "name": "_QW 2", "address": "%QW5"},
+      {"parameter_id": 50331654, "name": "_CTR 3", "address": "%QB12"},
+      {"parameter_id": 50331655, "name": "_RES 3", "address": "%QB13"},
+      {"parameter_id": 50331656, "name": "_QW 3", "address": "%QW7"},
+      {"parameter_id": 50331657, "name": "_CTR 4", "address": "%QB16"},
+      {"parameter_id": 50331658, "name": "_RES 4", "address": "%QB17"},
+      {"parameter_id": 50331659, "name": "_QW 4", "address": "%QW9"}
+    ]
+  },
+  "library_compileinfo": {
+    "claim_status": "VERIFIZIERT",
+    "scope": "STATIC_COMPILEINFO_ONLY",
+    "artifact_sha256": "4f8d817a7e6cf8c60c4242322e09ef019e30dd2bb4059e50190f7da63ea5e099",
+    "selected_resolutions": [
+      "WagoSysModule_75x_677, 1.0.0.3 (WAGO)",
+      "WagoSysKbusServices, 2.0.2.3 (WAGO)",
+      "SysCom, 3.5.17.0 (System)",
+      "WagoSysCom_Internal_PFC, 1.0.2.7 (WAGO)",
+      "WagoSysSerial, 1.7.1.1 (WAGO)",
+      "WagoTypesCom, 1.6.2.3 (WAGO)"
+    ]
+  },
+  "library_resolution_attempt": {
+    "evidence_id": "REF8212-LIB-002",
+    "result": "FAIL",
+    "scope": "offline ScriptEngine only",
+    "reason": "CODESYS returned exit code 1 without a usable inventory or diagnostic payload",
+    "project_sha256_after": "0237af65c4840cb5b26b43dec1c2ef2d10bb8808e3e4a5c44d160548b97e2928",
+    "device_operations": "NOT_RUN"
+  },
+  "open_tests": [
+    {"evidence_id": "REF8212-LIB-003", "result": "BLOCKED", "reason": "full ScriptEngine library resolution remains unavailable after the recorded failed attempt"},
+    {"evidence_id": "REF8212-HWINV-001", "result": "NOT_RUN", "reason": "physical/electronic module inventory path not yet qualified"},
+    {"evidence_id": "REF8212-AI-001", "result": "BLOCKED", "reason": "wiring, isolated current source and measurement plan missing"},
+    {"evidence_id": "REF8212-PWM-001", "result": "BLOCKED", "reason": "wiring, output isolation and oscilloscope/logic analyzer plan missing"},
+    {"evidence_id": "REF8212-DIG-001", "result": "BLOCKED", "reason": "actual wiring and actuator isolation not established"},
+    {"evidence_id": "REF8212-SER-001", "result": "BLOCKED", "reason": "isolated peer, connector pinout and port binding not established"},
+    {"evidence_id": "REF8212-LIFE-001", "result": "NOT_RUN", "reason": "controlled state-changing plan and explicit boundary review required"}
+  ]
+}

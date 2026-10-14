@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "revision": "2026-10-12.1",
+  "revision": "2026-10-14.1",
   "scope": "OWN_MODULE_CATALOG_NOT_HARDWARE_INVENTORY",
   "source_report": "docs/module-catalog-sources-2026-10-12.md",
   "modules": [
@@ -108,10 +108,10 @@
         "output_mask": null,
         "layout_scope": "OWN_RESEARCH_LAYOUT_NOT_NATIVE_MAPPING"
       },
-      "native_evidence": null,
+      "native_evidence": "docs/reference-8212-2026-10-14.md",
       "hardware_evidence": null,
       "limits": [
-        "Native16 runtime NOT_RUN; electrical input filtering not modeled."
+        "A real 8212 project maps two distinct instances to separate two-byte input ranges; runtime and electrical input filtering on this new 8212 reference setup remain NOT_RUN."
       ]
     },
     {
@@ -148,10 +148,10 @@
         "output_mask": 65535,
         "layout_scope": "OWN_RESEARCH_LAYOUT_NOT_NATIVE_MAPPING"
       },
-      "native_evidence": null,
+      "native_evidence": "docs/reference-8212-2026-10-14.md",
       "hardware_evidence": null,
       "limits": [
-        "Native16 runtime NOT_RUN; documented older manual, exact future hardware revision remains open."
+        "A real 8212 project maps two distinct instances to separate two-byte output ranges; runtime/electrical output on this new 8212 reference setup and the exact physical revision remain NOT_RUN."
       ]
     },
     {
@@ -173,7 +173,12 @@
           "checked_on": "2026-10-12"
         }
       ],
-      "descriptor": null,
+      "descriptor": {
+        "device_id": "07500466000000000400",
+        "version": "2.0.0.9",
+        "sha256": "aa9bb802e2d2656ec9e101f1537aebc23f79487437513bdc9588f0d283ecca51",
+        "scope": "ENGINEERING_DESCRIPTION_NOT_PHYSICAL_REVISION"
+      },
       "model": {
         "id": "750-466.raw6",
         "input_bytes": 6,
@@ -183,12 +188,12 @@
         "output_mask": null,
         "layout_scope": "OWN_RESEARCH_LAYOUT_NOT_NATIVE_MAPPING"
       },
-      "native_evidence": null,
+      "native_evidence": "docs/reference-8212-2026-10-14.md",
       "hardware_evidence": null,
       "limits": [
         "Standard variant only, not 753-466 or /000-200.",
         "Normal range encoder only; floor quantization is own assumption.",
-        "Six-byte status0/word0LE/status1/word1LE projection is research-only; controller native packing/diagnosis/registers NOT_RUN."
+        "Six-byte status0/word0LE/status1/word1LE projection is research-only and not byte-equal to the verified four-byte 8212 offline IDE projection; runtime packing/diagnosis/registers remain NOT_RUN."
       ]
     },
     {
@@ -210,7 +215,12 @@
           "checked_on": "2026-10-12"
         }
       ],
-      "descriptor": null,
+      "descriptor": {
+        "device_id": "07500677000000001616",
+        "version": "2.0.0.3",
+        "sha256": "15dcba17a7186fc3dd91fc2b47c806bf7016e6e0ebc949b352c9549f5124c780",
+        "scope": "ENGINEERING_DESCRIPTION_NOT_PHYSICAL_REVISION"
+      },
       "model": {
         "id": "750-677.raw12",
         "input_bytes": 12,
@@ -220,10 +230,11 @@
         "output_mask": null,
         "layout_scope": "OWN_RESEARCH_LAYOUT_NOT_NATIVE_MAPPING"
       },
-      "native_evidence": null,
+      "native_evidence": "docs/reference-8212-2026-10-14.md",
       "hardware_evidence": null,
       "limits": [
         "Only PWM Frq mode; this is not the default PWM DC mode or XTR /040-000.",
+        "The 12-byte own output model is not byte-equal to the verified 16-byte-per-direction 8212 offline IDE projection.",
         "Register configuration/status generation/other modes unsupported; raw input bytes must be explicitly injected.",
         "Autonomous pulse integration in own logical time; gate/retune/phase policies own assumptions."
       ]
