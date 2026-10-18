@@ -1,0 +1,11 @@
+> Bereinigte historische Ergebniskopie. Maßgeblich für Korrekturen und Geltungsgrenzen ist der zentrale Evidence-Index; Originalhash siehe export-manifest.json.
+
+# Root WP-XE164-259 — independent numerical replay of the zero-auxiliary path
+
+VERIFIZIERT within this mathematical subset model: an independently written raw-A32 decoder reproduces all 68 listed CMCallHook instruction addresses from WP255 under its synthetic gate/slot/head memory conditions. It then interprets the exact helper including real encoded stack saves/restores and BX. All three admitted halfwords 2/4/5 produce the tail vector r0=15,r1=0,r2=0,r3=synthetic target, with 93 instruction addresses including false predicates. No first-head next-pointer word is read. The side store writes15 at0x5fc554.
+
+PASS: three positive vectors and eight negative controls. Changing gate to-1, optional slot to nonzero, or head to zero leaves this selected path at independently decoded destinations. Halfwords0/6 or a null target at halfwords2/4/5 produce helper return1, restoring the encoded saved return address2fedd8. Assertions reject any unsupported opcode, unknown memory read, opaque call, or instruction outside the two exact source ranges.
+
+This is Root Self-Review, independent implementation of a static arithmetic/path checker, not an independent human/worker review or runtime observation. It executes Python equations over pinned instruction words and synthetic byte memory; it does not execute native ELF instructions. The synthetic addresses and values are fixtures, not observed target layout. The subset supports only encountered A32 forms; PC-store details unused by the proof are not generalized. All runtime gates, aliases, stack validity, actual registered target ownership and table-to-entry delivery remain HYPOTHESE/OFFEN. No ABI, VM, hardware or network action.
+
+Source size5181396B SHA256b56c6296faabae9eb73f0463fd068c535c03109ced347f0c2a643b69a7ee1ab5; complete helper[2fec58,2fecc4)108B and CMCallHook[2fecc4,2ff0a0)988B were already independently source-bound in root246. inputs.json pins source and accepted path/evidence revisions. check_path.py is read-only and prints deterministic JSON; replay-results.json retains this run. Tests PASS for declared model, runtime NOT_RUN.

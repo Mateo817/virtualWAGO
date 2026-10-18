@@ -1,0 +1,43 @@
+> Bereinigte historische Ergebniskopie. Maßgeblich für Korrekturen und Geltungsgrenzen ist der zentrale Evidence-Index; Originalhash siehe export-manifest.json.
+
+# WP-XE164-308 — bounded `LibraryLoader_LoadSymbol` source contract
+
+**Status:** **VERIFIZIERT** for the extracted bytes, complete 396-byte REA body, adjacent 56-byte pool, local instructions, frame-relative argument/output stores, branches, and static relocation records. **HYPOTHESE** for any runtime interpretation of the indirect helper pointer after relocation. **OFFEN** for opaque call effects, actual runtime binding, ABI behavior, constructor reachability, and output-memory validity/aliasing in a live caller.
+
+## Source identity and scope
+
+WP307 extracted the one regular FW31 filesystem inode `/usr/lib/liblibloader.so.0.0.0`, inode 1772, 13,696 bytes, from the hash-bound image and bounded partition-2 slice. The WP145 inventory has that exact path/inode/size. Its symlink inventory lists `/usr/lib/liblibloader.so` and `/usr/lib/liblibloader.so.0`, both pointing to `liblibloader.so.0.0.0`; these are aliases to the same inventory object, not independent byte candidates. WP307's extraction record, inode stat/dump, procedure and body exports, and WP145 inventory inputs are pinned in this package. The extracted provider SHA-256 is `8fe106f2eac9842f2488925f26efae4b9755f82c26be1ef9a7673a1185609cf2`.
+
+REA/Ghidra 12.1.4 identifies `LibraryLoader_LoadSymbol` at Ghidra VA `0x11ee4`, with a unique contiguous body `0x11ee4..0x1206f`, 396 bytes / 99 instructions. Its ELF link-time VA is Ghidra VA minus `0x10000`. The ELF dynamic symbol is at ELF VA `0x1ee4`, size 452 bytes. That symbol extent contains the 396-byte code body followed by exactly the adjacent 56-byte pool at ELF `0x2070..0x20a7` (Ghidra `0x12070..0x120a7`). The pool is not part of the REA body range. `instructions.tsv` and `literal-pool.tsv` bind each recorded word directly to file offsets and exact bytes; the pool table records every PC-relative addition and bounded NUL-terminated string result.
+
+This review uses the existing WP307 REA evidence IDs `ev_7dc80764648ca9711949258ed0025a6712d55a682acae6801ca6d786452a4aaa` (`procedure_info`) and `ev_d323773ed8bc18c16d0db12277165896b3d4f11436bb0d1089a57a2376c1cdfc` (`analyze_function`). No new REA import, callee body, or PLT body was opened. Ghidra marks calls at `0x11f2c`, `0x11f58`, and `0x11f84` to `0x10c68` as terminal through its external `__assert_fail` thunk; that is Ghidra's flow classification, not independent proof of callee behavior.
+
+## Local arguments, frame, and output
+
+The contract below names entry words by their register position, not by a prototype or inferred API. At entry, r0, r1, and r2 are saved at current frame offsets `r11-0x18`, `r11-0x1c`, and `r11-0x20`. From the encoded prologue, if entry SP is S, the function pushes r4/r11/LR (12 bytes), sets `r11=S-4`, and allocates 28 more bytes, leaving SP at `S-40`. Thus the saved entry words occupy `S-28`, `S-32`, and `S-36`; the local result word is `r11-0x10 = S-20`. The epilogue resets SP to `r11-8` and restores r4/r11/PC from the saved frame. This is source arithmetic only, with no ABI assumption.
+
+The body has three explicit nonnull gates. A zero saved r0, r1, or r2 reaches an assertion-call sequence with literal messages `lib != NULL`, `symbol != NULL`, or `func != NULL`. If those opaque calls return, redundant checks later produce the word `0xffffffff` and return without writing the output word. If an assertion call does not return, the body has no normal return on that path; no semantics are inferred from the symbol name.
+
+When all three saved words are nonzero, the function initializes local result `[r11-0x10]` to zero and calls the opaque direct target at Ghidra `0x10cec` with saved entry r0 in the current r0. Its return is compared with zero. If zero, it skips the indirect helper, leaves the local result at zero, writes zero to the word addressed by saved entry r2 at `0x12010`, enters the error-log path, and—if the log calls return—returns `0xffffffff`.
+
+If the direct target returns nonzero, the body loads a word from `[saved_entry_r0+8]` into r2, reloads saved entry r1 into r1, and resolves an indirect call target through the recorded `PosixHelper_DlSym` data reference. It sets r0 to the word from `[saved_entry_r0+8]` and executes `BLX r3` at Ghidra `0x11ffc`. On normal return, r0 is copied into local result and then stored to `*[saved_entry_r2]` at `0x12010`. A zero helper result follows the same log path and returns `0xffffffff` if the opaque calls return. A nonzero helper result is returned in r0 as zero. These are local branch and word relationships; the helper return has no source-proven API meaning.
+
+The output store is unconditional after the valid-input and helper/open branches join. The body contains no output-range, writability, or alias check. The output word must be writable. For predictable return control, it must not overlap saved return state or unrelated live frame words; aliasing is an open caller condition.
+
+## Indirect relocation chain and opaque boundaries
+
+The body computes the GOT base from pool word `0x110f8` and PC at Ghidra `0x11f08`, yielding ELF link-time address `0x13000`. The pool offset `0x88` yields slot `0x13088`. The body loads the word in that slot, then dereferences the loaded pointer before `BLX r3`. `readelf -rW` records `R_ARM_GLOB_DAT` at `0x13088` for the object symbol `PosixHelper_DlSym` whose ELF symbol value is `0x130b0`; it separately records `R_ARM_ABS32` at `0x130b0` for `dlsym@GLIBC_2.34`. Therefore the static two-hop source/relocation relationship is established. If those relocations are applied in a loaded image, at a common load bias, the indirect word refers through the object to the dynamic `dlsym` symbol reference. Actual relocation application, binding winner, and call behavior remain **OFFEN**; the implementation is not expanded.
+
+The zero-result log lane uses pool offset `0x98` and the same computed base to address `0x13098`. Its `R_ARM_GLOB_DAT` names `stderr@GLIBC_2.4`. The body then calls opaque direct targets at Ghidra `0x10c2c` and `0x10cd4`, passing register words derived from that loaded slot, literal format `"ERROR: %s(): dlsym: %s\n"`, function string `"LibraryLoader_LoadSymbol"`, and the prior call's r0 result. No semantics of those names are assumed. The `LibraryLoader_IsLibraryOpen` call at Ghidra `0x10cec` also remains opaque; its return is only tested for equality with zero.
+
+`preservation.tsv` lists the conditions needed to continue local dataflow through opaque calls. In particular, r11 must continue to identify this frame at later local accesses. r4 must remain the computed GOT base across the `IsLibraryOpen` call and the indirect helper call if the later GOT lookup is reached. Calls must return normally with a usable stack. The function saves/restores its entry r4/r11/LR, but it does not locally save the current r4/r11 values around these calls; no ABI preservation rule is used.
+
+## Conditional composition with WP301
+
+The accepted WP301 summary says the caller invokes this target with current r0=`[r6+0x104]`, r1=current r4, and r2=current caller-frame `fp-32`; after return it reads `[current fp-32]`, rejects return word `0xffffffff`, and its non-failure lane reaches a separate indirect call. WP301's later callback setup is not conflated with this LoadSymbol call.
+
+Under explicit conditions that the callee's saved entry r2 still denotes the caller's later `[fp-32]` address, callee r11 remains stable, the opaque calls return normally, and no intervening write changes the output word, the source composes as follows: return zero implies the local helper result was nonzero and that word was stored to the output location, so the caller's matching read is nonzero; return `0xffffffff` on the valid-input path follows a zero local result, which was stored as zero, and WP301's comparison skips its first indirect call. This establishes only a conditional local relation. The caller/callee frame identity, real memory mapping, actual helper binding, and any broader function contract remain **OFFEN**. The relation does not identify or prove the later callback target beyond the stored nonzero word.
+
+## Validation
+
+`python3 validate.py` — **PASS** for hash pins, all 99 body words against the exact provider bytes, all 14 adjacent pool words, PC-derived addresses and bounded strings, frame arithmetic, selected branches/call sites, the local return/output table, ELF dynamic symbol extent, and the two relocation records. **NOT_RUN:** ELF execution, runtime relocation/binding, any opaque callee, ABI behavior, constructor reachability, or memory faults.

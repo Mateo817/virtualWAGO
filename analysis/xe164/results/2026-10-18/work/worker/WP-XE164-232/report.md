@@ -1,0 +1,41 @@
+> Bereinigte historische Ergebniskopie. Maßgeblich für Korrekturen und Geltungsgrenzen ist der zentrale Evidence-Index; Originalhash siehe export-manifest.json.
+
+# WP-XE164-232 — sichtbare Registerformen an indirekten Aufrufen in `CMExitComponent`
+
+## Ergebnisumfang und Provenienz
+
+**VERIFIZIERT** — Eingabe ist `PRIVATE_ANALYSIS_ROOT/work/worker/WP-XE164-127/hit_files/usr/bin/codesys3`, 5.181.396 Byte, SHA-256 `b56c6296faabae9eb73f0463fd068c535c03109ced347f0c2a643b69a7ee1ab5`. Der REA-Bindevorgang meldete ELF/ARM und denselben Hash.
+
+**VERIFIZIERT** — REA `binary_overview` (REA composed investigation workflow 1; Upstream Ghidra 12.1.4, Profil-Digest `7e46711069eea041af1b9b99e34115c13332795e5cda76e584a722f529ec70de`) meldete Image-Base `0x10000`; die beobachteten Segmente stimmten darin überein. Der analysierte Dynsym-Körper `CMExitComponent` beginnt bei ELF-VA `0x300b10` und umfasst inklusive `0x300e37` exakt 808 Byte, entsprechend dem halboffenen Untersuchungsbereich `[0x300b10,0x300e38)`. Der Ghidra-Befund verwendete unveränderte Eingabebytes und einen ephemeren Import. Kein Disassembler-Fallback wurde benötigt.
+
+**VERIFIZIERT** — REA `analyze_function("CMExitComponent")` lieferte Evidence `ev_3e0bf943e8c6cb6b79d18198800caa8a0dab7c4c3d1ca4bee4aa8e147bad0509`: Assembly, Basic Blocks, Pseudocode und High-P-code-Def-Use. Grundlage der Registerformen ist die Assembly. Registerwerte werden nur aus sichtbaren Instruktionen und lokalen Kontrollflussbedingungen beschrieben; es wird kein Wert über einen `blx` hinweg fortgeschrieben, außer wo eine nachfolgende Instruktion ihn ausdrücklich kopiert.
+
+## Vollständige Inventur der `+0x20 -> blx`-Ketten
+
+`r4` erhält am Funktionseingang das Eingangsobjekt (`cpy r4,r0` bei `0x300b24`). Tabelle: unmittelbarer Aufrufkontext; „gate“ bezeichnet ausschließlich den sichtbaren Vergleichs-/Bedingungswert und keine interpretierte Bedeutung. `r0` bis `r3` sind Registerformen am jeweiligen `blx`, nicht behauptete API-Argumentnamen.
+
+| Load des Zielwertes | `blx` | Am Aufruf sichtbare Register `r0 / r1 / r2 / r3` | Unmittelbarer Nachaufrufgebrauch / lokaler Kontrollfluss |
+|---|---|---|---|
+| `0x300b90: ldr r5,[r4,#0x20]` | `0x300bb0: blx r5` | `#0xa / #0 / #0 / #2` | Bei `0x300bb4` wird `r3` mit dem Halbworteintrag `[r4+0x2c]` überschrieben. Danach entsteht aus Vergleichen ein Statusgate in `r2`; der Call-Resultatwert wird bei `0x300bcc` nach `r5` kopiert. Der Gate-Zweig bei `0x300bd0` führt entweder zum späteren Block `0x300d28` oder zum zweiten Load bei `0x300bd4`. |
+| `0x300bd4: ldr r6,[r4,#0x20]` | `0x300be8: blx r6` | `#0xb / #0 / gate / Statuswert` | `r3` ist der bei `0x300bb4` geladene Wert `[r4+0x2c]`; `r2` wird aus Vergleichen/bedingtem Setzen bei `0x300bb8–0x300bc8` gebildet. Nach dem Call folgt erneut Load/Vergleich des Status; `r5` (Resultat des vorherigen Calls) wird geprüft, und das neue `r0` wird bei `0x300c08` nach `r6` kopiert. Die Zweige führen u.a. zu `0x300c18` oder `0x300d18`. |
+| `0x300c18: ldr r5,[r4,#0x20]` | `0x300c30: blx r5` | `#0x898 / #0 / #0 / Statuswert` | `r3` stammt aus dem Status-Load bei `0x300bec`; auf dem Eintritt in diesen Block haben die vorherigen Gates den Weg über `0x300c18` zugelassen. Nach dem Call werden zuerst der vorherige Rückgabewert in `r6` geprüft und anschließend der Status neu geladen. Abhängig von diesem Gate wird Call-`r0` bedingt nach `r6` kopiert (`0x300c4c`); der Kontrollfluss geht danach zum Load bei `0x300c54` oder zu `0x300d4c/0x300e18`. |
+| `0x300c54: ldr r5,[r4,#0x20]` | `0x300c6c: blx r5` | `#0xc / #0 / #0 / Statuswert` | `r3` ist der bei `0x300c38` geladene Statuswert. Auf diesem Pfad ist `r2` durch `mov r2,#0` bei `0x300c60` gesetzt. Direkt nach dem Call wird der Status bei `0x300c70` geladen und über Vergleiche als Gate nach `r3` geschrieben; Call-`r0` wird bei `0x300c8c` nach `r5` kopiert. Gate und zuvor gespeichertes `r6` wählen `0x300db8`, `0x300d28` oder den Load bei `0x300c9c`. |
+| `0x300c9c: ldr r6,[r4,#0x20]` | `0x300cb4: blx r6` | `#0xd / #0 / #0 / Gate aus Statuswert` | `r3` ist der bei `0x300c70` geladene Status, anschließend bei `0x300c74–0x300c84` durch bedingte Moves zu `0` oder `1` verdichtet. Unmittelbar danach wird zuerst das ältere `r5` geprüft; das neue Call-`r0` wird bei `0x300cbc` nach `r6` kopiert. Der Zweig `0x300cc0` führt bei älterem `r5==0` zum Block `0x300d60`; andernfalls weiter über die Gate- und Pointerprüfung zu `0x300ce8` oder zum Rück-/Gate-Block. |
+| `0x300ce8: ldr r3,[r4,#0x20]` **oder** `0x300d74: ldr r3,[r4,#0x20]` | `0x300d00: blx r3` | `#0xe / #0 / #0 / Zielwert aus `+0x20`` | Beide Loads erreichen über den Nulltest bei `0x300cec/0x300cf0` beziehungsweise `0x300d78/0x300d7c` dieselbe Aufrufstelle. Zwischen erfolgreichem Nulltest und `blx` werden `r0–r3` nicht mehr geändert; `r3` bleibt also der geprüfte Zielwert. Direkt nach dem Call wird `r0` bei `0x300d04` nach `r5` kopiert, danach prüft `0x300d08` den zuvor gehaltenen Wert `r6`; die Pfade führen über `0x300d10/0x300d14` beziehungsweise zurück zu `0x300b40`. |
+
+Damit sind alle im Körper sichtbaren Loads von `[r4,#0x20]`, die einen der indirekten Aufrufe erreichen, aufgeführt: `0x300b90`, `0x300bd4`, `0x300c18`, `0x300c54`, `0x300c9c`, `0x300ce8` und `0x300d74`. Es gibt sechs `blx`-Stellen; die letzten beiden Loads sind alternative reaching definitions für dieselbe Stelle `0x300d00`. Der initiale Pointertest bei `0x300b9c–0x300ba0` erlaubt den ersten Call nur auf dem Nichtnullpfad. Weitere Calls sind jeweils durch lokale Pointertests verzweigt. Die Instruktionen und Branchziele liegen innerhalb des festgelegten Körpers.
+
+## Begrenzte Antwort zu `r0=15`
+
+**VERIFIZIERT — Nein, innerhalb des exakten Körpers `[0x300b10,0x300e38)` ist an keiner der sechs `blx`-Stellen ein sichtbares unmittelbares `r0=15` belegt.** Die jeweiligen unmittelbar gesetzten Werte sind `0xa`, `0xb`, `0x898`, `0xc`, `0xd`, `0xe`. Die vollständige REA-Assembly für den Körper enthält keine andere `mov r0,#0xf`-Form an einem dieser Aufrufpfade. Dies ist ein Nullbefund nur für sichtbare reaching definitions an diesen Aufrufstellen; er ist keine Aussage über Laufzeitwerte, andere Funktionskörper oder unbekannte Registereffekte und keine Aussage über die Bedeutung der Konstanten.
+
+## Beobachtung, Schlussfolgerung, Alternativerklärung, Restunsicherheit
+
+- **Beobachtung — VERIFIZIERT:** Die genannten Loads lesen in diesem Körper jeweils aus `r4+0x20`; die angegebenen `blx`-Instruktionen verwenden die jeweils aufgeführten Zielregister. Die `r0`-Konstanten werden in der lokalen Instruktionsfolge sichtbar gesetzt. `r1` und `r2` sind an diesen Calls jeweils auf `0` gesetzt; wo `r2` beim zweiten Call stattdessen ein Gate enthält, ist dies als solches gekennzeichnet.
+- **Schlussfolgerung — VERIFIZIERT:** Bezogen auf die statisch sichtbaren Instruktionen gibt es keinen unmittelbaren `r0=15`-Aufruf in diesem Körper. Die Calls reichen an der letzten Stelle von zwei alternativen Loads desselben Eingabefelds.
+- **Alternativerklärung — HYPOTHESE:** Falls ein anderer Analyse- oder Laufzeitkontext einen Wert `15` mit diesem Code verbindet, könnte er aus einem anderen Körper, einem nicht sichtbaren Aufruferzustand oder aus semantischer Benennung stammen. Keiner dieser Fälle wird durch den hier geprüften Körper belegt.
+- **Restunsicherheit — OFFEN:** REA meldet für die Funktion sechs Calls ohne aufgelöste Referenzziele bzw. Aufrufzielinventar-Lücken; diese untersuchte Frage betrifft die sichtbaren Register an den lokalen `blx`-Sites, nicht die Callee-Identität oder Effekte. Es werden keine Werte über opaque Calls propagiert. Insbesondere werden Call-Resultate nur dort als Registerkopien notiert, wo eine `cpy`-Instruktion im Körper sichtbar ist; sie werden nicht als ABI-Rückgabevertrag bezeichnet. Die verfügbaren P-code-Def-Use-Daten sind decompilerabgeleitet und können Speicheraliasing oder indirekten Kontrollfluss auslassen. Bedeutung numerischer Werte, Struct-/ABI-Namen, Callee-Effekte, Laufzeitverhalten und Hardware sind ausdrücklich außerhalb des Umfangs.
+
+## Validator und Manifest
+
+Der lokale Validator prüft die Eingabeidentität, Körpergrenzen, sieben Loads, sechs Aufrufstellen, Nullbefund sowie die self-reference-freien Hash-Einträge. **Tests: PASS** bedeutet hier nur, dass dieser dokumentinterne Validator durchlief; es ist kein unabhängiger Review.

@@ -1,0 +1,23 @@
+> Bereinigte historische Ergebniskopie. Maßgeblich für Korrekturen und Geltungsgrenzen ist der zentrale Evidence-Index; Originalhash siehe export-manifest.json.
+
+# WP-XE164-430 — Bootpfad hat eine separate serielle Grenze
+
+Root Self-Review. VERIFIZIERT ist der vollständige lokale Quellkörper von SCPU_boot_slave: ELF a470..a887,262 rohe Wörter/1048B,28 nachfolgende Literalwörter,39 BL-Stellen zu16 PLTs und zwei weiteren lokalen Zielen. Quelle ist ausschließlich das exakte FW31-Backend SHA2563b7b7ca4fa14e5994552040a7b40b1cfbbf43e0649a4ad9277ece421fd4bc5d6. Die Wirkungen opaker Aufrufe, Runtimebindung, vollständige Bootemulation und Hardware bleiben OFFEN. Geräte, VM, Netzwerk und native Herstellerprogramme NOT_RUN.
+
+Der Körper sichert neun GPR-Wörter (36B), d8 (8B), reserviert0xac weitere Bytes:216B Gesamtframe. Das anfängliche PC-relative LOAD liest die Zelle G=40028. Ein nonzero Wert führt vor dem ausgewählten Open zu einem Logger-/Minus1-Ausgang. Die spätere explizite Zustandsadresse a754+a8c8+8 ergibt dieselbe40028. Diese Zelle ist getrennt von SCPU34018, SSC443f4, Backend44420 und RAIL4442c.
+
+Der ausgewählte Open-Vektor lautet (Dateipfadbytes an1d6f8,0x102). Die Originalbytes des Pfades sind /dev/ttyKbus. Es handelt sich ausschließlich um aus dem Artefakt gelesene Daten; der Pfad wurde nicht geöffnet. Ein negativer aktueller Open-Rückgabewert wählt den lokalen Fehlerpfad. Der weitere Pfad enthält isatty, tcgetattr, cfmakeraw, tcsetattr, tcflush, write, select, read und close benannte PLT-Ziele. Damit hat dieser konkrete Bootkörper eine serielle Untergrenze zusätzlich zu den zuvor untersuchten SPI-/ioctl-Körpern. Namen identifizieren Relocations; tatsächliche Betriebssystemwirkungen werden nicht aus ihnen abgeleitet.
+
+Die39 Aufrufe und alle18 unterschiedlichen Zieladressen stehen in call-slots.tsv.16 PLT-Ziele werden aus A32-Immediate-/PC-Gleichungen zu originalen JUMP_SLOT-Positionen aufgelöst; zwei direkte lokale Ziele ELF9618 und9a78 bleiben inhaltlich unexpandiert. Diese Quelle allein ergibt keinen vollständigen seriellen Ersatzvertrag.
+
+Die Konfigurationszeichenfolge an1d758 lautet KBus*ScpuBoot*WaitTime4SpeedChange*Value. Vor dem config-benannten Aufruf setzt die Quelle numerisch r2=10000 und r1=SP14. Danach liest sie den aktuellen Wortwert[SP14], vergleicht unsigned mit10000000 und ersetzt größere Werte durch10000. Nonzero führt unter den aktuellen Werten zum usleep-benannten Aufruf, zero überspringt ihn. Die Einheit und tatsächliche Wartewirkung werden hier nicht als Vertrag behauptet.
+
+Der ausgewählte Handshake initialisiert die Bytes SP12/SP13 auf0 und einen aktuellen Schleifenzähler auf3. Er ruft write mit (aktuellem FD,SP12,1) auf; danach folgen ein128B memset-benannter Buffer-Aufruf und select mit aktuellem FD+1, einem adressierten Bitset und dem Pointer SP18 als fünfter Position. Das d8-Literal a888..a88f ist00000000a00f0000, als zwei rohe Wörter0/4000. Deren tatsächliche Zeitsemantik und ein gültiger FD-Bereich bedürfen eigener Belege.
+
+Bei positivem aktuellen select-Ergebnis wird read mit (aktuellem FD,SP13,1) aufgerufen. Die anschließend tatsächlich gelesene Byteposition SP13 entscheidet lokal: d5 wählt den weiteren lokalen Helfer9a78, da wählt einen Fehlerlogger, andere Werte einen weiteren Fehlerlogger. Die Prüfung des Bytes folgt auch nach dem Read-Fehlerloggerpfad; ein real empfangenes Byte wird dadurch nicht bewiesen. Opaque Register-/Frame-/Speichereffekte müssen für jede konkrete lokale Auswertung separat erfüllt werden.
+
+Vor dem ausgewählten9a78-Aufruf schreibt die Quelle1 an die aktuell gebildete Zelle40028. Sie übergibt SP20 und den aktuellen Konfigurationswert; nach Rückgabe lädt sie FD erneut aus SP20. CMN r0,1 prüft ffffffff; ein anderer Wert wählt den Store2 an die aktuelle r4-Adresse unter erhaltenem r4=40028. Diese Zustandsfolge ist keine ausgeführte Firmware-/Bootloaderoperation. Beide lokalen Helfer, tatsächliches Protokoll, weitere Firmwareübertragung und Fehlerzustände sind offen.
+
+Damit ist die frühere Unkenntnis über den Inhalt dieses einen Bootkörpers eingegrenzt: Es existiert im Quellkörper eine separate Datei-/TTY-/Handshake-Kette. Ein Ersatz ausschließlich der drei SPI-Aufrufe kann diese beobachtete Kette nicht bereits kraft jener drei Aufrufverträge abdecken. Eine materialle Architekturentscheidung oder ein Implementierungsplan wird damit nicht vorweggenommen.
+
+validate.py vergleicht alle262 Wörter/28 Literale/39 Calls mit frischer Ableitung in einem temporären Verzeichnis, prüft ursprüngliche Quellidentität/PT_LOAD, Framewörter, beide G40028-Gleichungen und die exakten Pfad-/Konfigurations-/d8-Bytes. Es ist eine Quell-/Integritätsprüfung, kein vollständiger CPU-Replay oder tatsächlicher serieller Test.

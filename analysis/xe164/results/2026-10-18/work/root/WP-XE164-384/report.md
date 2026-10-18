@@ -1,0 +1,21 @@
+> Bereinigte historische Ergebniskopie. Maßgeblich für Korrekturen und Geltungsgrenzen ist der zentrale Evidence-Index; Originalhash siehe export-manifest.json.
+
+# WP-XE164-384 — Zeilen 8/9: Lesen und ausgewählte Ausgabeposition getrennt
+
+Root **Self-Review**. Dieses Folgepaket präzisiert die durch WP379 offen gehaltene Formulierung in WP370. **VERIFIZIERT** sind die begrenzten lokalen Quellpfade und ihre numerischen Call-Vektoren. **HYPOTHESE** ist ihre Anwendung mit den initialen Zeilen und einem zuvor tatsächlich gelesenen L3-Puffer. **OFFEN** bleiben die Erreichbarkeit des vollständigen Bootablaufs, tatsächliche I/O-Effekte und Rückgaben. Quell- und Arithmetikprüfung: **PASS**. Native Ausführung, Runtime, Geräte, VM, Netzwerk: **NOT_RUN**.
+
+Quelle ist das unveränderte, in WP370/379 geprüfte libpackbus.so.1.0.1 mit SHA-256 3b7b7ca4fa14e5994552040a7b40b1cfbbf43e0649a4ad9277ece421fd4bc5d6. Dieses Paket übernimmt ausdrücklich nicht eine allgemeine Transferaussage aus den Tabellenfeldern. Die verwendeten Adressen sind ELF-VAs; Ghidra liegt um10000 höher.
+
+Beide Zeilen8/9 haben Typwort0, denselben L3-Pfad und Größenwort ffffffff. Der Reader prüft den Typ des Vorgängers, kann einen vorhandenen Puffer über den free-namigen PLT freigeben und trifft anschließend den aktuellen Typ0-Pfad. Für das Größensentinel führt der Quellpfad über den Aufruf bei9994 und dessen Rückgabe-/Stackwortpfad zurück nach98a0; danach folgen Allokations-, open- und read-namige Calls. Das gemeinsame Pfadfeld ist daher mit erneutem Einlesen vereinbar. Weder „Zeile9 liest L3 nicht erneut“ noch eine reale erfolgreiche Dateilesung wird hier behauptet. Alle Weiterläufe nach diesen opaken Calls verlangen die jeweils aktuellen Register, Stackwörter, Speicher und zulässigen Rückgaben.
+
+Die enger belegte Frage ist der lokale Ausgabepfad. Start ist der tatsächlich vorhandene Block9bdc mit aktuellem r3=Zeilenadresse, aktuellem [SP+38]=P, [SP+3c]=N, [SP+14]=H und lesbarem Wort[H]=F. Rahmen, Zeile, Puffer, Handlespeicher und Ausgabe-Scratchbereich sind getrennt; keine opaken Calls liegen bis zur ausgewählten Ausgabestelle. Beide initialen Zeilen liefern Prefixbyte[Zeile+14hex]=0. LDRB9bdc lädt somit r2=0; CMP/BEQ überspringen den Präfixpfad nach9f24.
+
+Zeile8 hat XORbyte[Zeile+20hex]=0. Der Pfad9f30..9f4c lädt N nachr2. Bei N>0 werden r0=F, r1=P, r2=N an die lokale PLT-Adresse7998 übergeben. Bei N=0 wird vor diesem Call nach9b5c verzweigt. Das ist ein Call-Vektor, keine Rückgabe- oder Transfergarantie.
+
+Zeile9 hat XORbyte1. Die Verzweigung9f2c führt nach9fd0. Dort ist r2 noch der vom Präfixfeld geladene Nullwert; STRB9fd4 initialisiert Scratch[SP+d8]=0. Für N>0 bildet9fe0..9ff0 das letzte Byte P+N-1 und den laufenden Zeiger P-1. Die Schleife9ff4..a004 liest nach der Präinkrementierung nacheinander P..P+N-1, XORt inr3 und speichert dessen niederes Byte am Scratchplatz. Die CMP/NE-Wiederholung beendet den Pfad am letzten Byte. Unter P>=1, N>0 und P+N-1<=ffffffff folgt daraus durch Induktion exakt die XOR-Faltung der N aktuellen Pufferbytes. N=0 überspringt die Schleife und behält Scratch0.
+
+Anschließend setzt a00c r2=1, a010 r1=SP+d8, a014 das aktuelle Längenwort[SP+3c]=1 und a018 r0=F. Der BL bei a01c erreicht dieselbe lokale PLT-Adresse7998 wie der Rohdatenpfad. Der ausgewählte Zeile9-Pfad übergibt daher einen Einbyte-Scratchbereich und numerisch1, während der ausgewählte Zeile8-Pfad den Puffer und N übergibt. Er enthält zwischen9bdc und diesem BL keinen weiteren Call. Eine Auswirkung des PLT-Ziels wird nicht unterstellt.
+
+Der ausgewählte Quellpfad begründet somit die begrenzte Aussage „an dieser Callstelle gibt der Zeile9-Pfad das XOR-Byte statt eines zweiten N-Byte-Puffervektors weiter“. Er begründet weder ein Verbot eines weiteren Transfers an anderer Stelle noch „kein erneutes Einlesen“. Die stärkere unbedingte Formulierung in WP370 bleibt durch diese präzise lokale Aussage ersetzt; WP370/379 werden nicht verändert.
+
+Für die konkreten, separat byteidentisch geprüften L3-Bytes ist N=16598 und XOR83. Das ist eine Faltung statischer Dateibytes. Die Gleichheit tatsächlicher gelesener Pufferbytes mit dieser Datei sowie die Call-Erreichbarkeit bleiben zusätzliche Bedingungen. Die kleinen Kontrollfolgen leer,00,ff,123456 und01010101 prüfen die Faltungsarithmetik; sie sind kein vollständiger ARM-Instruktionstrace.

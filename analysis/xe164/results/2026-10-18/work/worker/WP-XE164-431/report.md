@@ -1,0 +1,15 @@
+> Bereinigte historische Ergebniskopie. Maßgeblich für Korrekturen und Geltungsgrenzen ist der zentrale Evidence-Index; Originalhash siehe export-manifest.json.
+
+# WP-XE164-431 — independent review of WP430 source report
+
+**VERIFIZIERT:** The exact FW31 backend hash is `3b7b7ca4fa14e5994552040a7b40b1cfbbf43e0649a4ad9277ece421fd4bc5d6`. WP430's REA metadata for entry Ghidra `0x1a470` gives 1048 bytes / 262 words through inclusive `0x1a887`; the ELF interval is `0xa470..0xa887`. The procedure/body JSON subject digests match the artifact. Each of the 262 instruction words and 28 following literal words maps uniquely through a PT_LOAD segment and matches the raw little-endian file bytes.
+
+I decoded all 39 ARM BL targets from the instruction words. Thirty-seven reach 16 unique PLT entries; their three-word `ADD ip,pc`, `ADD ip,ip`, `LDR pc,[ip]` chains resolve to the exact GOT JUMP_SLOT addresses and labels in `call-slots.tsv`. Two calls are direct local branches to ELF `0x9618` and `0x9a78`, which WP430 leaves unexpanded. This confirms relocation identity only.
+
+The two PC-relative state references compute `G=0x40028`. The path and configuration strings are at the reported ELF addresses, and the open call receives the path pointer with numeric r1=`0x102`. The local open-result check uses signed `BLT`; the config result is reloaded from current `[SP+0x14]`, compared unsigned with `0x00989680` (10,000,000), and overwritten with `0x2710` (10,000) only under the encoded `HI` condition. The select result reaches the read lane only when positive; after a nonpositive read result the error-logger path rejoins the subsequent source byte test. The selected byte predicates distinguish `0xd5`, `0xda`, and all other values. In the d5 path the code writes one to the current `0x40028` cell before the direct local helper and conditionally writes two if its result is not `0xffffffff`. These are source facts with current-register, memory, and opaque-return premises, not observed syscalls or received device data.
+
+The D8 literal claim also checks out. `VLDR.64 d8,[pc,#0x268]` is at ELF `0xa618` (word `0xed9f8b9a`); imm8 `0x9a` is scaled by four and ARM PC-relative addressing uses instruction address plus eight, so `0xa618 + 8 + (0x9a * 4) = 0xa888`. The loaded eight bytes are therefore `0xa888..0xa88f`, raw words `0` and `0xfa0`, exactly as WP430 reports. The later `VSTR.64 d8,[sp,#0x18]` at `0xa66c` stores that pair to the current stack address. This confirms only numeric bytes and source addresses; it does not establish a `timeval` interpretation or actual select timing.
+
+The body remains correctly bounded: open/TTY/config/handshake call effects, boot outcome, local helper `0x9618`, direct helper `0x9a78`, runtime binding, and physical serial behavior stay open. No path was opened; no VM, network, target, or native execution occurred. WP430 and all inputs remain unchanged.
+
+**Selbst-Review:** Independent raw encoding/PT_LOAD/relocation audit. This finding is a source-address correction, not a full CPU or serial-protocol model.

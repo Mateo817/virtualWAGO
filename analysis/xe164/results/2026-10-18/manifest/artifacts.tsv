@@ -1,0 +1,13 @@
+artifact_id	kind	size_bytes	sha256	status	notes
+FW30-LIBPACKBUS-1.0.3	ipk	77686	f06340a7e0285582c3517efcbe8c50c63fb1dbc2a9773ae83e3cce065a2de0fe	VERIFIZIERT	Source package for the three blobs; no FW31 equivalence claimed.
+FW30-XE164-L1	raw-c166-candidate	32	42549d93b538a898203f90488c8d98fc5715e7fd506c5d645de9a00793e20084	VERIFIZIERT	Bootstrap stage candidate.
+FW30-XE164-L2	raw-c166-candidate	266	b4a7eddb47ca3d31040a5d567a847af3da75b5db9b8b49b59ef104b01f079245	VERIFIZIERT	Loader stage candidate.
+FW30-XE164-L3	raw-c166-candidate	16598	26fe2560d12ed794a572186d4f66217a430838f6e1f345f5f6f2f2f0df734abf	VERIFIZIERT	Main firmware candidate.
+DERIVED-XE164-COMPOSITE-E00000	derived-raw-image	17110	5ab9fec0977c26ed4895f8e3d61009f0b371fe46fa9dc76017d6f31eff2f3983	HYPOTHESE	Exact byte concatenation with zero gap; mapping inferred statically, not observed at runtime.
+FW31-PFC100-PFC200-040901-31-ZIP	vendor-firmware-zip	202663744	01e1329dc89cabe2985ca6c3c757952f2e75b8b86eb84d2f9fe505d6390cf939	VERIFIZIERT	Outer FW31 PFC100/PFC200 archive; no device or PLC source.
+FW31-PFC100-PFC200-040901-31-SD	vendor-sd-image	287309824	49aa85c3801cb9d445bf900462bc235fa0ee9b7bbaf6f282341f05d9c9d7051c	VERIFIZIERT	Container member identity only; partition/filesystem contents are delegated to WP-XE164-076.
+FW31-PFC100-PFC200-040901-31-WUP	vendor-update-image	101767197	b6d3ec75d90e781154b57668561085223345779857944af904043a94bcc79f07	VERIFIZIERT	Container member identity only; nested contents are delegated to WP-XE164-075.
+FW31-IODRVDAL-1.0.2	elf32-arm-shared-object	25976	853d3ad6eb1b2477b43502d562a6bbfa854b8029e85989b6166f961167188c7d	VERIFIZIERT	Exact original FW31 consumer; byte hash matches the revision-bound public contract.
+FW31-IODRVKBUS-0.0.1	elf32-arm-shared-object	38584	543e8b1d2d19352030fe804a7e667ca30c1d9ba80069f2df3158c77c544789b8	VERIFIZIERT	Exact original FW31 K-Bus consumer; byte hash matches the revision-bound public contract.
+FW31-LIBDAL-1.0.1	elf32-arm-shared-object	18076	c163ac57805409921ce783f9c4f17f52891864be333c3df4945a128d253994f5	VERIFIZIERT	Exact installed FW31 object with sole partition-2 Dynsym definition of adi_GetApplicationInterface; runtime binding not established.
+FW31-IODRVDAL-CONFIG	vendor-runtime-config	2389	91fc4013c5bd87fab459f13bba60787e9f1256d4423cfd47eefdef307161af13	VERIFIZIERT	Exact FW31 static configuration binds ConfigLibrary libIoDrvKbus to EntryFunction IoDrvKbus_Init; runtime loading not established.

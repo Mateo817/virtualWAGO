@@ -1,0 +1,19 @@
+> Bereinigte historische Ergebniskopie. Maßgeblich für Korrekturen und Geltungsgrenzen ist der zentrale Evidence-Index; Originalhash siehe export-manifest.json.
+
+# WP-XE164-366 — registration record request, prep field overlay and source entry boundaries
+
+Root **Self-Review**. **VERIFIZIERT** for140actualREA/rawsourcewords, allocation-request/call-vector/poststore relationships and bounded selected field-footprint compatibility. Runtimeentry/binding/objectconstruction/heapcontents/API/ABI **OFFEN**. **PASS** sourcechecks; native/VM/network/device/runtime **NOT_RUN**.
+
+Exactprovider c163ac57805409921ce783f9c4f17f52891864be333c3df4945a128d253994f5. FreshmetadataqueriedGhidra121d0 resolves thecompleteFunctionManager objectwithentry1327c andnoncontiguous512B128wordbody: [121d0,12390)112words plus[1327c,132bc)16words. Its4332Benclosingspan isnotcodeextent. Thelocalprologueat121d0 isalsoanactualdirectBtargetfrom132b0; itisnotinventedfromanexportname. Exactrecord-sourcehelper126d8has24B6words; malloc/prepPLTs3wordseach,total140. Earlier205/301's[21d0,2390)remainsaboundedsubset,notnewwholefunctionmetadata.
+
+OriginalgetterO=ProviderBias+14154 hasraw+10cell14164→327c viaR_ARM_RELATIVE. Its16wordwrappercalls2180and1f08,andunderselectednumeric/byte170conditions tailsfrom32b0to21d0 afterrestoringitsownframe. Thesehelper/current-memoryeffectsareunexpanded. **Criticaljoinlimit:** copiedIoDrvDal D+10 isoverriddenbyComponentEntrypoststoresperE309, soO+10candidate isnotautomaticallytheruntimeD+10target. ThisacquisitiondoesnotclaimtheOriginalmanagercalls327c/21d0.
+
+Withinregistration'sexistingname/duplicate-testloop,thewordat2348setsr0=0x3c, thenBEQtakes22b8BL26d8. Helper26d8pushes8framebytes,BLsmallocPLTwiththatcurrentr0,andreturnsitsnonzeror0;zeroentersanexit-namedPLTcallwithr0=1. Ghidra marks exitnoreturn, butthisisnotanindependentcalleecontract; anyreturnfromitwouldleaveourselectedhelperbody. Normalnonnullreturn/fixedwritable60Bregion/mallocframepreservationareexplicitpremises,notsymbol-nameinferences.
+
+Thecallerloadsr12=[currentrow+2c],r3=[row+30],r1=2,r2=byte[row+28],storesr12atcurrentSPfifthword,savesallocatedcurrentr0inr5,andpassesr0=allocated+8totheffi_prep_cifPLT1474. RawJUMP_SLOT1406cnamesLIBFFI_BASE_8.0. Underexplicitmatchingcandidatebinding,thisistheexactnumericcallshape modeledby347/357 forselectedintegerobjects.
+
+Afterselectedprepreturn0andliveGP/frame/rowpremises,sourcewritesrowpointeratP+0,oldrow+24functionwordatP+4,andcurrentdevicewordr9atP+38,thenusesstrdup-namedPLTandg_hash_table_insert-namedPLTwiththisPvalue. Thetablestrideis52,loadedviaADDrow,34hex;thelaterLDR[row-10hex]thereforeloadsoldrow+24. Nameallocation/hash effectsandruntimeownershipremainopaque.
+
+Selectedmode2prepfixtureswrite48bytesatCIF-relative0..2f;atP+8thisisP+8..37. ThedevicewordP+38..3bimmediatelyfollowsandfitsrequested0x3cbytes;P+0/P+4precedetheprepregion. Thecommonmarshaller330readsnargsP+c,argtypesP+10,returntypeP+14,matchingprepCIF+4/+8/+cwhenCIF=P+8;itloadsfunctionP+4anddevicewordP+38. Thisisasource-derivedselectedfieldcompatibility,notageneralcompleteCstructorABIdefinition. Allothermode/typepathsandactualmallocsize/validity/runtimebindingremainopen.
+
+Retainedliteralreferencesoftheregistrationbodyarecontextonlyhere; nofullstring/library-openexecutionorconstructednamehash/tablepathisclaimed. TheexactbodyandPLTrecordspermitseparatefutureconditionalcompositionwithoutassumingheaderlayout.
