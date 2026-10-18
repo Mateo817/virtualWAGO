@@ -13,6 +13,7 @@ import csv
 import hashlib
 import json
 import os
+import re
 
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,6 +40,12 @@ DESCRIPTOR_SHA256 = {
 AUDIT_SHA256 = "1bc897fb198e4720c00390ee62db5d382f7a132604d67efc587c158c4f7df000"
 OUTPUT_PERMIT_INITIAL = False
 SOURCE_SHA256 = "8004d8ef15ec5fea33ef096896c82f102e58f8a6326ff1846a5327fa09052fa8"
+
+# Exact whole-string IEC address syntax; supported by CODESYS IronPython 2.
+IEC_BYTE_INPUT = re.compile(r"\A%IB([0-9]+)\Z")
+IEC_BYTE_OUTPUT = re.compile(r"\A%QB([0-9]+)\Z")
+IEC_BIT_INPUT = re.compile(r"\A%IX([0-9]+)\.([0-7])\Z")
+IEC_BIT_OUTPUT = re.compile(r"\A%QX([0-9]+)\.([0-7])\Z")
 
 
 def fail(message):
@@ -85,7 +92,9 @@ def read_mapping(path):
                 continue
             if len(row) != 6:
                 fail("mapping CSV row does not match observed six-column export schema")
-            rows.append([field.strip() for field in row])
+            # Preserve fields verbatim: trimming IEC addresses or parameter
+            # names would turn malformed export text into a passing contract.
+            rows.append(row)
     return rows
 
 
@@ -125,39 +134,53 @@ def map_parent_bytes_in_csv(path, input_variable, output_variable):
 def verify_export_rows(rows, input_variable, output_variable):
     indexed = {}
     for row in rows:
+        if len(row) != 6:
+            fail("mapping export row does not match observed six-column schema")
         key = mapping_identity(row)
         if key in indexed:
             fail("duplicate parameter/device row in mapping export: " + repr(key))
         indexed[key] = row
 
     expected = {
-        ("_IN", "_750_430"): (input_variable, "Input Channels", "%IB"),
-        ("_OUT", "_750_530"): (output_variable, "Output Channels", "%QB"),
+        ("_IN", "_750_430"): (input_variable, IEC_BYTE_INPUT),
+        ("_OUT", "_750_530"): (output_variable, IEC_BYTE_OUTPUT),
     }
-    for key, (variable, description, direction) in expected.items():
+    parent_bytes = {}
+    for key, (variable, byte_address_pattern) in expected.items():
         row = indexed.get(key)
-        if (row is None or row[0] != variable or row[3] != description
-                or not row[4].startswith(direction)):
+        match = byte_address_pattern.match(row[4]) if row is not None else None
+        if row is None or row[0] != variable or match is None:
             fail("parent BYTE mapping readback mismatch for " + repr(key) + ": " + repr(row))
+        parent_bytes[key] = int(match.group(1), 10)
 
     channel_specs = (
-        ("_IN@", "_750_430", "Digital input", "%IX"),
-        ("_OUT@", "_750_530", "Digital output", "%QX"),
+        ("_IN@", "_750_430", IEC_BIT_INPUT, ("_IN", "_750_430")),
+        ("_OUT@", "_750_530", IEC_BIT_OUTPUT, ("_OUT", "_750_530")),
     )
     counts = {}
-    for prefix, device, description, direction in channel_specs:
-        found = [row for row in rows if row[1].startswith(prefix) and row[5] == device]
+    for prefix, device, bit_address_pattern, parent_key in channel_specs:
+        found = [row for row in rows if row[1].startswith(prefix)]
+        if any(row[5] != device for row in found):
+            fail("digital channel parameter is bound to an unexpected device for " + prefix)
         names = set(row[1] for row in found)
         expected_names = set(prefix + str(n) for n in range(1, 9))
         if names != expected_names or len(found) != 8:
             fail("expected exactly 8 exported bit channels for " + device + "; got " + repr(sorted(names)))
-        if any(row[3] != description or not row[4].startswith(direction) for row in found):
-            fail("digital channel description/address direction mismatch for " + device)
         addresses = [row[4] for row in found]
-        if any(not address for address in addresses) or len(set(addresses)) != 8:
+        matches = [bit_address_pattern.match(address) for address in addresses]
+        if any(match is None for match in matches):
+            fail("digital channel IEC address syntax/direction mismatch for " + device)
+        if len(set(addresses)) != 8:
             fail("missing or duplicate descriptor-exported bit-channel address for " + device)
         if any(row[0] for row in found):
             fail("unexpected bit child variable mapping conflicts with parent BYTE on " + device)
+        parent_byte = parent_bytes[parent_key]
+        for row, match in zip(found, matches):
+            channel_number = int(row[1][len(prefix):], 10)
+            address_byte = int(match.group(1), 10)
+            address_bit = int(match.group(2), 10)
+            if address_byte != parent_byte or address_bit != channel_number - 1:
+                fail("digital channel address does not match parent BYTE/bit ordering for " + row[1])
         counts[device] = 8
     return {"parent_bytes": 2, "digital_inputs": counts["_750_430"],
             "digital_outputs": counts["_750_530"], "csv_consistency": "PASS"}
