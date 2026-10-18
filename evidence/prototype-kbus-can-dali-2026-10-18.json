@@ -1,0 +1,294 @@
+{
+  "schema": "virtualWAGO.bounded-prototype.v1",
+  "date_host_utc": "2026-10-18",
+  "source_commit": "27facec0ffb8d8f84a3eb468e28cf50bb771a0ee",
+  "base_commit": "ec4ea6e3ccef391b76c291b44609e86ace3bc9e5",
+  "claim": "VERIFIZIERT: native DI8 virtual signal path with closed model gate; CAN/DALI BLOCKED",
+  "source_sha256": {
+    "tools/adi_digital_adapter.c": "c0e1de356de1bc2be11b70bca8812971a9deaa4a17c9ce740e323d2e24c57e6b",
+    "tools/adi_digital_adapter.h": "6c949fcbba1ba3a9925c5c29eac53faac9db10cd8265d36a1d7deacaf64c92ad",
+    "tools/adi_catalog_profiles.h": "332e030aa1274aadb7e92314b2c7d3419c0d4357eb3b7fe6a60ac3d069af66c0",
+    "tools/adi_model_bridge.c": "0aa7bb093b2a8815de235779a3c54f52565d7d20d51262bc8aeb57d92b4ed662",
+    "tools/adi_model_bridge.h": "cf770961a04cabe086810cc613d7fa78357c8ee361d39831134d4c834511d433",
+    "tools/adi_model_bridge_integration_test.c": "dec7445fccaf856936dd2cf8da4eacb3756c3ad7ebf574b32394fb5f91e88488",
+    "tools/adi_digital_adapter_test.c": "03638b5688ea818eb3a9f8c758a7009d91ed1d2335715e3cef33e60f816642f3",
+    "tools/adi_digital8_default_test.c": "34447f23303b0eef427650f8394745a810aa5751fbce83c2a8022c9a17c8183e",
+    "tools/adi_digital16_default_test.c": "3809062cf8246d1fcb3cf21f20172acbec4a2d3ebdc2d2f82cb1524a725c8a9c",
+    "tools/adi_model_client.c": "bfdd68636c87f39ea54a204eb314419011da718ce2fae38108f1fb83fde10e79",
+    "tools/readonly_metadata_broker.c": "163d6784d9fea533753661a9763bd4c6b8fb1f2f55638015ca64e9aa267c1ff1",
+    "tools/native_digital_acceptance.py": "3afbcdc38545597f1f2c36053d56287e8da4362c4837c0108d609b783c8324f0",
+    "tools/codesys_mapped_digital8_candidate.py": "add7f0b68f973f371597ace1d59973d3aa612645cf3d99bbe94dbf5582d25047",
+    "tools/codesys_mapped_digital8_bridge_probe.py": "3205f9bd4e5c6be617cc26cc58f5c252362e627caab154caa365f02fe6e19fc7",
+    "prototype/iec/minimal_io_8_bridge_probe.st": "6fb5bf46bf5e817bb6b8fddac1ba2cbf9129e83935a375648859e6bac9271dab",
+    "tests/test_native_digital_acceptance.py": "9a5b8a64faab3dcc254c5457eb45a182c9c23420ee188e2649086ff34ac719af",
+    "tests/test_codesys_mapped_digital8_candidate.py": "47d06b1f529e8baf64de28a80dd8cf0ef33f1d6873c2967f0ff3c5511bc9159f"
+  },
+  "runtime": {
+    "controller_article": "750-8213",
+    "version": "3.5.21.50",
+    "kernel": "6.6.94-rt56-w05.08.02",
+    "identity_binding": "private exact-target policy and strict SSH hostkey; no public endpoint",
+    "binary_sha256": {
+      "codesys3": "b56c6296faabae9eb73f0463fd068c535c03109ced347f0c2a643b69a7ee1ab5",
+      "original_libdal": "c163ac57805409921ce783f9c4f17f52891864be333c3df4945a128d253994f5",
+      "original_IoDrvDal": "853d3ad6eb1b2477b43502d562a6bbfa854b8029e85989b6166f961167188c7d",
+      "original_IoDrvKbus": "543e8b1d2d19352030fe804a7e667ca30c1d9ba80069f2df3158c77c544789b8"
+    },
+    "trial_state": "RUN",
+    "before_and_restored_state": "STOP",
+    "provenance": "Root transaction bound PID/starttime, ancestry and mount/net/IPC/PID namespaces; original consumer maps; exact staged source/artifact preflight; fresh postflight"
+  },
+  "native_project": {
+    "ide": "CODESYS V3.5 SP21 Patch 5 / 3.5.21.50",
+    "build": "PASS",
+    "reopen": "PASS",
+    "errors": 0,
+    "warnings": 0,
+    "task_ms": 20,
+    "tcm": 0,
+    "input": "750-430 2.0.0.14; InputByte %IB1; eight bits %IX1.0..7",
+    "output": "750-530 2.0.0.15; OutputByte %QB0; eight bits %QX0.0..7",
+    "physical_module_revisions": "OFFEN",
+    "installed_descriptor_hashes": {
+      "32776/8801_0750043000000000/2.0.0.14": "26d302678905d2e8f4c7e34880cf830c4ad56361ebd647e6ed82a9e02c81dd91",
+      "32776/8802_0750053000000000/2.0.0.15": "84b4043d448c44155a36916a1b65a39f20ba0560459d3c0ffac53fba351daa5d"
+    },
+    "private_artifact_sha256": {
+      "mapped-digital8.crc": "8abcf0f29703e28facb045c0ab9052cd7f38cbcd41a4df5273f9728577ccbc12",
+      "mapped-digital8.app": "56c8bdf9517ab5679a703673cd8cbc426a301ad3495d86f5aa90e061cb505201",
+      "mapped-digital8-offline.project": "8fe112e771a01b1ff4e3af6a6a8f3f5bb86a52bc727b8140e8e88aa4525e11bf",
+      "mapped-digital8-mapping.csv": "506eee945ec47556793f98a4dc6c38d6cdc8d1a08df177af79a555abc1e3d7c6"
+    }
+  },
+  "arm_build": {
+    "status": "PASS",
+    "compiler": "arm-linux-gnueabihf-gcc (Debian 14.2.0-19) 14.2.0",
+    "artifacts": {
+      "libdal-catalog8.so": "f4bacffbbbaf48bda97ef0a967d63fe08ca07194e323738ed6f930643e214c26",
+      "libdal-catalog16.so": "855a09bae90dfa1de54e47ffc02734e49813b93b674bb78204332481d76d216e",
+      "adi-contract-test": "00ea0ad00dabfa44d87200b1ea0eeb1a98861bcec9aba3e3270de8fee55c93aa",
+      "adi-bridge-integration-test": "37ee6f4b6ee9ae392c924afcd54b173c4f7c014928ba5aeaf395c2b31ded4802",
+      "adi-digital8-default-test": "a7d393691ab2e24ea6d7fb313b9525830e9c722b237812b1a3ead19ee192632a",
+      "adi-digital16-default-test": "a4656f87cb28043e54bf1fb2430e816b8168f9b2f5503f880f574750739b13f2",
+      "adi-model-client": "90128a3e0a75a6991e68bd2488c3b11aad04551190dbd20d964f005089767a89",
+      "readonly-metadata-broker": "0ed238ef92c4d643c53b3af1f6e7e414f22ffe821d8409ff6726dac571d153f3"
+    },
+    "harnesses": [
+      {
+        "name": "adi-contract-test",
+        "status": "PASS"
+      },
+      {
+        "name": "adi-bridge-integration-test",
+        "status": "PASS"
+      },
+      {
+        "name": "adi-digital8-default-test",
+        "status": "PASS"
+      },
+      {
+        "name": "adi-digital16-default-test",
+        "status": "PASS"
+      }
+    ],
+    "scope": "own adapters in isolated QEMU; separate from native runtime evidence"
+  },
+  "acceptance": {
+    "schema": "virtualwago.native-digital-acceptance.v1",
+    "status": "PASS",
+    "scope": "local AF_UNIX SOCK_SEQPACKET bridge checker; no runtime provenance or physical I/O proof",
+    "external_runtime_binding": "REQUIRED; not established by this checker",
+    "configuration": {
+      "profile": "DI8",
+      "input_bits": 8,
+      "iec_transform": "BYTE XOR 16#96",
+      "patterns": [
+        0,
+        129,
+        90,
+        255
+      ],
+      "timeout_seconds": 4,
+      "output_permit_command_sent": false
+    },
+    "clock": "host monotonic; timestamps are observation times, not IEC or real-time semantics",
+    "started_monotonic_seconds": 1562983.74743215,
+    "samples": [
+      {
+        "input": 0,
+        "permit": 0,
+        "requested": 150,
+        "effective": 0,
+        "watchdog": 1,
+        "fault": 0,
+        "generation": 1,
+        "frames": 297,
+        "opened": 1,
+        "configured": 1,
+        "running": 1,
+        "pattern": 0,
+        "expected_requested": 150,
+        "observed_requested": 150,
+        "post_ack_watermark_frames": 296,
+        "stale_fresh_frames": 0,
+        "accepted_monotonic_seconds": 1562984.529597087
+      },
+      {
+        "input": 129,
+        "permit": 0,
+        "requested": 23,
+        "effective": 0,
+        "watchdog": 1,
+        "fault": 0,
+        "generation": 1,
+        "frames": 298,
+        "opened": 1,
+        "configured": 1,
+        "running": 1,
+        "pattern": 129,
+        "expected_requested": 23,
+        "observed_requested": 23,
+        "post_ack_watermark_frames": 297,
+        "stale_fresh_frames": 0,
+        "accepted_monotonic_seconds": 1562984.540317369
+      },
+      {
+        "input": 90,
+        "permit": 0,
+        "requested": 204,
+        "effective": 0,
+        "watchdog": 1,
+        "fault": 0,
+        "generation": 1,
+        "frames": 299,
+        "opened": 1,
+        "configured": 1,
+        "running": 1,
+        "pattern": 90,
+        "expected_requested": 204,
+        "observed_requested": 204,
+        "post_ack_watermark_frames": 298,
+        "stale_fresh_frames": 0,
+        "accepted_monotonic_seconds": 1562984.565305396
+      },
+      {
+        "input": 255,
+        "permit": 0,
+        "requested": 105,
+        "effective": 0,
+        "watchdog": 1,
+        "fault": 0,
+        "generation": 1,
+        "frames": 300,
+        "opened": 1,
+        "configured": 1,
+        "running": 1,
+        "pattern": 255,
+        "expected_requested": 105,
+        "observed_requested": 105,
+        "post_ack_watermark_frames": 299,
+        "stale_fresh_frames": 0,
+        "accepted_monotonic_seconds": 1562984.589521356
+      }
+    ],
+    "baseline": {
+      "input": 0,
+      "permit": 0,
+      "requested": 150,
+      "effective": 0,
+      "watchdog": 1,
+      "fault": 0,
+      "generation": 1,
+      "frames": 296,
+      "opened": 1,
+      "configured": 1,
+      "running": 1
+    },
+    "finished_monotonic_seconds": 1562984.589552691,
+    "duration_seconds": 0.8421205410268158,
+    "transport_binding": "private bounded SSH stdio relay to exact staged AF_UNIX model socket; original-runtime provenance in separate trial receipt"
+  },
+  "isolation": {
+    "status": "PASS",
+    "probe": "dedicated reference carrier probe; distinct net/mount/IPC/PID; closed caps; readonly original files; inaccessible host loopback and abstract Unix test listeners; no protected device contacted",
+    "runtime_exception": "same-board genuine EEPROM regular sysfs endpoint readonly via existing ADR-0006 broker; no bus or actuator device access",
+    "broker": {
+      "timeout_seconds": 30,
+      "protected": 3,
+      "mediated": 3,
+      "path_errors": 0,
+      "kill_reason": 0
+    },
+    "transport": "AF_UNIX model endpoint; bounded allowlisted SSH stdio relay; no CAN bridge"
+  },
+  "rollback": {
+    "status": "PASS",
+    "transaction_exit": 0,
+    "fresh_postflight": "PASS",
+    "original_APP_CRC_config_and_four_binary_hashes": "unchanged",
+    "original_runtime_count": 1,
+    "staged_test_process_count": 0,
+    "retained_RAM_snapshot": false,
+    "unattended_test_processes": false
+  },
+  "can_dali": {
+    "finding": "BLOCKED",
+    "can_interface": "can0",
+    "before_and_after": "DOWN / STOPPED; RX packets 0; TX packets 0",
+    "live_communication": "NOT_RUN",
+    "passive_receive": "NOT_RUN",
+    "virtual_transport": "NOT_RUN",
+    "profile_implementation": "BLOCKED: no bound coupler, revision, EDS/DCF, node/bitrate, PDO/SDO or DALI mailbox contract",
+    "socketcan_candidate": "HYPOTHESE for replacement; current matching libraries import socket/libsocketcan operations, vcan acceptance not proved",
+    "physical_dali_participant": "OFFEN",
+    "physical_output_operations": "NOT_RUN"
+  },
+  "local_regression": {
+    "status": "PASS",
+    "tests": 247,
+    "skips": 0,
+    "command": "VIRTUALWAGO_TEST_BWRAP=<explicit available bwrap> sudo -n --preserve-env=VIRTUALWAGO_TEST_BWRAP,LD_LIBRARY_PATH -- /usr/bin/python3 -m unittest discover -s tests -v",
+    "snapshot_validator": "PASS: 444 evidence IDs, 303 function rows, 420 reports, 431 hashes; snapshot integrity only"
+  },
+  "not_run": [
+    "fresh native DI16 runtime",
+    "native STOP/lease-loss/fault injection qualification",
+    "physical local-module comparison",
+    "CAN identity/PDO/SDO/heartbeat/negative cases",
+    "real or virtual DALI status/timeout path",
+    "electrical timing or hard realtime qualification"
+  ],
+  "reviews": {
+    "root": "Self-Review and live execution",
+    "independent_workers": "actual Luna HIGH offline code and transaction reviews; no worker target/VM access",
+    "remediation": [
+      "independent fixture cycle producer",
+      "finite timeout <=60s",
+      "fresh installed descriptor hashes",
+      "baseline gate-negative tests; exact STATUS-only command list",
+      "broker timeout and full coordinator budget",
+      "strict relay command set and MSG_TRUNC",
+      "atomic original config restore and fresh STOP"
+    ]
+  },
+  "private_receipt_sha256": {
+    "arm-build/arm-build-validation.private.json": "e6a900bf4deba35864b4634c776ad0165c4f2ff2821fc676d264aa5353f35063",
+    "descriptor-verification.json": "36f66248ecc24ae71ffc4af125d714fd9df5ac45bf080f4295706bea00c4baef",
+    "ide-v2-manifest.json": "f39447d788bf884e00c8d9889038f785ed23a52a0f55b73a309b4488b9573435",
+    "build-ide-v2.stdout": "6f74a782be207035b876560fe6f645b287cafc2e9fda0a9a75d27ddc35e8fb54",
+    "reopen-ide.stdout": "a47e75c545930bfa041330abe7352d8b45dedd44ae8987ba108fab504f8bcce6",
+    "backup2.sh.stdout": "8d1036b8bbe1e0da329e74d8f86d211fc44695fd795dc6da4697696eb21114f7",
+    "isolation.sh.stdout": "b7620230858b2b8fb0d4985b7a574974d9119ca05a270b62cb05d8f88ecaf941",
+    "trial.sh": "8bf575ea2d509932b147ee0af932d784e16037aa81a27a2ed576ba65900b5946",
+    "run-trial.py": "a0b673a5642c8a6a5ff2e18282115e7d37c66d86c64dc1bfd65dce634d2432f8",
+    "trial.stdout": "f3fe7fff3f12cafc6445e902c30ee838316dc9e00b6f127e1457a523d7cc9021",
+    "trial.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "trial-coordinator.json": "62c30109e37868dc74ffa8839a3055748c8adb91a43f758b7d0090396f22b929",
+    "digital8-acceptance.json": "494c80906bcc7a5c0bd36bcd71b56ab2427afcea7eed8f33bd9c4803d70f31d0",
+    "postflight.sh.stdout": "54b6e2070eb34da6cae75413c056e1b9cb1bd27f6459e48b56a3a357e70b28cc",
+    "reviewer/transaction-review.md": "a5e3b2373ccf7c749847c43324605fa13d864e71f83d7ef7c3b3a1479ba09f63",
+    "code-review/review-delta.private.json": "49398b0fc72e74720071d11dcc85bd550e80059665497745e70c69e8f6d8cf56",
+    "suite-final-r4.stderr": "cd0b928ed20764acb1200183bb453690bee6377558917b3900475bec3a27f962"
+  },
+  "publication": "sanitized metadata and own code only; raw receipts, vendor files, credentials and target binding stay private"
+}
