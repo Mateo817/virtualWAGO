@@ -1,5 +1,16 @@
 # Lokaler Agent: öffentlicher Übergabevertrag
 
+**Aktueller Block, 18.10.2026:** [Begrenzter Prototyp](prototype-kbus-can-dali-2026-10-18.md)
+mit neuem Acceptance-Prüfer und frischem DI8-IDE-Build/Reopen sowie echtem
+Originalruntime-Zyklus PASS. Die aktuelle private Bindung führte zu einem
+750-8213, dessen ursprünglicher STOP und Originaldateien nach dem Versuch
+frisch wiederhergestellt geprüft wurden. CAN blieb DOWN ohne Pakete;
+Koppleridentität, EDS/DCF, Prozessdaten-/DALI-Vertrag fehlen: dieser Teil
+BLOCKED, Kommunikation NOT_RUN. Nicht den unten beschriebenen 8212 oder
+historische Modulfolgen als aktuelle Zielbindung übernehmen. Die private
+Übergabe dieses Auftrags liegt getrennt vom XE164-Forschungsstopp; neue
+Zugriffe erfordern wie immer frische Ziel-/Zustandsbindung.
+
 **Neuer getrennter Referenzaufbau, 14.10.2026:** Der
 [750-8212-Zwischenstand](reference-8212-2026-10-14.md) bindet read-only einen
 anderen Controller. `Application` blieb RUN; Foto und Offlineprojekt zeigen

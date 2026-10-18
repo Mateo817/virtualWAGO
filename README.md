@@ -2,7 +2,17 @@
 
 Forschung zur I/O-Simulation unterhalb des originalen WAGO/CODESYS-I/O-Stacks. Erstes Ziel ist die autorisierte Referenz-WAGO mit ihrer bereits laufenden originalen Runtime, dem nativen I/O-Manager und originalen WAGO-I/O-Treibern; die untere Hardwareanbindung soll erst nach Beleg ihrer Schnittstelle simuliert werden. Eine vollständig virtuelle Steuerung ist ein späteres Ziel. Unabhängiges Forschungsprojekt; keine behauptete Herstellerfreigabe.
 
-**Neuer getrennter Referenzaufbau, 14. Oktober 2026:** Der [read-only gebundene
+**Aktueller Prototypblock, 18. Oktober 2026:** [Frischer nativer DI8-Lauf und
+CAN-/DALI-Befund](docs/prototype-kbus-can-dali-2026-10-18.md): neuer
+Acceptance-Prüfer, korrigierter nativer Builder und vier Signalpaare durch
+Originalruntime/Originaltreiber **PASS**; Modellgate geschlossen. Die frisch
+gebundene Referenz ist ein 750-8213, nach Rücknahme wieder STOP mit
+unveränderten Originaldateien. CAN/DALI bleibt **BLOCKED**: Interface DOWN,
+konkreter Koppler und Prozessdatenvertrag ungebunden; keine reale oder
+virtuelle CAN-/DALI-Kommunikation behauptet. 247 hardwarefreie Tests PASS
+ohne Skip am im Bericht gebundenen Implementierungsstand.
+
+**Getrennter Referenzaufbau, 14. Oktober 2026:** Der [read-only gebundene
 750-8212-Zwischenstand](docs/reference-8212-2026-10-14.md) hält eine bestehende
 `Application` unverändert in RUN. Das private Frontfoto belegt im sichtbaren
 Scope 750-1405 ×2, 750-1504 ×2, 750-466, 750-677 und 750-600; die abweichende
