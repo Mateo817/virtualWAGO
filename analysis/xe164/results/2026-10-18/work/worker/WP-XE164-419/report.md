@@ -1,0 +1,19 @@
+> Bereinigte historische Ergebniskopie. Maßgeblich für Korrekturen und Geltungsgrenzen ist der zentrale Evidence-Index; Originalhash siehe export-manifest.json.
+
+# WP-XE164-419 — corrective opaque-return premises for WP412
+
+**VERIFIZIERT:** This package reruns the same 15 synthetic source paths for the exact 51-word `SPI_ReadWrite` and 39-word `SPI_Command` bodies from frozen WP412. Every fetched PC, word, condition outcome, before/after register state, NZCV, ordinary memory event, final state, and initial/final modeled byte map matches WP412. All 26 opaque-call events now carry event-specific return contracts tied to actual source reads. No upstream package was changed.
+
+Each returning opaque call records the synthetic normal-return PC, unchanged current SP, and the values in `[SP+0x20]` and `[SP+0x24]`. The trace binds those words to the actual preceding `STMDB` writes; the source epilogue later loads them as r4 and PC. Replay asserts both words survive each call, and the read-only validator checks those values against the push writes and final epilogue memory. These are per-fixture premises, not claims about a real callee or ABI.
+
+At the ioctl-named call, the only post-return register read before path selection is current r4 in `CMP`/`BGE`. Baseline fixtures preserve r4=0. The `ret0_r4clobber` counterexample explicitly changes it to 1 and records that register effect, showing the same r0=0 takes the error route under that changed state. SP and the saved epilogue words remain separate premises. The ioctl vector and status bytes are recorded as input arguments; the source does not reread them after return, so the package makes no post-call preservation claim for them.
+
+For `__errno_location`, the contract records returned r0=`0x3000` and a readable word there for the immediate source `LDR`. The source then copies the pointer to r4. At `strerror`, current r4=`0x3000` must remain available for the later logger/final-read path; the errno word itself is not declared preserved because it is not read until after syslog. At syslog, the contract requires current r4=`0x3000` and a readable word at `[r4]` for the actual next `LDR`. Cases without a modeled errno update explicitly preserve the word. Cases with an update record its exact old/new value and assert the new word remains readable. `neg_errno3d` therefore continues to select the value read after syslog. The model does not silently promise that errno remains constant.
+
+`opaque-events.tsv` records each call's arguments, normal-return PC, SP, saved frame words, current-register reads/effects, required post-return memory reads, and any explicit memory effect. `write_traces.py` is the separate writer. Default `validate.py` sets `sys.dont_write_bytecode=True` before local imports, regenerates all traces in memory, checks serialized traces and the event table, compares the machine histories and byte maps to frozen WP412, verifies raw PT_LOAD source bindings, and compares the complete package inventory before/after. It does not invoke the writer or modify files.
+
+A fixture-label correction is included: WP412's `fixture.handle` was populated from final r0, so successful cases returning 0 displayed `null` despite entering with handle pointer `0x1000`. WP419 records `entry_handle` from the fixture input (`0x1000` for valid pointers; `0x0` for null). Machine histories and results remain unchanged.
+
+The outputs remain local source outcomes only. Actual ioctl/provider behavior, errno implementation, runtime binding, ABI, protocol meaning, and device/kernel effect are **OFFEN**. Target/native execution, VM, network, and device tests are **NOT_RUN**. This is a bounded synthetic source model, not a claim about actual callee behavior.
+
+**Selbst-Review:** WP412, WP415, WP408, and WP410 remain pinned and untouched. Validation establishes explicit fixture contracts and replay consistency, not real callee effects or an external ABI.

@@ -1,0 +1,39 @@
+> Bereinigte historische Ergebniskopie. Maßgeblich für Korrekturen und Geltungsgrenzen ist der zentrale Evidence-Index; Originalhash siehe export-manifest.json.
+
+# WP-XE164-299 — bounded producer trace at libdal 0x1a3c
+
+**Result:** The 296-byte body contains a conditional candidate-storage path and writes a fixed word `0x7c8` at current `r5+0x110`. It reads the table pointer from the same PC-derived global address `0x141e0` at three points and, on the record-construction path, reaches a PLT call at ELF `0x1b4c` with current arguments `r0=[r6]`, `r1=r5+0x100`, `r2=r5`, and `r3` equal to the current return from direct call `0x188c`. These are local instruction facts. They do not establish table/container semantics, an object layout, the meaning of the word at `+0x110`, allocation or zero-fill behavior, or runtime identity.
+
+The input is `libdal.so.1.0.1`, ELF32 little-endian ARM, 18,076 bytes, SHA-256 `c163ac57805409921ce783f9c4f17f52891864be333c3df4945a128d253994f5`. Ghidra source map is `Ghidra VA = ELF VA + 0x10000` for these ranges. The exact body is ELF `[0x1a3c,0x1b64)`, 296 bytes / 74 words; the two literal words are separately at `[0x1b64,0x1b6c)`. The selected PLT thunk is ELF `[0x1414,0x1420)`, 12 bytes. `machine-words.tsv`, `literal-pool.tsv`, and `insert-plt-words.tsv` bind all body and selected-thunk words to source bytes.
+
+## Trace and local gates
+
+At entry, the body saves `r4-r9,lr`, reserves `0x2c` stack bytes, puts `sp+4` in `r1`, and copies entry `r0` to current `r9`. It calls target `0x1618` with `r0=entry r0`, `r1=sp+4`. The returned current `r0` is compared with zero. Nonzero branches to a direct epilogue; zero falls through to the table scan. The later load from `[sp+4]` into `r8` makes the helper-written stack word a source for a later current register, but preservation through opaque calls is not presumed.
+
+The first literal at ELF `0x1b64` is `0x00012768`. The `ldr` at `0x1a60` reads that word; the subsequent `add r3,pc,r3` at `0x1a70` uses PC `0x1a78`, giving `0x1a78+0x12768=0x141e0`. The `ldr` at `0x1a7c` then reads the word at that global address for the `0x14d4` call. The second literal at `0x1b68` is `0x00012710`; the add at `0x1ac8` uses PC `0x1ad0`, giving `0x1ad0+0x12710=0x141e0` again. That address is within the source ELF `.bss` range `[0x141dc,0x1420c)`. This identifies the source address only; the current word loaded there and its runtime initialization remain **OFFEN**.
+
+The body prepares stack-relative addresses `sp+8`, `sp+0xc`, and `sp+0x10`, then calls target `0x14d4` with `r0=sp+0x10` and `r1` equal to the current word loaded from `[0x141e0]`. In the scan loop, target `0x14c8` gets current `r0=r5`, `r1=r6`, `r2=r7`; its current `r0` is copied to `r3`, tested, and a nonzero value branches to the loop body. The loop body loads a word at current `sp+0xc` into current `r4` and calls `0x1678` with current `r0=r8`, `r1=r4`. A zero compare branches to `0x1b54`; otherwise scanning continues. At `0x1b54`, current `r4` is tested: nonzero exits, zero branches to candidate search. Since `r4` is consumed after an opaque comparison call without a local reload, treating it as the earlier stack word requires an explicit register-preservation premise.
+
+The local counter search starts with value 1 and repeatedly calls target `0x15d0` with `r0=[current r6]` and `r1=current r5`; the counter is written to `[sp+0x10]` immediately before each call. Current `r0` is copied to current `r4`. Nonzero branches to increment the stack value and repeat; zero continues to record construction. The increment is an ARM word addition by one, so the local arithmetic wraps at 32 bits. The same `sp+0x10` byte address is used earlier as the first call argument to `0x14d4` and later as counter storage; no type or semantic identity is inferred from that reuse. No termination or table contents are inferred.
+
+The candidate-storage path passes immediate `0x174` in `r0` to direct target `0x26d8`, then copies returned current `r0` to current `r5`. It next calls PLT target `0x1450` with current `r0=r5`, current `r1=r4`, and `r2=0x174`. Although relocation metadata labels this PLT entry `memset`, that name does not prove zero-fill, allocation, or copy effects. Every later use of `r5`, `r7`, `r8`, or `r9` is therefore stated as the current register at that instruction; carrying earlier values through opaque calls is conditional on preservation, not an assumed ABI.
+
+The explicit stores after that call are:
+
+- At `0x1b18`, immediate `0x7c8` from `movw` is stored at `[current r5+0x110]`.
+- At `0x1b1c` and `0x1b20`, current `r8` is stored at `[current r5+0x100]` and `[current r5+0x11c]`.
+- At `0x1b28`, current `r9` is stored at `[current r5+0x104]`.
+- At `0x1b30`, the current return from direct target `0x37e4` is stored at `[current r5+0x108]`.
+- At `0x1b48`, the current return from direct target `0x188c`, copied to `r3`, is stored at `[current r5+0x10c]`.
+
+The call at `0x1b24` targets PLT `0x160c` with current `r0=r5`, `r1=r7`; its returned `r0` is not locally consumed. The direct calls at `0x1b2c` and `0x1b34` have no newly established argument vectors in the preceding instructions. No called implementation is expanded. Immediately before the PLT call at `0x1b4c`, the local sequence establishes `r1=current r5+0x100`, `r2=current r5`, copies the `0x188c` call's current return to `r3`, stores it at `[current r5+0x10c]`, and loads current `r0=[current r6]`. It then calls exact PLT entry `0x1414`. The call return is not tested before the epilogue.
+
+## PLT/import provenance and bounded limits
+
+A name-only REA query for `g_hash_table_insert` was ambiguous among three entries. Root WP298 resolves the exact body-local target to Ghidra `0x11414` / ELF `0x1414`. Its exact 12-byte range is a Ghidra thunk to `0x25044`; the source `.rel.plt` `R_ARM_JUMP_SLOT` at `0x1404c` names `g_hash_table_insert`. The selected source body has a call at Ghidra `0x11b4c` / ELF `0x1b4c`, and REA's caller list for exact thunk `0x11414` names `0x11a3c` and `0x1327c`. Only the first caller body is in scope. Ghidra notes that its flow model treats the thunk's terminal call at `0x1141c` as excluding fallthrough; this does not establish why or prove a runtime nonreturn.
+
+`plt-imports.tsv` binds all eight PLT calls in this body to their `.rel.plt` relocation names and GOT offsets. Three other direct call targets (`0x26d8`, `0x37e4`, `0x188c`) are named only by address and the pinned REA call relationship; their bodies remain unexpanded. The names in relocation metadata identify symbols, not contracts.
+
+The strongest in-scope seed fact for a possible later callback interpretation is the literal word `0x7c8` stored to `current r5+0x110`. The source does not prove that offset is a callback field or that the word is executable code. `0x1b24 -> PLT 0x160c` is an adjacent unresolved call with current arguments `r5,r7`, but no claim is made that it populates `+0x110`; the later explicit store at `+0x110` is independent. The opaque result from `0x188c` is stored at `+0x10c`, not `+0x110`. A next bounded question, if authorized, should follow consumers of the exact `+0x110` word or identify the address represented by `0x7c8`; this package does not expand those targets.
+
+Statuses: bounded source instruction effects and literal arithmetic **VERIFIZIERT**; current global contents, callee effects/return contracts, allocation/storage properties, registration semantics, runtime call-target binding, object identity, and any callback interpretation **OFFEN**. No API, ABI, C structure, field name, or universal registration behavior is inferred. Static/source validation **PASS**; native execution, VM, device, network, and project tests **NOT_RUN**. This is a self-review of source-bound synthesis and raw-byte comparison, not an independent review.

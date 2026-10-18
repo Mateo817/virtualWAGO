@@ -1,0 +1,17 @@
+> Bereinigte historische Ergebniskopie. Maßgeblich für Korrekturen und Geltungsgrenzen ist der zentrale Evidence-Index; Originalhash siehe export-manifest.json.
+
+# WP-XE164-248 — independent WP246 countercheck
+
+**Result:** all nine claims pass this bounded static countercheck; J1 remains **HYPOTHESE**. This is an independent worker review of exact source bytes and retained REA records, not independent hardware/runtime evidence.
+
+The review was limited to helper `[0x2fec58,0x2fecc4)` and caller `CMCallHook` `[0x2fecc4,0x2ff0a0)`, in the exact `codesys3` file hash listed in `inputs.tsv`. I verified every word against both bounded GNU listings and directly against raw little-endian ELF bytes. The two retained Ghidra records cover all 27 and 247 instruction addresses, use Ghidra 12.1.4 and profile digest `7e467110…ec70de`, and are bound by their exact IDs in `review.tsv`. No new broad REA query was made.
+
+For H1-H3 I derived the unsigned gate directly from the visible `SUBS`, `CMP`, conditional `MOV`, and `BHI` conditions, then evaluated that Boolean expression for all 65,536 possible halfwords. General forwarded values accept exactly 2, 4, and 5. With forwarded r0=20 only 5 survives; with forwarded r0=15 all three remain. This calculation is separate from the frozen WP246 tiny interpreter; I did not rely on its all-values PASS.
+
+For H2/H4, `ip` is copied from entry r0 before the gate, r1/r2/r3 are moved into r0/r1/r2, and `LDR r3,[ip,#0x20]` is followed by a zero test, an explicit epilogue, and `BX r3`. The earlier offset-mismatch hypothesis remains refuted. The nonnull BX form is confirmed directly; it is not a BLX call. The three explicit rejection branches all reach the single `MOV r0,#1` block and return through restored pc.
+
+C1-C3 pass as immediate physical setup statements only. C1/C2 load r2 from `[fp,#-0x38]`, move r3 from r9, r1 from r7, and r0 from r6. C3 differs only in moving r0 from r5. The caller stores entry r1 to `[fp,#-0x38]`, but the report does not assume that opaque calls preserve that memory or the relevant registers; the rows describe the current values at the setup windows.
+
+J1’s 71-address sequence matches the direct branch destinations/fallthroughs and contains no earlier call on that candidate lane; it skips the optional BLX at 0x2fed2c and ends at the helper BL at 0x2fee7c. `MOV r7,r0` at 0x2fece0 and `MOV r1,r7` at 0x2fee74 show how incoming entry r0=15 can reach helper entry r1. For r7=15, the subtractions are interpreted by unsigned conditions: r7-23 and r7-27 wrap to large 32-bit values, compatible with the BHI/HI and not-BLS edges. On the root-fixed incoming entry r2=0 lane, `MOV r9,r2` yields r9=0; the `LDRNE [r9]` at 0x2fed6c and `STRNE [r9]` at 0x2fee68 both skip after the visible zero predicates. A compatible route then requires the optional-call slot to be null, entry r3 nonzero, `[ip+0x1c]` a nonzero list head, and its first link zero so the `BEQ` at 0x2fee28 reaches 0x2fee44. Global/list memory values, object shape and aliasing remain unobserved; no r9 pointee access is needed on this lane. Therefore J1 remains HYPOTHESE and no actual invocation, selector identity, or runtime outcome is claimed.
+
+The validator default reconstructs review/report/manifest in memory and compares existing bytes without mutation; `python3 validate.py --write` is the explicit generator mode. All source inputs are hash-bound in `inputs.tsv`; `manifest.sha256` excludes itself.

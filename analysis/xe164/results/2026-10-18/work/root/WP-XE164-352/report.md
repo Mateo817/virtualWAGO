@@ -1,0 +1,15 @@
+> Bereinigte historische Ergebniskopie. Maßgeblich für Korrekturen und Geltungsgrenzen ist der zentrale Evidence-Index; Originalhash siehe export-manifest.json.
+
+# WP-XE164-352 — VPI-global callback and numeric getter/setter/reset source
+
+Root **Self-Review**. **VERIFIZIERT** for163exactREA instructionwords from three metadata-first bodies,9additional raw-fallback callbackwords,11literalpools and the numeric relationships below. **OFFEN** for complete functionbehavior, semantic fieldnames/API/ABI, caller/runtimebinding, concurrency and opaqueeffects. **PASS** sourcechecks; native/VM/device/network/runtime **NOT_RUN**.
+
+Source is the same pinned FW31 libpackbus3b7b7ca4fa14e5994552040a7b40b1cfbbf43e0649a4ad9277ece421fd4bc5d6. ulGetDigOffset ELF1479c has252B/63words with16Bpool; ulSetDigOffset148a8 has352B/88words with16Bpool; vResetDigOffset14a18 has48B/12words with8Bpool. Exact actual REA records are retained. CodeVA=file and Ghidra=ELF+10000 here. Names identify symbols, not public contracts.
+
+Root348's vGetVPI_Values passes14774 as a numeric callbackaddress to pthread_once-namedPLT. Ghidra has no procedurethere. This package retains an exact40Bboundedread[14774,1479c) and hostobjdump: first9words are an observed local source slice ending directBto77d0PLT; finalword14798is a literal. It is not an invented completeGhidrafunction. Source computesbase47bac, zeroesq8/d16/d17, writes16zero bytes atbase and8eachatbase+10,+18,+20,+28, covering48B[base,base+30), then tails toMISC_threads_create_lock-namedPLT. These zero stores precede theopaque tail. Any values afterthatcall require separatepremises; no actualpthread_once invocation orlockeffect is established.
+
+The otherthree bodies use the samePC-derivedglobalfamily and numericcallback14774; their pthread_once/acquire/unlock/SSC_get_process_image_content_length calls are opaque. The Getter conditionally writes halfwords through currententryr1/r2 aliases, with numeric saturation from querywordshift3 at threshold0x80000 andfallbacktoqueriedsize when loadedglobalhalfword iszero. Detailed branch-specific source effects needselected-path review; this acquisition does not assert application-level offset orerror semantics.
+
+The Setter has two currentselector lanes and zero/reset lanes. ActualunsignedBHI instructions at14954/149a8 select their corresponding global-storepaths when currentr5 exceeds the queriedwordshift3; equalityselects a zeroingpath, belowreturns numeric1. Stores use16-bit truncation forcurrentr5 and copyotherquerywords to theglobalfamily. These are numeric source observations, not a conventional rangecheck inferred fromsymbolnames. LiveGP/frame/querycontents afteropaque calls areconditions.
+
+Reset source zeroes24B at currentbase+18..2f afteritsopaque pthread_once call undercurrentr4/framevalidity; thiscovers the sixwords later copiedbyvGetVPI_Values toconditionalS+a4..b8. That association is address arithmetic only, not lifecycle/persistence proof. Further independentanalysis shouldderiveall exactglobaldestinations andguard/outcomematrices beforecanonicalfunctionalclosure.

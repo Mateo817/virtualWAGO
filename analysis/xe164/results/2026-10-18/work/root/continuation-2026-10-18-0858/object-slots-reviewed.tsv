@@ -1,0 +1,9 @@
+object	position	ELF_location	source_or_current_value	status	basis
+O original getter-relative object	+0x04	0x14158	R_ARM_RELATIVE raw addend 0x1dc0; original slot fact	VERIFIZIERT	WP273/E294 source cell report
+O original getter-relative object	+0x0c	0x14160	R_ARM_RELATIVE raw addend 0x32bc	VERIFIZIERT	WP203/E229
+O original getter-relative object	+0x10	0x14164	R_ARM_RELATIVE raw addend 0x327c	VERIFIZIERT	WP203/E229
+D conditional copy destination	+0x00	G+0x1a270	later conditional store value DalBias+0x209c	VERIFIZIERT conditional	WP272/WP275 reviewed store model
+D conditional copy destination	+0x04	G+0x1a274	later conditional store value DalBias+0x209c; overwrites copied source byte range	VERIFIZIERT conditional	WP272/WP275 reviewed store model
+D conditional copy destination	+0x0c	G+0x1a27c	no poststore asserted here; copied value depends on copy premise	HYPOTHESE	WP272/WP275 conditional copy and store model
+D conditional copy destination	+0x10	G+0x1a280	later conditional store value DalBias+0x20c8; overwrites copied source byte range	VERIFIZIERT conditional	WP272/WP275 reviewed store model
+D conditional copy destination	+0x14	G+0x1a284	later conditional store value DalBias+0x20c8; overwrites copied source byte range	VERIFIZIERT conditional	WP272/WP275 reviewed store model

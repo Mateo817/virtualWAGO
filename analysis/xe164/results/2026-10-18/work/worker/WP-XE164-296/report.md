@@ -1,0 +1,17 @@
+> Bereinigte historische Ergebniskopie. Maßgeblich für Korrekturen und Geltungsgrenzen ist der zentrale Evidence-Index; Originalhash siehe export-manifest.json.
+
+# WP-XE164-296 — independent review and corrected position matrix
+
+**Finding:** WP293 has two material provenance errors and one machine-readable schema defect. Its cited worker224 report is a libdal provider-body report, not the canonical WriteOutputs consumer report; its cited worker225 report is lifecycle synthesis, not the canonical ReadInputs report. Canonical consumer evidence is worker198 for WriteOutputs (E224 return-flow, with E209 position arguments) and worker199 for ReadInputs (E225). The nine-position TSV repeats `evidence_status`, and its validator uses `csv.DictReader`, which silently collapses duplicate header names. WP293 also marks +0x0c/+0x10 provider facts unestablished because E293–E306 omit them, although accepted E229–E231 already establish original getter-relative relocation cells and bounded local bodies.
+
+The corrected matrix in `nine-position-matrix.tsv` keeps the nine requested offsets and binds each claim to its canonical source. `leading-context.tsv` keeps +0/+4 outside that count. `object-slots.tsv` separates the original getter-relative object `O=P+0x14154` from the candidate copied destination `D=G+0x1a270`.
+
+For original O, accepted E229 verifies `O+0x0c` at `0x14160` as `R_ARM_RELATIVE` addend `0x32bc`, and `O+0x10` at `0x14164` as addend `0x327c`. E230 and E231 bound the corresponding IoDrvDal callsites and target bodies. This corrects WP293's “provider not established” treatment for those positions. The body reports do not provide complete contracts: opaque calls remain, and caller/provider runtime binding is still **HYPOTHESE** or **OFFEN**.
+
+The D model is separate. WP272/WP275 describe a conditional 0x88-byte copy to D and later D-relative writes. Under those conditions, D+0/+4 are overwritten with `0x209c`, and D+0x10/+0x14/+0x6c with `0x20c8`. Thus the original O+0x10 relocation fact is not the value at D+0x10 after those stores. Matching numeric offsets do not prove that direct IoDrvDal callers using getter-return O consume D, nor that primary WriteOutputs `r7`, ReadInputs `r9`, separate list-entry `r8`, and getter-return O identify one runtime object.
+
+The +0x30 through +0x58 rows retain conditional copy/overlap claims only where their pinned reports support them. Body-local current registers after opaque calls are not silently treated as entry values. The range/callback gates in provider bodies remain local instruction facts; their runtime callback targets and effects are open.
+
+The review is source-bound to frozen WP293 files and accepted report hashes listed in `source-pins.tsv`. It does not expand code scope, query REA, execute binaries, or alter upstream packages. The validator checks source hashes/lengths, exact header uniqueness/order, nine unique position rows, source-role mappings, O relocation targets, D poststore distinction, corrected provider coverage, and status vocabularies. It includes negative checks that reject a duplicate header, a worker224/225 caller attribution, and a claim that D+0x10 retains copied O+0x10. Static/package validation: **PASS**. Runtime/device/VM/network tests: **NOT_RUN**.
+
+This is an independent review of accepted evidence and package provenance; it does not claim runtime verification or a universal lifecycle/ABI contract.

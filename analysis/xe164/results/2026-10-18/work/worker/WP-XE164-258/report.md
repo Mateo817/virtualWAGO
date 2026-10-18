@@ -1,0 +1,19 @@
+> Bereinigte historische Ergebniskopie. Maßgeblich für Korrekturen und Geltungsgrenzen ist der zentrale Evidence-Index; Originalhash siehe export-manifest.json.
+
+# WP-XE164-258 — original hook table lookup and bounded labels
+
+## Finding
+
+**VERIFIZIERT (bounded static bytes and local dataflow):** both scoped functions form the same exact base `0x3a30c0` and the 34-row exclusive end `0x3a31d0`. Each table row is an 8-byte pair: the first word is the numeric lookup key; the second word is used as a candidate name pointer by `CMGetHookName`. `CMGetHookEntries` returns the address of the matching row itself. Selector 15 is row 20 at `0x3a3160`. Its second table word is the four bytes `30583a00`, which decode as the little-endian pointer `0x003a5830`; the pointed-to NUL-terminated string bytes are `43485f455849545f53595354454d00` (`CH_EXIT_SYSTEM` followed by NUL).
+
+`CMGetHookName` compares its input r0 against the first word of each bounded row. On a hit it returns that row's second word in r0; if r1 is nonzero it stores status 0 there. On a miss it returns r0=0 and, if r1 is nonzero, stores 16 there. If r1 is zero no status memory access is made. `CMGetHookName` is the binary symbol metadata name from the supplied REA record; the label bytes themselves are evidence of emitted diagnostic strings only. They do not establish required lifecycle meaning, ordering, ABI, or runtime behavior.
+
+`CMGetHookEntries` uses r0 as the start key, r1 as the stop key, and r2 as an optional output count slot in the exact local instructions. It returns the start-row address or zero. For a nonnull r2 slot, it first stores zero. Once start is found, it counts rows from start up to but excluding the stop-key row; for equal start/stop it follows the explicit minimum-one path and reports one. The exclusive table bound prevents reading beyond 34 rows. For requested `(start,stop)` pairs `(17,16)`, `(12,14)`, `(2,2)`, `(10,12)`, the bounded outputs are respectively row/count `(19,2)`, `(16,2)`, `(2,1)`, `(13,3)`. A null r2 prevents all output-slot reads/writes while leaving the returned row pointer unchanged. `entries-range-replay.tsv` records table-key scan and count events with raw instruction witnesses for both null and nonnull output-slot cases; `instruction-roles.tsv` pins all instruction words in the two scoped intervals.
+
+## Text inventory and limits
+
+`strings.tsv` records each of the 34 second-word targets: pointer VA, file offset, source section, bytes read through the first NUL with a 96-byte maximum, payload length, NUL presence, exact payload SHA-256, and ASCII/UTF-8 decoding where valid. All 34 bounded payloads are NUL-terminated ASCII in this source. Text is shown as escaped content alongside its bytes. No pointer directives are followed, and no strings beyond these 34 assigned targets are read. No semantic or mandatory inference is made from the labels.
+
+The source is the exact `codesys3` artifact from the FW31 SD image, 5,181,396 bytes, SHA-256 `b56c6296faabae9eb73f0463fd068c535c03109ced347f0c2a643b69a7ee1ab5`. Complete supplied REA records cover exactly `[0x2fc138,0x2fc19c)` and `[0x2fc19c,0x2fc254)`; raw GNU objdump words are independently checked against these exact source intervals. The accepted corrected WP251 inventory hash is pinned and every row is rechecked against the source ELF. `validate.py` regenerates the tables in explicit `--write` mode and otherwise performs read-only source, REA, bound, string, replay, and manifest checks.
+
+Memory validity and nonaliasing are conditional: table bytes and candidate strings must be mapped/readable; a nonnull status/count slot must be readable/writable; count-slot writes must not alias the table range in a way that changes the lookup. The functions contain no call instructions. No caller, lifecycle sequence, ABI, table consumer, runtime state, VM, device, or network behavior is examined. This is a static source consistency analysis, not ELF execution.

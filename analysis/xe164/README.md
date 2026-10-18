@@ -1,20 +1,21 @@
 # XE164/C166-Analyse: Arbeits- und Übergabestruktur
 
-Dieses Verzeichnis enthält ausschließlich die öffentliche, herstellerdateifreie
-Arbeitsstruktur für die Offlineanalyse der `XE164L*.bin`-Dateien. Es enthält
+Dieses Verzeichnis enthält die öffentliche, herstellerdateifreie
+Arbeitsstruktur und bereinigte Ergebnisse der Offlineanalyse der `XE164L*.bin`-Dateien. Es enthält
 keine Firmware, keinen dekompilierten Herstellerquelltext, keine privaten
 Geräteinformationen und keinen Hardwarezugriff.
 
-Der aktuell vorbereitete private Arbeitsbereich liegt auf der Analyse-VM unter:
+Die [Ergebnissicherung vom 18.10.2026](results/2026-10-18/README.md) enthält
+444 Evidence-IDs, 303 Funktionszuordnungen und 420 bereinigte Paketberichte,
+einschließlich Korrekturen und offener Fragen. Exporthashes und eine
+hardwarefreie Integritätsprüfung binden diese öffentliche Kopie; Originaldateien,
+private Modelle und Rohtraces bleiben lokal. Die Gesamtanalyse ist nicht abgeschlossen.
 
-```text
-/home/developer/.codex/virtualwago-research/xe164-analysis
-```
-
-Dieser Pfad ist nicht Teil des Git-Repositories und ist mit Modus `0700`
-abgeschirmt. Für eine andere Umgebung muss der Leitagent einen ausdrücklich
-bereitgestellten privaten Root verwenden; er darf keinen Pfad aus alten
-Dokumenten oder Logs ableiten.
+Der private Arbeitsbereich wird dem Leitagenten außerhalb des Repositories
+ausdrücklich bereitgestellt und mit Modus `0700` abgeschirmt. Sein konkreter
+lokaler Pfad wird nicht veröffentlicht. Für eine andere Umgebung muss der
+Leitagent einen neu bereitgestellten privaten Root verwenden; er darf keinen
+Pfad aus alten Dokumenten oder Logs ableiten.
 
 ## Trennung der Ablagen
 

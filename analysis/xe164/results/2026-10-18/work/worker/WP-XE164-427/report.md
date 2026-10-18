@@ -1,0 +1,17 @@
+> Bereinigte historische Ergebniskopie. Maßgeblich für Korrekturen und Geltungsgrenzen ist der zentrale Evidence-Index; Originalhash siehe export-manifest.json.
+
+# WP-XE164-427 — independent source review of WP425
+
+**VERIFIZIERT:** The frozen WP425 body is exactly the 388-byte REA function range at Ghidra `0x192c8..0x1944b` inclusive, corresponding to ELF `0x92c8..0x944b`. The REA subject digest and the raw FW31 `libpackbus.so.1.0.1` hash both bind to `3b7b7ca4fa14e5994552040a7b40b1cfbbf43e0649a4ad9277ece421fd4bc5d6`. Its 97 word rows and seven literal rows map uniquely through ELF PT_LOAD entries and match the exact little-endian file bytes. The code ends before `0x944c`; the `0xe320f000` word at that address is outside the body, and the literal pool begins at `0x9450`.
+
+I independently decoded each direct ARM branch/call target, then decoded the three-instruction PLT sequence for each call and resolved the resulting GOT word against `R_ARM_JUMP_SLOT` entries in `readelf -rW`. All 17 call sites resolve to the same 11 PLT/GOT addresses and relocation labels in WP425’s `call-slots.tsv`. This verifies call-site and relocation identity only; it does not supply any called routine’s effect or a public signature.
+
+The PC-relative checks reproduce the five reported addresses. At the four state-global references, the LDR literal addresses are `0x9458`, `0x945c`, `0x9460`, and `0x9464`; the following ADD instructions use their architectural PC+8 values and produce ELF `G=0x34018`. The logger literal at `0x9468` similarly gives `0x1cfa0`. `VLDR.64 d16,[pc,#0x14c]` at `0x92fc` reads from `0x9450`; those raw bytes are `01 00 00 00 00 00 00 00`. The later `VST1.32 {d16},[r3]` stores the eight-byte D16 value, and the separately preceding STRB writes one at current `[r3+8]`. These are numerical positions and byte effects, not an inferred structure.
+
+The body words support the report’s local path descriptions: initial state null branches to the allocator path; a null allocator return sets r0 to 3 and exits; the boot return is tested against `0xffffffff`; a non-minus-one boot result is followed by SPI_Init and a zero/nonzero test, with nonzero selecting r0=6 and a zero store to current `[G+4]`. The Open result is tested for zero; nonzero reaches the first Command setup, and a zero first Command result reaches the second setup. The second Command result gates the logger/close path versus the status-6 path. Stack setup is a 16-byte push plus a 16-byte local subtraction; each epilogue adds 16 and pops r4/r5/r6/PC. The call-site register and stack words listed in WP425 match the raw moves/stores.
+
+These source paths require current values and memory across opaque calls. WP425 does not claim ABI preservation, calloc zero-fill, SPI_Init effects, boot behavior, mutex semantics, successful initialization, or a complete runtime chain. Those limits are appropriate. The only scope update is temporal: WP423’s earlier statement that this helper was unexpanded was accurate for that synthesis snapshot, but WP425 now closes its local body content. The callee effects and end-to-end init contract remain open.
+
+WP425’s default validator also passes. The independent check here does not reuse it as the sole oracle: it re-decodes branch/call targets and PLT/GOT relocation chains from raw ELF bytes. No WP425 or WP423 input was modified. Runtime, VM, target, network, and device tests are **NOT_RUN**.
+
+**Selbst-Review:** Bounded raw-source review. No external function contract, ABI, runtime binding, or hardware behavior is established.
