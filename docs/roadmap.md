@@ -1,5 +1,7 @@
 # Roadmap und objektive Abnahme
 
+**PWM-Erkundung, 19.10.2026:** [Begrenzter Async-Kanal](pwm-async-exploration-2026-10-19.md): Originalruntime RUN und sieben wechselnde angeforderte PWM-Ausgangsframes **PASS** mit explizit synthetischer UID/Registerantwort, Modellpermit 0. Original-STOP und sieben unveränderte Dateien nach Rücknahme **PASS**. 286 lokale Tests ohne Skip. Original-Moduldiagnose, PWM-Skalierung und Hardwareabgleich bleiben **OFFEN / NOT_RUN**. Die folgenden Meldungen dokumentieren frühere Stände.
+
 **Native Integration, 19.10.2026:** [Analogeingang/-ausgang und digitale Regression](native-integration-2026-10-19.md): virtuelle 750-466/750-550, 750-430/750-530 und 750-1405/750-1504 mit Originalruntime und Originaltreibern **PASS**, Modellpermit 0. Explizite virtuelle Registerkonfiguration gemäß [ADR-0009](adr-0009.md); Hardwareabgleich **NOT_RUN**. PWM-Build/Reopen und Eigenprovider **PASS**, originale PWM-Runtime erreicht mit privatem D-Bus RUN; Frameabnahme **BLOCKED** am Modellfehler nach nicht unterstützter UID-Anfrage. 285 lokale Tests ohne Skip. Die folgenden Meldungen dokumentieren frühere Stände.
 
 **Modulerweiterung, 19.10.2026:** [Bytepuffer und frische Digitalregression](module-extension-2026-10-19.md): virtuelle 750-1405/750-1504 (16 DI/DO) und 750-430/750-530 mit Originalruntime/Originaltreibern **PASS**, Modellpermit 0; Original-STOP und unveränderte Dateien wieder bestätigt. 750-550-Signalmodell ergänzt; Analogpaar und PWM-Projekt Build/Reopen **PASS**. Native Analog-/PWM-Ausführung bleibt wegen Register-/Projektionsverträgen **BLOCKED / NOT_RUN**. 281 lokale Tests ohne Skip; der private Header benötigende Bytepuffer-Harness ist in öffentlicher CI ohne diese Header explizit NOT_RUN.
@@ -41,7 +43,8 @@ Der Eigentümer beauftragt zusätzlich den [Modulkatalog](module-catalog-2026-10
 - [x] Neue native Digital-8-Regression und Digital-16-Abnahme 750-1405/1504 mit frischen Artefakten/Rückweg: begrenzte Eingangs-/Ausgangsbefehlsprüfung bei Modellpermit 0; kein Hardwarevergleich.
 - [x] Festes virtuelles 750-466/750-550-Profil: originale Initialisierung und sechs vollständige zyklische Datenmuster; ausdrücklich gewählte Registerwerte.
 - [ ] 750-466/750-550: physische Status-/Registerprojektion, Diagnose und elektrischer Vergleich mit gebundener Modulrevision.
-- [ ] 750-677: UID-Vertrag der Original-Modulbibliothek schließen, danach vollständige native Frameabnahme; weitere Modi, Status-/Zeitverhalten und physischer Abgleich bleiben separat.
+- [x] 750-677: begrenzte native Rohframeabnahme mit synthetischem UID-/Async-Erkundungsmodus.
+- [ ] 750-677: echte Identitäts-/Registerwerte, Original-Moduldiagnose, PWM-Projektion, weitere Modi, Status-/Zeitverhalten und physischer Abgleich.
 - [ ] Weitere Artikel nach belegtem Daten-/Verhaltensvertrag freischalten; kein generisches Erfolgsstub.
 - [ ] Virtuelle serielle Kommunikation: originale FW31-SysCom-/WAGO-Komponenten und Portauswahl lesen; isolierter virtueller Endpunkt/Gegenstellenmodell, dann native Anfrage/Antwort-/Timeoutprüfung.
 - [ ] Andere PFC200-Ausstattungen: Schnittstellenfähigkeiten und Gerätebeschreibungs-/Controllertypprüfungen getrennt untersuchen. Controlleridentität erhalten; Zusatzschnittstelle ist keine vollständige andere Controlleremulation.

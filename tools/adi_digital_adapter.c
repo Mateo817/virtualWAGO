@@ -19,6 +19,10 @@
 #include "adi_catalog_profiles.h"
 #include "adi_virtual_integration_profiles.h"
 
+#if defined(VIRTUALWAGO_PWM_ASYNC_EXPLORATION) && !defined(VIRTUALWAGO_ADI_TRACE)
+#error "PWM exploration requires explicit diagnostic tracing"
+#endif
+
 #define VIRTUAL_DEVICE_ID ((tDeviceId)1)
 #define VIRTUAL_DEVICE_NAME "libpackbus"
 #if (defined(VIRTUALWAGO_DEFAULT_PROFILE8) + \
@@ -75,6 +79,11 @@ static virtual_adi_clock_mode selected_clock_mode = default_clock_mode;
 
 typedef struct {
   bool initialized;
+#ifdef VIRTUALWAGO_PWM_ASYNC_EXPLORATION
+  uint32_t async_tokens[4]; /* Own bounded pool, not a vendor capacity claim. */
+  uint32_t async_read_keys[4];
+  bool async_read_pending[4];
+#endif
   bool opened;
   bool configured;
   bool app_running;
@@ -107,6 +116,22 @@ typedef struct {
 } virtual_state;
 
 static virtual_state state;
+#ifdef VIRTUALWAGO_PWM_ASYNC_EXPLORATION
+/* Never reuse a token across Init/Exit/reset in this process. */
+static uint32_t next_async_token;
+static unsigned trace_async_count;
+static unsigned trace_async_read_count;
+
+static void trace_async_read(const char *operation, uint32_t token,
+                            int slot, int channel, int reg, int32_t result,
+                            uint16_t value) {
+  if (trace_async_read_count >= 256u) return;
+  ++trace_async_read_count;
+  fprintf(stderr, "SYNTHETIC_ASYNC_READ op=%s token=%u slot=%d channel=%d "
+          "register=%d inner=%d value=%u\n", operation, token, slot, channel,
+          reg, result, (unsigned)value);
+}
+#endif
 static pthread_mutex_t state_mutex = PTHREAD_MUTEX_INITIALIZER;
 #ifdef VIRTUALWAGO_ENABLE_MODEL_BRIDGE
 /* Serialize the full Init/Exit lifecycle, including bridge join after releasing
@@ -363,11 +388,22 @@ static bool effective_permit(void) {
          !state.fault_latched;
 }
 
-static void latch_fault_locked(void) {
+static void latch_fault_locked_at(const char *origin) {
+#ifdef VIRTUALWAGO_PWM_ASYNC_EXPLORATION
+  static unsigned fault_trace_count;
+  if (fault_trace_count < 16u) {
+    ++fault_trace_count;
+    fprintf(stderr, "SYNTHETIC_MODEL_FAULT origin=%s write_active=%u\n",
+            origin, (unsigned)state.write_active);
+  }
+#else
+  (void)origin;
+#endif
   state.fault_latched = true;
   clear_effective_outputs();
   if (state.write_active) state.write_failed = true;
 }
+#define latch_fault_locked() latch_fault_locked_at(__func__)
 
 static bool owns_read(uint32_t task) {
   return state.read_active && task == state.read_task &&
@@ -537,6 +573,10 @@ int32_t virtual_adi_set_permit(bool permit) {
   STATE_GUARD;
   refresh_watchdog_locked();
   if (!state.initialized) return DAL_FAILURE;
+#ifdef VIRTUALWAGO_PWM_ASYNC_EXPLORATION
+  if (permit && selected_profile.profile == VIRTUAL_ADI_PROFILE_PWM677)
+    return DAL_FAILURE;
+#endif
   if (state.write_active && state.permit != permit) state.write_failed = true;
   state.permit = permit;
   if (!effective_permit()) clear_effective_outputs();
@@ -670,6 +710,10 @@ static int32_t adapter_close(tDeviceId id) {
       state.write_active)
     return DAL_FAILURE;
   state.opened = false;
+#ifdef VIRTUALWAGO_PWM_ASYNC_EXPLORATION
+  memset(state.async_tokens, 0, sizeof(state.async_tokens));
+  memset(state.async_read_pending, 0, sizeof(state.async_read_pending));
+#endif
   state.configured = false;
   state.app_running = false;
   state.permit = false;
@@ -873,6 +917,17 @@ static int32_t adapter_write_end(tDeviceId id, uint32_t task) {
       !frame_is_fully_covered(state.staged_coverage,
                               selected_profile.output_bytes,
                               selected_profile.output_bits)) {
+#ifdef VIRTUALWAGO_PWM_ASYNC_EXPLORATION
+    static unsigned coverage_trace_count;
+    if (!state.write_failed && coverage_trace_count < 4u) {
+      ++coverage_trace_count;
+      fprintf(stderr, "SYNTHETIC_INCOMPLETE_FRAME bytes=%u coverage=",
+              selected_profile.output_bytes);
+      for (uint32_t i = 0; i < selected_profile.output_bytes; ++i)
+        fprintf(stderr, "%02x", state.staged_coverage[i]);
+      fputc('\n', stderr);
+    }
+#endif
     if (!state.write_failed) latch_fault_locked();
     state.write_active = false;
     state.write_owner_valid = false;
@@ -1174,12 +1229,112 @@ static int32_t device_specific(const char *name, void *return_value,
       latch_fault_locked();
       return DAL_FAILURE;
     }
+#ifdef VIRTUALWAGO_PWM_ASYNC_EXPLORATION
+    if (selected_profile.profile == VIRTUAL_ADI_PROFILE_PWM677) {
+      int slot = va_arg(args, int);
+      uint32_t *uid = va_arg(args, uint32_t *);
+      if (slot == 1 && uid != NULL) {
+        *uid = 750677u; /* Explicit synthetic test value, NOT a genuine UID. */
+        *(int32_t *)return_value = 0;
+        TRACE_EVENT(trace_uid_count, "synthetic_get_uid", DAL_SUCCESS, 0,
+                    (uint32_t)slot, *uid);
+        return DAL_SUCCESS;
+      }
+      /* Known metadata query failure stays local in exploration. Preserve the
+       * explicit error and untouched output; never invent a second module UID. */
+      *(int32_t *)return_value = -1;
+      TRACE_EVENT(trace_uid_count, "synthetic_uid_rejected", DAL_SUCCESS, -1,
+                  (uint32_t)slot, uid != NULL ? 1u : 0u);
+      return DAL_SUCCESS;
+    }
+#endif
     latch_fault_locked();
     *(int32_t *)return_value = -1; /* Own explicit unsupported UID response. */
     TRACE_EVENT(trace_uid_count, "get_uid", DAL_SUCCESS,
                 *(int32_t *)return_value, 0u, 0u);
     return DAL_SUCCESS;
   }
+#ifdef VIRTUALWAGO_PWM_ASYNC_EXPLORATION
+  if (selected_profile.profile == VIRTUAL_ADI_PROFILE_PWM677 &&
+      (strcmp(name, LIBPACKBUS_DAL_FUNC_ASYNC_COM_OPEN) == 0 ||
+       strcmp(name, LIBPACKBUS_DAL_FUNC_ASYNC_COM_CLOSE) == 0)) {
+    if (!state.initialized || return_value == NULL) return DAL_FAILURE;
+    if (strcmp(name, LIBPACKBUS_DAL_FUNC_ASYNC_COM_OPEN) == 0) {
+      uint32_t *output = va_arg(args, uint32_t *);
+      if (output == NULL || next_async_token == UINT32_MAX) return DAL_FAILURE;
+      for (unsigned i = 0; i < 4u; ++i) {
+        if (state.async_tokens[i] != 0u) continue;
+        uint32_t token = ++next_async_token;
+        state.async_tokens[i] = token;
+        state.async_read_pending[i] = false;
+        *output = token;
+        *(int32_t *)return_value = 0;
+        TRACE_EVENT(trace_async_count, "synthetic_async_open", DAL_SUCCESS,
+                    0, token, i);
+        return DAL_SUCCESS;
+      }
+      return DAL_FAILURE; /* Own bounded pool exhausted, no invented success. */
+    }
+    /* Exact FW31 close argument: opaque pointer-typed token BY VALUE. */
+    uintptr_t token = (uintptr_t)va_arg(args, void *);
+    int32_t result = 15; /* Original close's unknown/stale-handle result. */
+    for (unsigned i = 0; token != 0u && token <= UINT32_MAX && i < 4u; ++i) {
+      if (state.async_tokens[i] != (uint32_t)token) continue;
+      state.async_tokens[i] = 0u;
+      state.async_read_pending[i] = false;
+      result = 0;
+      break;
+    }
+    *(int32_t *)return_value = result;
+    TRACE_EVENT(trace_async_count, "synthetic_async_close", DAL_SUCCESS,
+                result, token <= UINT32_MAX ? (uint32_t)token : 0u, 0u);
+    return DAL_SUCCESS;
+  }
+  if (selected_profile.profile == VIRTUAL_ADI_PROFILE_PWM677 &&
+      (strcmp(name, LIBPACKBUS_DAL_FUNC_ASYNC_COM_START_RD_REG) == 0 ||
+       strcmp(name, LIBPACKBUS_DAL_FUNC_ASYNC_COM_POLL_RD_REG) == 0)) {
+    if (!state.initialized || return_value == NULL) return DAL_FAILURE;
+    uintptr_t token = (uintptr_t)va_arg(args, void *);
+    int slot = va_arg(args, int);
+    int channel = va_arg(args, int);
+    int reg = va_arg(args, int);
+    bool poll = strcmp(name, LIBPACKBUS_DAL_FUNC_ASYNC_COM_POLL_RD_REG) == 0;
+    uint16_t *output = poll ? va_arg(args, uint16_t *) : NULL;
+    if (poll && output == NULL) {
+      *(int32_t *)return_value = 16; /* Original ERROR_VALUE_PTR. */
+      return DAL_SUCCESS;
+    }
+    if (slot != 1 || channel < 0 || channel > 255 || reg < 0 || reg > 255)
+      return DAL_FAILURE;
+    uint32_t key = ((uint32_t)slot << 16) | ((uint32_t)channel << 8) | (uint32_t)reg;
+    for (unsigned i = 0; token != 0u && token <= UINT32_MAX && i < 4u; ++i) {
+      if (state.async_tokens[i] != (uint32_t)token) continue;
+      if ((!poll && state.async_read_pending[i]) ||
+          (poll && !state.async_read_pending[i]))
+        return DAL_FAILURE; /* No invented success for wrong/busy requests. */
+      if (poll && state.async_read_keys[i] != key) {
+        state.async_read_pending[i] = false;
+        *(int32_t *)return_value = 22; /* Original ERROR_CONT_NOT_FIT. */
+        return DAL_SUCCESS;
+      }
+      if (poll) {
+        /* Own zero-initialized exploratory register bank, NOT hardware values.
+         * Completion is immediate on matching poll; no caller pointer retained. */
+        *output = 0u;
+        state.async_read_pending[i] = false;
+      } else {
+        state.async_read_keys[i] = key;
+        state.async_read_pending[i] = true;
+      }
+      *(int32_t *)return_value = 0;
+      trace_async_read(poll ? "poll" : "start", (uint32_t)token,
+                       slot, channel, reg, 0, 0u);
+      return DAL_SUCCESS;
+    }
+    *(int32_t *)return_value = 15;
+    return DAL_SUCCESS;
+  }
+#endif
   if (state.initialized) latch_fault_locked();
   TRACE_UNKNOWN_CALL(name);
   return DAL_NOTUSED;
