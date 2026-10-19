@@ -67,6 +67,29 @@ class NativePwm677ProbeTests(unittest.TestCase):
             candidate.SOURCE_SHA256)
         self.assertEqual(len(candidate.process_fields()), 24)
 
+    def test_cycle_contract_is_exact_raw_word_passthrough_with_zero_controls(self):
+        source = (ROOT / "prototype/iec/native_pwm677_probe.st").read_text(encoding="utf-8")
+        declaration, implementation = candidate.validate_cycle_program(source)
+        self.assertIn("PwmInputValue4 : WORD", declaration)
+        self.assertEqual(tuple(line.strip() for line in implementation.splitlines()
+                               if line.strip() and not line.strip().startswith("//")),
+                         candidate.CYCLE_ASSIGNMENTS)
+        self.assertEqual(len(candidate.CYCLE_ASSIGNMENTS), 12)
+        self.assertEqual([line for line in candidate.CYCLE_ASSIGNMENTS
+                          if "PwmOutputValue" in line], [
+            "PwmOutputValue1 := PwmInputValue1;",
+            "PwmOutputValue2 := PwmInputValue2;",
+            "PwmOutputValue3 := PwmInputValue3;",
+            "PwmOutputValue4 := PwmInputValue4;",
+        ])
+        for changed in (source.replace("PwmOutputValue2 := PwmInputValue2;",
+                                       "PwmOutputValue2 := PwmInputValue1;"),
+                        source.replace("PwmControl3 := BYTE#0;",
+                                       "PwmControl3 := BYTE#1;"),
+                        source + "PwmOutputValue1 := WORD#0;\n"):
+            with self.subTest(changed=changed[-100:]), self.assertRaises(Exception):
+                candidate.validate_cycle_program(changed)
+
     def test_mapping_reports_actual_16_byte_image_per_direction(self):
         rows = self.rows()
         result = candidate.verify_mapping_rows(rows)

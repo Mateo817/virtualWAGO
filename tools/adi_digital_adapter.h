@@ -13,7 +13,9 @@
 /* Own model profiles; neither value identifies a physical terminal. */
 typedef enum {
   VIRTUAL_ADI_PROFILE_DIGITAL16 = 0,
-  VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8 = 1
+  VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8 = 1,
+  VIRTUAL_ADI_PROFILE_ANALOG466_AO550 = 2,
+  VIRTUAL_ADI_PROFILE_PWM677 = 3
 } virtual_adi_profile;
 
 typedef enum {
@@ -23,7 +25,9 @@ typedef enum {
 
 /* Own extension API; these are not WAGO ADI functions. */
 /* Profile selection is accepted only before Init. Runtime builds may select a
- * reviewed default with VIRTUALWAGO_DEFAULT_PROFILE8; unset means DIGITAL16.
+ * reviewed default with exactly one of VIRTUALWAGO_DEFAULT_PROFILE8,
+ * VIRTUALWAGO_DEFAULT_ANALOG466_AO550, or VIRTUALWAGO_DEFAULT_PWM677; unset
+ * means DIGITAL16.
  */
 int32_t virtual_adi_select_profile(virtual_adi_profile profile);
 /* Clock mode can also be selected only before Init. Logical time is the

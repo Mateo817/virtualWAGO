@@ -24,7 +24,7 @@ jobs:
       - name: Install own namespace-test dependency
         run: |
           sudo apt-get update
-          sudo apt-get install --yes bubblewrap
+          sudo apt-get install --yes bubblewrap dbus
       - name: Validate public XE164 result snapshots
         run: python3 tools/validate_xe164_results.py
       - name: Run hardware-free unit tests

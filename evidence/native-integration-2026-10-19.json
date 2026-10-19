@@ -1,0 +1,693 @@
+{
+  "schema": "virtualwago.native-integration-evidence.v1",
+  "date": "2026-10-19",
+  "implementation_commit": "b651d99c1dbdc2ea3754d447a83f504e4a57a97f",
+  "base_commit": "8ba94bf7bf733e120d24bb16c68f1ebbc1faa12d",
+  "source_sha256": {
+    "tools/adi_digital_adapter.c": "56449d068edb6dced1145aeb5f92d55c5cf34c390c3bb24059d8a7da622a3f8f",
+    "tools/adi_digital_adapter.h": "71c215c49a5d0a4e8f8bddb61728b3a5a959b97ed60754eb630acf0c491efe1e",
+    "tools/adi_model_bridge.c": "cf2743e76a09a0147d12cccf8c00ab0b1b54bc3ba906bea1dbe3584893c5d35f",
+    "tools/adi_model_bridge.h": "8c77a49a509d3403362cf451e542bd2ef15cf7271dcb1e04fbe485d736690b0d",
+    "tools/adi_catalog_profiles.h": "d65dec677a36e724dc0dc037a6052b5e153ae34eb065e75a61c504c8191863f3",
+    "tools/adi_virtual_integration_profiles.h": "10a7cd8f842e74e92e4f2f156992c14931ccebb4a6132ef45bca5bf63caf2fee",
+    "tools/adi_native_integration_profile_test.c": "847d7f3e406ede7352dd0329b9316f40f6dffac3439073ab88c1e8323e3496d7",
+    "tools/adi_byte_buffer_test.c": "c9533ff32d4e253fd9bf4ebb81e64270739ef8d13059fd17ca7feb628dd536ef",
+    "tests/test_adi_native_integration_profiles.py": "8f7b7095dc769b352a2b274550f395ec7a38c737b91128c7bbed0d744c3b84ea",
+    "tools/codesys_native_pwm677_probe.py": "d7745619e9ce702aeb76199236c331591a85c6f3f0c7997061ece4244295306d",
+    "prototype/iec/native_pwm677_probe.st": "9bd225d6f40169d14d9c43a147a41a2cf9b724a4460b97f18356a39215482357",
+    "tests/test_codesys_native_pwm677_probe.py": "82c8da28ab297c5138e10604bb22374834abf3875a40ce27d2f18f0bee6851c3",
+    "tools/native_frame_acceptance.py": "17a0d6cd030f3a3dff3b47e82efcd1c028e621eb0fec3ac1b6ed19a7cecc291a",
+    "tools/native_digital_acceptance.py": "3afbcdc38545597f1f2c36053d56287e8da4362c4837c0108d609b783c8324f0",
+    "tools/native_private_bus.sh": "21f77635b1c65e90caca5cdb2e64833aca670a35bc90d1def5b5285d09aa94bc",
+    "config/native-private-dbus.conf": "1739c7d61f377f961bc33fc25030b1108d5ca55f7b75d0154e64733c1d93a30f",
+    "tests/test_native_private_bus.py": "71ef07e34899ff4636611a0fbb58c1589497ec6443b87dd8b3f8d629d56783cf",
+    ".github/workflows/python.yml": "03ae1a2f155177027afea23a34c464e5a6148c1fd92e7a08c13a0d1d7a9eaefc"
+  },
+  "reference": {
+    "controller": "750-8213",
+    "kernel": "6.6.94-rt56-w05.08.02",
+    "runtime": "3.5.21.50",
+    "task_interval_ms": 20,
+    "tcm": 0,
+    "physical_permit": false
+  },
+  "native_profiles": {
+    "AI466_AO550": {
+      "status": "PASS",
+      "scope": "original runtime/manager/IO drivers; own fixed virtual profile; model permit 0; no physical module proof",
+      "attempt": 4,
+      "input_bytes": 4,
+      "output_bytes": 4,
+      "samples": [
+        {
+          "vector_index": 0,
+          "input_hex": "00400000",
+          "expected_output_hex": "00400000",
+          "observed_requested_hex": "00400000",
+          "observed_effective_hex": "00000000",
+          "generation": 1,
+          "frames": 307,
+          "post_ack_watermark_frames": 305,
+          "post_latch_watermark_frames": 306
+        },
+        {
+          "vector_index": 1,
+          "input_hex": "00000040",
+          "expected_output_hex": "00000040",
+          "observed_requested_hex": "00000040",
+          "observed_effective_hex": "00000000",
+          "generation": 1,
+          "frames": 309,
+          "post_ack_watermark_frames": 307,
+          "post_latch_watermark_frames": 308
+        },
+        {
+          "vector_index": 2,
+          "input_hex": "f87f0040",
+          "expected_output_hex": "f87f0040",
+          "observed_requested_hex": "f87f0040",
+          "observed_effective_hex": "00000000",
+          "generation": 1,
+          "frames": 311,
+          "post_ack_watermark_frames": 309,
+          "post_latch_watermark_frames": 310
+        },
+        {
+          "vector_index": 3,
+          "input_hex": "00100070",
+          "expected_output_hex": "00100070",
+          "observed_requested_hex": "00100070",
+          "observed_effective_hex": "00000000",
+          "generation": 1,
+          "frames": 313,
+          "post_ack_watermark_frames": 311,
+          "post_latch_watermark_frames": 312
+        },
+        {
+          "vector_index": 4,
+          "input_hex": "f87ff87f",
+          "expected_output_hex": "f87ff87f",
+          "observed_requested_hex": "f87ff87f",
+          "observed_effective_hex": "00000000",
+          "generation": 1,
+          "frames": 315,
+          "post_ack_watermark_frames": 313,
+          "post_latch_watermark_frames": 314
+        },
+        {
+          "vector_index": 5,
+          "input_hex": "00000000",
+          "expected_output_hex": "00000000",
+          "observed_requested_hex": "00000000",
+          "observed_effective_hex": "00000000",
+          "generation": 1,
+          "frames": 317,
+          "post_ack_watermark_frames": 315,
+          "post_latch_watermark_frames": 316
+        }
+      ],
+      "host_checker_duration_seconds": 0.6876106709241867,
+      "provider_sha256": "59a7813183dca078d84a031f523e8022d4e27e067c91dd7365ad5c8d9a4d3a9c",
+      "app_sha256": "79b5e558476183e390ac3ddcdc6b38ebf107b25221f994189d37af627039dd02",
+      "crc_sha256": "5d2a398cc3f2e3620bec91766ef85ee4c696120b4485625be9e1324d25e65589",
+      "trace": [
+        "VIRTUAL_ADI_TRACE init profile=AI466_AO550 outer=0 inner=0 a=4 b=4",
+        "VIRTUAL_ADI_TRACE unknown_op profile=AI466_AO550 outer=1 inner=not_written a=0 b=0 name=bac_PROXY_PostTscInterface",
+        "VIRTUAL_ADI_TRACE unknown_op profile=AI466_AO550 outer=1 inner=not_written a=0 b=0 name=bac_PROXY_AssignPlcReadEventItf",
+        "VIRTUAL_ADI_TRACE terminal_info profile=AI466_AO550 outer=0 inner=0 a=2 b=4000",
+        "VIRTUAL_ADI_TRACE table9 profile=AI466_AO550 outer=0 inner=0 a=1 b=2",
+        "VIRTUAL_ADI_TRACE read_conf_reg profile=AI466_AO550 outer=0 inner=0 a=1 b=16",
+        "VIRTUAL_ADI_TRACE read_conf_reg profile=AI466_AO550 outer=0 inner=0 a=1 b=29",
+        "VIRTUAL_ADI_TRACE read_conf_reg profile=AI466_AO550 outer=0 inner=0 a=1 b=30",
+        "VIRTUAL_ADI_TRACE table9 profile=AI466_AO550 outer=0 inner=0 a=2 b=2",
+        "VIRTUAL_ADI_TRACE read_conf_reg profile=AI466_AO550 outer=0 inner=0 a=2 b=16",
+        "VIRTUAL_ADI_TRACE read_conf_reg profile=AI466_AO550 outer=0 inner=0 a=2 b=29",
+        "VIRTUAL_ADI_TRACE read_conf_reg profile=AI466_AO550 outer=0 inner=0 a=2 b=30",
+        "VIRTUAL_ADI_TRACE read_bytes profile=AI466_AO550 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=AI466_AO550 outer=0 inner=0 a=2 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=AI466_AO550 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=AI466_AO550 outer=0 inner=0 a=2 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=AI466_AO550 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=AI466_AO550 outer=0 inner=0 a=2 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=AI466_AO550 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=AI466_AO550 outer=0 inner=0 a=2 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=AI466_AO550 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=AI466_AO550 outer=0 inner=0 a=2 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=AI466_AO550 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=AI466_AO550 outer=0 inner=0 a=2 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=AI466_AO550 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=AI466_AO550 outer=0 inner=0 a=2 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=AI466_AO550 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=AI466_AO550 outer=0 inner=0 a=2 b=2"
+      ],
+      "runtime_RUN": "PASS",
+      "isolation": "PASS",
+      "rollback_STOP_and_seven_original_hashes": "PASS",
+      "evidence_sha256": {
+        "trial.stdout": "46522a93682e8888dfd042b21e47753cd82bf8c17a69c946df8b295190aa0681",
+        "trial-coordinator.json": "6870ea69d7b57484dd031602ae1bd0c889e0c6fd6085bbc482173ffb20e6a022",
+        "acceptance.json": "a0a3e8c968c1ded5a8941a2ede3bf23967d3b8c39e11b1228c5fea71c2fa8c7d",
+        "isolation.sh.stdout": "b7620230858b2b8fb0d4985b7a574974d9119ca05a270b62cb05d8f88ecaf941",
+        "execution-source-pins.json": "5f587ddf549b253f8273f16ac51d9bc399c37d75486dfd243068c7c8d6080164"
+      }
+    },
+    "DI8": {
+      "status": "PASS",
+      "scope": "original runtime/manager/IO drivers; own fixed virtual profile; model permit 0; no physical module proof",
+      "attempt": 1,
+      "input_bytes": 1,
+      "output_bytes": 1,
+      "samples": [
+        {
+          "vector_index": 0,
+          "input_hex": "81",
+          "expected_output_hex": "17",
+          "observed_requested_hex": "17",
+          "observed_effective_hex": "00",
+          "generation": 1,
+          "frames": 320,
+          "post_ack_watermark_frames": 318,
+          "post_latch_watermark_frames": 319
+        },
+        {
+          "vector_index": 1,
+          "input_hex": "5a",
+          "expected_output_hex": "cc",
+          "observed_requested_hex": "cc",
+          "observed_effective_hex": "00",
+          "generation": 1,
+          "frames": 322,
+          "post_ack_watermark_frames": 320,
+          "post_latch_watermark_frames": 321
+        },
+        {
+          "vector_index": 2,
+          "input_hex": "ff",
+          "expected_output_hex": "69",
+          "observed_requested_hex": "69",
+          "observed_effective_hex": "00",
+          "generation": 1,
+          "frames": 324,
+          "post_ack_watermark_frames": 322,
+          "post_latch_watermark_frames": 323
+        },
+        {
+          "vector_index": 3,
+          "input_hex": "00",
+          "expected_output_hex": "96",
+          "observed_requested_hex": "96",
+          "observed_effective_hex": "00",
+          "generation": 1,
+          "frames": 326,
+          "post_ack_watermark_frames": 324,
+          "post_latch_watermark_frames": 325
+        }
+      ],
+      "host_checker_duration_seconds": 0.9158584689721465,
+      "provider_sha256": "065a625e6ca10576ff27820a9e518743af8eaef61c9435a331865a8905b2e634",
+      "app_sha256": "56c8bdf9517ab5679a703673cd8cbc426a301ad3495d86f5aa90e061cb505201",
+      "crc_sha256": "8abcf0f29703e28facb045c0ab9052cd7f38cbcd41a4df5273f9728577ccbc12",
+      "trace": [
+        "VIRTUAL_ADI_TRACE init profile=DI8 outer=0 inner=0 a=1 b=1",
+        "VIRTUAL_ADI_TRACE unknown_op profile=DI8 outer=1 inner=not_written a=0 b=0 name=bac_PROXY_PostTscInterface",
+        "VIRTUAL_ADI_TRACE unknown_op profile=DI8 outer=1 inner=not_written a=0 b=0 name=bac_PROXY_AssignPlcReadEventItf",
+        "VIRTUAL_ADI_TRACE terminal_info profile=DI8 outer=0 inner=0 a=2 b=4000",
+        "VIRTUAL_ADI_TRACE table9 profile=DI8 outer=0 inner=0 a=1 b=2",
+        "VIRTUAL_ADI_TRACE table9 profile=DI8 outer=0 inner=0 a=2 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=DI8 outer=0 inner=0 a=0 b=1",
+        "VIRTUAL_ADI_TRACE write_bytes profile=DI8 outer=0 inner=0 a=0 b=1",
+        "VIRTUAL_ADI_TRACE read_bytes profile=DI8 outer=0 inner=0 a=0 b=1",
+        "VIRTUAL_ADI_TRACE write_bytes profile=DI8 outer=0 inner=0 a=0 b=1",
+        "VIRTUAL_ADI_TRACE read_bytes profile=DI8 outer=0 inner=0 a=0 b=1",
+        "VIRTUAL_ADI_TRACE write_bytes profile=DI8 outer=0 inner=0 a=0 b=1",
+        "VIRTUAL_ADI_TRACE read_bytes profile=DI8 outer=0 inner=0 a=0 b=1",
+        "VIRTUAL_ADI_TRACE write_bytes profile=DI8 outer=0 inner=0 a=0 b=1",
+        "VIRTUAL_ADI_TRACE read_bytes profile=DI8 outer=0 inner=0 a=0 b=1",
+        "VIRTUAL_ADI_TRACE write_bytes profile=DI8 outer=0 inner=0 a=0 b=1",
+        "VIRTUAL_ADI_TRACE read_bytes profile=DI8 outer=0 inner=0 a=0 b=1",
+        "VIRTUAL_ADI_TRACE write_bytes profile=DI8 outer=0 inner=0 a=0 b=1",
+        "VIRTUAL_ADI_TRACE read_bytes profile=DI8 outer=0 inner=0 a=0 b=1",
+        "VIRTUAL_ADI_TRACE write_bytes profile=DI8 outer=0 inner=0 a=0 b=1",
+        "VIRTUAL_ADI_TRACE write_bytes profile=DI8 outer=0 inner=0 a=0 b=1"
+      ],
+      "runtime_RUN": "PASS",
+      "isolation": "PASS",
+      "rollback_STOP_and_seven_original_hashes": "PASS",
+      "evidence_sha256": {
+        "trial.stdout": "a92285f4e772341c25b03b3f3a7229cda63a103fe0b944a9fd68b59ef616b15e",
+        "trial-coordinator.json": "f0818e64bf12ae2fae5f969a2668bc8ce17828f6c940b01ac131517b5689a0a8",
+        "acceptance.json": "abeb44b057ec0911140bb7851e96f3a73145f428bac2261464bffc85588b34f4",
+        "isolation.sh.stdout": "b7620230858b2b8fb0d4985b7a574974d9119ca05a270b62cb05d8f88ecaf941",
+        "execution-source-pins.json": "d1d705c2d0c0c3fff2febf192b93c8596102f5e0b21509bad4c15efd9f20be9e"
+      }
+    },
+    "DI16": {
+      "status": "PASS",
+      "scope": "original runtime/manager/IO drivers; own fixed virtual profile; model permit 0; no physical module proof",
+      "attempt": 1,
+      "input_bytes": 2,
+      "output_bytes": 2,
+      "samples": [
+        {
+          "vector_index": 0,
+          "input_hex": "0100",
+          "expected_output_hex": "97a5",
+          "observed_requested_hex": "97a5",
+          "observed_effective_hex": "0000",
+          "generation": 1,
+          "frames": 396,
+          "post_ack_watermark_frames": 394,
+          "post_latch_watermark_frames": 395
+        },
+        {
+          "vector_index": 1,
+          "input_hex": "8100",
+          "expected_output_hex": "17a5",
+          "observed_requested_hex": "17a5",
+          "observed_effective_hex": "0000",
+          "generation": 1,
+          "frames": 398,
+          "post_ack_watermark_frames": 396,
+          "post_latch_watermark_frames": 397
+        },
+        {
+          "vector_index": 2,
+          "input_hex": "ff00",
+          "expected_output_hex": "69a5",
+          "observed_requested_hex": "69a5",
+          "observed_effective_hex": "0000",
+          "generation": 1,
+          "frames": 400,
+          "post_ack_watermark_frames": 399,
+          "post_latch_watermark_frames": 399
+        },
+        {
+          "vector_index": 3,
+          "input_hex": "0001",
+          "expected_output_hex": "96a4",
+          "observed_requested_hex": "96a4",
+          "observed_effective_hex": "0000",
+          "generation": 1,
+          "frames": 402,
+          "post_ack_watermark_frames": 401,
+          "post_latch_watermark_frames": 401
+        },
+        {
+          "vector_index": 4,
+          "input_hex": "0080",
+          "expected_output_hex": "9625",
+          "observed_requested_hex": "9625",
+          "observed_effective_hex": "0000",
+          "generation": 1,
+          "frames": 404,
+          "post_ack_watermark_frames": 402,
+          "post_latch_watermark_frames": 403
+        },
+        {
+          "vector_index": 5,
+          "input_hex": "96a5",
+          "expected_output_hex": "0000",
+          "observed_requested_hex": "0000",
+          "observed_effective_hex": "0000",
+          "generation": 1,
+          "frames": 406,
+          "post_ack_watermark_frames": 405,
+          "post_latch_watermark_frames": 405
+        },
+        {
+          "vector_index": 6,
+          "input_hex": "ffff",
+          "expected_output_hex": "695a",
+          "observed_requested_hex": "695a",
+          "observed_effective_hex": "0000",
+          "generation": 1,
+          "frames": 408,
+          "post_ack_watermark_frames": 406,
+          "post_latch_watermark_frames": 407
+        },
+        {
+          "vector_index": 7,
+          "input_hex": "0000",
+          "expected_output_hex": "96a5",
+          "observed_requested_hex": "96a5",
+          "observed_effective_hex": "0000",
+          "generation": 1,
+          "frames": 410,
+          "post_ack_watermark_frames": 408,
+          "post_latch_watermark_frames": 409
+        }
+      ],
+      "host_checker_duration_seconds": 1.3928291951306164,
+      "provider_sha256": "cfd812769f0b43cf5d650322595f2bce7bc5b78efc62e5984d841a6c94817934",
+      "app_sha256": "89a2c64a5ba990ac94df83a4fc5be333f4d7bc1d60f8eb04eb26913a2d727730",
+      "crc_sha256": "2b7eb28dbd5d0926d94b111d9b89242cdaca5e5d91a13b9c863a92b8c96eae9f",
+      "trace": [
+        "VIRTUAL_ADI_TRACE init profile=DI16 outer=0 inner=0 a=2 b=2",
+        "VIRTUAL_ADI_TRACE unknown_op profile=DI16 outer=1 inner=not_written a=0 b=0 name=bac_PROXY_PostTscInterface",
+        "VIRTUAL_ADI_TRACE unknown_op profile=DI16 outer=1 inner=not_written a=0 b=0 name=bac_PROXY_AssignPlcReadEventItf",
+        "VIRTUAL_ADI_TRACE terminal_info profile=DI16 outer=0 inner=0 a=2 b=4000",
+        "VIRTUAL_ADI_TRACE table9 profile=DI16 outer=0 inner=0 a=1 b=2",
+        "VIRTUAL_ADI_TRACE table9 profile=DI16 outer=0 inner=0 a=2 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=DI16 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=DI16 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=DI16 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=DI16 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=DI16 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=DI16 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=DI16 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=DI16 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=DI16 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=DI16 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=DI16 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=DI16 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=DI16 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=DI16 outer=0 inner=0 a=0 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=DI16 outer=0 inner=0 a=0 b=2"
+      ],
+      "runtime_RUN": "PASS",
+      "isolation": "PASS",
+      "rollback_STOP_and_seven_original_hashes": "PASS",
+      "evidence_sha256": {
+        "trial.stdout": "8952e5a997f4293a33bb35cce51c68fe0e5984a8c0850bfe9bc0b35e831ec382",
+        "trial-coordinator.json": "0b7c8ac090484cbb4f7f294da99ef11f7a9040e4dd72f72114cd56a12e66c7de",
+        "acceptance.json": "1368518d1e54e57357909352d1cc007953a067301a1822e929c3587b7da8a4c7",
+        "isolation.sh.stdout": "b7620230858b2b8fb0d4985b7a574974d9119ca05a270b62cb05d8f88ecaf941",
+        "execution-source-pins.json": "f37ed4ef2d9a82034b475523436841f1418a07ab191a3fdc84d48167950d73ed"
+      }
+    },
+    "PWM677": {
+      "status": "BLOCKED",
+      "scope": "original runtime RUN; selected terminal/config checks and cyclic access observed; frame acceptance blocked by explicit unsupported UID model fault",
+      "provider_sha256": "ffaa6760aa273d5ab9bfad71639314bd35694a3b1d0653b4cfcbc7b09718aeb5",
+      "app_sha256": "3369676a1165cddd6112ed9aa35422b395b01367de0ec41445a8cb3f6d773ac5",
+      "attempts": [
+        {
+          "attempt": 2,
+          "native_initialization": "FAIL",
+          "cyclic_acceptance": "NOT_RUN",
+          "reason": "Boot APP cannot link LED_SET_BLINK; required generated module library needs original LED component",
+          "rollback_STOP_and_seven_original_hashes": "PASS",
+          "evidence_sha256": {
+            "trial.stdout": "1105fb8bd243b32ebc94e80360fb14ee3a106de0749999b5c5e2b8d6df1c0aab",
+            "trial-coordinator.json": "9079003583b6ea012c99ee1fdf36f07452e543702bd35502e69614fc3c4b11cc",
+            "collect.sh.stdout": "577591feea546ec87a4219039c7910fc5c6b98eba6f94a51785072a0cd3a3286",
+            "isolation.sh.stdout": "b7620230858b2b8fb0d4985b7a574974d9119ca05a270b62cb05d8f88ecaf941",
+            "execution-source-pins.json": "fbb8305f9b298c1f5bb7518d71d003afac1b5d62d17afb4ce67d2c3e5ca503aa"
+          }
+        },
+        {
+          "attempt": 3,
+          "native_initialization": "FAIL",
+          "cyclic_acceptance": "NOT_RUN",
+          "reason": "Original TscLED CH_INIT AccessViolation; runtime safe mode denies boot APP",
+          "rollback_STOP_and_seven_original_hashes": "PASS",
+          "evidence_sha256": {
+            "trial.stdout": "25853b8840be5575580aa4a1ef58a82deab4c17745e0f4b3c826729c87c90526",
+            "trial-coordinator.json": "351aaebd06b59844f6b651491021973e95e97cc6757e335c02430bc0daa5661f",
+            "collect.sh.stdout": "7f6b0205c0106261391c3890c46103a6cfb53b9a6083ba0c4fb611770bc5d179",
+            "isolation.sh.stdout": "b7620230858b2b8fb0d4985b7a574974d9119ca05a270b62cb05d8f88ecaf941",
+            "execution-source-pins.json": "f7b7cf926e1a674cec4ee33ebdfe239585e6b0f837af5c414be754059504b750"
+          }
+        },
+        {
+          "attempt": 4,
+          "test_status": "FAIL",
+          "runtime_RUN": "NOT_RUN",
+          "cyclic_acceptance": "NOT_RUN",
+          "reason": "Own private-bus wrapper failed before runtime: FW31 sleep rejects fractional seconds",
+          "rollback_STOP_and_seven_original_hashes": "PASS",
+          "isolation": "PASS",
+          "evidence_sha256": {
+            "trial.stdout": "9b38dfde035be1ba5b028cef734a39d06ca6d63a2b922d8eda00cba8612ff7f6",
+            "trial-coordinator.json": "549b484f7a2c1a79cab4b5a198d66c95f50a95ecfef04390d31fc0e2d6024980",
+            "collect.sh.stdout": "7e6636741522f3b365406dc2ee078c9c68fd9ca964a159637d96fa92d410da65",
+            "isolation.sh.stdout": "b7620230858b2b8fb0d4985b7a574974d9119ca05a270b62cb05d8f88ecaf941",
+            "execution-source-pins.json": "b1112d7de1189d9be0d7c4907778b6782f181ebbc2a8aa7064ba295c221e696e"
+          }
+        },
+        {
+          "attempt": 5,
+          "test_status": "FAIL",
+          "runtime_RUN": "NOT_RUN",
+          "cyclic_acceptance": "NOT_RUN",
+          "reason": "Private bus and original component load progressed; fixed one-second runtime binding raced startup; checker NOT_RUN",
+          "rollback_STOP_and_seven_original_hashes": "PASS",
+          "isolation": "PASS",
+          "evidence_sha256": {
+            "trial.stdout": "e4356d25ca9f2b6597cf674ee2d530a568271a1496ed2c78e775e86344b134c9",
+            "trial-coordinator.json": "df12ab71c10d4effa19b3634354712e2eecae48689c780743f054d46d248540d",
+            "collect.sh.stdout": "f63245357eb390403bf9eafa5c2edbf2729d766884668c6eaac2ee12327f4052",
+            "isolation.sh.stdout": "b7620230858b2b8fb0d4985b7a574974d9119ca05a270b62cb05d8f88ecaf941",
+            "execution-source-pins.json": "328acfe8a7dc5f5ed6c899799f3db00974b9d57bfa3e14c8c6a112fd34be8a2d"
+          }
+        },
+        {
+          "attempt": 6,
+          "test_status": "BLOCKED",
+          "runtime_RUN": "PASS",
+          "cyclic_acceptance": "BLOCKED",
+          "reason": "Runtime RUN confirmed; checker BLOCKED MODEL_FAULT before input patterns; unsupported get_uid inner=-1 observed",
+          "rollback_STOP_and_seven_original_hashes": "PASS",
+          "isolation": "PASS",
+          "evidence_sha256": {
+            "trial.stdout": "d470d0321989c4c35587d779363113cd87c6a71c4bb451957e8e0c4bb81b8238",
+            "trial-coordinator.json": "4e0432919306071c167b4a530c1bb39a008877b10b0baf7fb4f15c9c3211ad48",
+            "collect.sh.stdout": "e9e6bc78eed4ba26877b3dd6a18929f4535438419fdf5e11eaf0ff0b698382f8",
+            "isolation.sh.stdout": "b7620230858b2b8fb0d4985b7a574974d9119ca05a270b62cb05d8f88ecaf941",
+            "execution-source-pins.json": "717ad6e8c10045dae2a4defd9fd41f6a3083e350db4efe91336ceb73a807c1d5"
+          }
+        }
+      ],
+      "prepared_unexecuted_attempt": 1,
+      "runtime_RUN": "PASS",
+      "cyclic_acceptance": "BLOCKED",
+      "failure": "MODEL_FAULT",
+      "samples": [],
+      "last_acceptance_sha256": "e684c4fc4fd3d4d4eccdcf65811c9fde8d65d3565fbb674bc12a7b4e8cd88a52",
+      "UID_contract": "deterministic descriptor-derived module type UDINT, not serial or session handle; exact 750-677 mapping OPEN",
+      "known_unsupported_operations": [
+        "get_uid",
+        "libpackbus_async_com_close"
+      ],
+      "library_archive_inspection": "REA recognized ZIP but inventory failed integrity validation; compiled payload not inspected; no unsupported fallback inferred",
+      "last_trace": [
+        "VIRTUAL_ADI_TRACE init profile=PWM677 outer=0 inner=0 a=16 b=16",
+        "VIRTUAL_ADI_TRACE unknown_op profile=PWM677 outer=1 inner=not_written a=0 b=0 name=bac_PROXY_PostTscInterface",
+        "VIRTUAL_ADI_TRACE unknown_op profile=PWM677 outer=1 inner=not_written a=0 b=0 name=bac_PROXY_AssignPlcReadEventItf",
+        "VIRTUAL_ADI_TRACE terminal_info profile=PWM677 outer=0 inner=0 a=1 b=4000",
+        "VIRTUAL_ADI_TRACE table9 profile=PWM677 outer=0 inner=0 a=1 b=1",
+        "VIRTUAL_ADI_TRACE read_conf_reg profile=PWM677 outer=0 inner=0 a=1 b=16",
+        "VIRTUAL_ADI_TRACE read_conf_reg profile=PWM677 outer=0 inner=0 a=1 b=29",
+        "VIRTUAL_ADI_TRACE read_conf_reg profile=PWM677 outer=0 inner=0 a=1 b=30",
+        "VIRTUAL_ADI_TRACE get_uid profile=PWM677 outer=0 inner=-1 a=0 b=0",
+        "VIRTUAL_ADI_TRACE read_bytes profile=PWM677 outer=0 inner=0 a=2 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=PWM677 outer=0 inner=0 a=6 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=PWM677 outer=0 inner=0 a=10 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=PWM677 outer=0 inner=0 a=14 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=PWM677 outer=0 inner=0 a=0 b=1",
+        "VIRTUAL_ADI_TRACE write_bytes profile=PWM677 outer=0 inner=0 a=1 b=1",
+        "VIRTUAL_ADI_TRACE write_bytes profile=PWM677 outer=0 inner=0 a=2 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=PWM677 outer=0 inner=0 a=4 b=1",
+        "VIRTUAL_ADI_TRACE write_bytes profile=PWM677 outer=0 inner=0 a=5 b=1",
+        "VIRTUAL_ADI_TRACE write_bytes profile=PWM677 outer=0 inner=0 a=6 b=2",
+        "VIRTUAL_ADI_TRACE write_bytes profile=PWM677 outer=0 inner=0 a=8 b=1",
+        "VIRTUAL_ADI_TRACE write_bytes profile=PWM677 outer=0 inner=0 a=9 b=1",
+        "VIRTUAL_ADI_TRACE read_bytes profile=PWM677 outer=0 inner=0 a=2 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=PWM677 outer=0 inner=0 a=6 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=PWM677 outer=0 inner=0 a=10 b=2",
+        "VIRTUAL_ADI_TRACE read_bytes profile=PWM677 outer=0 inner=0 a=14 b=2",
+        "VIRTUAL_ADI_TRACE unknown_op profile=PWM677 outer=1 inner=not_written a=0 b=0 name=libpackbus_async_com_close",
+        "VIRTUAL_ADI_TRACE unknown_op profile=PWM677 outer=1 inner=not_written a=0 b=0 name=libpackbus_async_com_close",
+        "VIRTUAL_ADI_TRACE unknown_op profile=PWM677 outer=1 inner=not_written a=0 b=0 name=libpackbus_async_com_close",
+        "VIRTUAL_ADI_TRACE unknown_op profile=PWM677 outer=1 inner=not_written a=0 b=0 name=libpackbus_async_com_close",
+        "VIRTUAL_ADI_TRACE unknown_op profile=PWM677 outer=1 inner=not_written a=0 b=0 name=libpackbus_async_com_close",
+        "VIRTUAL_ADI_TRACE unknown_op profile=PWM677 outer=1 inner=not_written a=0 b=0 name=libpackbus_async_com_close"
+      ]
+    }
+  },
+  "engineering": {
+    "analog": {
+      "status": "PASS",
+      "reuse": "same-day prior build/reopen; unchanged source and artifact hashes verified",
+      "app_sha256": "79b5e558476183e390ac3ddcdc6b38ebf107b25221f994189d37af627039dd02",
+      "receipt_sha256": "a5ba5d65d13a188b6904a071f1063531bccc15d309aedef1193d635a181ffa02"
+    },
+    "pwm": {
+      "status": "PASS",
+      "build_and_readonly_reopen": "fresh raw WORD passthrough project; 24 exact field mappings; controls/reservedoutputs zero",
+      "artifact_sha256": {
+        "native-pwm677.project": "f0c5173e4298208e7f165358d220aeda26a7338f6af495168c0cc2f653bdfc3c",
+        "native-pwm677-mapping.csv": "2aaa9c50c4956cf00b2ea2f665b85cc2a0ad108eb6113399ea0a7375cffac6e6",
+        "native-pwm677.app": "3369676a1165cddd6112ed9aa35422b395b01367de0ec41445a8cb3f6d773ac5",
+        "native-pwm677.crc": "6d411c10ce525f9f394cd3bc01f550ec61c289ac80cf3f15febc5e719a19c0e7"
+      },
+      "receipt_sha256": "eac19445d60de3684df68bc04628c0ad193158b3d05a7549a86778f389e93ea8",
+      "library_artifacts": [
+        {
+          "library": "WagoSysModule_75x_677",
+          "sha256": "8bff2c80ce9b48cf5c621e04ad83c0f0b058ac5dbf451f2d154aed6f7959d7e6",
+          "name": "browsercache",
+          "version": "1.0.0.3"
+        },
+        {
+          "library": "WagoSysModule_75x_677",
+          "sha256": "7aed5612c7adaa157090e16c120bcf2af736c7cea694ad425459b569a656551b",
+          "name": "dependencies",
+          "version": "1.0.0.3"
+        },
+        {
+          "library": "WagoSysModule_75x_677",
+          "sha256": "a0c2c811c184a013014b4f74643057236c0b1ba36c42115eae11b99f4224b3d9",
+          "name": "projectinfo",
+          "version": "1.0.0.3"
+        },
+        {
+          "library": "WagoSysModule_75x_677",
+          "sha256": "4fb93549f767b7a5827e5b17133529cd16181d725bc89d2942b8a4fd4d852374",
+          "name": "WagoSysModule_75x_677_1.0.0.3.compiled-library-ge33",
+          "version": "1.0.0.3"
+        },
+        {
+          "library": "WagoTypesModule_75x_677",
+          "sha256": "48fa2e8617278b642ef91b1ce17a9a190ce0a0a45a61564092750e2739eccb73",
+          "name": "browsercache",
+          "version": "1.0.0.0"
+        },
+        {
+          "library": "WagoTypesModule_75x_677",
+          "sha256": "cda7fa3221659cac0a59cc9a695b8c9e27cf847329ad28fa5400650ca5f51a80",
+          "name": "dependencies",
+          "version": "1.0.0.0"
+        },
+        {
+          "library": "WagoTypesModule_75x_677",
+          "sha256": "61b35155df0db96840e29ade620a9546e023d069050408a448d90b42bb613545",
+          "name": "projectinfo",
+          "version": "1.0.0.0"
+        },
+        {
+          "library": "WagoTypesModule_75x_677",
+          "sha256": "64693188165ff2cea08a7f786279a82cc146da2cc895ba4339a1a93f1bf2f5bb",
+          "name": "WagoTypesModule_75x_677_1.0.0.0.compiled-library-ge33",
+          "version": "1.0.0.0"
+        }
+      ]
+    },
+    "di8": {
+      "status": "PASS",
+      "reuse": "prior build/reopen; exact APP/CRC reused; no new IDE build claimed",
+      "descriptor_sha256": {
+        "32776/8801_0750043000000000/2.0.0.14": "26d302678905d2e8f4c7e34880cf830c4ad56361ebd647e6ed82a9e02c81dd91",
+        "32776/8802_0750053000000000/2.0.0.15": "84b4043d448c44155a36916a1b65a39f20ba0560459d3c0ffac53fba351daa5d"
+      },
+      "artifact_sha256": {
+        "mapped-digital8.crc": "8abcf0f29703e28facb045c0ab9052cd7f38cbcd41a4df5273f9728577ccbc12",
+        "mapped-digital8.app": "56c8bdf9517ab5679a703673cd8cbc426a301ad3495d86f5aa90e061cb505201",
+        "mapped-digital8-offline.project": "8fe112e771a01b1ff4e3af6a6a8f3f5bb86a52bc727b8140e8e88aa4525e11bf",
+        "mapped-digital8-mapping.csv": "506eee945ec47556793f98a4dc6c38d6cdc8d1a08df177af79a555abc1e3d7c6"
+      }
+    },
+    "di16": {
+      "status": "PASS",
+      "reuse": "same-day prior build/reopen; exact APP/CRC reused",
+      "terminals": [
+        {
+          "article": "750-1405",
+          "descriptor_sha256": "2ea6fb96d1db35228450ccd94454f1e51b562a6e1982e416f34eed2feb056273",
+          "id": "9001_0750140500000000",
+          "type": 32776,
+          "version": "2.0.0.14"
+        },
+        {
+          "article": "750-1504",
+          "descriptor_sha256": "207e7d654f98a180b06cb75117e282ac2a85f956cbb5d057113d76846a6dc991",
+          "id": "9002_0750150400000000",
+          "type": 32776,
+          "version": "2.0.0.14"
+        }
+      ],
+      "receipt_sha256": "fd99d89e79cfe8684bd28fdb5b25a79c4aa6651e826efd4d36a869d8db331abc"
+    }
+  },
+  "original_files_sha256": {
+    "codesys3": "b56c6296faabae9eb73f0463fd068c535c03109ced347f0c2a643b69a7ee1ab5",
+    "libdal.so.1.0.1": "c163ac57805409921ce783f9c4f17f52891864be333c3df4945a128d253994f5",
+    "libIoDrvDal.so.1.0.2": "853d3ad6eb1b2477b43502d562a6bbfa854b8029e85989b6166f961167188c7d",
+    "libIoDrvKbus.so.0.0.1": "543e8b1d2d19352030fe804a7e667ca30c1d9ba80069f2df3158c77c544789b8",
+    "CODESYSControl.cfg": "cc6beddf09a2e0e7ead12a1d2ef156044fceaec5fb186c5335851a9b20f2f5fd",
+    "Application.app": "62251e107b19b9fcb9fb82608d29e01a4c9b3e768ee7bbe9ea0569d64d24aca3",
+    "Application.crc": "8ccb854bb678b999334741c1683450f37f14b42a1094099dbbd9a0ad37cd9bc6"
+  },
+  "descriptors_sha256": [
+    {
+      "id": "07500466000000000400",
+      "hash": "AA9BB802E2D2656EC9E101F1537AEBC23F79487437513BDC9588F0D283ECCA51",
+      "version": "2.0.0.9"
+    },
+    {
+      "id": "07500550000000000004",
+      "hash": "8EDB68D2B02370398251890035552779FB1EDCE5E6D039C2D7312D26F6927105",
+      "version": "2.0.0.9"
+    },
+    {
+      "id": "07500677000000001616",
+      "hash": "15DCBA17A7186FC3DD91FC2B47C806BF7016E6E0EBC949B352C9549F5124C780",
+      "version": "2.0.0.3"
+    }
+  ],
+  "limits": [
+    "Fixed virtual register configuration, not measured hardware defaults",
+    "Physical analog/PWM comparison NOT_RUN",
+    "Electrical waveform, analog electrical behavior, alternative PWM modes and arbitrary mixed rails NOT_RUN",
+    "CAN/DALI original-runtime and physical communication remain BLOCKED/NOT_RUN",
+    "No merge authorization; public CI hardware-free"
+  ],
+  "postflight": {
+    "status": "PASS",
+    "original_state": "STOP",
+    "original_processes": 1,
+    "live_test_helpers": 0,
+    "seven_original_hashes": "unchanged",
+    "can": "DOWN/STOPPED; RX/TX packets 0",
+    "receipt_sha256": "168ebaef1d6baf0b6daeaf7f76f43ffe1d56d66f968679dfe119d16b9ab7ddcd",
+    "vm": "already running at start; left running; final CODESYS processes 0",
+    "private_dbus_cleanup": "PASS; no live daemon in a separate mount namespace"
+  },
+  "local_tests": {
+    "status": "PASS",
+    "count": 285,
+    "skipped": 0,
+    "private_headers_present": true,
+    "receipt_sha256": "9449b14af41b0788a9ffe503ab7523a3ff99aec3fd53ed87880c7f4975f42e96",
+    "arm_shared_provider_harnesses": 4,
+    "arm_static_harnesses": 2,
+    "arm_report_sha256": "cf2b83770d5d7ade37fe3bc89a7334e68957fd67cb339a519f4622d930256e63"
+  },
+  "private_bus": {
+    "status": "PASS for original component startup and native RUN in attempt6",
+    "daemon_version": "1.15.12",
+    "daemon_sha256": "de5afc962113eff88a29adce544874b753ea8b4dacadb3115c43365e96f78c35",
+    "host_bus": "not exposed",
+    "LED_service": "not implemented; not activated; no physical proof",
+    "test_status": "PASS; two real isolated D-Bus tests",
+    "original_dependencies": {
+      "libTscLED.so.0.0.3": "7a2f51f1f844609a2e4157e74837c3ca0089a5046c21f3ccc62aadbee38dcd8d",
+      "libdiagnostic.so": "d3b2d26df59758345d3013581f9e7b1e22f10756bb9ea29ca8d902a5361f8adb",
+      "libwago_dbus.so": "62a789f2164b230fc629c9f302ae6519a6f54cfcf24d77c84c8b3e949fdff8bd"
+    }
+  },
+  "reviews": {
+    "root": "Self-Review; all VM/target actions",
+    "offline_independent": [
+      "profile/error contracts and trace deltas",
+      "bounded trial packages including private bus",
+      "exact FW31 UID helper and installed library metadata"
+    ],
+    "receipt_sha256": {
+      "private-bus-review.json": "9afdc38d2b88791ad8c3b4851ce30182365e5c8c78caa8b48a0007fb341a4b05",
+      "can_sources-review/pwm3-tscled-ch-init-review.md": "af58ababe5ca1dcb4db72342d73529fc13a3cf134206ffbd25f0b30b63c395f9",
+      "can_sources-review/pwm5-get-uid-fw31-static-review.md": "988673298beb482285a032896c67297c8a34310cc6ce59c88a18ede3e12ae998",
+      "pwm-libraries/uid-contract-review.md": "11ea9d607552a976a89cef10932bd023c6aded564e8ee9928fe5f2d33c7a57a5"
+    }
+  }
+}

@@ -26,4 +26,16 @@ VAR
     PwmOutputValue4 : WORD := WORD#0;
 END_VAR
 
-// Offline project mapping probe only. Zero controls leave both PWM output pairs disabled.
+// Raw WORD integration probe only: no physical PWM behavior or input meaning is claimed.
+PwmControl1 := BYTE#0;
+PwmReservedOutput1 := BYTE#0;
+PwmOutputValue1 := PwmInputValue1;
+PwmControl2 := BYTE#0;
+PwmReservedOutput2 := BYTE#0;
+PwmOutputValue2 := PwmInputValue2;
+PwmControl3 := BYTE#0;
+PwmReservedOutput3 := BYTE#0;
+PwmOutputValue3 := PwmInputValue3;
+PwmControl4 := BYTE#0;
+PwmReservedOutput4 := BYTE#0;
+PwmOutputValue4 := PwmInputValue4;

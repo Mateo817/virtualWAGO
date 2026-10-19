@@ -10,19 +10,32 @@
 
 #include <limits.h>
 #include <pthread.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include <string.h>
 #include <time.h>
 #include <libpackbus.h>
 #include "adi_catalog_profiles.h"
+#include "adi_virtual_integration_profiles.h"
 
 #define VIRTUAL_DEVICE_ID ((tDeviceId)1)
 #define VIRTUAL_DEVICE_NAME "libpackbus"
-#ifdef VIRTUALWAGO_DEFAULT_PROFILE8
-static const virtual_profile_data *default_profile = &profile_digital8;
+#if (defined(VIRTUALWAGO_DEFAULT_PROFILE8) + \
+     defined(VIRTUALWAGO_DEFAULT_ANALOG466_AO550) + \
+     defined(VIRTUALWAGO_DEFAULT_PWM677)) > 1
+#error "Select at most one non-DI16 default ADI profile"
+#endif
+#if defined(VIRTUALWAGO_DEFAULT_PROFILE8)
+static const virtual_adi_profile default_profile =
+    VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8;
+#elif defined(VIRTUALWAGO_DEFAULT_ANALOG466_AO550)
+static const virtual_adi_profile default_profile =
+    VIRTUAL_ADI_PROFILE_ANALOG466_AO550;
+#elif defined(VIRTUALWAGO_DEFAULT_PWM677)
+static const virtual_adi_profile default_profile = VIRTUAL_ADI_PROFILE_PWM677;
 #else
-static const virtual_profile_data *default_profile = &profile_digital16;
+static const virtual_adi_profile default_profile = VIRTUAL_ADI_PROFILE_DIGITAL16;
 #endif
 #ifdef VIRTUALWAGO_DEFAULT_CLOCK_MONOTONIC
 static const virtual_adi_clock_mode default_clock_mode =
@@ -31,13 +44,32 @@ static const virtual_adi_clock_mode default_clock_mode =
 static const virtual_adi_clock_mode default_clock_mode =
     VIRTUAL_ADI_CLOCK_LOGICAL;
 #endif
-#ifdef VIRTUALWAGO_DEFAULT_PROFILE8
-static const virtual_profile_data *selected_profile = &profile_digital8;
-#else
-static const virtual_profile_data *selected_profile = &profile_digital16;
-#endif
+typedef struct {
+  virtual_adi_profile profile;
+  const char *name;
+  uint32_t input_bytes;
+  uint32_t output_bytes;
+  uint32_t input_bits;
+  uint32_t output_bits;
+  uint16_t input_mask;
+  uint16_t output_mask;
+  uint32_t terminal_count;
+  uint16_t module_ids[2];
+  uint32_t input_offsets_bits[2];
+  uint32_t output_offsets_bits[2];
+  uint32_t terminal_input_bits[2];
+  uint32_t terminal_output_bits[2];
+  uint16_t register16;
+  uint16_t register29;
+  uint16_t register30;
+  bool supports_legacy_word;
+  bool integration_profile;
+} virtual_profile_view;
+
+static virtual_profile_view selected_profile;
+static bool selected_profile_valid;
 #ifdef VIRTUALWAGO_TEST_PROFILE_EXTENTS
-static virtual_profile_data test_profile;
+static virtual_profile_view test_profile;
 #endif
 static virtual_adi_clock_mode selected_clock_mode = default_clock_mode;
 
@@ -84,8 +116,137 @@ static pthread_mutex_t lifecycle_mutex = PTHREAD_MUTEX_INITIALIZER;
 #endif
 static uint64_t lifecycle_generation;
 
+#ifdef VIRTUALWAGO_ADI_TRACE
+static unsigned trace_init_count, trace_sizes_count, trace_terminal_count;
+static unsigned trace_table9_count, trace_confreg_count, trace_unknown_count;
+static unsigned trace_uid_count;
+static unsigned trace_read_count, trace_write_count;
+#define TRACE_UNKNOWN_NAME_MAX 96u
+static bool trace_safe_unknown_name(const char *name) {
+  if (name == NULL) return false;
+  size_t length = strnlen(name, TRACE_UNKNOWN_NAME_MAX + 1u);
+  if (length == 0u || length > TRACE_UNKNOWN_NAME_MAX) return false;
+  for (size_t i = 0u; i < length; ++i) {
+    unsigned char byte = (unsigned char)name[i];
+    bool alpha = (byte >= 'A' && byte <= 'Z') ||
+                 (byte >= 'a' && byte <= 'z');
+    if (i == 0u) {
+      if (!alpha && byte != '_') return false;
+    } else if (!alpha && !(byte >= '0' && byte <= '9') && byte != '_') {
+      return false;
+    }
+  }
+  return true;
+}
+static void trace_unknown_call(const char *name) {
+  if (trace_unknown_count >= 8u) return;
+  ++trace_unknown_count;
+  fprintf(stderr,
+          "VIRTUAL_ADI_TRACE unknown_op profile=%s outer=%d "
+          "inner=not_written "
+          "a=0 b=0 name=%s\n",
+          selected_profile_valid ? selected_profile.name : "unselected",
+          DAL_NOTUSED,
+          trace_safe_unknown_name(name) ? name : "<redacted>");
+}
+static void trace_event(unsigned *count, const char *event, const char *profile,
+                        int32_t outer, int32_t inner, uint32_t first,
+                        uint32_t second) {
+  if (*count >= 8u) return;
+  ++*count;
+  fprintf(stderr, "VIRTUAL_ADI_TRACE %s profile=%s outer=%d inner=%d a=%u b=%u\n",
+          event, profile != NULL ? profile : "unselected", outer, inner,
+          first, second);
+}
+#define TRACE_EVENT(counter, event, outer, inner, first, second) \
+  trace_event(&(counter), (event), selected_profile_valid ? \
+              selected_profile.name : NULL, (outer), (inner), (first), (second))
+#define TRACE_UNKNOWN_CALL(name) trace_unknown_call(name)
+#else
+#define TRACE_EVENT(counter, event, outer, inner, first, second) \
+  ((void)0)
+#define TRACE_UNKNOWN_CALL(name) ((void)0)
+#endif
+
 static void clear_frame(uint8_t frame[VIRTUAL_ADI_MAX_FRAME_BYTES]);
 static void clear_effective_outputs(void);
+
+static const virtual_adi_integration_profile *integration_profile_for(
+    virtual_adi_profile profile) {
+  switch (profile) {
+    case VIRTUAL_ADI_PROFILE_ANALOG466_AO550: return &profile_analog466_550;
+    case VIRTUAL_ADI_PROFILE_PWM677: return &profile_pwm677;
+    default: return NULL;
+  }
+}
+
+static void activate_profile(virtual_adi_profile profile) {
+  memset(&selected_profile, 0, sizeof(selected_profile));
+  selected_profile.profile = profile;
+  const virtual_profile_data *digital = NULL;
+  if (profile == VIRTUAL_ADI_PROFILE_DIGITAL16)
+    digital = &profile_digital16;
+  else if (profile == VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8)
+    digital = &profile_digital8;
+  if (digital != NULL) {
+    selected_profile.name = profile == VIRTUAL_ADI_PROFILE_DIGITAL16
+                                ? "DI16" : "DI8";
+    selected_profile.input_bytes = digital->input_bytes;
+    selected_profile.output_bytes = digital->output_bytes;
+    selected_profile.input_bits = digital->input_bits;
+    selected_profile.output_bits = digital->output_bits;
+    selected_profile.input_mask = digital->input_mask;
+    selected_profile.output_mask = digital->output_mask;
+    selected_profile.terminal_count = digital->terminal_count;
+    memcpy(selected_profile.module_ids, digital->module_ids,
+           sizeof(selected_profile.module_ids));
+    memcpy(selected_profile.input_offsets_bits, digital->input_offsets_bits,
+           sizeof(selected_profile.input_offsets_bits));
+    memcpy(selected_profile.output_offsets_bits, digital->output_offsets_bits,
+           sizeof(selected_profile.output_offsets_bits));
+    selected_profile.terminal_input_bits[0] = digital->input_bits;
+    selected_profile.terminal_output_bits[1] = digital->output_bits;
+    selected_profile.supports_legacy_word = true;
+    selected_profile_valid = true;
+    return;
+  }
+  const virtual_adi_integration_profile *integration =
+      integration_profile_for(profile);
+  if (integration == NULL) {
+    selected_profile_valid = false;
+    return;
+  }
+  selected_profile.name = integration->name;
+  selected_profile.input_bytes = integration->input_bytes;
+  selected_profile.output_bytes = integration->output_bytes;
+  selected_profile.input_bits = integration->input_bits;
+  selected_profile.output_bits = integration->output_bits;
+  selected_profile.terminal_count = integration->terminal_count;
+  memcpy(selected_profile.module_ids, integration->module_ids,
+         sizeof(selected_profile.module_ids));
+  memcpy(selected_profile.input_offsets_bits,
+         integration->input_offsets_bits,
+         sizeof(selected_profile.input_offsets_bits));
+  memcpy(selected_profile.output_offsets_bits,
+         integration->output_offsets_bits,
+         sizeof(selected_profile.output_offsets_bits));
+  memcpy(selected_profile.terminal_input_bits,
+         integration->terminal_input_bits,
+         sizeof(selected_profile.terminal_input_bits));
+  memcpy(selected_profile.terminal_output_bits,
+         integration->terminal_output_bits,
+         sizeof(selected_profile.terminal_output_bits));
+  selected_profile.register16 = integration->register16;
+  selected_profile.register29 = integration->register29;
+  selected_profile.register30 = integration->register30;
+  selected_profile.integration_profile = true;
+  selected_profile_valid = true;
+}
+
+static bool ensure_profile_selected(void) {
+  if (!selected_profile_valid) activate_profile(default_profile);
+  return selected_profile_valid;
+}
 
 static int lock_state(void) {
   if (pthread_mutex_lock(&state_mutex) != 0) abort();
@@ -169,14 +330,30 @@ static bool frame_is_fully_covered(const uint8_t *coverage, uint32_t bytes,
   }
   return true;
 }
-static bool profile_extent_valid(const virtual_profile_data *profile) {
-  return profile != NULL && profile->input_bytes != 0u &&
-         profile->output_bytes != 0u &&
-         profile->input_bits != 0u && profile->output_bits != 0u &&
-         profile->input_bytes <= VIRTUAL_ADI_MAX_FRAME_BYTES &&
-         profile->output_bytes <= VIRTUAL_ADI_MAX_FRAME_BYTES &&
-         profile->input_bits == profile->input_bytes * 8u &&
-         profile->output_bits == profile->output_bytes * 8u;
+static bool profile_extent_valid(const virtual_profile_view *profile) {
+  if (profile == NULL || profile->input_bytes == 0u ||
+      profile->output_bytes == 0u || profile->input_bits == 0u ||
+      profile->output_bits == 0u ||
+      profile->input_bytes > VIRTUAL_ADI_MAX_FRAME_BYTES ||
+      profile->output_bytes > VIRTUAL_ADI_MAX_FRAME_BYTES ||
+      profile->input_bits != profile->input_bytes * 8u ||
+      profile->output_bits != profile->output_bytes * 8u ||
+      profile->terminal_count == 0u || profile->terminal_count > 2u)
+    return false;
+  uint32_t input_covered = 0u, output_covered = 0u;
+  for (uint32_t i = 0u; i < profile->terminal_count; ++i) {
+    if (profile->input_offsets_bits[i] > profile->input_bits ||
+        profile->terminal_input_bits[i] >
+            profile->input_bits - profile->input_offsets_bits[i] ||
+        profile->output_offsets_bits[i] > profile->output_bits ||
+        profile->terminal_output_bits[i] >
+            profile->output_bits - profile->output_offsets_bits[i])
+      return false;
+    input_covered += profile->terminal_input_bits[i];
+    output_covered += profile->terminal_output_bits[i];
+  }
+  return input_covered == profile->input_bits &&
+         output_covered == profile->output_bits;
 }
 static void clear_effective_outputs(void) {
   clear_frame(state.effective_outputs);
@@ -211,7 +388,8 @@ static bool owns_write(uint32_t task) {
 int32_t virtual_adi_model_snapshot(virtual_model_snapshot *snapshot) {
   STATE_GUARD;
   refresh_watchdog_locked();
-  if (snapshot == NULL) return DAL_FAILURE;
+  if (snapshot == NULL || !ensure_profile_selected() ||
+      !profile_extent_valid(&selected_profile)) return DAL_FAILURE;
   memset(snapshot, 0, sizeof(*snapshot));
   snapshot->initialized = state.initialized;
   snapshot->opened = state.opened;
@@ -223,23 +401,23 @@ int32_t virtual_adi_model_snapshot(virtual_model_snapshot *snapshot) {
   snapshot->read_active = state.read_active;
   snapshot->write_active = state.write_active;
   snapshot->write_failed = state.write_failed;
-  snapshot->profile_id = (uint32_t)selected_profile->profile;
-  snapshot->input_bytes = selected_profile->input_bytes;
-  snapshot->output_bytes = selected_profile->output_bytes;
-  snapshot->input_bits = selected_profile->input_bits;
-  snapshot->output_bits = selected_profile->output_bits;
+  snapshot->profile_id = (uint32_t)selected_profile.profile;
+  snapshot->input_bytes = selected_profile.input_bytes;
+  snapshot->output_bytes = selected_profile.output_bytes;
+  snapshot->input_bits = selected_profile.input_bits;
+  snapshot->output_bits = selected_profile.output_bits;
   memcpy(snapshot->input_signals, state.input_signals,
-         selected_profile->input_bytes);
+         selected_profile.input_bytes);
   memcpy(snapshot->read_latch, state.read_latch,
-         selected_profile->input_bytes);
+         selected_profile.input_bytes);
   memcpy(snapshot->requested_outputs, state.requested_outputs,
-         selected_profile->output_bytes);
+         selected_profile.output_bytes);
   memcpy(snapshot->staged_outputs, state.staged_outputs,
-         selected_profile->output_bytes);
+         selected_profile.output_bytes);
   memcpy(snapshot->staged_coverage, state.staged_coverage,
-         selected_profile->output_bytes);
+         selected_profile.output_bytes);
   memcpy(snapshot->effective_outputs, state.effective_outputs,
-         selected_profile->output_bytes);
+         selected_profile.output_bytes);
   snapshot->generation = lifecycle_generation;
   snapshot->frame_count = state.frame_count;
   return DAL_SUCCESS;
@@ -259,7 +437,7 @@ void virtual_adi_reset(void) {
   refresh_watchdog_locked();
   bump_lifecycle_generation();
   memset(&state, 0, sizeof(state));
-  selected_profile = default_profile;
+  activate_profile(default_profile);
   selected_clock_mode = default_clock_mode;
 }
 
@@ -270,12 +448,20 @@ int32_t virtual_adi_test_select_extents(uint32_t input_bytes,
   if (state.initialized || input_bytes == 0u || output_bytes == 0u ||
       input_bytes > VIRTUAL_ADI_MAX_FRAME_BYTES ||
       output_bytes > VIRTUAL_ADI_MAX_FRAME_BYTES) return DAL_FAILURE;
-  test_profile = profile_digital16;
+  activate_profile(VIRTUAL_ADI_PROFILE_DIGITAL16);
+  test_profile = selected_profile;
   test_profile.input_bytes = input_bytes;
   test_profile.output_bytes = output_bytes;
   test_profile.input_bits = input_bytes * 8u;
   test_profile.output_bits = output_bytes * 8u;
-  selected_profile = &test_profile;
+  test_profile.input_offsets_bits[0] = 0u;
+  test_profile.input_offsets_bits[1] = 0u;
+  test_profile.output_offsets_bits[0] = 0u;
+  test_profile.output_offsets_bits[1] = 0u;
+  test_profile.terminal_input_bits[0] = test_profile.input_bits;
+  test_profile.terminal_output_bits[1] = test_profile.output_bits;
+  selected_profile = test_profile;
+  selected_profile_valid = true;
   return DAL_SUCCESS;
 }
 #endif
@@ -284,11 +470,12 @@ int32_t virtual_adi_select_profile(virtual_adi_profile profile) {
   STATE_GUARD;
   refresh_watchdog_locked();
   if (state.initialized) return DAL_FAILURE;
-  if (profile == VIRTUAL_ADI_PROFILE_DIGITAL16)
-    selected_profile = &profile_digital16;
-  else if (profile == VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8)
-    selected_profile = &profile_digital8;
-  else
+  if (profile != VIRTUAL_ADI_PROFILE_DIGITAL16 &&
+      profile != VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8 &&
+      integration_profile_for(profile) == NULL)
+    return DAL_FAILURE;
+  activate_profile(profile);
+  if (!selected_profile_valid || !profile_extent_valid(&selected_profile))
     return DAL_FAILURE;
   return DAL_SUCCESS;
 }
@@ -297,7 +484,8 @@ int32_t virtual_adi_select_clock_mode(virtual_adi_clock_mode mode) {
   STATE_GUARD;
   refresh_watchdog_locked();
   if (state.initialized) return DAL_FAILURE;
-  if (!profile_extent_valid(selected_profile)) return DAL_FAILURE;
+  if (!ensure_profile_selected() ||
+      !profile_extent_valid(&selected_profile)) return DAL_FAILURE;
   if (mode != VIRTUAL_ADI_CLOCK_LOGICAL &&
       mode != VIRTUAL_ADI_CLOCK_MONOTONIC)
     return DAL_FAILURE;
@@ -308,10 +496,11 @@ int32_t virtual_adi_select_clock_mode(virtual_adi_clock_mode mode) {
 int32_t virtual_adi_set_inputs(uint16_t input_bits) {
   STATE_GUARD;
   refresh_watchdog_locked();
-  if (!state.initialized) return DAL_FAILURE;
+  if (!state.initialized || !ensure_profile_selected() ||
+      !selected_profile.supports_legacy_word) return DAL_FAILURE;
   clear_frame(state.input_signals);
-  u16_to_frame(state.input_signals, selected_profile->input_bytes,
-               (uint16_t)(input_bits & selected_profile->input_mask));
+  u16_to_frame(state.input_signals, selected_profile.input_bytes,
+               (uint16_t)(input_bits & selected_profile.input_mask));
   return DAL_SUCCESS;
 }
 
@@ -320,12 +509,13 @@ int32_t virtual_adi_set_input_frame(virtual_adi_profile profile,
                                     const uint8_t *bytes) {
   STATE_GUARD;
   refresh_watchdog_locked();
-  if (!state.initialized) return VIRTUAL_ADI_FRAME_NOT_READY;
-  if (profile != selected_profile->profile)
+  if (!state.initialized || !ensure_profile_selected())
+    return VIRTUAL_ADI_FRAME_NOT_READY;
+  if (profile != selected_profile.profile)
     return VIRTUAL_ADI_FRAME_PROFILE_MISMATCH;
   if (generation != lifecycle_generation)
     return VIRTUAL_ADI_FRAME_GENERATION_MISMATCH;
-  if (length != selected_profile->input_bytes)
+  if (length != selected_profile.input_bytes)
     return VIRTUAL_ADI_FRAME_LENGTH_MISMATCH;
   if (length != 0u && bytes == NULL) return VIRTUAL_ADI_FRAME_NULL_DATA;
   clear_frame(state.input_signals);
@@ -337,6 +527,8 @@ const char *virtual_adi_profile_name(virtual_adi_profile profile) {
   switch (profile) {
     case VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8: return "DI8";
     case VIRTUAL_ADI_PROFILE_DIGITAL16: return "DI16";
+    case VIRTUAL_ADI_PROFILE_ANALOG466_AO550: return "AI466_AO550";
+    case VIRTUAL_ADI_PROFILE_PWM677: return "PWM677";
     default: return NULL;
   }
 }
@@ -382,11 +574,12 @@ int32_t virtual_adi_advance_time_us(uint64_t elapsed_us) {
 int32_t virtual_adi_get_outputs(uint16_t *requested, uint16_t *effective) {
   STATE_GUARD;
   refresh_watchdog_locked();
-  if (requested == NULL || effective == NULL) return DAL_FAILURE;
+  if (requested == NULL || effective == NULL || !ensure_profile_selected() ||
+      !selected_profile.supports_legacy_word) return DAL_FAILURE;
   *requested = frame_to_u16(state.requested_outputs,
-                            selected_profile->output_bytes);
+                            selected_profile.output_bytes);
   *effective = frame_to_u16(state.effective_outputs,
-                            selected_profile->output_bytes);
+                            selected_profile.output_bytes);
   return DAL_SUCCESS;
 }
 
@@ -396,15 +589,28 @@ static int32_t adapter_init(void) {
 #endif
   STATE_GUARD;
   refresh_watchdog_locked();
-  if (state.initialized) return DAL_FAILURE;
+  if (state.initialized) {
+    TRACE_EVENT(trace_init_count, "init", DAL_FAILURE, DAL_FAILURE, 0u, 0u);
+    return DAL_FAILURE;
+  }
+  if (!ensure_profile_selected() ||
+      !profile_extent_valid(&selected_profile)) {
+    TRACE_EVENT(trace_init_count, "init", DAL_FAILURE, DAL_FAILURE, 0u, 0u);
+    return DAL_FAILURE;
+  }
 #ifdef VIRTUALWAGO_ENABLE_MODEL_BRIDGE
-  if (virtual_model_bridge_start() != 0) return DAL_FAILURE;
+  if (virtual_model_bridge_start() != 0) {
+    TRACE_EVENT(trace_init_count, "init", DAL_FAILURE, DAL_FAILURE, 0u, 0u);
+    return DAL_FAILURE;
+  }
 #endif
   memset(&state, 0, sizeof(state));
   bump_lifecycle_generation();
   state.initialized = true;
   /* Fail-closed model defaults; not claimed as vendor policy. */
   state.watchdog_healthy = false;
+  TRACE_EVENT(trace_init_count, "init", DAL_SUCCESS, DAL_SUCCESS,
+              selected_profile.input_bytes, selected_profile.output_bytes);
   return DAL_SUCCESS;
 }
 
@@ -516,11 +722,14 @@ static int32_t adapter_flags(tDeviceId id, uint32_t *flags) {
 static int32_t adapter_sizes(tDeviceId id, uint32_t *input, uint32_t *output) {
   STATE_GUARD;
   refresh_watchdog_locked();
-  if (!valid_device(id) || !state.initialized || input == NULL ||
+  if (!ensure_profile_selected() || !valid_device(id) || !state.initialized || input == NULL ||
       output == NULL)
-    return DAL_FAILURE;
-  *input = selected_profile->input_bytes;
-  *output = selected_profile->output_bytes;
+    { TRACE_EVENT(trace_sizes_count, "get_iosizes", DAL_FAILURE, DAL_FAILURE,
+                  0u, 0u); return DAL_FAILURE; }
+  *input = selected_profile.input_bytes;
+  *output = selected_profile.output_bytes;
+  TRACE_EVENT(trace_sizes_count, "get_iosizes", DAL_SUCCESS, DAL_SUCCESS,
+              *input, *output);
   return DAL_SUCCESS;
 }
 
@@ -565,7 +774,7 @@ static int32_t adapter_write_start(tDeviceId id, uint32_t task) {
   refresh_watchdog_locked();
   if (!ready_device(id) || task != 0u || state.write_active) return DAL_FAILURE;
   memcpy(state.staged_outputs, state.requested_outputs,
-         selected_profile->output_bytes);
+         selected_profile.output_bytes);
   memset(state.staged_coverage, 0, sizeof(state.staged_coverage));
   state.write_task = task;
   state.write_owner = pthread_self();
@@ -580,16 +789,26 @@ static int32_t adapter_write_bytes(tDeviceId id, uint32_t task,
                                    uint8_t *data) {
   STATE_GUARD;
   refresh_watchdog_locked();
-  if (!ready_device(id) || !owns_write(task)) return DAL_FAILURE;
+  if (!ready_device(id) || !owns_write(task)) {
+    TRACE_EVENT(trace_write_count, "write_bytes", DAL_FAILURE, DAL_FAILURE,
+                offset, size); return DAL_FAILURE;
+  }
   if ((size != 0u && data == NULL) ||
-      offset > selected_profile->output_bytes ||
-      size > selected_profile->output_bytes - offset) {
+      offset > selected_profile.output_bytes ||
+      size > selected_profile.output_bytes - offset) {
     latch_fault_locked();
+    TRACE_EVENT(trace_write_count, "write_bytes", DAL_FAILURE, DAL_FAILURE,
+                offset, size);
     return DAL_FAILURE;
   }
-  if (size == 0u) return DAL_SUCCESS;
+  if (size == 0u) {
+    TRACE_EVENT(trace_write_count, "write_bytes", DAL_SUCCESS, DAL_SUCCESS,
+                offset, size); return DAL_SUCCESS;
+  }
   memcpy(state.staged_outputs + offset, data, size);
   memset(state.staged_coverage + offset, UINT8_MAX, size);
+  TRACE_EVENT(trace_write_count, "write_bytes", DAL_SUCCESS, DAL_SUCCESS,
+              offset, size);
   return DAL_SUCCESS;
 }
 
@@ -597,9 +816,14 @@ static int32_t adapter_write_bit(tDeviceId id, uint32_t task,
                                  uint32_t bit_offset, uint8_t *data) {
   STATE_GUARD;
   refresh_watchdog_locked();
-  if (!ready_device(id) || !owns_write(task)) return DAL_FAILURE;
-  if (bit_offset >= selected_profile->output_bits || data == NULL) {
+  if (!ready_device(id) || !owns_write(task)) {
+    TRACE_EVENT(trace_write_count, "write_bit", DAL_FAILURE, DAL_FAILURE,
+                bit_offset, 1u); return DAL_FAILURE;
+  }
+  if (bit_offset >= selected_profile.output_bits || data == NULL) {
     latch_fault_locked();
+    TRACE_EVENT(trace_write_count, "write_bit", DAL_FAILURE, DAL_FAILURE,
+                bit_offset, 1u);
     return DAL_FAILURE;
   }
   const uint32_t byte_index = bit_offset / 8u;
@@ -609,6 +833,8 @@ static int32_t adapter_write_bit(tDeviceId id, uint32_t task,
   else
     state.staged_outputs[byte_index] &= (uint8_t)~mask;
   state.staged_coverage[byte_index] |= mask;
+  TRACE_EVENT(trace_write_count, "write_bit", DAL_SUCCESS, DAL_SUCCESS,
+              bit_offset, 1u);
   return DAL_SUCCESS;
 }
 
@@ -616,9 +842,14 @@ static int32_t adapter_write_bool(tDeviceId id, uint32_t task,
                                  uint32_t bit_offset, bool value) {
   STATE_GUARD;
   refresh_watchdog_locked();
-  if (!ready_device(id) || !owns_write(task)) return DAL_FAILURE;
-  if (bit_offset >= selected_profile->output_bits) {
+  if (!ready_device(id) || !owns_write(task)) {
+    TRACE_EVENT(trace_write_count, "write_bool", DAL_FAILURE, DAL_FAILURE,
+                bit_offset, 1u); return DAL_FAILURE;
+  }
+  if (bit_offset >= selected_profile.output_bits) {
     latch_fault_locked();
+    TRACE_EVENT(trace_write_count, "write_bool", DAL_FAILURE, DAL_FAILURE,
+                bit_offset, 1u);
     return DAL_FAILURE;
   }
   const uint32_t byte_index = bit_offset / 8u;
@@ -628,6 +859,8 @@ static int32_t adapter_write_bool(tDeviceId id, uint32_t task,
   else
     state.staged_outputs[byte_index] &= (uint8_t)~mask;
   state.staged_coverage[byte_index] |= mask;
+  TRACE_EVENT(trace_write_count, "write_bool", DAL_SUCCESS, DAL_SUCCESS,
+              bit_offset, 1u);
   return DAL_SUCCESS;
 }
 
@@ -638,23 +871,23 @@ static int32_t adapter_write_end(tDeviceId id, uint32_t task) {
     return DAL_FAILURE;
   if (state.write_failed ||
       !frame_is_fully_covered(state.staged_coverage,
-                              selected_profile->output_bytes,
-                              selected_profile->output_bits)) {
+                              selected_profile.output_bytes,
+                              selected_profile.output_bits)) {
     if (!state.write_failed) latch_fault_locked();
     state.write_active = false;
     state.write_owner_valid = false;
     state.write_failed = false;
     memcpy(state.staged_outputs, state.requested_outputs,
-           selected_profile->output_bytes);
+           selected_profile.output_bytes);
     memset(state.staged_coverage, 0, sizeof(state.staged_coverage));
     return DAL_FAILURE;
   }
   memcpy(state.requested_outputs, state.staged_outputs,
-         selected_profile->output_bytes);
+         selected_profile.output_bytes);
   if (state.frame_count != UINT64_MAX) ++state.frame_count;
   if (effective_permit())
     memcpy(state.effective_outputs, state.staged_outputs,
-           selected_profile->output_bytes);
+           selected_profile.output_bytes);
   else
     clear_effective_outputs();
   state.write_active = false;
@@ -669,7 +902,7 @@ static int32_t adapter_read_start(tDeviceId id, uint32_t task) {
   refresh_watchdog_locked();
   if (!ready_device(id) || task != 0u || state.read_active) return DAL_FAILURE;
   memcpy(state.read_latch, state.input_signals,
-         selected_profile->input_bytes);
+         selected_profile.input_bytes);
   state.read_task = task;
   state.read_owner = pthread_self();
   state.read_owner_valid = true;
@@ -683,15 +916,24 @@ static int32_t adapter_read_bytes(tDeviceId id, uint32_t task,
                                   uint8_t *data) {
   STATE_GUARD;
   refresh_watchdog_locked();
-  if (!ready_device(id) || !owns_read(task))
-    return DAL_FAILURE;
-  if ((size != 0u && data == NULL) || offset > selected_profile->input_bytes ||
-      size > selected_profile->input_bytes - offset) {
+  if (!ready_device(id) || !owns_read(task)) {
+    TRACE_EVENT(trace_read_count, "read_bytes", DAL_FAILURE, DAL_FAILURE,
+                offset, size); return DAL_FAILURE;
+  }
+  if ((size != 0u && data == NULL) || offset > selected_profile.input_bytes ||
+      size > selected_profile.input_bytes - offset) {
     latch_fault_locked();
+    TRACE_EVENT(trace_read_count, "read_bytes", DAL_FAILURE, DAL_FAILURE,
+                offset, size);
     return DAL_FAILURE;
   }
-  if (size == 0u) return DAL_SUCCESS;
+  if (size == 0u) {
+    TRACE_EVENT(trace_read_count, "read_bytes", DAL_SUCCESS, DAL_SUCCESS,
+                offset, size); return DAL_SUCCESS;
+  }
   memcpy(data, state.read_latch + offset, size);
+  TRACE_EVENT(trace_read_count, "read_bytes", DAL_SUCCESS, DAL_SUCCESS,
+              offset, size);
   return DAL_SUCCESS;
 }
 
@@ -699,13 +941,20 @@ static int32_t adapter_read_bit(tDeviceId id, uint32_t task,
                                 uint32_t bit_offset, uint8_t *data) {
   STATE_GUARD;
   refresh_watchdog_locked();
-  if (!ready_device(id) || !owns_read(task)) return DAL_FAILURE;
-  if (bit_offset >= selected_profile->input_bits || data == NULL) {
+  if (!ready_device(id) || !owns_read(task)) {
+    TRACE_EVENT(trace_read_count, "read_bit", DAL_FAILURE, DAL_FAILURE,
+                bit_offset, 1u); return DAL_FAILURE;
+  }
+  if (bit_offset >= selected_profile.input_bits || data == NULL) {
     latch_fault_locked();
+    TRACE_EVENT(trace_read_count, "read_bit", DAL_FAILURE, DAL_FAILURE,
+                bit_offset, 1u);
     return DAL_FAILURE;
   }
   *data = (uint8_t)((state.read_latch[bit_offset / 8u] >>
                      (bit_offset % 8u)) & 1u);
+  TRACE_EVENT(trace_read_count, "read_bit", DAL_SUCCESS, DAL_SUCCESS,
+              bit_offset, 1u);
   return DAL_SUCCESS;
 }
 
@@ -713,13 +962,20 @@ static int32_t adapter_read_bool(tDeviceId id, uint32_t task,
                                 uint32_t bit_offset, bool *value) {
   STATE_GUARD;
   refresh_watchdog_locked();
-  if (!ready_device(id) || !owns_read(task)) return DAL_FAILURE;
-  if (value == NULL || bit_offset >= selected_profile->input_bits) {
+  if (!ready_device(id) || !owns_read(task)) {
+    TRACE_EVENT(trace_read_count, "read_bool", DAL_FAILURE, DAL_FAILURE,
+                bit_offset, 1u); return DAL_FAILURE;
+  }
+  if (value == NULL || bit_offset >= selected_profile.input_bits) {
     latch_fault_locked();
+    TRACE_EVENT(trace_read_count, "read_bool", DAL_FAILURE, DAL_FAILURE,
+                bit_offset, 1u);
     return DAL_FAILURE;
   }
   *value = ((state.read_latch[bit_offset / 8u] >>
              (bit_offset % 8u)) & 1u) != 0u;
+  TRACE_EVENT(trace_read_count, "read_bool", DAL_SUCCESS, DAL_SUCCESS,
+              bit_offset, 1u);
   return DAL_SUCCESS;
 }
 
@@ -805,19 +1061,18 @@ static int32_t adapter_app_state(tApplicationStateChangedEvent event) {
 static int32_t inner_terminal_info(uint32_t capacity, void *records,
                                    void *count_out) {
   if (records == NULL || count_out == NULL) return 1;
-  const uint32_t count = selected_profile->terminal_count;
+  const uint32_t count = selected_profile.terminal_count;
   const uint32_t needed = count * (uint32_t)sizeof(tKBUS_TERMINAL_INFO_32);
   *(uint32_t *)count_out = count;
   if (capacity < needed) return 2;
   tKBUS_TERMINAL_INFO_32 model[2];
-  model[0].ulOffsetInput_bits = selected_profile->input_offsets_bits[0];
-  model[0].ulOffsetOutput_bits = selected_profile->output_offsets_bits[0];
-  model[0].ulSizeInput_bits = selected_profile->input_bits;
-  model[0].ulSizeOutput_bits = 0u;
-  model[1].ulOffsetInput_bits = selected_profile->input_offsets_bits[1];
-  model[1].ulOffsetOutput_bits = selected_profile->output_offsets_bits[1];
-  model[1].ulSizeInput_bits = 0u;
-  model[1].ulSizeOutput_bits = selected_profile->output_bits;
+  memset(model, 0, sizeof(model));
+  for (uint32_t i = 0u; i < count; ++i) {
+    model[i].ulOffsetInput_bits = selected_profile.input_offsets_bits[i];
+    model[i].ulOffsetOutput_bits = selected_profile.output_offsets_bits[i];
+    model[i].ulSizeInput_bits = selected_profile.terminal_input_bits[i];
+    model[i].ulSizeOutput_bits = selected_profile.terminal_output_bits[i];
+  }
   memcpy(records, model, needed);
   if (capacity > needed) memset((uint8_t *)records + needed, 0, capacity - needed);
   return 0;
@@ -827,6 +1082,7 @@ static int32_t device_specific(const char *name, void *return_value,
                                va_list args) {
   if (name == NULL) {
     if (state.initialized) latch_fault_locked();
+    TRACE_UNKNOWN_CALL(name);
     return DAL_NOTUSED;
   }
   if (strcmp(name, LIBPACKBUS_DAL_FUNCTION_PUSH) == 0) {
@@ -853,6 +1109,8 @@ static int32_t device_specific(const char *name, void *return_value,
     int32_t result = inner_terminal_info(capacity, records, count);
     if (result == 1) latch_fault_locked();
     *(int32_t *)return_value = result;
+    TRACE_EVENT(trace_terminal_count, "terminal_info", DAL_SUCCESS, result,
+                selected_profile.terminal_count, capacity);
     return DAL_SUCCESS;
   }
   if (strcmp(name, LIBPACKBUS_DAL_FUNC_READ_TAB_9) == 0) {
@@ -865,30 +1123,65 @@ static int32_t device_specific(const char *name, void *return_value,
     uint16_t *module_id = va_arg(args, uint16_t *);
     int32_t result = -1;
     if (terminal >= 1 &&
-        terminal <= (int)selected_profile->terminal_count) {
+        terminal <= (int)selected_profile.terminal_count) {
       if (module_id == NULL) {
-        result = -2;
+        result = -2; /* FW31 read_table_9 inner NULL result. */
       } else {
-        *module_id = selected_profile->module_ids[terminal - 1];
+        *module_id = selected_profile.module_ids[terminal - 1];
         result = 0;
       }
     }
     if (result != 0) latch_fault_locked();
     *(int32_t *)return_value = result;
+    TRACE_EVENT(trace_table9_count, "table9", DAL_SUCCESS, result,
+                terminal < 0 ? 0u : (uint32_t)terminal,
+                selected_profile.terminal_count);
     return DAL_SUCCESS;
   }
-  if (strcmp(name, LIBPACKBUS_DAL_FUNC_GET_UID) == 0 ||
-      strcmp(name, LIBPACKBUS_DAL_FUNC_READ_CONF_REG) == 0) {
+  if (strcmp(name, LIBPACKBUS_DAL_FUNC_READ_CONF_REG) == 0) {
+    if (!state.initialized) return DAL_FAILURE;
+    if (return_value == NULL) {
+      latch_fault_locked();
+      return DAL_FAILURE;
+    }
+    int terminal = va_arg(args, int); /* uint8_t is promoted to int */
+    int register_id = va_arg(args, int); /* uint8_t is promoted to int */
+    uint16_t *value = va_arg(args, uint16_t *);
+    int32_t result;
+    if (terminal < 1 || terminal > (int)selected_profile.terminal_count)
+      result = -1;
+    else if (value == NULL)
+      result = -3;
+    else if (!selected_profile.integration_profile ||
+             (register_id != 16 && register_id != 29 && register_id != 30))
+      result = -2;
+    else {
+      *value = register_id == 16 ? selected_profile.register16
+               : register_id == 29 ? selected_profile.register29
+                                   : selected_profile.register30;
+      result = 0;
+    }
+    if (result != 0) latch_fault_locked();
+    *(int32_t *)return_value = result;
+    TRACE_EVENT(trace_confreg_count, "read_conf_reg", DAL_SUCCESS, result,
+                terminal < 0 ? 0u : (uint32_t)terminal,
+                register_id < 0 ? 0u : (uint32_t)register_id);
+    return DAL_SUCCESS;
+  }
+  if (strcmp(name, LIBPACKBUS_DAL_FUNC_GET_UID) == 0) {
     if (!state.initialized) return DAL_FAILURE;
     if (return_value == NULL) {
       latch_fault_locked();
       return DAL_FAILURE;
     }
     latch_fault_locked();
-    *(int32_t *)return_value = -1; /* Explicitly unsupported by this model. */
+    *(int32_t *)return_value = -1; /* Own explicit unsupported UID response. */
+    TRACE_EVENT(trace_uid_count, "get_uid", DAL_SUCCESS,
+                *(int32_t *)return_value, 0u, 0u);
     return DAL_SUCCESS;
   }
   if (state.initialized) latch_fault_locked();
+  TRACE_UNKNOWN_CALL(name);
   return DAL_NOTUSED;
 }
 
