@@ -1,6 +1,6 @@
 import unittest
 
-from prototype.module_models import Analog466, Pwm677
+from prototype.module_models import Analog466, AnalogOutput550, Pwm677
 from prototype.vio import ContractError, Unsupported
 
 
@@ -17,6 +17,10 @@ class Analog466Tests(unittest.TestCase):
         # The interleaved zero status bytes are this model's research layout.
         self.assertEqual(model.input_bytes(), bytes.fromhex("00000000f87f"))
         self.assertEqual(len(model.input_bytes()), 6)
+        self.assertEqual(model.research_input_bytes(), model.input_bytes())
+        self.assertEqual(model.descriptor_input_words(), (0x0000, 0x7ff8))
+        self.assertEqual(model.descriptor_word_payload(), bytes.fromhex("0000f87f"))
+        self.assertEqual(len(model.descriptor_word_payload()), 4)
 
     def test_documented_normal_range_midpoint(self):
         model = Analog466()
@@ -149,6 +153,85 @@ class Pwm677Tests(unittest.TestCase):
         before = model.observe()
         with self.assertRaises(ContractError):
             model.advance(1)
+        self.assertEqual(model.observe(), before)
+
+
+class AnalogOutput550Tests(unittest.TestCase):
+    def test_documented_normal_points_decode_to_millivolts(self):
+        model = AnalogOutput550()
+        model.set_output_words((0x0000, 0x1000))
+        self.assertEqual(model.observe()["requested_voltage_mV"], [0, 1250])
+        model.set_output_payload(bytes.fromhex("0040ff7f"))
+        self.assertEqual(model.observe()["requested_voltage_mV"], [5000, 10000])
+        self.assertEqual(model.observe()["requested_word"], [0x4000, 0x7fff])
+
+    def test_payload_is_four_bytes_little_endian_and_channels_independent(self):
+        model = AnalogOutput550()
+        model.set_permit(True)
+        model.set_output_payload(bytes.fromhex("00100070"))
+        observed = model.observe()
+        self.assertEqual(observed["requested_word"], [0x1000, 0x7000])
+        self.assertEqual(observed["requested_voltage_mV"], [1250, 8750])
+        self.assertEqual(observed["effective_voltage_mV"], [1250, 8750])
+        model.set_channel_word(0, 0x4000)
+        self.assertEqual(model.observe()["requested_word"], [0x4000, 0x7000])
+        self.assertEqual(model.observe()["effective_voltage_mV"], [5000, 8750])
+        model.set_channel_word(1, 0x0000)
+        self.assertEqual(model.observe()["effective_voltage_mV"], [5000, 0])
+
+    def test_closed_permit_retains_request_but_effective_outputs_are_zero(self):
+        model = AnalogOutput550()
+        model.set_output_words((0x1000, 0x4000))
+        observed = model.observe()
+        self.assertEqual(observed["requested_voltage_mV"], [1250, 5000])
+        self.assertEqual(observed["effective_voltage_mV"], [0, 0])
+        self.assertEqual(observed["effective_payload_hex"], "00000000")
+        model.set_permit(True)
+        self.assertFalse(model.observe()["armed"])
+        model.set_output_words((0x1000, 0x4000))
+        self.assertEqual(model.observe()["effective_voltage_mV"], [1250, 5000])
+        model.set_permit(False)
+        model.set_permit(True)
+        self.assertEqual(model.observe()["requested_voltage_mV"], [1250, 5000])
+        self.assertEqual(model.observe()["effective_voltage_mV"], [0, 0])
+        model.set_output_words((0x1000, 0x4000))
+        self.assertEqual(model.observe()["effective_voltage_mV"], [1250, 5000])
+
+    def test_fault_is_fail_closed_and_needs_fresh_command_after_clear(self):
+        model = AnalogOutput550()
+        model.set_permit(True)
+        model.set_output_words((0x2000, 0x6000))
+        before = model.observe()
+        model.set_fault(True)
+        self.assertEqual(model.observe()["requested_voltage_mV"], [2500, 7500])
+        self.assertEqual(model.observe()["effective_voltage_mV"], [0, 0])
+        model.set_fault(False)
+        self.assertEqual(model.observe()["effective_voltage_mV"], [0, 0])
+        self.assertFalse(model.observe()["armed"])
+        model.set_output_words(before["requested_word"])
+        self.assertEqual(model.observe()["effective_voltage_mV"], [2500, 7500])
+
+    def test_invalid_frames_values_and_gate_types_are_atomic(self):
+        model = AnalogOutput550()
+        model.set_permit(True)
+        model.set_output_words((0x1000, 0x2000))
+        before = model.observe()
+        for payload in (b"", b"\0" * 3, b"\0" * 5, bytearray(4), "00000000"):
+            with self.subTest(payload=payload), self.assertRaises(ContractError):
+                model.set_output_payload(payload)
+            self.assertEqual(model.observe(), before)
+        for words in ((0x1000,), (0x1000, 0x8000), (0x1000, True), "1000,2000"):
+            with self.subTest(words=words), self.assertRaises((ContractError, Unsupported)):
+                model.set_output_words(words)
+            self.assertEqual(model.observe(), before)
+        for channel, word in ((True, 0), (2, 0), (0, 0x8000)):
+            with self.subTest(channel=channel, word=word), self.assertRaises((ContractError, Unsupported)):
+                model.set_channel_word(channel, word)
+            self.assertEqual(model.observe(), before)
+        with self.assertRaises(ContractError):
+            model.set_permit(1)
+        with self.assertRaises(ContractError):
+            model.set_fault(1)
         self.assertEqual(model.observe(), before)
 
 

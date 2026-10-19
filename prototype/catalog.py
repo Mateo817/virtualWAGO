@@ -16,7 +16,7 @@ from .contracts import ContractError, Unsupported, canonical, exact_keys, uint
 
 CATALOG_PATH = Path(__file__).resolve().parents[1] / "config/module-catalog.json"
 MODEL_SCOPE = "OWN_RESEARCH_LAYOUT_NOT_NATIVE_MAPPING"
-_CODECS = {"digital", "ai466_standard", "pwm677_frq"}
+_CODECS = {"digital", "ai466_standard", "ao550_standard", "pwm677_frq"}
 
 
 def _unique_object(pairs):
@@ -89,7 +89,9 @@ class Catalog:
                 parsed = urlsplit(source["url"])
                 if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
                     raise ContractError("catalog: HTTPS source without credentials required")
-                if type(source["kind"]) is not str or source["kind"] not in {"manufacturer_product", "manufacturer_manual_on_mirror"}:
+                if type(source["kind"]) is not str or source["kind"] not in {
+                        "manufacturer_product", "manufacturer_manual",
+                        "manufacturer_manual_on_mirror"}:
                     raise ContractError("catalog: unknown source kind")
                 if source["version"] is not None:
                     _text(source["version"], "source version")
@@ -191,6 +193,7 @@ class Catalog:
                 raise ContractError("catalog: digital channel mask mismatch")
         else:
             expected = {"ai466_standard": ("750-466", "ai", 2, 6, 0),
+                        "ao550_standard": ("750-550", "ao", 2, 0, 4),
                         "pwm677_frq": ("750-677", "pwm", 4, 12, 12)}[model["codec"]]
             if (entry["article"], entry["family"], entry["channels"], ni, no) != expected:
                 raise Unsupported("catalog: codec belongs to another exact module")

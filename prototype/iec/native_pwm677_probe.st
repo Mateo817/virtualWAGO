@@ -1,0 +1,29 @@
+PROGRAM PLC_PRG
+VAR
+    PwmStatus1 : BYTE := BYTE#0;
+    PwmReservedInput1 : BYTE := BYTE#0;
+    PwmInputValue1 : WORD := WORD#0;
+    PwmStatus2 : BYTE := BYTE#0;
+    PwmReservedInput2 : BYTE := BYTE#0;
+    PwmInputValue2 : WORD := WORD#0;
+    PwmStatus3 : BYTE := BYTE#0;
+    PwmReservedInput3 : BYTE := BYTE#0;
+    PwmInputValue3 : WORD := WORD#0;
+    PwmStatus4 : BYTE := BYTE#0;
+    PwmReservedInput4 : BYTE := BYTE#0;
+    PwmInputValue4 : WORD := WORD#0;
+    PwmControl1 : BYTE := BYTE#0;
+    PwmReservedOutput1 : BYTE := BYTE#0;
+    PwmOutputValue1 : WORD := WORD#0;
+    PwmControl2 : BYTE := BYTE#0;
+    PwmReservedOutput2 : BYTE := BYTE#0;
+    PwmOutputValue2 : WORD := WORD#0;
+    PwmControl3 : BYTE := BYTE#0;
+    PwmReservedOutput3 : BYTE := BYTE#0;
+    PwmOutputValue3 : WORD := WORD#0;
+    PwmControl4 : BYTE := BYTE#0;
+    PwmReservedOutput4 : BYTE := BYTE#0;
+    PwmOutputValue4 : WORD := WORD#0;
+END_VAR
+
+// Offline project mapping probe only. Zero controls leave both PWM output pairs disabled.

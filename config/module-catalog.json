@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "revision": "2026-10-14.1",
+  "revision": "2026-10-19.1",
   "scope": "OWN_MODULE_CATALOG_NOT_HARDWARE_INVENTORY",
   "source_report": "docs/module-catalog-sources-2026-10-12.md",
   "modules": [
@@ -381,15 +381,37 @@
           "url": "https://www.wago.com/global/i-o-systems/2-channel-analog-output/p/750-550",
           "kind": "manufacturer_product",
           "version": null,
-          "checked_on": "2026-10-12"
+          "checked_on": "2026-10-19"
+        },
+        {
+          "url": "https://www.wago.com/wagoweb/documentation/750/ger_manu/modules/m07500550_xxxxxxxx_0de.pdf",
+          "kind": "manufacturer_manual",
+          "version": "1.1.0",
+          "checked_on": "2026-10-19"
         }
       ],
-      "descriptor": null,
-      "model": null,
+      "descriptor": {
+        "device_id": "07500550000000000004",
+        "version": "2.0.0.9",
+        "sha256": "8edb68d2b02370398251890035552779fb1edce5e6d039c2d7312d26f6927105",
+        "scope": "ENGINEERING_DESCRIPTION_NOT_PHYSICAL_REVISION"
+      },
+      "model": {
+        "id": "750-550.ao2",
+        "input_bytes": 0,
+        "output_bytes": 4,
+        "codec": "ao550_standard",
+        "input_mask": null,
+        "output_mask": null,
+        "layout_scope": "OWN_RESEARCH_LAYOUT_NOT_NATIVE_MAPPING"
+      },
       "native_evidence": null,
       "hardware_evidence": null,
       "limits": [
-        "Documentation-only: 0-10 V; scaling/status/native profile unsupported."
+        "Standard variant only; WAGO manual v1.1.0 normal output words 0x0000..0x7fff represent 0..10 V. Millivolt interpolation between documented points is an own rounding assumption.",
+        "The exact private CODESYS description declares two output WORDs (four bytes); the four-byte own research payload follows the documented little-endian word order but is not a measured native ADI or hardware process image.",
+        "Requested words and effective voltages are separate. A closed own permit or fault makes effective outputs 0 V; gate restoration requires a fresh complete output request.",
+        "Status, configuration-register semantics, electrical load/current, native driver and original-runtime behavior remain unsupported. Excludes /000-200 and other variants."
       ]
     },
     {

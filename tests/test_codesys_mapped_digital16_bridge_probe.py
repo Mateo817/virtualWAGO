@@ -53,12 +53,12 @@ class Digital16BridgeProbeTests(unittest.TestCase):
 
     def test_word_parent_and_sixteen_descriptor_bit_rows_are_consistent(self):
         rows = [
-            ["Application.PLC_PRG.InputWord", "_IN", "", "Input Channels", "%IW1", "_750_1405"],
-            ["Application.PLC_PRG.OutputWord", "_OUT", "", "Output Channels", "%QW0", "_750_1504"],
+            ["Application.PLC_PRG.InputWord", "_IN", "", "Eingangskanäle", "%IW1", "_750_1405"],
+            ["Application.PLC_PRG.OutputWord", "_OUT", "", "Ausgangskanäle", "%QW0", "_750_1504"],
         ]
-        rows.extend([["", "_IN@%d" % (i + 1), "", "Digital input",
+        rows.extend([["", "_IN@%d" % (i + 1), "", "Digitaleingang",
                       "%%IX%d.%d" % (2 + i // 8, i % 8), "_750_1405"] for i in range(16)])
-        rows.extend([["", "_OUT@%d" % (i + 1), "", "Digital output",
+        rows.extend([["", "_OUT@%d" % (i + 1), "", "Digitalausgang",
                       "%%QX%d.%d" % (i // 8, i % 8), "_750_1504"] for i in range(16)])
         self.assertEqual(candidate.verify_export_rows(
             rows, "Application.PLC_PRG.InputWord", "Application.PLC_PRG.OutputWord"),
@@ -69,6 +69,48 @@ class Digital16BridgeProbeTests(unittest.TestCase):
         with self.assertRaises(Exception):
             candidate.verify_export_rows(
                 broken, "Application.PLC_PRG.InputWord", "Application.PLC_PRG.OutputWord")
+
+        for label in ("", "Eingangskanäle", "Anzeige unbekannt"):
+            relabeled = [row[:] for row in rows]
+            for row in relabeled:
+                row[3] = label
+            self.assertEqual(candidate.verify_export_rows(
+                relabeled, "Application.PLC_PRG.InputWord", "Application.PLC_PRG.OutputWord")["csv_consistency"],
+                "PASS")
+
+    def test_word_and_bit_addresses_are_exact_and_bound_to_parent_word(self):
+        rows = [
+            ["Application.PLC_PRG.InputWord", "_IN", "", "", "%IW1", "_750_1405"],
+            ["Application.PLC_PRG.OutputWord", "_OUT", "", "", "%QW0", "_750_1504"],
+        ]
+        rows.extend([["", "_IN@%d" % (i + 1), "", "",
+                      "%%IX%d.%d" % (2 + i // 8, i % 8), "_750_1405"] for i in range(16)])
+        rows.extend([["", "_OUT@%d" % (i + 1), "", "",
+                      "%%QX%d.%d" % (i // 8, i % 8), "_750_1504"] for i in range(16)])
+        malformed = (
+            (0, "%IW1suffix"),
+            (0, " %IW1 "),
+            (2, "%IX2.0suffix"),
+            (2, "%IX2.8"),
+            (2, "%QX2.0"),
+            (2, "%IX1.0"),
+            (2, "%IX2.1"),
+            (2, "%IX2.0\n"),
+            (18, "%QX0.7garbage"),
+            (1, "%IW0"),
+        )
+        for row_index, address in malformed:
+            damaged = [row[:] for row in rows]
+            damaged[row_index][4] = address
+            with self.subTest(row=row_index, address=address), self.assertRaises(Exception):
+                candidate.verify_export_rows(
+                    damaged, "Application.PLC_PRG.InputWord", "Application.PLC_PRG.OutputWord")
+
+        wrong_device = [row[:] for row in rows]
+        wrong_device.append(["", "_IN@1", "", "", "%IX2.0", "_750-other"])
+        with self.assertRaises(Exception):
+            candidate.verify_export_rows(
+                wrong_device, "Application.PLC_PRG.InputWord", "Application.PLC_PRG.OutputWord")
 
     def test_native_mapping_contract_requires_word_parent_and_unmapped_children(self):
         facts = {

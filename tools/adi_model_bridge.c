@@ -8,8 +8,16 @@
 #include <adi_digital_adapter.h>
 #else
 /* Native test hooks replace only the adapter API, never the socket code. */
+typedef enum {
+  VIRTUAL_ADI_PROFILE_DIGITAL16 = 0,
+  VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8 = 1
+} virtual_adi_profile;
 int32_t virtual_adi_set_inputs(uint16_t input_bits);
 int32_t virtual_adi_set_permit(bool permit);
+int32_t virtual_adi_set_input_frame(virtual_adi_profile profile,
+                                    uint64_t generation, uint32_t length,
+                                    const uint8_t *bytes);
+const char *virtual_adi_profile_name(virtual_adi_profile profile);
 #endif
 
 #include <errno.h>
@@ -29,8 +37,8 @@ int32_t virtual_adi_set_permit(bool permit);
 #include <unistd.h>
 
 #define BRIDGE_ENV "VIRTUALWAGO_MODEL_SOCKET"
-#define REQUEST_MAX 64u
-#define RESPONSE_MAX 512u
+#define REQUEST_MAX 600u
+#define RESPONSE_MAX 4096u
 #define POLL_INTERVAL_MS 50
 #define CLIENT_IDLE_MS 500
 #define SEND_TIMEOUT_MS 100
@@ -290,14 +298,138 @@ static bool parse_input(const char *packet, size_t length, uint16_t *value) {
   return true;
 }
 
+static bool parse_decimal(const char **cursor, const char *end,
+                          uint64_t maximum, uint64_t *value) {
+  if (*cursor == end || **cursor < '0' || **cursor > '9') return false;
+  if (**cursor == '0' && *cursor + 1 < end && (*cursor)[1] >= '0' &&
+      (*cursor)[1] <= '9') return false;
+  uint64_t parsed = 0u;
+  while (*cursor < end && **cursor >= '0' && **cursor <= '9') {
+    unsigned digit = (unsigned)(**cursor - '0');
+    if (parsed > (maximum - digit) / 10u) return false;
+    parsed = parsed * 10u + digit;
+    ++*cursor;
+  }
+  *value = parsed;
+  return true;
+}
+
+static bool parse_v2_input(const char *packet, size_t length,
+                           virtual_adi_profile *profile, uint64_t *generation,
+                           uint32_t *frame_length, uint8_t *frame) {
+  const char *cursor = packet;
+  const char *end = packet + length;
+  static const char prefix[] = "V2 INPUT ";
+  if (length <= sizeof(prefix) - 1u ||
+      memcmp(packet, prefix, sizeof(prefix) - 1u) != 0) return false;
+  cursor += sizeof(prefix) - 1u;
+  if ((size_t)(end - cursor) >= 4u && memcmp(cursor, "DI8 ", 4u) == 0) {
+    *profile = VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8;
+    cursor += 4u;
+  } else if ((size_t)(end - cursor) >= 5u &&
+             memcmp(cursor, "DI16 ", 5u) == 0) {
+    *profile = VIRTUAL_ADI_PROFILE_DIGITAL16;
+    cursor += 5u;
+  } else return false;
+  uint64_t parsed_length = 0u;
+  if (!parse_decimal(&cursor, end, UINT64_MAX, generation) ||
+      cursor == end || *cursor++ != ' ' ||
+      !parse_decimal(&cursor, end, VIRTUAL_ADI_MAX_FRAME_BYTES,
+                     &parsed_length) ||
+      cursor == end || *cursor++ != ' ') return false;
+  *frame_length = (uint32_t)parsed_length;
+  if ((size_t)(end - cursor) != (size_t)*frame_length * 2u) return false;
+  for (uint32_t i = 0u; i < *frame_length; ++i) {
+    unsigned value = 0u;
+    for (unsigned digit = 0u; digit < 2u; ++digit) {
+      unsigned char c = (unsigned char)*cursor++;
+      if (c >= '0' && c <= '9') value = value * 16u + (unsigned)(c - '0');
+      else if (c >= 'a' && c <= 'f') value = value * 16u + 10u + (unsigned)(c - 'a');
+      else return false;
+    }
+    frame[i] = (uint8_t)value;
+  }
+  return true;
+}
+
+static size_t append_hex(char *response, size_t capacity, size_t used,
+                         const uint8_t *frame, uint32_t length) {
+  static const char digits[] = "0123456789abcdef";
+  if (used > capacity || (size_t)length * 2u >= capacity - used) return SIZE_MAX;
+  for (uint32_t i = 0u; i < length; ++i) {
+    response[used++] = digits[frame[i] >> 4u];
+    response[used++] = digits[frame[i] & 0x0fu];
+  }
+  response[used] = '\0';
+  return used;
+}
+
+static bool format_v2_status(const virtual_model_snapshot *snapshot,
+                             char *response, size_t capacity) {
+  const char *profile = virtual_adi_profile_name(
+      (virtual_adi_profile)snapshot->profile_id);
+  if (profile == NULL) return false;
+  int count = snprintf(response, capacity,
+      "V2 STATUS %s generation=%llu input_bytes=%u input_bits=%u "
+      "output_bytes=%u output_bits=%u input=", profile,
+      (unsigned long long)snapshot->generation, snapshot->input_bytes,
+      snapshot->input_bits, snapshot->output_bytes, snapshot->output_bits);
+  if (count < 0 || (size_t)count >= capacity) return false;
+  size_t used = (size_t)count;
+  used = append_hex(response, capacity, used, snapshot->input_signals,
+                    snapshot->input_bytes);
+  if (used == SIZE_MAX || used + 1u >= capacity) return false;
+  response[used++] = ' ';
+  const char *labels[] = {"latch=", "requested=", "staged=", "coverage=", "effective="};
+  const uint8_t *frames[] = {snapshot->read_latch, snapshot->requested_outputs,
+      snapshot->staged_outputs, snapshot->staged_coverage,
+      snapshot->effective_outputs};
+  const uint32_t lengths[] = {snapshot->input_bytes, snapshot->output_bytes,
+      snapshot->output_bytes, snapshot->output_bytes, snapshot->output_bytes};
+  for (size_t i = 0; i < sizeof(labels) / sizeof(labels[0]); ++i) {
+    count = snprintf(response + used, capacity - used, "%s", labels[i]);
+    if (count < 0 || (size_t)count >= capacity - used) return false;
+    used += (size_t)count;
+    used = append_hex(response, capacity, used, frames[i], lengths[i]);
+    if (used == SIZE_MAX) return false;
+    if (i + 1u < sizeof(labels) / sizeof(labels[0])) {
+      if (used + 1u >= capacity) return false;
+      response[used++] = ' ';
+    }
+  }
+  if (used + 1u >= capacity) return false;
+  response[used++] = ' ';
+  count = snprintf(response + used, capacity - used,
+      "initialized=%u opened=%u configured=%u running=%u permit=%u "
+      "watchdog=%u fault=%u read_active=%u write_active=%u "
+      "write_failed=%u frames=%llu",
+      snapshot->initialized ? 1u : 0u, snapshot->opened ? 1u : 0u,
+      snapshot->configured ? 1u : 0u, snapshot->app_running ? 1u : 0u,
+      snapshot->permit ? 1u : 0u, snapshot->watchdog_healthy ? 1u : 0u,
+      snapshot->fault_latched ? 1u : 0u, snapshot->read_active ? 1u : 0u,
+      snapshot->write_active ? 1u : 0u, snapshot->write_failed ? 1u : 0u,
+      (unsigned long long)snapshot->frame_count);
+  return count > 0 && (size_t)count < capacity - used &&
+         used + (size_t)count <= RESPONSE_MAX;
+}
+
 static bool format_status(const virtual_model_snapshot *snapshot,
                           char *response, size_t capacity) {
+  unsigned input = snapshot->input_bytes > 0u ? snapshot->input_signals[0] : 0u;
+  if (snapshot->input_bytes > 1u)
+    input |= (unsigned)snapshot->input_signals[1] << 8u;
+  unsigned requested = snapshot->output_bytes > 0u ? snapshot->requested_outputs[0] : 0u;
+  unsigned effective = snapshot->output_bytes > 0u ? snapshot->effective_outputs[0] : 0u;
+  if (snapshot->output_bytes > 1u) {
+    requested |= (unsigned)snapshot->requested_outputs[1] << 8u;
+    effective |= (unsigned)snapshot->effective_outputs[1] << 8u;
+  }
   int count = snprintf(response, capacity,
                        "STATUS input=%u permit=%u requested=%u effective=%u watchdog=%u fault=%u generation=%llu frames=%llu opened=%u configured=%u running=%u",
-                       (unsigned)snapshot->inputs,
+                       input,
                        snapshot->permit ? 1u : 0u,
-                       (unsigned)snapshot->requested_outputs,
-                       (unsigned)snapshot->effective_outputs,
+                       requested,
+                       effective,
                        snapshot->watchdog_healthy ? 1u : 0u,
                        snapshot->fault_latched ? 1u : 0u,
                        (unsigned long long)snapshot->generation,
@@ -312,6 +444,18 @@ static bool format_status(const virtual_model_snapshot *snapshot,
 static bool process_packet(const char *packet, size_t length, char *response,
                            size_t response_capacity, bool *close_after) {
   *close_after = false;
+  if (length == 9u && memcmp(packet, "V2 STATUS", 9u) == 0) {
+    virtual_model_snapshot snapshot;
+    if (virtual_adi_model_snapshot(&snapshot) != 0) {
+      strcpy(response, "ERR STATE");
+      return true;
+    }
+    if (!snapshot.initialized) {
+      strcpy(response, "NOT_READY");
+      return true;
+    }
+    return format_v2_status(&snapshot, response, response_capacity);
+  }
   if (length == 6u && memcmp(packet, "STATUS", 6u) == 0) {
     virtual_model_snapshot snapshot;
     if (virtual_adi_model_snapshot(&snapshot) != 0) {
@@ -332,6 +476,26 @@ static bool process_packet(const char *packet, size_t length, char *response,
   }
   if (!snapshot.initialized) {
     strcpy(response, "NOT_READY");
+    return true;
+  }
+
+  if (length >= 8u && memcmp(packet, "V2 INPUT", 8u) == 0) {
+    virtual_adi_profile profile;
+    uint64_t generation;
+    uint32_t frame_length;
+    uint8_t frame[VIRTUAL_ADI_MAX_FRAME_BYTES];
+    if (!parse_v2_input(packet, length, &profile, &generation,
+                        &frame_length, frame)) {
+      strcpy(response, "ERR FRAME");
+      return true;
+    }
+    int32_t result = virtual_adi_set_input_frame(profile, generation,
+                                                  frame_length, frame);
+    if (result == 0) strcpy(response, "OK FRAME");
+    else if (result == 2) strcpy(response, "ERR PROFILE");
+    else if (result == 3) strcpy(response, "ERR GENERATION");
+    else if (result == 4) strcpy(response, "ERR LENGTH");
+    else strcpy(response, "ERR STATE");
     return true;
   }
 

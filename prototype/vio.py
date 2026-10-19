@@ -33,6 +33,29 @@ def encode_ai466_standard(current_uA: int) -> int:
     count = min(4095, (current_uA - 4000) * 4096 // 16000)
     return count << 3
 
+def decode_ao550_standard_word(raw_word: int) -> int:
+    """Decode one standard 750-550 output word into model millivolts.
+
+    WAGO manual v1.1.0, table points 0x0000=0 V, 0x1000=1.25 V,
+    0x4000=5 V, 0x7000=8.75 V and 0x7fff=10 V. Bits B0..B2 are ignored.
+    Piecewise linear interpolation rounded to nearest millivolt is an explicit
+    model assumption between documented points; special /000-200 and register
+    modes are excluded.
+    """
+    if type(raw_word) is not int or not 0 <= raw_word <= 0xFFFF:
+        raise ContractError("raw_word: expected an unsigned 16-bit integer")
+    if raw_word > 0x7FFF:
+        raise Unsupported("750-550 standard normal output words stop at 0x7fff")
+    code = raw_word & 0x7FF8
+    anchors = ((0x0000, 0), (0x1000, 1250), (0x2000, 2500),
+               (0x3000, 3750), (0x4000, 5000), (0x5000, 6250),
+               (0x6000, 7500), (0x7000, 8750), (0x7FF8, 10000))
+    for (low_word, low_mV), (high_word, high_mV) in zip(anchors, anchors[1:]):
+        if code <= high_word:
+            return low_mV + ((code - low_word) * (high_mV - low_mV)
+                             + (high_word - low_word) // 2) // (high_word - low_word)
+    return 10_000
+
 def decode_pwm677_frq(data: bytes) -> tuple[int, int, int, int]:
     """Bounded PWM Frq OUTPUT decoder, not register-communication emulation.
 
