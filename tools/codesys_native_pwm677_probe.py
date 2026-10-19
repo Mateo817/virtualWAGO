@@ -1,11 +1,13 @@
 from __future__ import print_function
 
-"""Build/reopen a pinned offline CODESYS 750-677 mapping probe.
+"""Build/reopen a pinned offline CODESYS 750-677 raw-WORD cycle probe.
 
 This observes the IDE's exported process image for the supplied engineering
-description. It does not connect to a controller or assert runtime/terminal
-behavior. Keep the mode at the vendor-documented PWM DC default; this
-description exposes no operating-mode parameter to this probe.
+description and compiles a deterministic IEC passthrough cycle. It does not
+connect to a controller or establish the physical meaning of module inputs,
+runtime execution, or PWM/terminal behavior. Keep the mode at the
+vendor-documented PWM DC default; this description exposes no operating-mode
+parameter to this probe.
 """
 from scriptengine import *
 import csv
@@ -28,7 +30,14 @@ DESCRIPTOR_SHA256 = "15dcba17a7186fc3dd91fc2b47c806bf7016e6e0ebc949b352c9549f512
 MANUAL_SHA256 = "df130ee3f7f22e81d3439b6d1797d123194626b9091a0e9ec0f4ea149b6035f0"
 MANUAL_URL = "https://www.wago.com/wagoweb/documentation/750/eng_manu/modules/m07500677_00000000_0en.pdf"
 SOURCE_PATH = os.path.join(ROOT, "prototype", "iec", "native_pwm677_probe.st")
-SOURCE_SHA256 = "e64541b32947ed3d7cd5511d74a1c5a3bd8b411f952b74199bd188ba26b73a55"
+SOURCE_SHA256 = "9bd225d6f40169d14d9c43a147a41a2cf9b724a4460b97f18356a39215482357"
+CYCLE_ASSIGNMENTS = tuple(
+    line for channel in range(1, 5) for line in (
+        "PwmControl%d := BYTE#0;" % channel,
+        "PwmReservedOutput%d := BYTE#0;" % channel,
+        "PwmOutputValue%d := PwmInputValue%d;" % (channel, channel),
+    )
+)
 
 PROJECT_PATH = os.path.join(BUILD_DIR, "native-pwm677.project") if BUILD_DIR else None
 MAPPING_PATH = os.path.join(BUILD_DIR, "native-pwm677-mapping.csv") if BUILD_DIR else None
@@ -274,6 +283,17 @@ def validate_descriptor_pin():
         fail("set VIRTUALWAGO_DESCRIPTOR_FILE to the pinned standard 750-677 description")
 
 
+def validate_cycle_program(source):
+    """Require the exact raw-word passthrough and zero control-output cycle."""
+    split = source.index("END_VAR") + len("END_VAR")
+    declaration, implementation = source[:split], source[split:].lstrip("\r\n")
+    actual = [line.strip() for line in implementation.splitlines()
+              if line.strip() and not line.strip().startswith("//")]
+    if tuple(actual) != CYCLE_ASSIGNMENTS:
+        fail("IEC implementation differs from the pinned raw-WORD cycle contract")
+    return declaration, implementation
+
+
 def run():
     if not BUILD_DIR or not os.path.isdir(BUILD_DIR):
         fail("set VIRTUALWAGO_PRIVATE_BUILD_DIR to an existing private directory")
@@ -283,6 +303,7 @@ def run():
         fail("IEC source hash mismatch")
     with open(SOURCE_PATH, "rb") as stream:
         source = stream.read().decode("utf-8")
+    declaration, implementation = validate_cycle_program(source)
     system.script_prompt_handling = (ScriptPromptHandling.ForwardUnknownPrompts
                                      | ScriptPromptHandling.LogPrompts)
     if projects.primary is not None:
@@ -343,8 +364,6 @@ def run():
         if len(matches) != 1:
             fail("exactly one PLC_PRG is required")
         pou = matches[0]
-        split = source.index("END_VAR") + len("END_VAR")
-        declaration, implementation = source[:split], source[split:].lstrip("\r\n")
         if not REOPEN:
             pou.textual_declaration.replace(new_text=declaration)
             pou.textual_implementation.replace(new_text=implementation)
@@ -415,9 +434,14 @@ def run():
             "mode": {"setting": "PWM DC", "basis": "official manual default, HW/FW 01",
                      "configured_by_probe": False,
                      "limitation": "device description exposes no mode parameter; PWM Frq not configured"},
+            "cycle_probe": {"kind": "raw WORD passthrough integration probe",
+                            "input_meaning": "not established; raw mapped WORD values only",
+                            "assignments": list(CYCLE_ASSIGNMENTS),
+                            "control_and_reserved_bytes": "assigned zero every IEC cycle",
+                            "physical_PWM_effect": "not tested or claimed"},
             "manual": {"sha256": MANUAL_SHA256, "url": MANUAL_URL,
                        "pages": "11-17", "scope": "manufacturer process-image and mode description"},
-            "scope": "native IDE process-image mapping/build or read-only reopen only; no runtime or hardware proof"}))
+            "scope": "native IDE process-image and IEC raw-WORD integration build or read-only reopen only; no runtime, physical module-input meaning, PWM effect, or hardware proof"}))
     finally:
         if project is not None:
             project.close()

@@ -10,7 +10,9 @@
 /* Native test hooks replace only the adapter API, never the socket code. */
 typedef enum {
   VIRTUAL_ADI_PROFILE_DIGITAL16 = 0,
-  VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8 = 1
+  VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8 = 1,
+  VIRTUAL_ADI_PROFILE_ANALOG466_AO550 = 2,
+  VIRTUAL_ADI_PROFILE_PWM677 = 3
 } virtual_adi_profile;
 int32_t virtual_adi_set_inputs(uint16_t input_bits);
 int32_t virtual_adi_set_permit(bool permit);
@@ -330,6 +332,14 @@ static bool parse_v2_input(const char *packet, size_t length,
              memcmp(cursor, "DI16 ", 5u) == 0) {
     *profile = VIRTUAL_ADI_PROFILE_DIGITAL16;
     cursor += 5u;
+  } else if ((size_t)(end - cursor) >= 12u &&
+             memcmp(cursor, "AI466_AO550 ", 12u) == 0) {
+    *profile = VIRTUAL_ADI_PROFILE_ANALOG466_AO550;
+    cursor += 12u;
+  } else if ((size_t)(end - cursor) >= 7u &&
+             memcmp(cursor, "PWM677 ", 7u) == 0) {
+    *profile = VIRTUAL_ADI_PROFILE_PWM677;
+    cursor += 7u;
   } else return false;
   uint64_t parsed_length = 0u;
   if (!parse_decimal(&cursor, end, UINT64_MAX, generation) ||
@@ -466,6 +476,10 @@ static bool process_packet(const char *packet, size_t length, char *response,
       strcpy(response, "NOT_READY");
       return true;
     }
+    if (snapshot.profile_id > VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8) {
+      strcpy(response, "ERR PROFILE");
+      return true;
+    }
     return format_status(&snapshot, response, response_capacity);
   }
 
@@ -501,6 +515,10 @@ static bool process_packet(const char *packet, size_t length, char *response,
 
   uint16_t input_value;
   if (parse_input(packet, length, &input_value)) {
+    if (snapshot.profile_id > VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8) {
+      strcpy(response, "ERR PROFILE");
+      return true;
+    }
     if (virtual_adi_set_inputs(input_value) != 0) {
       strcpy(response, "ERR STATE");
       return true;
