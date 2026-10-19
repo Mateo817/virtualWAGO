@@ -10,6 +10,11 @@
 
 #include "adi_model_bridge.h"
 
+typedef enum {
+  VIRTUAL_ADI_PROFILE_DIGITAL16 = 0,
+  VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8 = 1
+} virtual_adi_profile;
+
 #include <errno.h>
 #include <fcntl.h>
 #include <poll.h>
@@ -45,9 +50,38 @@ int32_t virtual_adi_set_inputs(uint16_t input_bits) {
     pthread_mutex_unlock(&test_mutex);
     return -1;
   }
-  test_state.inputs = input_bits;
+  test_state.input_bytes = 2u;
+  test_state.input_bits = 16u;
+  test_state.profile_id = 0u;
+  test_state.input_signals[0] = (uint8_t)input_bits;
+  test_state.input_signals[1] = (uint8_t)(input_bits >> 8u);
   pthread_mutex_unlock(&test_mutex);
   return 0;
+}
+
+int32_t virtual_adi_set_input_frame(virtual_adi_profile profile,
+                                    uint64_t generation, uint32_t length,
+                                    const uint8_t *bytes) {
+  pthread_mutex_lock(&test_mutex);
+  if (!test_state.initialized) { pthread_mutex_unlock(&test_mutex); return 1; }
+  if (profile != (virtual_adi_profile)test_state.profile_id) {
+    pthread_mutex_unlock(&test_mutex); return 2;
+  }
+  if (generation != test_state.generation) {
+    pthread_mutex_unlock(&test_mutex); return 3;
+  }
+  if (length != test_state.input_bytes || (length != 0u && bytes == NULL)) {
+    pthread_mutex_unlock(&test_mutex); return 4;
+  }
+  memcpy(test_state.input_signals, bytes, length);
+  pthread_mutex_unlock(&test_mutex);
+  return 0;
+}
+
+const char *virtual_adi_profile_name(virtual_adi_profile profile) {
+  if (profile == VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8) return "DI8";
+  if (profile == VIRTUAL_ADI_PROFILE_DIGITAL16) return "DI16";
+  return NULL;
 }
 
 int32_t virtual_adi_set_permit(bool permit) {
@@ -59,7 +93,7 @@ int32_t virtual_adi_set_permit(bool permit) {
   test_state.permit = permit;
   if (!permit || test_state.fault_latched || !test_state.app_running ||
       !test_state.watchdog_healthy)
-    test_state.effective_outputs = 0u;
+    memset(test_state.effective_outputs, 0, sizeof(test_state.effective_outputs));
   pthread_mutex_unlock(&test_mutex);
   return 0;
 }
@@ -79,7 +113,7 @@ int32_t virtual_adi_latch_fault(void) {
     return -1;
   }
   test_state.fault_latched = true;
-  test_state.effective_outputs = 0u;
+  memset(test_state.effective_outputs, 0, sizeof(test_state.effective_outputs));
   pthread_mutex_unlock(&test_mutex);
   return 0;
 }
@@ -87,6 +121,12 @@ int32_t virtual_adi_latch_fault(void) {
 static void set_initialized(bool value) {
   pthread_mutex_lock(&test_mutex);
   test_state.initialized = value;
+  if (value) {
+    test_state.profile_id = 0u;
+    test_state.input_bytes = test_state.output_bytes = 2u;
+    test_state.input_bits = test_state.output_bits = 16u;
+    test_state.generation = 17u;
+  }
   pthread_mutex_unlock(&test_mutex);
 }
 
@@ -211,7 +251,7 @@ int main(void) {
 
   int client = connect_client(socket_path);
   command(client, "INPUT 17", "NOT_READY");
-  check(get_test_state().inputs == 0u, "pre-init command altered model inputs");
+  check(get_test_state().input_signals[0] == 0u, "pre-init command altered model inputs");
   close(client);
 
   set_initialized(true);
@@ -220,7 +260,7 @@ int main(void) {
   test_state.configured = true;
   test_state.app_running = true;
   test_state.watchdog_healthy = true;
-  test_state.effective_outputs = 12u;
+  test_state.effective_outputs[0] = 12u;
   pthread_mutex_unlock(&test_mutex);
 
   client = connect_client(socket_path);
@@ -234,11 +274,23 @@ int main(void) {
   command(client, "PERMIT 1", "OK PERMIT");
   command(client, "STATUS", "STATUS input=255 permit=1");
   virtual_model_snapshot snapshot = get_test_state();
-  check(snapshot.inputs == 255u && snapshot.permit,
+  check(snapshot.input_signals[0] == 255u && snapshot.permit,
         "valid input/permit commands did not update the model");
+  command(client, "V2 STATUS", "V2 STATUS DI16 generation=17 input_bytes=2");
+  command(client, "V2 INPUT DI16 17 2 a55a", "OK FRAME");
+  check(get_test_state().input_signals[0] == 0xa5u &&
+        get_test_state().input_signals[1] == 0x5au,
+        "complete V2 byte frame was not applied");
+  command(client, "V2 INPUT DI16 16 2 0102", "ERR GENERATION");
+  command(client, "V2 INPUT DI16 17 1 ff", "ERR LENGTH");
+  command(client, "V2 INPUT DI16 17 2 a55A", "ERR FRAME");
+  command(client, "V2 INPUT DI8 17 2 0102", "ERR PROFILE");
+  check(get_test_state().input_signals[0] == 0xa5u &&
+        get_test_state().input_signals[1] == 0x5au,
+        "rejected V2 frame changed input signals");
   command(client, "FAULT", "OK FAULT LATCHED");
   snapshot = get_test_state();
-  check(snapshot.fault_latched && snapshot.effective_outputs == 0u,
+  check(snapshot.fault_latched && snapshot.effective_outputs[0] == 0u,
         "fault command did not latch fault/fail closed");
   command(client, "PERMIT 2", "ERR COMMAND");
   close(client);
@@ -246,7 +298,7 @@ int main(void) {
 
   pthread_mutex_lock(&test_mutex);
   test_state.fault_latched = false;
-  test_state.effective_outputs = 0u;
+  memset(test_state.effective_outputs, 0, sizeof(test_state.effective_outputs));
   pthread_mutex_unlock(&test_mutex);
   client = connect_client(socket_path);
   command(client, "PERMIT 1", "OK PERMIT");
@@ -268,7 +320,7 @@ int main(void) {
     snprintf(expected, sizeof(expected), "STATUS input=%u permit=0 ", word_values[index]);
     command(client, request, "OK INPUT");
     command(client, "STATUS", expected);
-    check(get_test_state().inputs == word_values[index], "word input was truncated");
+    check((unsigned)get_test_state().input_signals[0] + ((unsigned)get_test_state().input_signals[1] << 8u) == word_values[index], "word input was truncated");
   }
   close(client);
   wait_permit_false();
@@ -282,7 +334,7 @@ int main(void) {
     close(client);
     wait_permit_false();
     snapshot = get_test_state();
-    check(snapshot.inputs == 65535u && snapshot.effective_outputs == 0u,
+    check(snapshot.input_signals[0] == 255u && snapshot.input_signals[1] == 255u && snapshot.effective_outputs[0] == 0u,
           "invalid input changed signals or left outputs enabled");
   }
 

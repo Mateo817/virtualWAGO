@@ -138,7 +138,7 @@ int main(void) {
   while (nanosleep(&delay, &delay) != 0) assert(errno == EINTR);
   virtual_model_snapshot snapshot;
   assert(virtual_adi_model_snapshot(&snapshot) == DAL_SUCCESS);
-  assert(!snapshot.permit && snapshot.requested_outputs == 128 && snapshot.effective_outputs == 0);
+  assert(!snapshot.permit && snapshot.requested_outputs[0] == 128 && snapshot.effective_outputs[0] == 0);
   assert(snapshot.frame_count == 2);
   assert(adi->CloseDevice(1) == DAL_SUCCESS && adi->Exit() == DAL_SUCCESS);
   assert(adi->Init() == DAL_SUCCESS);
@@ -167,10 +167,34 @@ int main(void) {
     assert(input_word[1] == (word_values[index] >> 8));
     assert(adi->ReadEnd(1, 0u) == DAL_SUCCESS);
   }
+  assert(virtual_adi_model_snapshot(&snapshot) == DAL_SUCCESS);
+  char v2_input[96];
+  snprintf(v2_input, sizeof(v2_input), "V2 INPUT DI16 %llu 2 12ab",
+           (unsigned long long)snapshot.generation);
+  command(fd, "V2 STATUS", "V2 STATUS DI16");
+  command(fd, v2_input, "OK FRAME");
+  uint8_t v2_frame[2] = {0u, 0u};
+  assert(adi->ReadStart(1, 0u) == DAL_SUCCESS);
+  assert(adi->ReadBytes(1, 0u, 0u, 2u, v2_frame) == DAL_SUCCESS);
+  assert(v2_frame[0] == 0x12u && v2_frame[1] == 0xabu);
+  assert(adi->ReadEnd(1, 0u) == DAL_SUCCESS);
+  snprintf(v2_input, sizeof(v2_input), "V2 INPUT DI16 %llu 2 ffff",
+           (unsigned long long)(snapshot.generation - 1u));
+  command(fd, v2_input, "ERR GENERATION");
+  snprintf(v2_input, sizeof(v2_input), "V2 INPUT DI8 %llu 2 ffff",
+           (unsigned long long)snapshot.generation);
+  command(fd, v2_input, "ERR PROFILE");
+  snprintf(v2_input, sizeof(v2_input), "V2 INPUT DI16 %llu 1 ff",
+           (unsigned long long)snapshot.generation);
+  command(fd, v2_input, "ERR LENGTH");
+  snprintf(v2_input, sizeof(v2_input), "V2 INPUT DI16 %llu 2 12AB",
+           (unsigned long long)snapshot.generation);
+  command(fd, v2_input, "ERR FRAME");
+  command(fd, "STATUS", "STATUS input=43794 permit=0");
   command(fd, "INPUT 65536", "ERR COMMAND");
   close(fd);
   assert(virtual_adi_model_snapshot(&snapshot) == DAL_SUCCESS);
-  assert(snapshot.inputs == 65535u && !snapshot.permit && snapshot.effective_outputs == 0u);
+  assert(snapshot.input_signals[0] == 0x12u && snapshot.input_signals[1] == 0xabu && !snapshot.permit && snapshot.effective_outputs[0] == 0u);
   assert(adi->CloseDevice(1) == DAL_SUCCESS && adi->Exit() == DAL_SUCCESS);
   assert(access(path, F_OK) != 0 && rmdir(directory) == 0);
   puts("ADI_MODEL_BRIDGE_INTEGRATION_TEST: PASS (own adapter only)");

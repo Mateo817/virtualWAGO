@@ -1,7 +1,7 @@
 #define _GNU_SOURCE
 
-/* Own in-memory ADI model for an explicitly selected virtual digital profile.
- * This is neither byte-identical DAL behavior nor a hardware/device backend.
+/* Own bounded byte-frame ADI model for the explicitly supported digital
+ * profiles. This is neither byte-identical DAL behavior nor a hardware/backend.
  */
 #include "adi_digital_adapter.h"
 #ifdef VIRTUALWAGO_ENABLE_MODEL_BRIDGE
@@ -36,6 +36,9 @@ static const virtual_profile_data *selected_profile = &profile_digital8;
 #else
 static const virtual_profile_data *selected_profile = &profile_digital16;
 #endif
+#ifdef VIRTUALWAGO_TEST_PROFILE_EXTENTS
+static virtual_profile_data test_profile;
+#endif
 static virtual_adi_clock_mode selected_clock_mode = default_clock_mode;
 
 typedef struct {
@@ -62,12 +65,12 @@ typedef struct {
   uint64_t model_time_us;
   uint64_t watchdog_period_us;
   uint64_t watchdog_deadline_us;
-  uint16_t input_signals;
-  uint16_t read_latch;
-  uint16_t requested_outputs;
-  uint16_t staged_outputs;
-  uint16_t staged_touched_bits;
-  uint16_t effective_outputs;
+  uint8_t input_signals[VIRTUAL_ADI_MAX_FRAME_BYTES];
+  uint8_t read_latch[VIRTUAL_ADI_MAX_FRAME_BYTES];
+  uint8_t requested_outputs[VIRTUAL_ADI_MAX_FRAME_BYTES];
+  uint8_t staged_outputs[VIRTUAL_ADI_MAX_FRAME_BYTES];
+  uint8_t staged_coverage[VIRTUAL_ADI_MAX_FRAME_BYTES];
+  uint8_t effective_outputs[VIRTUAL_ADI_MAX_FRAME_BYTES];
   uint64_t frame_count;
 } virtual_state;
 
@@ -80,6 +83,9 @@ static pthread_mutex_t state_mutex = PTHREAD_MUTEX_INITIALIZER;
 static pthread_mutex_t lifecycle_mutex = PTHREAD_MUTEX_INITIALIZER;
 #endif
 static uint64_t lifecycle_generation;
+
+static void clear_frame(uint8_t frame[VIRTUAL_ADI_MAX_FRAME_BYTES]);
+static void clear_effective_outputs(void);
 
 static int lock_state(void) {
   if (pthread_mutex_lock(&state_mutex) != 0) abort();
@@ -129,7 +135,7 @@ static void refresh_watchdog_locked(void) {
   if (state.watchdog_started && state.watchdog_healthy &&
       current_time_us() >= state.watchdog_deadline_us) {
     state.watchdog_healthy = false;
-    state.effective_outputs = 0u;
+    clear_effective_outputs();
     if (state.write_active) state.write_failed = true;
   }
 }
@@ -139,13 +145,41 @@ static bool ready_device(tDeviceId id) {
   return valid_device(id) && state.initialized && state.opened &&
          state.configured;
 }
-static uint16_t read_le16(const uint8_t *data, uint32_t offset) {
-  return (uint16_t)((uint16_t)data[offset] |
-                    ((uint16_t)data[offset + 1u] << 8));
+static void clear_frame(uint8_t frame[VIRTUAL_ADI_MAX_FRAME_BYTES]) {
+  memset(frame, 0, VIRTUAL_ADI_MAX_FRAME_BYTES);
 }
-static void write_le16(uint8_t *data, uint16_t value) {
-  data[0] = (uint8_t)(value & 0xffu);
-  data[1] = (uint8_t)(value >> 8);
+static uint16_t frame_to_u16(const uint8_t *frame, uint32_t length) {
+  uint16_t value = 0u;
+  if (length > 0u) value = frame[0];
+  if (length > 1u) value |= (uint16_t)((uint16_t)frame[1] << 8u);
+  return value;
+}
+static void u16_to_frame(uint8_t *frame, uint32_t length, uint16_t value) {
+  if (length > 0u) frame[0] = (uint8_t)value;
+  if (length > 1u) frame[1] = (uint8_t)(value >> 8u);
+}
+static bool frame_is_fully_covered(const uint8_t *coverage, uint32_t bytes,
+                                   uint32_t bits) {
+  for (uint32_t i = 0u; i < bytes; ++i) {
+    uint32_t remaining = bits > i * 8u ? bits - i * 8u : 0u;
+    uint8_t expected = remaining >= 8u
+                           ? UINT8_MAX
+                           : (uint8_t)((1u << remaining) - 1u);
+    if ((coverage[i] & expected) != expected) return false;
+  }
+  return true;
+}
+static bool profile_extent_valid(const virtual_profile_data *profile) {
+  return profile != NULL && profile->input_bytes != 0u &&
+         profile->output_bytes != 0u &&
+         profile->input_bits != 0u && profile->output_bits != 0u &&
+         profile->input_bytes <= VIRTUAL_ADI_MAX_FRAME_BYTES &&
+         profile->output_bytes <= VIRTUAL_ADI_MAX_FRAME_BYTES &&
+         profile->input_bits == profile->input_bytes * 8u &&
+         profile->output_bits == profile->output_bytes * 8u;
+}
+static void clear_effective_outputs(void) {
+  clear_frame(state.effective_outputs);
 }
 static bool effective_permit(void) {
   return state.app_running && state.permit && state.watchdog_healthy &&
@@ -154,7 +188,7 @@ static bool effective_permit(void) {
 
 static void latch_fault_locked(void) {
   state.fault_latched = true;
-  state.effective_outputs = 0u;
+  clear_effective_outputs();
   if (state.write_active) state.write_failed = true;
 }
 
@@ -178,14 +212,36 @@ int32_t virtual_adi_model_snapshot(virtual_model_snapshot *snapshot) {
   STATE_GUARD;
   refresh_watchdog_locked();
   if (snapshot == NULL) return DAL_FAILURE;
-  *snapshot = (virtual_model_snapshot){
-      .initialized = state.initialized, .opened = state.opened,
-      .configured = state.configured, .app_running = state.app_running,
-      .permit = state.permit, .watchdog_healthy = state.watchdog_healthy,
-      .fault_latched = state.fault_latched, .inputs = state.input_signals,
-      .requested_outputs = state.requested_outputs,
-      .effective_outputs = state.effective_outputs,
-      .generation = lifecycle_generation, .frame_count = state.frame_count};
+  memset(snapshot, 0, sizeof(*snapshot));
+  snapshot->initialized = state.initialized;
+  snapshot->opened = state.opened;
+  snapshot->configured = state.configured;
+  snapshot->app_running = state.app_running;
+  snapshot->permit = state.permit;
+  snapshot->watchdog_healthy = state.watchdog_healthy;
+  snapshot->fault_latched = state.fault_latched;
+  snapshot->read_active = state.read_active;
+  snapshot->write_active = state.write_active;
+  snapshot->write_failed = state.write_failed;
+  snapshot->profile_id = (uint32_t)selected_profile->profile;
+  snapshot->input_bytes = selected_profile->input_bytes;
+  snapshot->output_bytes = selected_profile->output_bytes;
+  snapshot->input_bits = selected_profile->input_bits;
+  snapshot->output_bits = selected_profile->output_bits;
+  memcpy(snapshot->input_signals, state.input_signals,
+         selected_profile->input_bytes);
+  memcpy(snapshot->read_latch, state.read_latch,
+         selected_profile->input_bytes);
+  memcpy(snapshot->requested_outputs, state.requested_outputs,
+         selected_profile->output_bytes);
+  memcpy(snapshot->staged_outputs, state.staged_outputs,
+         selected_profile->output_bytes);
+  memcpy(snapshot->staged_coverage, state.staged_coverage,
+         selected_profile->output_bytes);
+  memcpy(snapshot->effective_outputs, state.effective_outputs,
+         selected_profile->output_bytes);
+  snapshot->generation = lifecycle_generation;
+  snapshot->frame_count = state.frame_count;
   return DAL_SUCCESS;
 }
 
@@ -207,6 +263,23 @@ void virtual_adi_reset(void) {
   selected_clock_mode = default_clock_mode;
 }
 
+#ifdef VIRTUALWAGO_TEST_PROFILE_EXTENTS
+int32_t virtual_adi_test_select_extents(uint32_t input_bytes,
+                                        uint32_t output_bytes) {
+  STATE_GUARD;
+  if (state.initialized || input_bytes == 0u || output_bytes == 0u ||
+      input_bytes > VIRTUAL_ADI_MAX_FRAME_BYTES ||
+      output_bytes > VIRTUAL_ADI_MAX_FRAME_BYTES) return DAL_FAILURE;
+  test_profile = profile_digital16;
+  test_profile.input_bytes = input_bytes;
+  test_profile.output_bytes = output_bytes;
+  test_profile.input_bits = input_bytes * 8u;
+  test_profile.output_bits = output_bytes * 8u;
+  selected_profile = &test_profile;
+  return DAL_SUCCESS;
+}
+#endif
+
 int32_t virtual_adi_select_profile(virtual_adi_profile profile) {
   STATE_GUARD;
   refresh_watchdog_locked();
@@ -224,6 +297,7 @@ int32_t virtual_adi_select_clock_mode(virtual_adi_clock_mode mode) {
   STATE_GUARD;
   refresh_watchdog_locked();
   if (state.initialized) return DAL_FAILURE;
+  if (!profile_extent_valid(selected_profile)) return DAL_FAILURE;
   if (mode != VIRTUAL_ADI_CLOCK_LOGICAL &&
       mode != VIRTUAL_ADI_CLOCK_MONOTONIC)
     return DAL_FAILURE;
@@ -235,8 +309,36 @@ int32_t virtual_adi_set_inputs(uint16_t input_bits) {
   STATE_GUARD;
   refresh_watchdog_locked();
   if (!state.initialized) return DAL_FAILURE;
-  state.input_signals = (uint16_t)(input_bits & selected_profile->input_mask);
+  clear_frame(state.input_signals);
+  u16_to_frame(state.input_signals, selected_profile->input_bytes,
+               (uint16_t)(input_bits & selected_profile->input_mask));
   return DAL_SUCCESS;
+}
+
+int32_t virtual_adi_set_input_frame(virtual_adi_profile profile,
+                                    uint64_t generation, uint32_t length,
+                                    const uint8_t *bytes) {
+  STATE_GUARD;
+  refresh_watchdog_locked();
+  if (!state.initialized) return VIRTUAL_ADI_FRAME_NOT_READY;
+  if (profile != selected_profile->profile)
+    return VIRTUAL_ADI_FRAME_PROFILE_MISMATCH;
+  if (generation != lifecycle_generation)
+    return VIRTUAL_ADI_FRAME_GENERATION_MISMATCH;
+  if (length != selected_profile->input_bytes)
+    return VIRTUAL_ADI_FRAME_LENGTH_MISMATCH;
+  if (length != 0u && bytes == NULL) return VIRTUAL_ADI_FRAME_NULL_DATA;
+  clear_frame(state.input_signals);
+  memcpy(state.input_signals, bytes, length);
+  return VIRTUAL_ADI_FRAME_ACCEPTED;
+}
+
+const char *virtual_adi_profile_name(virtual_adi_profile profile) {
+  switch (profile) {
+    case VIRTUAL_ADI_PROFILE_DIGITAL8_DI8_DO8: return "DI8";
+    case VIRTUAL_ADI_PROFILE_DIGITAL16: return "DI16";
+    default: return NULL;
+  }
 }
 
 int32_t virtual_adi_set_permit(bool permit) {
@@ -245,7 +347,7 @@ int32_t virtual_adi_set_permit(bool permit) {
   if (!state.initialized) return DAL_FAILURE;
   if (state.write_active && state.permit != permit) state.write_failed = true;
   state.permit = permit;
-  if (!effective_permit()) state.effective_outputs = 0;
+  if (!effective_permit()) clear_effective_outputs();
   if (!effective_permit() && state.write_active) state.write_failed = true;
   return DAL_SUCCESS;
 }
@@ -260,7 +362,7 @@ int32_t virtual_adi_set_application_state(tApplicationState app_state) {
   if (state.write_active && state.app_running != running)
     state.write_failed = true;
   state.app_running = running;
-  if (!effective_permit()) state.effective_outputs = 0;
+  if (!effective_permit()) clear_effective_outputs();
   if (!effective_permit() && state.write_active) state.write_failed = true;
   return DAL_SUCCESS;
 }
@@ -281,8 +383,10 @@ int32_t virtual_adi_get_outputs(uint16_t *requested, uint16_t *effective) {
   STATE_GUARD;
   refresh_watchdog_locked();
   if (requested == NULL || effective == NULL) return DAL_FAILURE;
-  *requested = state.requested_outputs;
-  *effective = state.effective_outputs;
+  *requested = frame_to_u16(state.requested_outputs,
+                            selected_profile->output_bytes);
+  *effective = frame_to_u16(state.effective_outputs,
+                            selected_profile->output_bytes);
   return DAL_SUCCESS;
 }
 
@@ -368,9 +472,12 @@ static int32_t adapter_close(tDeviceId id) {
   state.watchdog_configured = false;
   state.watchdog_period_us = 0u;
   state.watchdog_deadline_us = 0u;
-  state.requested_outputs = 0u;
-  state.staged_outputs = 0u;
-  state.effective_outputs = 0;
+  clear_frame(state.input_signals);
+  clear_frame(state.read_latch);
+  clear_frame(state.requested_outputs);
+  clear_frame(state.staged_outputs);
+  clear_frame(state.staged_coverage);
+  clear_effective_outputs();
   state.fault_latched = false;
   bump_lifecycle_generation();
   return DAL_SUCCESS;
@@ -457,8 +564,9 @@ static int32_t adapter_write_start(tDeviceId id, uint32_t task) {
   STATE_GUARD;
   refresh_watchdog_locked();
   if (!ready_device(id) || task != 0u || state.write_active) return DAL_FAILURE;
-  state.staged_outputs = state.requested_outputs;
-  state.staged_touched_bits = 0u;
+  memcpy(state.staged_outputs, state.requested_outputs,
+         selected_profile->output_bytes);
+  memset(state.staged_coverage, 0, sizeof(state.staged_coverage));
   state.write_task = task;
   state.write_owner = pthread_self();
   state.write_owner_valid = true;
@@ -480,16 +588,8 @@ static int32_t adapter_write_bytes(tDeviceId id, uint32_t task,
     return DAL_FAILURE;
   }
   if (size == 0u) return DAL_SUCCESS;
-  uint8_t frame[2];
-  write_le16(frame, state.staged_outputs);
-  memcpy(frame + offset, data, size);
-  state.staged_outputs = (uint16_t)(read_le16(frame, 0u) &
-                                    selected_profile->output_mask);
-  for (uint32_t i = 0u; i < size; ++i) {
-    uint32_t bit = (offset + i) * 8u;
-    state.staged_touched_bits |= (uint16_t)(0x00ffu << bit);
-  }
-  state.staged_touched_bits &= selected_profile->output_mask;
+  memcpy(state.staged_outputs + offset, data, size);
+  memset(state.staged_coverage + offset, UINT8_MAX, size);
   return DAL_SUCCESS;
 }
 
@@ -502,12 +602,13 @@ static int32_t adapter_write_bit(tDeviceId id, uint32_t task,
     latch_fault_locked();
     return DAL_FAILURE;
   }
-  const uint16_t mask = (uint16_t)(1u << bit_offset);
+  const uint32_t byte_index = bit_offset / 8u;
+  const uint8_t mask = (uint8_t)(1u << (bit_offset % 8u));
   if ((*data & 1u) != 0u)
-    state.staged_outputs = (uint16_t)(state.staged_outputs | mask);
+    state.staged_outputs[byte_index] |= mask;
   else
-    state.staged_outputs = (uint16_t)(state.staged_outputs & (uint16_t)~mask);
-  state.staged_touched_bits |= mask;
+    state.staged_outputs[byte_index] &= (uint8_t)~mask;
+  state.staged_coverage[byte_index] |= mask;
   return DAL_SUCCESS;
 }
 
@@ -520,12 +621,13 @@ static int32_t adapter_write_bool(tDeviceId id, uint32_t task,
     latch_fault_locked();
     return DAL_FAILURE;
   }
-  const uint16_t mask = (uint16_t)(1u << bit_offset);
+  const uint32_t byte_index = bit_offset / 8u;
+  const uint8_t mask = (uint8_t)(1u << (bit_offset % 8u));
   if (value)
-    state.staged_outputs = (uint16_t)(state.staged_outputs | mask);
+    state.staged_outputs[byte_index] |= mask;
   else
-    state.staged_outputs = (uint16_t)(state.staged_outputs & (uint16_t)~mask);
-  state.staged_touched_bits |= mask;
+    state.staged_outputs[byte_index] &= (uint8_t)~mask;
+  state.staged_coverage[byte_index] |= mask;
   return DAL_SUCCESS;
 }
 
@@ -535,22 +637,30 @@ static int32_t adapter_write_end(tDeviceId id, uint32_t task) {
   if (!ready_device(id) || !owns_write(task))
     return DAL_FAILURE;
   if (state.write_failed ||
-      state.staged_touched_bits != selected_profile->output_mask) {
+      !frame_is_fully_covered(state.staged_coverage,
+                              selected_profile->output_bytes,
+                              selected_profile->output_bits)) {
     if (!state.write_failed) latch_fault_locked();
     state.write_active = false;
     state.write_owner_valid = false;
     state.write_failed = false;
-    state.staged_outputs = state.requested_outputs;
-    state.staged_touched_bits = 0u;
+    memcpy(state.staged_outputs, state.requested_outputs,
+           selected_profile->output_bytes);
+    memset(state.staged_coverage, 0, sizeof(state.staged_coverage));
     return DAL_FAILURE;
   }
-  state.requested_outputs = state.staged_outputs;
+  memcpy(state.requested_outputs, state.staged_outputs,
+         selected_profile->output_bytes);
   if (state.frame_count != UINT64_MAX) ++state.frame_count;
-  state.effective_outputs = effective_permit() ? state.staged_outputs : 0u;
+  if (effective_permit())
+    memcpy(state.effective_outputs, state.staged_outputs,
+           selected_profile->output_bytes);
+  else
+    clear_effective_outputs();
   state.write_active = false;
   state.write_owner_valid = false;
   state.write_failed = false;
-  state.staged_touched_bits = 0u;
+  memset(state.staged_coverage, 0, sizeof(state.staged_coverage));
   return DAL_SUCCESS;
 }
 
@@ -558,7 +668,8 @@ static int32_t adapter_read_start(tDeviceId id, uint32_t task) {
   STATE_GUARD;
   refresh_watchdog_locked();
   if (!ready_device(id) || task != 0u || state.read_active) return DAL_FAILURE;
-  state.read_latch = state.input_signals;
+  memcpy(state.read_latch, state.input_signals,
+         selected_profile->input_bytes);
   state.read_task = task;
   state.read_owner = pthread_self();
   state.read_owner_valid = true;
@@ -580,9 +691,7 @@ static int32_t adapter_read_bytes(tDeviceId id, uint32_t task,
     return DAL_FAILURE;
   }
   if (size == 0u) return DAL_SUCCESS;
-  uint8_t frame[2];
-  write_le16(frame, state.read_latch);
-  memcpy(data, frame + offset, size);
+  memcpy(data, state.read_latch + offset, size);
   return DAL_SUCCESS;
 }
 
@@ -595,7 +704,8 @@ static int32_t adapter_read_bit(tDeviceId id, uint32_t task,
     latch_fault_locked();
     return DAL_FAILURE;
   }
-  *data = (uint8_t)((state.read_latch >> bit_offset) & 1u);
+  *data = (uint8_t)((state.read_latch[bit_offset / 8u] >>
+                     (bit_offset % 8u)) & 1u);
   return DAL_SUCCESS;
 }
 
@@ -608,7 +718,8 @@ static int32_t adapter_read_bool(tDeviceId id, uint32_t task,
     latch_fault_locked();
     return DAL_FAILURE;
   }
-  *value = ((state.read_latch >> bit_offset) & 1u) != 0u;
+  *value = ((state.read_latch[bit_offset / 8u] >>
+             (bit_offset % 8u)) & 1u) != 0u;
   return DAL_SUCCESS;
 }
 
@@ -686,7 +797,7 @@ static int32_t adapter_app_state(tApplicationStateChangedEvent event) {
   if (state.write_active && state.app_running != running)
     state.write_failed = true;
   state.app_running = running;
-  if (!effective_permit()) state.effective_outputs = 0u;
+  if (!effective_permit()) clear_effective_outputs();
   if (!effective_permit() && state.write_active) state.write_failed = true;
   return DAL_SUCCESS;
 }
@@ -822,7 +933,7 @@ static int32_t adapter_watchdog_start(void) {
   state.watchdog_started = true;
   state.watchdog_healthy = false;
   state.watchdog_deadline_us = now;
-  state.effective_outputs = 0;
+  clear_effective_outputs();
   if (state.write_active) state.write_failed = true;
   return DAL_SUCCESS;
 }
@@ -833,7 +944,7 @@ static int32_t adapter_watchdog_stop(void) {
   if (!state.initialized) return DAL_FAILURE;
   state.watchdog_started = false;
   state.watchdog_healthy = false;
-  state.effective_outputs = 0;
+  clear_effective_outputs();
   if (state.write_active) state.write_failed = true;
   return DAL_SUCCESS;
 }

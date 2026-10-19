@@ -3,7 +3,8 @@ import json
 from pathlib import Path
 import unittest
 from prototype.vio import (Rail, ContractError, Unsupported, canonical,
-                           encode_ai466_standard, decode_pwm677_frq)
+                           encode_ai466_standard, decode_ao550_standard_word,
+                           decode_pwm677_frq)
 from prototype.__main__ import dispatch
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -158,6 +159,21 @@ class CodecTests(unittest.TestCase):
     def test_analog_out_of_range_is_not_silently_clamped(self):
         with self.assertRaises(Unsupported): encode_ai466_standard(3999)
         with self.assertRaises(ContractError): encode_ai466_standard(20001)
+    def test_analog_output_documented_word_points(self):
+        self.assertEqual([decode_ao550_standard_word(v)
+                          for v in (0x0000, 0x1000, 0x2000, 0x4000, 0x7000, 0x7fff)],
+                         [0, 1250, 2500, 5000, 8750, 10000])
+        for value in (-1, True, 1.5, 0x10000):
+            with self.subTest(value=value), self.assertRaises(ContractError):
+                decode_ao550_standard_word(value)
+        with self.assertRaises(Unsupported):
+            decode_ao550_standard_word(0x8000)
+    def test_analog_output_low_three_bits_are_ignored(self):
+        for base in (0x0000, 0x1000, 0x4000, 0x7000, 0x7ff8):
+            for low in range(8):
+                with self.subTest(base=base, low=low):
+                    self.assertEqual(decode_ao550_standard_word(base | low),
+                                     decode_ao550_standard_word(base))
     def test_pwm_little_endian_and_pair_enable(self):
         raw=bytes.fromhex("01e80300d007000000006400")
         self.assertEqual(decode_pwm677_frq(raw),(1000,2000,0,0))

@@ -1,0 +1,351 @@
+{
+  "schema": "virtualwago.module-extension-evidence.v1",
+  "date": "2026-10-19",
+  "implementation_commit": "4faa51aa3ecb13a953e13d368f899ed15413a9b1",
+  "base_commit": "e3047634b4af7cfffd6d79bd762713f2cfea9537",
+  "source_sha256": {
+    "config/module-catalog.json": "4016d1c99526ac7e8dfc091fbb67777d9af57e833e9f951bf2a5c4703aa79c04",
+    "prototype/catalog.py": "2e16b39704ec1733f7b19d9cea48199eebc02f393829227712f305d1f2c41864",
+    "prototype/module_models.py": "6ff40b843966ca8eb350728b5d4263dd235b634441b3f74b336a6a058ba00c80",
+    "prototype/vio.py": "6585a7ff2a9e5093951be8b302bfcc37c4beafc3da8819409e5b938eb075f9e1",
+    "prototype/iec/native_analog466_550_pair_probe.st": "f1e9e10dca3e9c58ac834cb9ad6068af10fdbd4858f597e6d1f48e47c1c0d10d",
+    "prototype/iec/native_pwm677_probe.st": "e64541b32947ed3d7cd5511d74a1c5a3bd8b411f952b74199bd188ba26b73a55",
+    "tests/test_adi_byte_buffer.py": "09226fd2a9f2c6ae612367547e24de0b568528dd77695d3a3494adcef6cd4ba8",
+    "tests/test_codesys_mapped_digital16_bridge_probe.py": "4021987a6fdb6a2f5063d1530421f6cb0b9995cb8562fad73302afb516bf4322",
+    "tests/test_codesys_native_analog466_550_pair_probe.py": "2b8667f35be1ce525e2a1ebc310c271c40f48afe9d87d9026de5cd7af78ae653",
+    "tests/test_codesys_native_pwm677_probe.py": "ac6c2f62b8e866605f98c3ee5f87540cb8714be1fbca5ed50840fbd399521124",
+    "tests/test_module_catalog.py": "cf75f34cf1f5b064eedb82e39c7096d48c0d5ce5f7c67a9da6e1dada1664a1ec",
+    "tests/test_module_models.py": "307a74b752c0b162f97868d01faf643957fe833d58d6902c253d0d161ce64c28",
+    "tests/test_native_frame_acceptance.py": "a5af55c6e92f61e60b74bc90cc9d31d0c16497ff8f9ca7593681d47a97664c51",
+    "tests/test_vio.py": "a749082c21b756ad1598b33ef724b92c5d94a14ce910ad5ea9d4d4eaf660ef83",
+    "tools/adi_byte_buffer_test.c": "c9533ff32d4e253fd9bf4ebb81e64270739ef8d13059fd17ca7feb628dd536ef",
+    "tools/adi_catalog_profiles.h": "d65dec677a36e724dc0dc037a6052b5e153ae34eb065e75a61c504c8191863f3",
+    "tools/adi_digital_adapter.c": "4de2f9ba0eaedef3c5cb8850bef2bfe37352491bed91641ffc13e4d20f2e4012",
+    "tools/adi_digital_adapter.h": "fc6560bba2e3ef7b94cbf1d4915900570521e6b8bfa2286326f5049ea052caee",
+    "tools/adi_model_bridge.c": "c82a55aa559bc18775866977755f50d04ba94583d336ce00c33b9c299ede8bbd",
+    "tools/adi_model_bridge.h": "8c77a49a509d3403362cf451e542bd2ef15cf7271dcb1e04fbe485d736690b0d",
+    "tools/adi_model_bridge_integration_test.c": "21a26cf558faf6fef0ca1ae1b555ba7b911f17d5062cc62dc449a003cea04f78",
+    "tools/adi_model_bridge_test.c": "304d11a20d257260fd3497dfbb666c178ce8cee76d0f33e00deb414d6d4f1a2c",
+    "tools/adi_model_client.c": "7a83e922be0eee9e709cadee505c3ffe8c02455cad542a8d144fd870042e0b7e",
+    "tools/codesys_mapped_digital16_bridge_probe.py": "248053365f3022b15daa1d327d9741f97136504b471bc41a41ce3318ce6637d1",
+    "tools/codesys_native_analog466_550_pair_probe.py": "bd38d018b9611025d2f8d39f751ed0ab96951203d6f4f4d04691c350b0b1d57a",
+    "tools/codesys_native_pwm677_probe.py": "76219f6131f3255f0ca7b8d4c1a6d4db536a639ed14041b20d9c5bc3ada88648",
+    "tools/native_frame_acceptance.py": "17a0d6cd030f3a3dff3b47e82efcd1c028e621eb0fec3ac1b6ed19a7cecc291a"
+  },
+  "reference": {
+    "article": "750-8213",
+    "kernel": "6.6.94-rt56-w05.08.02",
+    "runtime": "3.5.21.50",
+    "original_state_before": "STOP",
+    "original_state_after": "STOP",
+    "physical_actuator_tests": "NOT_RUN"
+  },
+  "tests": {
+    "local_unittest": {
+      "status": "PASS",
+      "run": 281,
+      "skipped": 0,
+      "private_authentic_headers_available": true,
+      "stderr_sha256": "36b2d9065bcfdb6c73566d801767e9b42413ba083eda634bd2bcb04b3896f147"
+    },
+    "armhf_own_harnesses": {
+      "status": "PASS",
+      "count": 6,
+      "scope": "four model/transport/integration harnesses plus two shared-provider harnesses; not original consumers"
+    },
+    "public_ci_private_header_harness": "NOT_RUN when private headers absent; explicit unittest skip"
+  },
+  "digital_native": {
+    "di8": {
+      "status": "PASS",
+      "model_permit": 0,
+      "effective_outputs_all_zero": true,
+      "generation": 1,
+      "input_bytes": 1,
+      "output_bytes": 1,
+      "host_observation_seconds": 1.100546889938414,
+      "samples": [
+        {
+          "vector_index": 0,
+          "input_hex": "81",
+          "expected_output_hex": "17",
+          "observed_requested_hex": "17",
+          "observed_effective_hex": "00",
+          "generation": 1,
+          "frames": 393,
+          "post_ack_watermark_frames": 391,
+          "post_latch_watermark_frames": 392
+        },
+        {
+          "vector_index": 1,
+          "input_hex": "5a",
+          "expected_output_hex": "cc",
+          "observed_requested_hex": "cc",
+          "observed_effective_hex": "00",
+          "generation": 1,
+          "frames": 395,
+          "post_ack_watermark_frames": 393,
+          "post_latch_watermark_frames": 394
+        },
+        {
+          "vector_index": 2,
+          "input_hex": "ff",
+          "expected_output_hex": "69",
+          "observed_requested_hex": "69",
+          "observed_effective_hex": "00",
+          "generation": 1,
+          "frames": 397,
+          "post_ack_watermark_frames": 395,
+          "post_latch_watermark_frames": 396
+        },
+        {
+          "vector_index": 3,
+          "input_hex": "00",
+          "expected_output_hex": "96",
+          "observed_requested_hex": "96",
+          "observed_effective_hex": "00",
+          "generation": 1,
+          "frames": 399,
+          "post_ack_watermark_frames": 397,
+          "post_latch_watermark_frames": 398
+        }
+      ],
+      "native_state": "RUN",
+      "rollback": "PASS original STOP and seven original hashes unchanged",
+      "provider_sha256": "fbd423ff5975d4721075c7e0c6a0365c42c81f744a3780f40d8002c7296ed7fb",
+      "boot_app_sha256": "56c8bdf9517ab5679a703673cd8cbc426a301ad3495d86f5aa90e061cb505201",
+      "boot_crc_sha256": "8abcf0f29703e28facb045c0ab9052cd7f38cbcd41a4df5273f9728577ccbc12",
+      "runtime_provenance": "Separate PID/start, process ancestry, private mnt/net/ipc/pid namespaces, loaded original driver maps, staged source hashes and native RUN query; AF_UNIX checker alone is not provenance"
+    },
+    "di16": {
+      "status": "PASS",
+      "model_permit": 0,
+      "effective_outputs_all_zero": true,
+      "generation": 1,
+      "input_bytes": 2,
+      "output_bytes": 2,
+      "host_observation_seconds": 0.8068679310381413,
+      "samples": [
+        {
+          "vector_index": 0,
+          "input_hex": "0100",
+          "expected_output_hex": "97a5",
+          "observed_requested_hex": "97a5",
+          "observed_effective_hex": "0000",
+          "generation": 1,
+          "frames": 314,
+          "post_ack_watermark_frames": 312,
+          "post_latch_watermark_frames": 313
+        },
+        {
+          "vector_index": 1,
+          "input_hex": "8100",
+          "expected_output_hex": "17a5",
+          "observed_requested_hex": "17a5",
+          "observed_effective_hex": "0000",
+          "generation": 1,
+          "frames": 316,
+          "post_ack_watermark_frames": 314,
+          "post_latch_watermark_frames": 315
+        },
+        {
+          "vector_index": 2,
+          "input_hex": "ff00",
+          "expected_output_hex": "69a5",
+          "observed_requested_hex": "69a5",
+          "observed_effective_hex": "0000",
+          "generation": 1,
+          "frames": 318,
+          "post_ack_watermark_frames": 316,
+          "post_latch_watermark_frames": 317
+        },
+        {
+          "vector_index": 3,
+          "input_hex": "0001",
+          "expected_output_hex": "96a4",
+          "observed_requested_hex": "96a4",
+          "observed_effective_hex": "0000",
+          "generation": 1,
+          "frames": 320,
+          "post_ack_watermark_frames": 318,
+          "post_latch_watermark_frames": 319
+        },
+        {
+          "vector_index": 4,
+          "input_hex": "0080",
+          "expected_output_hex": "9625",
+          "observed_requested_hex": "9625",
+          "observed_effective_hex": "0000",
+          "generation": 1,
+          "frames": 322,
+          "post_ack_watermark_frames": 320,
+          "post_latch_watermark_frames": 321
+        },
+        {
+          "vector_index": 5,
+          "input_hex": "96a5",
+          "expected_output_hex": "0000",
+          "observed_requested_hex": "0000",
+          "observed_effective_hex": "0000",
+          "generation": 1,
+          "frames": 324,
+          "post_ack_watermark_frames": 322,
+          "post_latch_watermark_frames": 323
+        },
+        {
+          "vector_index": 6,
+          "input_hex": "ffff",
+          "expected_output_hex": "695a",
+          "observed_requested_hex": "695a",
+          "observed_effective_hex": "0000",
+          "generation": 1,
+          "frames": 326,
+          "post_ack_watermark_frames": 324,
+          "post_latch_watermark_frames": 325
+        },
+        {
+          "vector_index": 7,
+          "input_hex": "0000",
+          "expected_output_hex": "96a5",
+          "observed_requested_hex": "96a5",
+          "observed_effective_hex": "0000",
+          "generation": 1,
+          "frames": 328,
+          "post_ack_watermark_frames": 326,
+          "post_latch_watermark_frames": 327
+        }
+      ],
+      "native_state": "RUN",
+      "rollback": "PASS original STOP and seven original hashes unchanged",
+      "provider_sha256": "bec9065d1baec4dcc9e8c5e8252caba836541789299468729dc4a701006dc6e0",
+      "boot_app_sha256": "89a2c64a5ba990ac94df83a4fc5be333f4d7bc1d60f8eb04eb26913a2d727730",
+      "boot_crc_sha256": "2b7eb28dbd5d0926d94b111d9b89242cdaca5e5d91a13b9c863a92b8c96eae9f",
+      "runtime_provenance": "Separate PID/start, process ancestry, private mnt/net/ipc/pid namespaces, loaded original driver maps, staged source hashes and native RUN query; AF_UNIX checker alone is not provenance"
+    }
+  },
+  "engineering": {
+    "di16": {
+      "build": "PASS",
+      "read_only_reopen": "PASS",
+      "scope": "CODESYS SP21 Patch5 offline project/mapping/build; not runtime or hardware",
+      "artifacts_sha256": {
+        "mapped-digital16-bridge-probe.project": "5e05e7881ffb271eadc6fa66454533628e0aa22bb357e7d64746fb9b4887710a",
+        "mapped-digital16-bridge-probe.app": "89a2c64a5ba990ac94df83a4fc5be333f4d7bc1d60f8eb04eb26913a2d727730",
+        "mapped-digital16-bridge-probe.crc": "2b7eb28dbd5d0926d94b111d9b89242cdaca5e5d91a13b9c863a92b8c96eae9f",
+        "mapped-digital16-bridge-probe-mapping.csv": "28fa8aeb39a3336156e26dae263ea9a090a24f82131a8bb58c334034208fca8d"
+      },
+      "build_receipt_sha256": "6edb2bb4d41147b2e75574e3fe6553983d12c3d42d5a7b9b29d0780f0b333159",
+      "reopen_receipt_sha256": "fd99d89e79cfe8684bd28fdb5b25a79c4aa6651e826efd4d36a869d8db331abc"
+    },
+    "analog": {
+      "build": "PASS",
+      "read_only_reopen": "PASS",
+      "scope": "CODESYS SP21 Patch5 offline project/mapping/build; not runtime or hardware",
+      "artifacts_sha256": {
+        "native-analog466-550-pair.project": "1f10d20b674df86b9add8fe53e0981b5ada9c79051c65ad461a6873c4b9576aa",
+        "native-analog466-550-pair.app": "79b5e558476183e390ac3ddcdc6b38ebf107b25221f994189d37af627039dd02",
+        "native-analog466-550-pair.crc": "5d2a398cc3f2e3620bec91766ef85ee4c696120b4485625be9e1324d25e65589",
+        "native-analog466-550-pair.csv": "4447dbeb42e7596f5fe2792fcc08c2917a7efe554187313aa165e5f373ccce31"
+      },
+      "build_receipt_sha256": "a3852287bd6272622cd45e105143e89d34cebca93c5015f18b937a6d20393827",
+      "reopen_receipt_sha256": "a5ba5d65d13a188b6904a071f1063531bccc15d309aedef1193d635a181ffa02",
+      "mapping": {
+        "input": [
+          "%IW1",
+          "%IW2"
+        ],
+        "output": [
+          "%QW0",
+          "%QW1"
+        ],
+        "descriptor_bytes_per_direction": 4
+      }
+    },
+    "pwm": {
+      "build": "PASS",
+      "read_only_reopen": "PASS",
+      "scope": "CODESYS SP21 Patch5 offline project/mapping/build; not runtime or hardware",
+      "artifacts_sha256": {
+        "native-pwm677.project": "9789fa9c192fb30b706a720f0a17f4ef0335d65ef1988f21a36263632e90fd5c",
+        "native-pwm677.crc": "7b13e31b2d0fd1084339fd2b53e0901092b2b2180b2f5ff526894849a5a22c78",
+        "native-pwm677.app": "d6cf2960c4dc72e3ea9f2c867bbfe4b62936fce3f609c2a0479fa5af5918f2ab",
+        "native-pwm677-mapping.csv": "2aaa9c50c4956cf00b2ea2f665b85cc2a0ad108eb6113399ea0a7375cffac6e6"
+      },
+      "build_receipt_sha256": "b62017da6e1af72e7324ab2480387d89c7f2f6c86a107242891e018854403299",
+      "reopen_receipt_sha256": "e4f6eb3c8361014ad3d578c2df4311aaece37cb6cee5e3a338fe83cae670e30a",
+      "mapping": {
+        "input_byte_range": [
+          2,
+          18
+        ],
+        "output_byte_range": [
+          0,
+          16
+        ],
+        "bytes_per_direction": 16,
+        "fields_per_direction": 12,
+        "reserved_output_export_names": "_RES 1@1 through _RES 4@1",
+        "scope": "observed IDE address projection; not lower ADI layout"
+      }
+    }
+  },
+  "private_evidence_sha256": {
+    "di8/trial.stdout": "59e8652f933b6537c6b6fa287b4489bd033c92edfc1713bccdf47bd48a1d89fb",
+    "di8/trial.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "di8/trial-coordinator.json": "ebd0ad820ec248db3211b1b1eb12d48d960a09f4dae218bdc3b06b9f77ba83e4",
+    "di8/acceptance.json": "c5f490555a2348ceba54cd95d801ce0dc5637550320d4051f936dda130e62692",
+    "di8/isolation.sh.stdout": "b7620230858b2b8fb0d4985b7a574974d9119ca05a270b62cb05d8f88ecaf941",
+    "di8/stage-manifest.json": "f1be706e159f29a7c3c4a9b0aeb1856c0d86069fa0f7be39da30193706482bad",
+    "di8/trial.sh": "3629996fe999c0a5bb86bdf57059d88d9f51b2b4fd099dbb86af3abdc266b8a3",
+    "di8/run-trial.py": "ed2876e131802f5c38898f269459c4c99fb5cef8e80ace3eea8a84924efc3b68",
+    "di8/execution-source-pins.json": "2a31fc7a2c1f8dd46b89515315fee12a69a3361e435c1196ffe992fc772222f1",
+    "di16/trial.stdout": "86b73104b3511b2e772aa461baa8c2791cd1bfe99d1e38180fbc47b625bc2994",
+    "di16/trial.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "di16/trial-coordinator.json": "be3a6db4f1de706b73fff42e582010b8fd3c80e09eb7230b7a06fe3f6c9bcdaa",
+    "di16/acceptance.json": "b985be3dab12839bc6827084d2f5d8f3c6aa8cd55935bd26225b3daa8305d1ac",
+    "di16/isolation.sh.stdout": "b7620230858b2b8fb0d4985b7a574974d9119ca05a270b62cb05d8f88ecaf941",
+    "di16/stage-manifest.json": "0522ae9f6f4b42d6aac5bb472749eff28201c0ba0efcb28521b46cb45806f553",
+    "di16/trial.sh": "d93a0612b9d367e0e76210e682dddd81c401f3dbfcdaff99d12cc495086897e7",
+    "di16/run-trial.py": "be0908d69bab8941151aea4070c89fa5f7e17ba297b95995d5e515fb602dacb5",
+    "di16/execution-source-pins.json": "0a9b9046cb8f67a76c23f48d5766a33475b9a331c0deeac06c79abac87ee2506",
+    "postflight.sh.stdout": "d8c0ff0b384ccb7b2d9499ca310a0a2042ef1df05bcca7be99f4c3004b3b3b6a",
+    "network-self-test.json": "22b291ab7c4bc578c620507f9e202cfca7c34ba5ad6ee0847ea450d177aa6981",
+    "independent-c-review.md": "6aac2ea25b4bf2a20e86a5a4a8fa23e7b72789e41c396f4e6b56eae971cc4af4",
+    "arm-build/trial-review.md": "f6ea66fe76ad0415ddb830c5571670aa7f6713d301bc4746aa044281f9c935a0",
+    "arm-build/artifacts/sha256sums.txt": "820046a6ef1d6678a5896b735a2ff36ceb9a47f3f726a650798478e6a2af8c31",
+    "arm-build/qemu-results.txt": "36656ca913f1e75dd15503667f17dce084d2f2521e957d40aabf854240453aa8"
+  },
+  "limits": {
+    "analog_native": "BLOCKED: semantically justified configuration registers 16/29/30 and complete lower projection missing; native execution NOT_RUN",
+    "pwm_native": "BLOCKED: lower projection of IDE 16-byte image vs manual/model 12-byte image and mode/register/status contract missing; native execution NOT_RUN",
+    "can_dali": "BLOCKED: node identity/process contract missing; can0 remains DOWN/STOPPED, no traffic; communication NOT_RUN",
+    "hardware_comparison": "NOT_RUN",
+    "native_lifecycle_fault_qualification": "NOT_RUN beyond bounded startup and original STOP restoration"
+  },
+  "descriptors_sha256": [
+    {
+      "id": "07500466000000000400",
+      "hash": "AA9BB802E2D2656EC9E101F1537AEBC23F79487437513BDC9588F0D283ECCA51",
+      "version": "2.0.0.9"
+    },
+    {
+      "id": "07500550000000000004",
+      "hash": "8EDB68D2B02370398251890035552779FB1EDCE5E6D039C2D7312D26F6927105",
+      "version": "2.0.0.9"
+    },
+    {
+      "id": "07500677000000001616",
+      "hash": "15DCBA17A7186FC3DD91FC2B47C806BF7016E6E0EBC949B352C9549F5124C780",
+      "version": "2.0.0.3"
+    }
+  ],
+  "original_files_sha256": {
+    "codesys3": "b56c6296faabae9eb73f0463fd068c535c03109ced347f0c2a643b69a7ee1ab5",
+    "libdal.so.1.0.1": "c163ac57805409921ce783f9c4f17f52891864be333c3df4945a128d253994f5",
+    "libIoDrvDal.so.1.0.2": "853d3ad6eb1b2477b43502d562a6bbfa854b8029e85989b6166f961167188c7d",
+    "libIoDrvKbus.so.0.0.1": "543e8b1d2d19352030fe804a7e667ca30c1d9ba80069f2df3158c77c544789b8",
+    "CODESYSControl.cfg": "cc6beddf09a2e0e7ead12a1d2ef156044fceaec5fb186c5335851a9b20f2f5fd",
+    "Application.app": "62251e107b19b9fcb9fb82608d29e01a4c9b3e768ee7bbe9ea0569d64d24aca3",
+    "Application.crc": "8ccb854bb678b999334741c1683450f37f14b42a1094099dbbd9a0ad37cd9bc6"
+  }
+}

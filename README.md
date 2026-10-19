@@ -1,5 +1,7 @@
 # virtualWAGO
 
+**Modulerweiterung, 19.10.2026:** [Bytepuffer und frische Digitalregression](docs/module-extension-2026-10-19.md): virtuelle 750-1405/750-1504 (16 DI/DO) und 750-430/750-530 mit Originalruntime/Originaltreibern **PASS**, Modellpermit 0; Original-STOP und unveränderte Dateien wieder bestätigt. 750-550-Signalmodell ergänzt; Analogpaar und PWM-Projekt Build/Reopen **PASS**. Native Analog-/PWM-Ausführung bleibt wegen Register-/Projektionsverträgen **BLOCKED / NOT_RUN**. 281 lokale Tests ohne Skip; der private Header benötigende Bytepuffer-Harness ist in öffentlicher CI ohne diese Header explizit NOT_RUN.
+
 Forschung zur I/O-Simulation unterhalb des originalen WAGO/CODESYS-I/O-Stacks. Erstes Ziel ist die autorisierte Referenz-WAGO mit ihrer bereits laufenden originalen Runtime, dem nativen I/O-Manager und originalen WAGO-I/O-Treibern; die untere Hardwareanbindung soll erst nach Beleg ihrer Schnittstelle simuliert werden. Eine vollständig virtuelle Steuerung ist ein späteres Ziel. Unabhängiges Forschungsprojekt; keine behauptete Herstellerfreigabe.
 
 **Aktueller Prototypblock, 18. Oktober 2026:** [Frischer nativer DI8-Lauf und

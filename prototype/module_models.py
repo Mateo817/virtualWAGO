@@ -9,7 +9,8 @@ from __future__ import annotations
 
 from collections.abc import Sequence
 
-from .vio import ContractError, Unsupported, decode_pwm677_frq, encode_ai466_standard
+from .vio import (ContractError, Unsupported, decode_ao550_standard_word,
+                  decode_pwm677_frq, encode_ai466_standard)
 
 _NANOSECONDS_PER_SECOND = 1_000_000_000
 _MAX_TIME_NS = 2**63 - 1
@@ -55,8 +56,111 @@ class Analog466:
         self._currents_uA = (checked[0], checked[1])
 
     def input_bytes(self) -> bytes:
+        """Compatibility alias for the explicitly research-only six-byte layout."""
+        return self.research_input_bytes()
+
+    def descriptor_input_words(self) -> tuple[int, int]:
+        """The two descriptor-shaped WORD values, without invented status bytes."""
         words = tuple(encode_ai466_standard(value) for value in self._currents_uA)
+        return words[0], words[1]
+
+    def descriptor_word_payload(self) -> bytes:
+        """Four-byte little-endian model serialization of the two WORD fields.
+
+        This follows the manual's word byte order and the local descriptor's
+        two-WORD width. It is not an observed native ADI or hardware payload.
+        """
+        return b"".join(word.to_bytes(2, "little") for word in self.descriptor_input_words())
+
+    def research_input_bytes(self) -> bytes:
+        """Historical research-only status0/word0LE/status1/word1LE layout."""
+        words = self.descriptor_input_words()
         return bytes((0,)) + words[0].to_bytes(2, "little") + bytes((0,)) + words[1].to_bytes(2, "little")
+
+
+class AnalogOutput550:
+    """Two-channel standard 750-550 voltage output reaction.
+
+    The input process model accepts exactly two little-endian standard output
+    WORDs (four bytes). Voltage scaling follows the WAGO normal-range table;
+    rounded millivolt interpolation and the independent closed-by-default
+    permit are own model rules. Permit/fault loss clears the output arm while
+    retaining requested words for inspection. Reopening a gate needs a fresh
+    complete output frame. This is a standalone backend model, not original
+    runtime, ADI, register communication, or an electrical-load simulation.
+    """
+
+    def __init__(self) -> None:
+        self._requested_words = (0, 0)
+        self._requested_mV = (0, 0)
+        self._permit = False
+        self._fault = False
+        self._armed = False
+
+    @staticmethod
+    def _words(values: Sequence[int]) -> tuple[int, int]:
+        if (isinstance(values, (str, bytes, bytearray)) or
+                not isinstance(values, Sequence) or len(values) != 2):
+            raise ContractError("output words: expected exactly two unsigned 16-bit words")
+        checked: list[int] = []
+        for word in values:
+            if type(word) is not int or not 0 <= word <= 0xFFFF:
+                raise ContractError("output words: expected exactly two unsigned 16-bit words")
+            if word > 0x7FFF:
+                raise Unsupported("750-550 standard normal output words stop at 0x7fff")
+            checked.append(word)
+        return checked[0], checked[1]
+
+    def set_output_words(self, words: Sequence[int]) -> None:
+        checked = self._words(words)
+        millivolts = tuple(decode_ao550_standard_word(word) for word in checked)
+        self._requested_words = checked
+        self._requested_mV = (millivolts[0], millivolts[1])
+        self._armed = self._permit and not self._fault
+
+    def set_output_payload(self, payload: bytes) -> None:
+        if type(payload) is not bytes or len(payload) != 4:
+            raise ContractError("750-550 model payload must be exactly four bytes")
+        words = (int.from_bytes(payload[0:2], "little"),
+                 int.from_bytes(payload[2:4], "little"))
+        self.set_output_words(words)
+
+    def set_channel_word(self, channel: int, word: int) -> None:
+        if type(channel) is not int or channel not in (0, 1):
+            raise ContractError("channel must be integer 0 or 1")
+        replacement = list(self._requested_words)
+        replacement[channel] = word
+        self.set_output_words(replacement)
+
+    def set_permit(self, permitted: bool) -> None:
+        if type(permitted) is not bool:
+            raise ContractError("permit must be bool")
+        self._permit = permitted
+        if not permitted:
+            self._armed = False
+
+    def set_fault(self, active: bool) -> None:
+        if type(active) is not bool:
+            raise ContractError("fault must be bool")
+        self._fault = active
+        if active:
+            self._armed = False
+
+    def observe(self) -> dict[str, object]:
+        effective_words = self._requested_words if self._armed else (0, 0)
+        effective_mV = self._requested_mV if self._armed else (0, 0)
+        return {
+            "requested_word": list(self._requested_words),
+            "effective_word": list(effective_words),
+            "requested_voltage_mV": list(self._requested_mV),
+            "effective_voltage_mV": list(effective_mV),
+            "requested_payload_hex": b"".join(w.to_bytes(2, "little") for w in self._requested_words).hex(),
+            "effective_payload_hex": b"".join(w.to_bytes(2, "little") for w in effective_words).hex(),
+            "permit": self._permit,
+            "fault": self._fault,
+            "armed": self._armed,
+            "scope": "OWN standalone 750-550 normal-range signal model; NOT original runtime/ADI or electrical behavior",
+        }
 
 
 class Pwm677:

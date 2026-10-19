@@ -22,12 +22,26 @@ class CatalogTests(unittest.TestCase):
 
     def test_documentary_and_executable_coverage_are_distinct(self):
         self.assertEqual(len(self.catalog.entries()), 14)
-        self.assertEqual(len(self.catalog.model_specs), 9)
-        for article in ("750-454", "750-455", "750-550", "750-600", "750-652"):
+        self.assertEqual(len(self.catalog.model_specs), 10)
+        for article in ("750-454", "750-455", "750-600", "750-652"):
             with self.subTest(article=article):
                 self.assertIsNone(self.catalog.entry(article)["model"])
                 with self.assertRaises(Unsupported):
                     self.catalog.research_layout([article])
+
+    def test_750550_standard_model_binds_exact_descriptor_and_four_byte_layout(self):
+        entry = self.catalog.entry("750-550")
+        self.assertEqual(entry["descriptor"], {
+            "device_id": "07500550000000000004", "version": "2.0.0.9",
+            "sha256": "8edb68d2b02370398251890035552779fb1edce5e6d039c2d7312d26f6927105",
+            "scope": "ENGINEERING_DESCRIPTION_NOT_PHYSICAL_REVISION"})
+        spec = self.catalog.model_for_article("750-550")
+        self.assertEqual((spec["codec"], spec["input_bytes"], spec["output_bytes"]),
+                         ("ao550_standard", 0, 4))
+        layout = self.catalog.research_layout(["750-466", "750-550"])
+        self.assertEqual((layout["input_size"], layout["output_size"]), (6, 4))
+        self.assertEqual(layout["modules"][1]["output_offset"], 0)
+        self.assertEqual(spec["layout_scope"], "OWN_RESEARCH_LAYOUT_NOT_NATIVE_MAPPING")
 
     def test_variants_and_unknown_articles_never_alias(self):
         for article in ("750-677/040-000", "753-466", "750-466/000-200", "750-9999"):
@@ -70,6 +84,15 @@ class CatalogTests(unittest.TestCase):
         data["modules"][0]["channels"] = True
         with self.assertRaises(ContractError):
             Catalog(data)
+
+    def test_750550_model_rejects_wrong_width_mask_or_codec(self):
+        for field, value in (("output_bytes", 2), ("output_mask", 0xff),
+                             ("codec", "ai466_standard")):
+            data = self.catalog.data
+            target = next(m for m in data["modules"] if m["article"] == "750-550")
+            target["model"][field] = value
+            with self.subTest(field=field), self.assertRaises((ContractError, Unsupported)):
+                Catalog(data)
 
     def test_unknown_native_profiles_cannot_enter_catalog(self):
         data = self.catalog.data
@@ -189,7 +212,7 @@ class CatalogCliTests(unittest.TestCase):
         self.assertEqual(len(report["entries"]), 14)
         self.assertTrue(all(e["this_revision_native_runtime"] == "NOT_RUN" for e in report["entries"]))
 
-    def test_documentation_only_demo_returns_explicit_failure(self):
+    def test_no_general_ao_demo_returns_explicit_failure(self):
         output = io.StringIO()
         with contextlib.redirect_stdout(output):
             self.assertEqual(main(["demo", "750-550"]), 2)

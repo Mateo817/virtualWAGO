@@ -1,5 +1,7 @@
 # Nächster Originalstack-Block und Übergabe
 
+**Modulerweiterung, 19.10.2026:** [Bytepuffer und frische Digitalregression](module-extension-2026-10-19.md): virtuelle 750-1405/750-1504 (16 DI/DO) und 750-430/750-530 mit Originalruntime/Originaltreibern **PASS**, Modellpermit 0; Original-STOP und unveränderte Dateien wieder bestätigt. 750-550-Signalmodell ergänzt; Analogpaar und PWM-Projekt Build/Reopen **PASS**. Native Analog-/PWM-Ausführung bleibt wegen Register-/Projektionsverträgen **BLOCKED / NOT_RUN**. 281 lokale Tests ohne Skip; der private Header benötigende Bytepuffer-Harness ist in öffentlicher CI ohne diese Header explizit NOT_RUN.
+
 **Neuer getrennter 750-8212-Zwischenstand, 14.10.2026:** Der
 [read-only Bericht](reference-8212-2026-10-14.md) bindet einen anderen
 Controller mit unverändertem RUN-Zustand. Sichtbar sind 1405×2, 1504×2, 466,
