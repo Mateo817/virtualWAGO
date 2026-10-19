@@ -1,0 +1,292 @@
+{
+  "schema": "virtualwago.pwm-async-exploration.v1",
+  "date": "2026-10-19",
+  "base_commit": "5e03a3fc40198e742963aea12c17a40530badde7",
+  "classification": "VERIFIZIERT for bounded native raw-frame observations; module health and physical equivalence OFFEN",
+  "profile": "PWM677",
+  "device_description_version": "2.0.0.3",
+  "module_library_version": "1.0.0.3",
+  "application_sha256": "3369676a1165cddd6112ed9aa35422b395b01367de0ec41445a8cb3f6d773ac5",
+  "application_crc_sha256": "6d411c10ce525f9f394cd3bc01f550ec61c289ac80cf3f15febc5e719a19c0e7",
+  "input_bytes": 16,
+  "output_bytes": 16,
+  "permit": 0,
+  "effective_outputs": "all zero",
+  "build_defines": [
+    "VIRTUALWAGO_DEFAULT_PWM677",
+    "VIRTUALWAGO_DEFAULT_CLOCK_MONOTONIC",
+    "VIRTUALWAGO_ENABLE_MODEL_BRIDGE",
+    "VIRTUALWAGO_ADI_TRACE",
+    "VIRTUALWAGO_PWM_ASYNC_EXPLORATION"
+  ],
+  "final_source_sha256": {
+    "tools/adi_digital_adapter.c": "6cc88814728302f761c1e1f76546e25df2c2e2ad297f8d50ef6cb6ee92b3f656",
+    "tools/adi_pwm_async_exploration_test.c": "d447503a5a1d3743e0ce6a516a3b656aba72b139543ad30813de7c78bfd7f7d3",
+    "tests/test_adi_pwm_async_exploration.py": "9f925e5d0e24752532af29e3a4161d2788034a7af0cdae6e370ec5f13b5002d3"
+  },
+  "trials": [
+    {
+      "trial": 1,
+      "provider_sha256": "28d0fd71847ac9e6cbca10541decb72489ec80fde60b5cc1331907ac4e70d468",
+      "source_sha256": {
+        "tools/adi_digital_adapter.c": "6d4d18af160b276ffad08a8fda6f35096b01b5987892dd70013d448ad829a05e",
+        "tools/adi_model_bridge.c": "cf2743e76a09a0147d12cccf8c00ab0b1b54bc3ba906bea1dbe3584893c5d35f",
+        "tools/adi_pwm_async_exploration_test.c": "4269291ad472d268b877292eb1d330337899cc128304957eb12e5aadb3e11d68"
+      },
+      "native_RUN": "PASS",
+      "frame_acceptance": "BLOCKED",
+      "accepted_patterns": 0,
+      "automatic_rollback": "PASS",
+      "transaction_exit": 6,
+      "duration_seconds": 53.400052171899006,
+      "receipt_sha256": {
+        "trial.stdout": "9d749272b15bc9867695a1db76cafa68c3d3a6992543d29caac40681a7d87486",
+        "collect.sh.stdout": "75279da52b3a3f4f7cdfab904ca7325417140253d3d0bbd342d3650c622295bb",
+        "acceptance.json": "8c7ece2d3a4315b949ec913cfcb6d254a4578e77883386243ed371299f5d93ef",
+        "trial.sh": "0ca426c72f1218c9b7727656e34ca4c63de506e80fc8fd381b3c17c163ae501a",
+        "stage-manifest.json": "9368719c4fab631582717e15c4cc57ba8384dc9bab7cb13e0eee8f1df3169374",
+        "isolation.sh.stdout": "b7620230858b2b8fb0d4985b7a574974d9119ca05a270b62cb05d8f88ecaf941",
+        "trial-coordinator.json": "d2a71234ab5d163306aaef93aed0f2757fa63be21fa04454260b9ee9671a98ef"
+      }
+    },
+    {
+      "trial": 2,
+      "provider_sha256": "6b330a72723a7fc46236011cd55cb706d3535329706dfb4011bd788b88eca135",
+      "source_sha256": {
+        "tools/adi_digital_adapter.c": "0093268c9c3936c4d70c58a864097f8531e1a96e4519402ac61f40aa9f3473a7",
+        "tools/adi_digital_adapter.h": "71c215c49a5d0a4e8f8bddb61728b3a5a959b97ed60754eb630acf0c491efe1e",
+        "tools/adi_model_bridge.c": "cf2743e76a09a0147d12cccf8c00ab0b1b54bc3ba906bea1dbe3584893c5d35f",
+        "tools/adi_model_bridge.h": "8c77a49a509d3403362cf451e542bd2ef15cf7271dcb1e04fbe485d736690b0d",
+        "tools/adi_virtual_integration_profiles.h": "10a7cd8f842e74e92e4f2f156992c14931ccebb4a6132ef45bca5bf63caf2fee",
+        "tools/adi_catalog_profiles.h": "d65dec677a36e724dc0dc037a6052b5e153ae34eb065e75a61c504c8191863f3",
+        "tools/adi_pwm_async_exploration_test.c": "43bd4ac47c4c99d4961619dae0779c9ab59b292a02f6127cf5520c265ccbe5ab"
+      },
+      "native_RUN": "PASS",
+      "frame_acceptance": "BLOCKED",
+      "accepted_patterns": 0,
+      "automatic_rollback": "PASS",
+      "transaction_exit": 6,
+      "duration_seconds": 54.66785294096917,
+      "receipt_sha256": {
+        "trial.stdout": "89080aec9fa314674ac03bbaa2dd276368f3a30a5fd85dfaf8657b5f181a3b42",
+        "collect.sh.stdout": "567db763cfe9da08d9c610564fc33b7c14dda9bb278c58a7d8767ccb593c3c51",
+        "acceptance.json": "745543ec0cda0c41375923eae25cab554e57d7f14991ca45efb73e81a3c7b486",
+        "trial.sh": "025260cc33a76d8ea91963227f681d651c9202ad23e68004844c88cdaad36dd7",
+        "stage-manifest.json": "8e9a73fd286bb2574c12e769c2c2c075fb07c3d768d61b1bcbe7e742b5f62dbb",
+        "isolation.sh.stdout": "b7620230858b2b8fb0d4985b7a574974d9119ca05a270b62cb05d8f88ecaf941",
+        "trial-coordinator.json": "73908c761f7b863803d6f4cc0911d5fbb5420d58fed7a140646e2dca893d867f"
+      }
+    },
+    {
+      "trial": 3,
+      "provider_sha256": "02b8a9ccfc6b1fd58bef9ba783eb88b6ddff7f0782fff2d5d1caa676f85868dd",
+      "source_sha256": {
+        "tools/adi_digital_adapter.c": "479ef602c13543a29737d447d549d1c20230352702bef3fdf52e6735b44ad3ef",
+        "tools/adi_digital_adapter.h": "71c215c49a5d0a4e8f8bddb61728b3a5a959b97ed60754eb630acf0c491efe1e",
+        "tools/adi_model_bridge.c": "cf2743e76a09a0147d12cccf8c00ab0b1b54bc3ba906bea1dbe3584893c5d35f",
+        "tools/adi_model_bridge.h": "8c77a49a509d3403362cf451e542bd2ef15cf7271dcb1e04fbe485d736690b0d",
+        "tools/adi_virtual_integration_profiles.h": "10a7cd8f842e74e92e4f2f156992c14931ccebb4a6132ef45bca5bf63caf2fee",
+        "tools/adi_catalog_profiles.h": "d65dec677a36e724dc0dc037a6052b5e153ae34eb065e75a61c504c8191863f3",
+        "tools/adi_pwm_async_exploration_test.c": "43bd4ac47c4c99d4961619dae0779c9ab59b292a02f6127cf5520c265ccbe5ab"
+      },
+      "native_RUN": "PASS",
+      "frame_acceptance": "BLOCKED",
+      "accepted_patterns": 0,
+      "automatic_rollback": "PASS",
+      "transaction_exit": 6,
+      "duration_seconds": 52.479583885055035,
+      "receipt_sha256": {
+        "trial.stdout": "ecb358608011b9deefe59c8084c728f02dab1d84ae6d1adb4b34733185108712",
+        "collect.sh.stdout": "c84c3f3c96757fa44eab7ebcba73a836eb6f1741a59a854d2fbd1c6e47efe349",
+        "acceptance.json": "d5ec2f2dbf3cbcbf02692f806955d42fac98f00b93dd205dca0f3fb4f1ea697e",
+        "trial.sh": "7a57387a8025696f228437f6805cd4680ff2dbd214178c421644844ff8f6a2b0",
+        "stage-manifest.json": "71efc7dd58194cdb9729c80e6608e38b414561747cca60507fec9291eecaf06d",
+        "isolation.sh.stdout": "b7620230858b2b8fb0d4985b7a574974d9119ca05a270b62cb05d8f88ecaf941",
+        "trial-coordinator.json": "b6a95cb18cdd69536b6ee9fe8e1f1558e2b8fabeceab917a0b712c76eef3c6ab"
+      }
+    },
+    {
+      "trial": 4,
+      "provider_sha256": "a4247ccde285e240cf68e49bd374185314f48a47bd194d9dae1939dc07fef61b",
+      "source_sha256": {
+        "tools/adi_digital_adapter.c": "6cc88814728302f761c1e1f76546e25df2c2e2ad297f8d50ef6cb6ee92b3f656",
+        "tools/adi_digital_adapter.h": "71c215c49a5d0a4e8f8bddb61728b3a5a959b97ed60754eb630acf0c491efe1e",
+        "tools/adi_model_bridge.c": "cf2743e76a09a0147d12cccf8c00ab0b1b54bc3ba906bea1dbe3584893c5d35f",
+        "tools/adi_model_bridge.h": "8c77a49a509d3403362cf451e542bd2ef15cf7271dcb1e04fbe485d736690b0d",
+        "tools/adi_virtual_integration_profiles.h": "10a7cd8f842e74e92e4f2f156992c14931ccebb4a6132ef45bca5bf63caf2fee",
+        "tools/adi_catalog_profiles.h": "d65dec677a36e724dc0dc037a6052b5e153ae34eb065e75a61c504c8191863f3",
+        "tools/adi_pwm_async_exploration_test.c": "ee5275b49db577516e9470ebef60c9d79562f49200b0aa23ba9fac7488f6c853"
+      },
+      "native_RUN": "PASS",
+      "frame_acceptance": "PASS",
+      "accepted_patterns": 7,
+      "automatic_rollback": "PASS",
+      "transaction_exit": 0,
+      "duration_seconds": 57.65542565798387,
+      "receipt_sha256": {
+        "trial.stdout": "ae224411da014ad26ffe4957c858a082937a810414424bcb3c33cb20fa1d1447",
+        "collect.sh.stdout": "082f569115c9bdcd14f3ae8491c9f8366be4b3c28fc7719455ddb63acb56e1e4",
+        "acceptance.json": "91996794427a149b2e5591d1a8f3cbba8b41a88bd6c8fdb441c1e3f4b0bcad7f",
+        "trial.sh": "9e2c115e775f02365826de760f5bd39e1e24aa3828eaed6e22d2e2ab748759eb",
+        "stage-manifest.json": "969f0f8abd4525491f347d2b8074f5f3045d1192594113127f983f57530687ca",
+        "isolation.sh.stdout": "b7620230858b2b8fb0d4985b7a574974d9119ca05a270b62cb05d8f88ecaf941",
+        "trial-coordinator.json": "11540264610c8402f8054def7545dd7a334f555aa8552e64c9438bb50dcfbeeb"
+      }
+    }
+  ],
+  "successful_native_trace": [
+    "GET_UID slot=1 synthetic=750677 inner=0",
+    "ASYNC_OPEN token=1 inner=0",
+    "START_RD_REG token=1 slot=1 channel=0 register=29 inner=0",
+    "POLL_RD_REG token=1 slot=1 channel=0 register=29 value=0 inner=0",
+    "ASYNC_CLOSE token=1 inner=0",
+    "GET_UID slot=2 output_nonnull=1 inner=-1 output_untouched"
+  ],
+  "accepted_samples": [
+    {
+      "vector_index": 0,
+      "input_hex": "00000002000000000000000000000000",
+      "expected_output_hex": "00000002000000000000000000000000",
+      "observed_requested_hex": "00000002000000000000000000000000",
+      "observed_effective_hex": "00000000000000000000000000000000",
+      "generation": 1,
+      "frames": 682,
+      "post_ack_watermark_frames": 680,
+      "post_latch_watermark_frames": 681,
+      "accepted_monotonic_seconds": 1614292.398158477
+    },
+    {
+      "vector_index": 1,
+      "input_hex": "00000000000000040000000000000000",
+      "expected_output_hex": "00000000000000040000000000000000",
+      "observed_requested_hex": "00000000000000040000000000000000",
+      "observed_effective_hex": "00000000000000000000000000000000",
+      "generation": 1,
+      "frames": 684,
+      "post_ack_watermark_frames": 683,
+      "post_latch_watermark_frames": 683,
+      "accepted_monotonic_seconds": 1614292.437775691
+    },
+    {
+      "vector_index": 2,
+      "input_hex": "00000000000000000000000600000000",
+      "expected_output_hex": "00000000000000000000000600000000",
+      "observed_requested_hex": "00000000000000000000000600000000",
+      "observed_effective_hex": "00000000000000000000000000000000",
+      "generation": 1,
+      "frames": 686,
+      "post_ack_watermark_frames": 685,
+      "post_latch_watermark_frames": 685,
+      "accepted_monotonic_seconds": 1614292.478666878
+    },
+    {
+      "vector_index": 3,
+      "input_hex": "00000000000000000000000000000008",
+      "expected_output_hex": "00000000000000000000000000000008",
+      "observed_requested_hex": "00000000000000000000000000000008",
+      "observed_effective_hex": "00000000000000000000000000000000",
+      "generation": 1,
+      "frames": 688,
+      "post_ack_watermark_frames": 687,
+      "post_latch_watermark_frames": 687,
+      "accepted_monotonic_seconds": 1614292.508137478
+    },
+    {
+      "vector_index": 4,
+      "input_hex": "00000002000000040000000600000008",
+      "expected_output_hex": "00000002000000040000000600000008",
+      "observed_requested_hex": "00000002000000040000000600000008",
+      "observed_effective_hex": "00000000000000000000000000000000",
+      "generation": 1,
+      "frames": 690,
+      "post_ack_watermark_frames": 688,
+      "post_latch_watermark_frames": 689,
+      "accepted_monotonic_seconds": 1614292.546904008
+    },
+    {
+      "vector_index": 5,
+      "input_hex": "00000008000000060000000400000002",
+      "expected_output_hex": "00000008000000060000000400000002",
+      "observed_requested_hex": "00000008000000060000000400000002",
+      "observed_effective_hex": "00000000000000000000000000000000",
+      "generation": 1,
+      "frames": 692,
+      "post_ack_watermark_frames": 690,
+      "post_latch_watermark_frames": 691,
+      "accepted_monotonic_seconds": 1614292.593317695
+    },
+    {
+      "vector_index": 6,
+      "input_hex": "00000000000000000000000000000000",
+      "expected_output_hex": "00000000000000000000000000000000",
+      "observed_requested_hex": "00000000000000000000000000000000",
+      "observed_effective_hex": "00000000000000000000000000000000",
+      "generation": 1,
+      "frames": 694,
+      "post_ack_watermark_frames": 692,
+      "post_latch_watermark_frames": 693,
+      "accepted_monotonic_seconds": 1614292.627680081
+    }
+  ],
+  "post_hold": {
+    "seconds": 3,
+    "original_runtime": "RUN",
+    "model_fault": 0,
+    "permit": 0,
+    "frames": 881
+  },
+  "postflight": {
+    "status": "PASS",
+    "original_runtime": "STOP",
+    "original_file_sha256": {
+      "codesys3": "b56c6296faabae9eb73f0463fd068c535c03109ced347f0c2a643b69a7ee1ab5",
+      "libdal.so.1.0.1": "c163ac57805409921ce783f9c4f17f52891864be333c3df4945a128d253994f5",
+      "libIoDrvDal.so.1.0.2": "853d3ad6eb1b2477b43502d562a6bbfa854b8029e85989b6166f961167188c7d",
+      "libIoDrvKbus.so.0.0.1": "543e8b1d2d19352030fe804a7e667ca30c1d9ba80069f2df3158c77c544789b8",
+      "CODESYSControl.cfg": "cc6beddf09a2e0e7ead12a1d2ef156044fceaec5fb186c5335851a9b20f2f5fd",
+      "Application.app": "62251e107b19b9fcb9fb82608d29e01a4c9b3e768ee7bbe9ea0569d64d24aca3",
+      "Application.crc": "8ccb854bb678b999334741c1683450f37f14b42a1094099dbbd9a0ad37cd9bc6"
+    },
+    "own_live_helpers": 0,
+    "private_dbus_cleanup": "PASS",
+    "CAN": "STOPPED, RX/TX zero",
+    "receipt_sha256": "3814a4a66c619cdb74ac5d65dae9975a8f369d18e9eb0334fa61fc5a6b4c2bcb"
+  },
+  "local_tests": {
+    "unittest": {
+      "status": "PASS",
+      "total": 286,
+      "skipped": 0,
+      "log_sha256": "7c80439eee261405bfbf7cb43826c983bd72c542de6a074690a2e7d77db050a2"
+    },
+    "ARM_QEMU_harness": {
+      "status": "PASS",
+      "binary_sha256": "85a834a7f0254e65dbb8b24342e149a919cd0a55c66941c24342eeb8dcab78a7",
+      "log_sha256": "c8114de9299830e04bb89e163e51eab7afeec1d78dbcc76f1074fefd9aba246c"
+    },
+    "public_CI_expected_skips": 3,
+    "note": "Final harness adds lifecycle/profile cases after native trial; native provider source unchanged."
+  },
+  "static_contract": {
+    "status": "VERIFIZIERT only ABI and listed error/completion behavior",
+    "libpackbus_sha256": "3b7b7ca4fa14e5994552040a7b40b1cfbbf43e0649a4ad9277ece421fd4bc5d6",
+    "CmpKbusAsyncCom_sha256": "2564394a5925e6af923843edf8fa93be6a47bdf640d0b6567ed2c3d386e205a7",
+    "report_sha256": "9b6bf6f650748247a8f061dde87305e9f4ee5187a8a7f420f5ecb96c4e2cffe5"
+  },
+  "review": {
+    "root": "Self-Review",
+    "separate_worker": "offline read-only code review; no hardware/native-health claim",
+    "report_sha256": "80e5c1d9d2703d62453bb523df2707842d147f8acd51e914e84cedf1b4efb487",
+    "followup": "DeviceClose pending-read test added; broad zero-bank and teardown policy explicitly documented."
+  },
+  "limits": [
+    "Synthetic UID is not a verified electronic module identity.",
+    "Zero-valued scalar register bank and immediate completion are own exploratory policy.",
+    "Only channel 0/register 29 observed natively; broader 8-bit indices are synthetic.",
+    "Known rejected UID query remains an explicit local error; unknown services still latch model faults.",
+    "RUN and raw frame PASS do not prove original module FB readiness or universal UID irrelevance.",
+    "16-byte native mapping to 12-byte PWM Frq model and physical units remains OFFEN.",
+    "Physical outputs, long-duration tests, register writes and hardware comparison NOT_RUN.",
+    "No new native digital/analog run or IDE build in this block."
+  ]
+}
