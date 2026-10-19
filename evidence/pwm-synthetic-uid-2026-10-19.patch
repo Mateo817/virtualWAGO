@@ -1,0 +1,21 @@
+--- a/tools/adi_digital_adapter.c
++++ b/tools/adi_digital_adapter.c
+@@ -1174,6 +1174,18 @@
+       latch_fault_locked();
+       return DAL_FAILURE;
+     }
++    /* PRIVATE OWNER-AUTHORIZED FAULT INJECTION: NOT A GENUINE MODULE UID. */
++    if (selected_profile.profile == VIRTUAL_ADI_PROFILE_PWM677) {
++      int slot = va_arg(args, int);
++      uint32_t *uid = va_arg(args, uint32_t *);
++      if (slot == 1 && uid != NULL) {
++        *uid = SYNTHETIC_TEST_UID;
++        *(int32_t *)return_value = 0;
++        TRACE_EVENT(trace_uid_count, "synthetic_get_uid", DAL_SUCCESS, 0,
++                    (uint32_t)slot, *uid);
++        return DAL_SUCCESS;
++      }
++    }
+     latch_fault_locked();
+     *(int32_t *)return_value = -1; /* Own explicit unsupported UID response. */
+     TRACE_EVENT(trace_uid_count, "get_uid", DAL_SUCCESS,
