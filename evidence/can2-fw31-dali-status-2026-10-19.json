@@ -1,0 +1,134 @@
+{
+  "date": "2026-10-19",
+  "classification": "VERIFIZIERT within separate scopes; not a native runtime or DALI end-to-end acceptance",
+  "source_revision": "c446e2903c35c0253a0c315c8715d9f6ac1b8371",
+  "review": "Self-Review",
+  "private_artifact_hashes": {
+    "candidate.project": "50a3a58ac196cef1be77dff5dac0ea3e0f606b337651c27bb7b79db0d01343c1",
+    "full.export": "85233d1c67c01a9f4e5908d5f5435480bb070a779c526403debfc10d50faa7e6",
+    "mapping-0.csv": "7135bc9f70f2ebdc5c82d8e420281f1067d8fa110009f692a8711d1a6574b3c6",
+    "result.json": "e1a761c9201b7811753ff0e737578cde344cdbd7556a4b96fe1fbc0cb73fdf2e"
+  },
+  "versions": {
+    "ide": "CODESYS V3.5 SP21 Patch 5",
+    "controller_description": "750-8213 6.4.6.11 / FW31",
+    "eds": "750-337 FileVersion 1.17",
+    "WagoAppDALI": "1.3.1.15",
+    "WagoSysFieldbusModule": "1.9.4.5",
+    "WagoSysModuleBase_redirection": "2.0.2.11"
+  },
+  "configuration": {
+    "owner_confirmed_physical_order": [
+      "750-337",
+      "753-620",
+      "753-647",
+      "750-600"
+    ],
+    "can_bitrate": 125000,
+    "node": 5,
+    "module_id": "187",
+    "process_bytes_each_direction": 24,
+    "pdos": 6,
+    "startup_sdos": 96,
+    "local_kbus_enabled": false,
+    "local_ethernet_enabled": false,
+    "dali_master_initial_enable": false,
+    "write_standard_sensor_config": false
+  },
+  "tests": {
+    "native_import_build": {
+      "result": "PASS",
+      "errors": 0,
+      "warnings": 0
+    },
+    "post_build_export_mapping": {
+      "result": "PASS",
+      "scope": "Local checks of exported native object tree, six PDOs, SDO mapping words, all 48 byte variables, disabled local branches and initial IEC settings",
+      "byte_address_ranges": {
+        "Input": [
+          1,
+          24
+        ],
+        "Output": [
+          0,
+          23
+        ]
+      }
+    },
+    "fresh_project_reopen": {
+      "result": "NOT_RUN",
+      "reason": "Owner confirmed shared engineering VM in use"
+    },
+    "real_coupler_identity_sdo": {
+      "result": "PASS",
+      "vendor": 33,
+      "product": 337,
+      "revision": "0x00010020"
+    },
+    "real_physical_inventory_sdo": {
+      "result": "PASS",
+      "object": "5202",
+      "entries": [
+        "0x02EE015100000000",
+        "0x02EE028700000000"
+      ]
+    },
+    "real_dali_input_sdo": {
+      "result": "PASS",
+      "object": "3800",
+      "count": 24,
+      "bytes_hex": "0100aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa000000000000",
+      "semantics": "OFFEN; no DALI ACK or lamp state inferred"
+    },
+    "coupler_zero_error_register": {
+      "result": "FAIL",
+      "initial": "0x91",
+      "last": "0x81",
+      "cause": "OFFEN"
+    },
+    "native_runtime_can_dali": {
+      "result": "NOT_RUN",
+      "reason": "No download/start; separate runtime startup and PDO verification still needed"
+    },
+    "dali_lamp_query_addressing_switching": {
+      "result": "NOT_RUN"
+    },
+    "virtual_can_dali": {
+      "result": "NOT_RUN"
+    },
+    "reference_preservation": {
+      "result": "PASS",
+      "scope": "Same original runtime PID/start in STOP; APP/CRC/config hashes unchanged; CAN returned DOWN",
+      "exception": "Last configured CAN bitrate 125000 and qdisc retained; not exact initial interface configuration"
+    }
+  },
+  "diagnostic_reads": {
+    "1003:00": 3,
+    "1003:01": "0x00030000",
+    "1003:02": "0x00038120",
+    "1003:03": "0x00015000",
+    "5200:06": 0,
+    "1001:00": "0x81"
+  },
+  "probe_hashes": {
+    "read_diag.c": "35a2c26542584684c0e42395f653ef9aa6510fbe0f1d7fa1dae445e4250ea7c4",
+    "read_sdo": "53f4548d9e22878d651a3f0a704a23143b2020acc3ac76babc5f2616b9b5740b",
+    "read_inventory": "cda27eb610c532a4605731d857c778813621a1036f84a86ce9d2d4ff28129f72",
+    "read_sdo.c": "e01714d5a71d56f0d6e46d2e64affa43e712accb66ee71735424d2cb0b806d84",
+    "read_inventory.c": "c40af322f6f1425bcb9535988cb00d28cc5d5224e9d99795111d277620446ebf",
+    "read_diag": "d7ca77ae92445c990de7c500c7704f2500fdc01261c2f514b37abff93db4d8d9"
+  },
+  "private_raw_log_hashes": {
+    "diag-trial.sh.stdout": "6b30197435e983b30569dc6206963640ad010a2cb6d8ddd2ec9fcabb10608d9d",
+    "sdo-trial.sh.stdout": "5883b7059b7d46c969d9904526ded447cfe931d9c4696c0cff05fab486a65378",
+    "inventory-trial.sh.stdout": "957ec2e63ba18ea24ad4c0c3283f0f5f16f1a5dc4cb8222b785c003a003bc5b0"
+  },
+  "limitations": [
+    "No firmware update.",
+    "EDS 1.17 replaces original unavailable 1.19; runtime compatibility not proven.",
+    "Intermediate wrong module selection was detected, corrected and never deployed.",
+    "Software DALI enable does not gate CAN manager startup SDO/PDO writes.",
+    "Unused PDO state in coupler and native startup acceptance remain unverified.",
+    "No SDO downloads, NMT commands, PDO output writes or DALI actuation in the real trials."
+  ]
+}
