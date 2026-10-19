@@ -1,5 +1,7 @@
 # Native Analog-/PWM-Integration, 19. Oktober 2026
 
+**Späterer begrenzter Versuch:** [Zwei synthetische PWM-UID-Antworten](pwm-synthetic-uid-2026-10-19.md) erreichen jeweils RUN und den noch nicht unterstützten Async-Open-Dispatch. Keine echte UID und keine vollständige PWM-Abnahme daraus abgeleitet.
+
 Dieser Block setzt die neue Priorität des Eigentümers um: ausgewählte virtuelle
 Module zuerst erfolgreich in CODESYS einbinden; reale Modulvergleiche folgen
 später. [ADR-0009](adr-0009.md) trennt diese Softwarekompatibilität von

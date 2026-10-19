@@ -1,0 +1,100 @@
+{
+  "schema": "virtualwago.synthetic-uid-observation.v1",
+  "date": "2026-10-19",
+  "base_commit": "78d73a2d37102d244ac1802d8b71083c2a9dcdd1",
+  "classification": "VERIFIZIERT only for the bounded observations; general UID irrelevance OFFEN",
+  "source_sha256": "56449d068edb6dced1145aeb5f92d55c5cf34c390c3bb24059d8a7da622a3f8f",
+  "experimental_source_sha256": "b453e842ee9032c3a8abdebd2a1b36aaf3da292ea41964b47c9b7d0c401221ee",
+  "patch_sha256": "b61adfa4dd96d79a2ffd4ad6b746a65868f44db36bfb3587fad419d2e3161cd2",
+  "application_sha256": "3369676a1165cddd6112ed9aa35422b395b01367de0ec41445a8cb3f6d773ac5",
+  "profile": "PWM677",
+  "device_description_version": "2.0.0.3",
+  "module_library_version": "1.0.0.3",
+  "input_bytes": 16,
+  "output_bytes": 16,
+  "model_permit": 0,
+  "effective_outputs": "all zero",
+  "tests": [
+    {
+      "uid_decimal": 750677,
+      "host_buffer_canary_and_invalid_slot": "PASS",
+      "arm_shared_build": "PASS",
+      "native_runtime_RUN": "PASS",
+      "reply_observed": "VIRTUAL_ADI_TRACE synthetic_get_uid profile=PWM677 outer=0 inner=0 a=1 b=750677",
+      "subsequent_call": "VIRTUAL_ADI_TRACE unknown_op profile=PWM677 outer=1 inner=not_written a=0 b=0 name=libpackbus_async_com_open",
+      "frame_acceptance": "BLOCKED",
+      "frame_samples": 0,
+      "frame_reason": "MODEL_FAULT",
+      "automatic_transaction_exit": 6,
+      "automatic_rollback": "PASS",
+      "recovery": "not needed",
+      "hashes": {
+        "trial.stdout": "fd59a8610de91fb7f8fad833e0f18aef4ba430840cfa477387be648619e924e5",
+        "collect.sh.stdout": "5f5c51d4e6eb97ac028425b38a5f3497feea0102abf945774412d80c20e21ad8",
+        "acceptance.json": "e084b44bf18feba115776155561d6a3d9fb4a50c5b419f7068bea40f92ab01ff",
+        "trial.sh": "a42cfe8e3a364aae1589beaffc8b18dd48767590afad52f346574174d8f0a5e7",
+        "stage-manifest.json": "b35d3b85d3f85a2b21c7ab26430a2ac4c37118fb80190d07b17a1963aef04efc"
+      },
+      "provider_sha256": "13f0406400434f466fe4334fbc0684b404b1fc7e271a7601037f92f266daa819"
+    },
+    {
+      "uid_decimal": 60500768,
+      "host_buffer_canary_and_invalid_slot": "PASS",
+      "arm_shared_build": "PASS",
+      "native_runtime_RUN": "PASS",
+      "reply_observed": "VIRTUAL_ADI_TRACE synthetic_get_uid profile=PWM677 outer=0 inner=0 a=1 b=60500768",
+      "subsequent_call": "VIRTUAL_ADI_TRACE unknown_op profile=PWM677 outer=1 inner=not_written a=0 b=0 name=libpackbus_async_com_open",
+      "frame_acceptance": "BLOCKED",
+      "frame_samples": 0,
+      "frame_reason": "MODEL_FAULT",
+      "automatic_transaction_exit": 4,
+      "automatic_rollback": "FAIL: original restart not reached",
+      "recovery": "PASS: fresh no-runtime check, guarded original restart to STOP, exact config restored",
+      "hashes": {
+        "trial.stdout": "6296a08b1d81437e7ce7216be0cf1508ec9e5238a4abf7626fb21ed98bf975c1",
+        "collect.sh.stdout": "1e690a1e3eccdb5105921764004f1cdf7b28793966b59dd765a044a02dcd986a",
+        "acceptance.json": "8ca10901388ecc686636e844df7265533f723950a69673f11b94e699d930fa5c",
+        "trial.sh": "0f9d89cecd16655b2ba40af864735f021d1528cebbc1f0c962ffa975b64aa146",
+        "stage-manifest.json": "2921c7e5899e012878b286b2dfc1843ba0d3870e7b7751f52f1952013ec92f7b"
+      },
+      "provider_sha256": "fec14fc7c942d17daa77d3d1207fe3aa2075902840de01ab73fde079211c5656"
+    }
+  ],
+  "limits": [
+    "The two values are synthetic decimal test inputs, not verified module identities.",
+    "Both values reach async open; this does not exclude masked/range/later checks.",
+    "No complete original module-FB diagnostic readout.",
+    "Historical inner=-1 baseline also differs in own UID fault-latch behavior.",
+    "Full-frame checker stops before first input vector; no PWM frame acceptance or hardware equivalence."
+  ],
+  "self_review": true,
+  "independent_static_review": "Separate agent static analysis; report explicitly classifies itself as Self-Review, not an independent code review",
+  "postflight": {
+    "status": "PASS",
+    "original_runtime": "STOP",
+    "original_files_hash_equal": 7,
+    "own_live_helpers": 0,
+    "private_dbus_cleanup": "PASS",
+    "CAN": "STOPPED",
+    "receipt_sha256": "a98663a0274fcf51e735a4a335a02f6ecc7d6900556223d1a841e5154a9e9a55",
+    "recovery_receipt_sha256": "80548fe086d21faf8637bd1d699b1187ba843d6a070b5fb82e51ec5407efebea"
+  },
+  "static_analysis": {
+    "status": "VERIFIZIERT within listed functions, not opaque module caller",
+    "report_sha256": "e61b4d0cb56571f5c05bd6facd3ac8bde5a6a9145fbd748812bf70873ed79434",
+    "libCmpKbusAsyncCom_sha256": "2564394a5925e6af923843edf8fa93be6a47bdf640d0b6567ed2c3d386e205a7",
+    "libpackbus_sha256": "3b7b7ca4fa14e5994552040a7b40b1cfbbf43e0649a4ad9277ece421fd4bc5d6",
+    "ELF_entries": {
+      "fugetunifiedid": "0x14a8",
+      "fuopenchannel": "0x0c8c",
+      "eAsyncCom_Open": "0x12f6c"
+    },
+    "result": "GET_UID wrapper translates status; open wrapper performs no input-value comparison; original open implementation never reads initial pointed-to word. Original open body NOT_RUN in synthetic trials.",
+    "REA_evidence": [
+      "ev_4f54ef9ff5aefb1514d926e536dc58d9f5864745f0c4a5e58be35908fef69a63",
+      "ev_a04f411c98eba4a365be52a5db3a275512ae757cbd864cd855653abc676a0ece",
+      "ev_9038b452fca68a6e40bc7e48c92ac13c4d4543b57e9ffb3d73d9f940e9034851"
+    ]
+  },
+  "buffer_test_source_sha256": "201e0146f54f4d1cdf105bd01f11bae309b4512f9aaa045324547fbe0c62f644"
+}
