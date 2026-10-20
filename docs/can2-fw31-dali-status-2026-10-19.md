@@ -1,5 +1,7 @@
 # CAN2, FW31 und reale DALI-Prozessdaten
 
+**Spätere Fortsetzung vom 20.10.2026:** Der [aktuelle Originalstack-Bericht](can-native-boundary-2026-10-20.md) korrigiert die PDO-Auswahl anhand realer Schreibantworten, beschreibt den implementierten vcan-Linkadapter und trennt erfolgreiche Startup-SDOs vom fehlgeschlagenen vollständigen Runtime-/DALI-Lauf. Die folgenden PASS-/NOT_RUN-Angaben bleiben an ihre jeweiligen älteren Varianten gebunden.
+
 Historischer Erststand: 19.10.2026. Fortsetzung: 20.10.2026 (siehe unten). Basis: `c446e2903c35c0253a0c315c8715d9f6ac1b8371`.
 Private Kundenprojekte, Zielbindung, Herstellerartefakte und Rohlogs bleiben
 außerhalb dieses öffentlichen Repositorys. Kein Firmwareupdate.
