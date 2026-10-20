@@ -1,0 +1,214 @@
+{
+  "status": "PARTIAL",
+  "date": "2026-10-20",
+  "base_revision": "d20d07a2a1d5fc78d5f8139bde21d9cfac1558b1",
+  "source_hashes": {
+    "tools/vcan_link_compat.c": "b46e4c0bc9a46598cad88ea6d9792daa8535d50df96a38c397acbff86ade43a8",
+    "tools/vcan_link_kind.h": "9f14e027875456b63c79b02a67faab25dd218138e5e4f612ecf2b4d6363ef4fd",
+    "tools/vcan_link_compat_probe.c": "3466699c405102e71ddb6469cdc6b38e70f5264e194c2b699c03b49c12b99d4c",
+    "tests/test_vcan_link_compat.py": "0bae03084725810aaa32bbab231c4c38911078b00598ce72bdc88e199d5e018e"
+  },
+  "native_project": {
+    "status": "PASS",
+    "build_errors": 0,
+    "build_warnings": 0,
+    "reopen": "PASS",
+    "device_description": "6.4.6.11",
+    "eds": "1.17",
+    "startup_sdos": 96,
+    "unique_startup_targets": 83,
+    "module_id": 187,
+    "input_bytes": 24,
+    "output_bytes": 24,
+    "pdo_indices_rx": [
+      "1404",
+      "1405",
+      "1406"
+    ],
+    "pdo_indices_tx": [
+      "1804",
+      "1805",
+      "1806"
+    ],
+    "hashes": {
+      "candidate.project": "b8e43f4387f1128c53217282fb85969d7456f16cc3d9e75e4425fddfcba59277",
+      "Application.app": "751cac89c505c35f1ad889a983eb49546a0e47e7905c1b2805b4eb37442d4422",
+      "Application.crc": "558bc62e708ebead1575b671a468ded367773271cc733d8795efe0152e9b4412",
+      "mapping-0.csv": "7135bc9f70f2ebdc5c82d8e420281f1067d8fa110009f692a8711d1a6574b3c6",
+      "full.export": "b849226dff28f4de9d7e1c5e0a17ae37d472541e704b9698fad6e0c2ebcfd78e",
+      "result.json": "c227c604c5a5c42879d96c21d4a07896ab2b73fb22455c301051d168dcc21c0f"
+    }
+  },
+  "vcan_m": {
+    "runtime": "PASS",
+    "link_probe_down": "PASS",
+    "link_probe_up": "PASS",
+    "frames": 275,
+    "by_id": {
+      "080": 219,
+      "77F": 28,
+      "605": 18,
+      "000": 10
+    },
+    "nmt_payloads": [
+      "8005"
+    ],
+    "iec_records": 5,
+    "cycles": [
+      20,
+      40,
+      60,
+      80,
+      100
+    ],
+    "virtual_node": "NOT_RUN",
+    "dali_endpoint": "NOT_RUN",
+    "no_physical_can": true,
+    "rollback": "PASS"
+  },
+  "mapping_same_value_probe": {
+    "status": "FAIL",
+    "object": "1602:05",
+    "abort": "06020000",
+    "completed_downloads": 0
+  },
+  "rollback_exercise_v4": {
+    "status": "FAIL",
+    "object": "1014:00",
+    "abort": "08000022",
+    "completed_downloads": 10,
+    "recovered_by": "v5"
+  },
+  "rollback_recovery_v5": {
+    "status": "PASS",
+    "verified_objects": 83,
+    "downloads": 6,
+    "nmt_state": 127
+  },
+  "physical_b": {
+    "bounded_runtime_observation": "FAIL",
+    "runtime_run_seen": true,
+    "sdo_requests": 98,
+    "sdo_replies": 98,
+    "sdo_aborts": 0,
+    "pdo_frames": 0,
+    "nmt_payloads": [
+      "8005"
+    ],
+    "iec_records": 4,
+    "dali_endpoint": "NOT_RUN",
+    "rollback": "PASS",
+    "verified_objects": 83,
+    "rollback_downloads": 33,
+    "original_stop": "PASS"
+  },
+  "local_tests": {
+    "status": "PASS",
+    "count": 287,
+    "skipped": 0,
+    "private_header_qualified": true,
+    "log_sha256": "a9c0c9b27c3b649703b40cdd6760e37143078358fc034e8ff9044e6603791a74"
+  },
+  "review": {
+    "self_review": true,
+    "offline_worker_review": true,
+    "worker_live_actions": false
+  },
+  "limitations": [
+    "No DALI endpoint response proven.",
+    "No virtual CANopen node implemented by link shim.",
+    "No bus arbitration/error-counter model.",
+    "No address assignment, dimming, scenes or load tests."
+  ],
+  "physical_c": {
+    "bounded_runtime_observation": "FAIL",
+    "trace": "SIGSEGV twice at 0x1c; SIGABRT; corrupted double-linked list",
+    "sdo_requests": 98,
+    "sdo_replies": 98,
+    "sdo_aborts": 0,
+    "frames_by_id": {
+      "77F": 27,
+      "080": 195,
+      "000": 1,
+      "605": 98,
+      "585": 98,
+      "0FF": 1,
+      "705": 44
+    },
+    "iec_records": 3,
+    "pdo_frames": 0,
+    "dali_endpoint": "NOT_RUN",
+    "rollback": "PASS",
+    "verified_objects": 83,
+    "original_stop": "PASS",
+    "cause": "OPEN; trace overhead and isolated helper-service omissions are separate influences"
+  },
+  "private_raw_log_hashes": {
+    "trial-vcan-m.sh.stdout": "8c854beef11d7330f27c6c41529ac21c14e71a396d6f4685f886a79b017acdac",
+    "collect-vcan-m.sh.stdout": "19677f935c27525b395385989b627b215206e7086b7e8b28c9119e47fff5c99b",
+    "probe-mapping-write.sh.stdout": "cd4899b15b1d780bf5430accc34209992a7586a3e06e3e0d49ff12fc87bfb7a6",
+    "probe-mapping-write.sh.stderr": "823f6df61872e7489c5fadc1b3ad084ac7a1106bd10be267df4f328c07c7fd07",
+    "recover-rollback-v5.sh.stdout": "9027bffa357f5d1ea7ba3853ffaaf4c2cdfe3a3628bda7d3e79d16077bcf8ce4",
+    "trial-physical-b.sh.stdout": "188e997ab158a7f8d5e7bf4185652d2158d9997b1be6d70c217af8c48431ce41",
+    "collect-physical-b.sh.stdout": "ec6d806ced985a8600499da2b9a053867e4f0d556a5f59b84df26993e7ff705e",
+    "trial-physical-c.sh.stdout": "d57e5065425d0d7ea7e875a21cd287780c294469341ca0d5f01f9da38446901d",
+    "collect-physical-c.sh.stdout": "a8685ba5937a35a1debec10afddda2c30b302a03d46f0c177d8f9deb4ec9e3bf",
+    "trial-physical-d.sh.stdout": "b504aef164187a7bb660d6cc68e3c3ab1240bbbea3429f3f31808adf08a2ca9e",
+    "collect-physical-d.sh.stdout": "8d594b760a46a6258af26403d8ab251cc410e768dcb995635f6bfa3c7b8e2351",
+    "final-state-read.sh.stdout": "4b476fcd7d7180bad09a6c9a6295958506af50019c128e9edce575bdd3f87df9"
+  },
+  "physical_d": {
+    "variant": "Same native CAN configuration, xEnableMaster=FALSE; all DALI FB calls bypassed",
+    "build": "PASS",
+    "process_survived_16_second_observation": "PASS",
+    "run_observed_at_window_start": true,
+    "run_at_window_end": "NOT_RUN",
+    "transport": "PASS",
+    "frames_by_id": {
+      "77F": 42,
+      "080": 360,
+      "000": 2,
+      "605": 98,
+      "585": 98,
+      "705": 87,
+      "405": 303,
+      "385": 303,
+      "505": 303,
+      "264": 303,
+      "485": 303,
+      "1E4": 303
+    },
+    "nmt_payloads": [
+      "8005",
+      "0105"
+    ],
+    "sdo_requests": 98,
+    "sdo_replies": 98,
+    "sdo_aborts": 0,
+    "pdo_frames_per_stream": 303,
+    "iec_records": 4,
+    "last_iec_cycle": 80,
+    "iec_input_records": "all zero, before PDO startup",
+    "cyclic_iec_acceptance": "FAIL",
+    "dali_endpoint": "NOT_RUN",
+    "rollback": "PASS",
+    "verified_objects": 83,
+    "rollback_downloads": 33,
+    "original_stop": "PASS",
+    "hashes": {
+      "candidate.project": "d2b2a4488b55b4fda6d4e914387ad7617067ad04e74deee23984684a0b7afc2c",
+      "Application.app": "2c5e3e753f45f0b341343d903ade3ff92347a18776c7cd9d181047a7eac2286e",
+      "Application.crc": "f2d82c796e0b661f852044eb5dfd94204c1b2b572fe00512fd37bbf361c3fad7",
+      "full.export": "3b939a1088937dc63b08fb377e553fd7e224ded56f36c6b72ada6d2d23a5642d",
+      "result.json": "c227c604c5a5c42879d96c21d4a07896ab2b73fb22455c301051d168dcc21c0f"
+    }
+  },
+  "final_state": {
+    "status": "PASS",
+    "original_runtime": "STOP",
+    "can_link": "DOWN",
+    "original_hashes_unchanged": true,
+    "own_trial_processes_remaining": false,
+    "vm_left_running": true
+  }
+}
