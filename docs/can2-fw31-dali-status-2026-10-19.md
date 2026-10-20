@@ -1,6 +1,6 @@
 # CAN2, FW31 und reale DALI-Prozessdaten
 
-Stand: 19.10.2026. Basis: `c446e2903c35c0253a0c315c8715d9f6ac1b8371`.
+Historischer Erststand: 19.10.2026. Fortsetzung: 20.10.2026 (siehe unten). Basis: `c446e2903c35c0253a0c315c8715d9f6ac1b8371`.
 Private Kundenprojekte, Zielbindung, Herstellerartefakte und Rohlogs bleiben
 außerhalb dieses öffentlichen Repositorys. Kein Firmwareupdate.
 
@@ -138,3 +138,63 @@ er führte keine Geräte-, VM- oder unabhängigen Laufzeittests aus.
 - [WAGO WagoAppDALI-Handbuch, Version 1.3.0.36, Herstellertext im Distributor-Mirror](https://assets.heizung-billiger.de/documents/wago_f2c9c0643d7e890e.pdf):
   dokumentierter Schreibeffekt von `xWriteStandardSensorConfig`; ältere
   Handbuchversion nicht als vollständiger Binärvertrag von 1.3.1.15 behandeln.
+
+
+## Fortsetzung am 20.10.2026
+
+Der Eigentümer gab die VM wieder frei und bat, ein gegebenenfalls noch offenes
+Projekt lokal zu sichern. Die frische Prüfung fand keinen CODESYS-Prozess;
+ein solches Projekt musste deshalb nicht gespeichert werden. Die VM war
+bereits aktiv und wurde aktiv belassen; eigene IDE-Prozesse sind geschlossen.
+
+**VERIFIZIERT / PASS:** Die am Vortag gelieferte Projektdatei wurde mit
+`NoUpdates` erneut geöffnet. Dateihash und Mapping-CSV blieben bytegleich.
+Der native Export ist nach Sortierung ausschließlich der Dictionary-Einträge
+semantisch identisch. Der frühere Reopen-Blocker ist damit aufgehoben.
+
+Eine weitere private Kopie schaltet die übernommene Manageroption
+`NMTStartAll` (belegte Parameter-ID 263) von TRUE auf FALSE. Damit wird die
+projektierte globale Startoption entfernt. Das ist ein Konfigurationsnachweis,
+noch kein beobachteter NMT-Trace. Topologie, sechs PDOs und 24+24-Byte-Zuordnung
+bleiben erhalten. Rebuild, Codegenerierung und Bootdateierzeugung: jeweils
+**PASS, 0 Fehler / 0 Warnungen**. Eigenständiges erneutes Öffnen dieser neuen
+Kopie ebenfalls **PASS**, Datei unverändert, Export semantisch gleich und
+Mapping-CSV bytegleich.
+
+Neue Projekt-SHA256:
+`d3bb3b32f717694618562e63cb6c9e462eae21e2427fffd3989cc7a3c50e048a`.
+Die erzeugten APP-/CRC-Dateien wurden nicht auf die Steuerung geladen.
+[Neue Evidence mit Artefakthashes](../evidence/can2-fw31-dali-status-2026-10-20.json).
+
+**VERIFIZIERT / PASS:** 49 gezielte SDO-Uploads lasen die Koppleridentität,
+die ersten fünf RX-/TX-PDO-Kommunikations- und Mappingobjekte sowie das
+Fehlerregister. Alle zehn gelesenen PDO-COB-IDs haben ihr Deaktivierungsbit
+gesetzt. Bei PDO Nummer 5 sind jeweils acht Bytes ab `3900:01` beziehungsweise
+`3800:01` eingetragen. Die ersten vier haben Mappinganzahl null. Dies ist
+kein vollständiges Inventar der jeweils 32 möglichen PDOs. Keine
+SDO-Downloads, NMT-Befehle oder Ausgangs-PDOs wurden gesendet.
+Fehlerregister weiterhin `0x81`: fehlerfreier Betrieb bleibt **OFFEN**.
+
+**VERIFIZIERT / PASS, enger Scope:** Der vorhandene Kernel unterstützt vcan.
+Ein virtuelles Interface namens `can0` ließ sich in einem frischen, getrennten
+Netzwerk-Namensraum erzeugen und aktivieren. Dort existierte kein physisches
+CAN-Interface und keine Bridge. Ein Bitraten-Setzversuch mit 125 kbit/s lieferte
+`Operation not supported` (**FAIL** für diesen Aufruf). Das beweist weder
+Socket-Datenverkehr noch die Kompatibilität der originalen CAN-Bibliothek;
+ein originaler Treiber-/Runtimeversuch auf vcan wurde **NOT_RUN** gelassen.
+
+**OFFEN / NOT_RUN:** Der vollständige reale CODESYS-Anlauf wartet auf die
+Klärung, ob DALI-Geräte angeschlossen oder die DALI-Leitung abgeklemmt ist.
+Die reine VM-Freigabe belegt diesen Anschlusszustand nicht. Die zusätzliche
+Offlineprüfung des vorhandenen Herstellertexts belegt keine garantiert
+wirkungslose All-zero-Ausgabe im Full-Modus und keinen vollständigen
+nebenwirkungsfreien Master-Initialisierungspfad. Daher kein Start der
+Bootdatei als improvisierter Leuchtentest. Der vorhandene DALI-Master-Enable
+ist weiterhin geschlossen, aber kein technisches Gate für CAN-Manager-PDOs.
+
+Die abschließende frische Prüfung bestätigt denselben ursprünglichen
+Runtimeprozess in STOP, unveränderte APP-/CRC-/Config-Hashes und physisches
+CAN DOWN mit derselben Bitrate wie vor diesem Block. Der private Namespace
+wurde beim Prozessende aufgelöst. Keine Herstellerdateien oder privaten
+Projekte werden veröffentlicht. Eigene Prüfung: **Self-Review**; der erneute
+Luna-Quellencheck war ausschließlich offline.

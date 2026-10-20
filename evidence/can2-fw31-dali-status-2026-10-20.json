@@ -1,0 +1,388 @@
+{
+  "date": "2026-10-20",
+  "source_revision": "3896b86ceb295ee04f320b466c7866e6ef3d3f7a",
+  "review": "Self-Review",
+  "configuration_change": {
+    "parameter_name": "NMTStartAll",
+    "parameter_id": 263,
+    "before": true,
+    "after": false,
+    "basis": "Exported native WAGO_CANopen_Manager descriptor; no unverified parameter ID",
+    "other_configuration": "FW31 6.4.6.11; EDS 1.17; node 5, module 187 / 753-647; 24+24 byte mapping and six PDOs retained"
+  },
+  "private_artifact_hashes": {
+    "candidate.project": "d3bb3b32f717694618562e63cb6c9e462eae21e2427fffd3989cc7a3c50e048a",
+    "Application.app": "644b87d30f79a9361836b7a49567b32b3f51bdeb58c49fdc3fcd2166464f9d03",
+    "Application.crc": "abdc821d93bb8f6818d459bd1a796961f552977eef37e7a4ba0feedd3edef19d",
+    "full.export": "24f166419437849acc41257dc3ccfe75bb4603b05e3a7abbc5c55fc76c61af28",
+    "mapping-0.csv": "7135bc9f70f2ebdc5c82d8e420281f1067d8fa110009f692a8711d1a6574b3c6"
+  },
+  "tests": {
+    "previous_project_reopen": {
+      "result": "PASS",
+      "project_sha256": "50a3a58ac196cef1be77dff5dac0ea3e0f606b337651c27bb7b79db0d01343c1"
+    },
+    "updated_project_build_codegen_boot": {
+      "result": "PASS",
+      "errors": 0,
+      "warnings": 0
+    },
+    "updated_project_reopen": {
+      "result": "PASS",
+      "scope": "Fresh unchanged native project reopen, semantically identical export after sorting dictionaries, byte-identical mapping CSV; NMTStartAll FALSE"
+    },
+    "real_sdo_pdo_inventory": {
+      "result": "PASS",
+      "upload_count": 49,
+      "scope": "Identity, first five receive and transmit PDOs only, and error register; NOT complete inventory of all 32 PDOs per direction"
+    },
+    "coupler_zero_error_register": {
+      "result": "FAIL",
+      "last": "0x81",
+      "cause": "OFFEN"
+    },
+    "isolated_vcan_creation": {
+      "result": "PASS",
+      "scope": "Create/up virtual can0 in fresh network namespace; no bridge or physical interface passed through"
+    },
+    "vcan_bitrate_setting": {
+      "result": "FAIL",
+      "observed": "RTNETLINK Operation not supported",
+      "scope": "Attempt to set 125000 bit/s on vcan; not an original driver execution test"
+    },
+    "native_runtime_can_dali": {
+      "result": "NOT_RUN",
+      "reason": "DALI connection/isolation state unanswered; all-zero Full-mode output not proven inert; original driver compatibility with vcan also unverified"
+    },
+    "dali_lamp_status_addressing_actuation": {
+      "result": "NOT_RUN"
+    },
+    "reference_preservation": {
+      "result": "PASS",
+      "scope": "Original PID/start in STOP and APP/CRC/config hashes unchanged; physical CAN DOWN, bitrate unchanged"
+    },
+    "open_user_project_preservation": {
+      "result": "NOT_RUN",
+      "reason": "No CODESYS process/open project found; nothing needed saving"
+    },
+    "vm_cleanup": {
+      "result": "PASS",
+      "scope": "Own IDE jobs closed; VM already running initially and left running"
+    }
+  },
+  "real_sdo_uploads": [
+    {
+      "index": "1018",
+      "subindex": 1,
+      "length": 4,
+      "data_hex": "21000000"
+    },
+    {
+      "index": "1018",
+      "subindex": 2,
+      "length": 4,
+      "data_hex": "51010000"
+    },
+    {
+      "index": "1400",
+      "subindex": 1,
+      "length": 4,
+      "data_hex": "05020080"
+    },
+    {
+      "index": "1400",
+      "subindex": 2,
+      "length": 1,
+      "data_hex": "ff"
+    },
+    {
+      "index": "1600",
+      "subindex": 0,
+      "length": 1,
+      "data_hex": "00"
+    },
+    {
+      "index": "1401",
+      "subindex": 1,
+      "length": 4,
+      "data_hex": "05030080"
+    },
+    {
+      "index": "1401",
+      "subindex": 2,
+      "length": 1,
+      "data_hex": "ff"
+    },
+    {
+      "index": "1601",
+      "subindex": 0,
+      "length": 1,
+      "data_hex": "00"
+    },
+    {
+      "index": "1402",
+      "subindex": 1,
+      "length": 4,
+      "data_hex": "05040080"
+    },
+    {
+      "index": "1402",
+      "subindex": 2,
+      "length": 1,
+      "data_hex": "ff"
+    },
+    {
+      "index": "1602",
+      "subindex": 0,
+      "length": 1,
+      "data_hex": "00"
+    },
+    {
+      "index": "1403",
+      "subindex": 1,
+      "length": 4,
+      "data_hex": "05050080"
+    },
+    {
+      "index": "1403",
+      "subindex": 2,
+      "length": 1,
+      "data_hex": "ff"
+    },
+    {
+      "index": "1603",
+      "subindex": 0,
+      "length": 1,
+      "data_hex": "00"
+    },
+    {
+      "index": "1404",
+      "subindex": 1,
+      "length": 4,
+      "data_hex": "00000080"
+    },
+    {
+      "index": "1404",
+      "subindex": 2,
+      "length": 1,
+      "data_hex": "ff"
+    },
+    {
+      "index": "1604",
+      "subindex": 0,
+      "length": 1,
+      "data_hex": "08"
+    },
+    {
+      "index": "1604",
+      "subindex": 1,
+      "length": 4,
+      "data_hex": "08010039"
+    },
+    {
+      "index": "1604",
+      "subindex": 2,
+      "length": 4,
+      "data_hex": "08020039"
+    },
+    {
+      "index": "1604",
+      "subindex": 3,
+      "length": 4,
+      "data_hex": "08030039"
+    },
+    {
+      "index": "1604",
+      "subindex": 4,
+      "length": 4,
+      "data_hex": "08040039"
+    },
+    {
+      "index": "1604",
+      "subindex": 5,
+      "length": 4,
+      "data_hex": "08050039"
+    },
+    {
+      "index": "1604",
+      "subindex": 6,
+      "length": 4,
+      "data_hex": "08060039"
+    },
+    {
+      "index": "1604",
+      "subindex": 7,
+      "length": 4,
+      "data_hex": "08070039"
+    },
+    {
+      "index": "1604",
+      "subindex": 8,
+      "length": 4,
+      "data_hex": "08080039"
+    },
+    {
+      "index": "1800",
+      "subindex": 1,
+      "length": 4,
+      "data_hex": "85010080"
+    },
+    {
+      "index": "1800",
+      "subindex": 2,
+      "length": 1,
+      "data_hex": "ff"
+    },
+    {
+      "index": "1a00",
+      "subindex": 0,
+      "length": 1,
+      "data_hex": "00"
+    },
+    {
+      "index": "1801",
+      "subindex": 1,
+      "length": 4,
+      "data_hex": "85020080"
+    },
+    {
+      "index": "1801",
+      "subindex": 2,
+      "length": 1,
+      "data_hex": "ff"
+    },
+    {
+      "index": "1a01",
+      "subindex": 0,
+      "length": 1,
+      "data_hex": "00"
+    },
+    {
+      "index": "1802",
+      "subindex": 1,
+      "length": 4,
+      "data_hex": "85030080"
+    },
+    {
+      "index": "1802",
+      "subindex": 2,
+      "length": 1,
+      "data_hex": "ff"
+    },
+    {
+      "index": "1a02",
+      "subindex": 0,
+      "length": 1,
+      "data_hex": "00"
+    },
+    {
+      "index": "1803",
+      "subindex": 1,
+      "length": 4,
+      "data_hex": "85040080"
+    },
+    {
+      "index": "1803",
+      "subindex": 2,
+      "length": 1,
+      "data_hex": "ff"
+    },
+    {
+      "index": "1a03",
+      "subindex": 0,
+      "length": 1,
+      "data_hex": "00"
+    },
+    {
+      "index": "1804",
+      "subindex": 1,
+      "length": 4,
+      "data_hex": "00000080"
+    },
+    {
+      "index": "1804",
+      "subindex": 2,
+      "length": 1,
+      "data_hex": "ff"
+    },
+    {
+      "index": "1a04",
+      "subindex": 0,
+      "length": 1,
+      "data_hex": "08"
+    },
+    {
+      "index": "1a04",
+      "subindex": 1,
+      "length": 4,
+      "data_hex": "08010038"
+    },
+    {
+      "index": "1a04",
+      "subindex": 2,
+      "length": 4,
+      "data_hex": "08020038"
+    },
+    {
+      "index": "1a04",
+      "subindex": 3,
+      "length": 4,
+      "data_hex": "08030038"
+    },
+    {
+      "index": "1a04",
+      "subindex": 4,
+      "length": 4,
+      "data_hex": "08040038"
+    },
+    {
+      "index": "1a04",
+      "subindex": 5,
+      "length": 4,
+      "data_hex": "08050038"
+    },
+    {
+      "index": "1a04",
+      "subindex": 6,
+      "length": 4,
+      "data_hex": "08060038"
+    },
+    {
+      "index": "1a04",
+      "subindex": 7,
+      "length": 4,
+      "data_hex": "08070038"
+    },
+    {
+      "index": "1a04",
+      "subindex": 8,
+      "length": 4,
+      "data_hex": "08080038"
+    },
+    {
+      "index": "1001",
+      "subindex": 0,
+      "length": 1,
+      "data_hex": "81"
+    }
+  ],
+  "private_probe_hashes": {
+    "read_pdos.c": "2012310ee82362aeaed68ced5d9212abfa8459094477e49a121e7da47aca8997",
+    "read_pdos": "2be40ea3df19f81fd637c560517079fad396a3f5721fe265d87d9ba8c72bf7cf",
+    "read-pdos-trial.sh.stdout": "a8d71be7156c93209ab2530d521818e206ccd1201333ad843c37fd42b584fcfb",
+    "vcan-probe.sh": "6a169c937337f6b59c80feb279683c9960ba50294b0bd7fcbe302b88cd51aaf1",
+    "vcan-probe.sh.stdout": "e91822babefabfcd631f1bc3fb55fa38f146c28fa929eff4ea8db2e01b1cf8b9",
+    "postflight.sh.stdout": "a82fcb8e88bb45a4e37791293916cc3287ed2787ca0df1a0554c09d8b6a02410"
+  },
+  "pending": [
+    "Owner answer about DALI line and connected devices",
+    "Bounded original-runtime CAN/DALI trial; no blanket success inferred from boot image",
+    "Full-mode mailbox contract and real DALI response semantics"
+  ],
+  "not_performed": [
+    "Application download/start",
+    "Firmware/kernel/driver replacement",
+    "SDO downloads or NMT/PDO output messages in hardware trial",
+    "Physical actuation or DALI addressing"
+  ]
+}
