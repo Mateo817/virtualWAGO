@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "id": "wago.750-550.standard",
+  "version": "0.1.0",
+  "article": "750-550",
+  "title": "2 analoge Ausgänge",
+  "family": "ao",
+  "description": "Normbereichs-Signalmodell.",
+  "evidence": "docs/module-extension-2026-10-19.md",
+  "assumptions": "Eigenes Offline-Signalmodell; keine native ADI-Projektion, Registerkommunikation oder elektrische Hardwareabnahme. Normbereich und Quantisierung gemäß bestehendem Pythonmodell; inverse Ausgangsquantisierung ist eine eigene Modellannahme.",
+  "channels": [
+    {
+      "id": "ch1",
+      "label": "Kanal 1",
+      "direction": "output",
+      "kind": "analog",
+      "unit": "V",
+      "min": 0,
+      "max": 10,
+      "initial": 0,
+      "encoding": {
+        "codec": "ao550_standard"
+      }
+    },
+    {
+      "id": "ch2",
+      "label": "Kanal 2",
+      "direction": "output",
+      "kind": "analog",
+      "unit": "V",
+      "min": 0,
+      "max": 10,
+      "initial": 0,
+      "encoding": {
+        "codec": "ao550_standard"
+      }
+    }
+  ]
+}

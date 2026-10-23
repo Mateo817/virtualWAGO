@@ -1,0 +1,123 @@
+{
+  "schema": 1,
+  "date": "2026-10-23",
+  "scope": "OWN_OFFLINE_RUST_SIGNAL_WORKBENCH_NOT_NATIVE_ADI_OR_HARDWARE",
+  "base_commit": "d25d853a0f4c93d90869bd253cd1faad32841835",
+  "versions": {
+    "rust": "1.99.0",
+    "node": "24.21.0",
+    "npm": "11.19.0",
+    "rhai": "1.27.0",
+    "react": "19.3.1",
+    "playwright": "1.63.0",
+    "bubblewrap_for_existing_python_tests": "0.12.0"
+  },
+  "checks": {
+    "rust_contracts": {
+      "status": "PASS",
+      "passed": 18,
+      "scope": "11 simulation and 7 HTTP/storage cases; no ignored tests"
+    },
+    "rust_fmt_clippy_build": {
+      "status": "PASS"
+    },
+    "browser": {
+      "status": "PASS",
+      "passed": 7,
+      "scope": "actual built UI and Rust service: output gate and feedback, module arrangement, script rejection and limits, JSON package import without rebuild, desktop/mobile and no external page requests, script/project files, worker time/pause/tempo"
+    },
+    "existing_python_suite": {
+      "status": "PASS",
+      "discovered": 287,
+      "passed": 284,
+      "not_run": 3,
+      "reason": "authorized private ADI headers absent; explicit permitted skips"
+    },
+    "xe164_snapshot_integrity": {
+      "status": "PASS",
+      "scope": "public snapshot integrity only"
+    },
+    "private_data_marker_scan": {
+      "status": "PASS",
+      "scope": "selected added public source; no manufacturer artifacts or private gateway code"
+    }
+  },
+  "review": {
+    "kind": "Self-Review",
+    "independent_review": "NOT_RUN",
+    "findings_addressed": [
+      "mobile grid overflow",
+      "readable operational text",
+      "process-instance guard across restart",
+      "exclusive input writers and all-or-nothing reaction step",
+      "validate and compile once before configuration persistence",
+      "activate renamed configuration even if subsequent directory sync is unconfirmed"
+    ]
+  },
+  "preceding_attempts": [
+    {
+      "status": "FAIL",
+      "scope": "initial Rust dependency selection",
+      "resolution": "align Rhai and codegen via pinned Rhai 1.27.0; subsequent native checks PASS"
+    },
+    {
+      "status": "FAIL",
+      "scope": "first mobile browser check",
+      "resolution": "bound grid/catalog minimum width; subsequent mobile check PASS"
+    },
+    {
+      "status": "FAIL",
+      "scope": "first existing Python suite environment",
+      "resolution": "nonexistent bwrap path replaced with an extracted project-local Debian package; complete rerun PASS with 3 explicit private-header NOT_RUN cases"
+    },
+    {
+      "status": "FAIL",
+      "scope": "new constant-signal chart assertion",
+      "resolution": "a painted horizontal SVG stroke has zero-height geometry; assertion now checks accumulated time samples instead of element-box visibility"
+    }
+  ],
+  "not_run": [
+    "WAGO/CODESYS/VM operations: not authorized in this task",
+    "native ADI/runtime integration of Rust workbench",
+    "hardware or electrical comparisons",
+    "LAN/multi-user hosting",
+    "WebAssembly plugin execution"
+  ],
+  "source_sha256": {
+    ".github/workflows/workbench.yml": "624b125b2deb560929d9b419a343794429029bfa6efa62992d8af7f8410c19de",
+    "workbench/Cargo.lock": "6add11239fd392c640fee970e943af4d8fdafd9296b5bb044217db0195ddeef6",
+    "workbench/Cargo.toml": "58d27f0b183392389ca97c53d9d3c5c1bfe7f1877fb3570e6e47a3438c6b1745",
+    "workbench/README.md": "ccaa9dcddecda5be49df25c16f54c4cb74b3814ecc8cf8e2c352769963615c0a",
+    "workbench/module-packs/750-1405.json": "8099906461baf959caeff4a47571807a55677d71edb88f3deb98debad3bf5d6f",
+    "workbench/module-packs/750-1504.json": "6c418c9f02af63edd8602e4ba08de268b0106cf90e5517082b49c9caeef56f20",
+    "workbench/module-packs/750-430.json": "63c43ca2d4d9d39ca8731b20d4f10741c5b2c777c5a58d2534badf67b51bbaf4",
+    "workbench/module-packs/750-466.json": "f2a2e63dd444ed2f2d6fb0619c8716870501c5d04ea01d32c6d347ec2b9ac3a7",
+    "workbench/module-packs/750-530.json": "a8ac32927a57a92e9a37f53cf2d31db2b69c4d577be89d43789539d08aa9b18b",
+    "workbench/module-packs/750-550.json": "6fef3d4d8c53718ce6a9a4cc55a5fe32be9a281b38000bde3cf96f9a4d02027a",
+    "workbench/module-packs/750-600.json": "c85ba4e5ed41ef15058334624ad9f3aa51fb7c07d3d7a807c8c46dce9db1ba08",
+    "workbench/rust-toolchain.toml": "2ad6f15416572b4836585087f1d4abc53b8fa2dbd616f8dacfaa587ed6714228",
+    "workbench/src/api.rs": "c1746980d879b792a6b744fa602316ff6d3604dbfd477ef5241d58a6b1469a10",
+    "workbench/src/engine.rs": "2fc1ae150285bd58ea833b9658736a1fa32902879e7c400ae34a38f36b3bb837",
+    "workbench/src/lib.rs": "a4eefca54db54ef927b549b70d94586ac34e512915c221e78966dd2fbc15daa2",
+    "workbench/src/main.rs": "af0759c2c001a76f70f1f6ad1b8abfc3ae27782b228847016a59479c45680575",
+    "workbench/src/model.rs": "e1edb4ce2fc949869a5e1d7c54b6930057eec063ed1964ec1a57fcf5c7f1ed2d",
+    "workbench/tests/fixtures/python-codecs.json": "f140d934a2965c0e7ef466a667df18629321c0a903baeea3b9dd59b0d8bfdf9b",
+    "workbench/tests/http.rs": "066cce545fe08906fc8d574891d990e711ec50c05aae79fa485af7b281e4d77d",
+    "workbench/tests/simulation.rs": "401b55dac72472a115fa602bb44c3c4329c7290d10563311cfc0fe13e65da0b3",
+    "workbench/web/index.html": "885db81faecae81d3670d1621ad753da4a3bab6e9740ff2f293b1ced6897ba24",
+    "workbench/web/package-lock.json": "b44fe5ef53576f0092f797762056065c9c70902c241f006f712cd3ddc6c12fe0",
+    "workbench/web/package.json": "802c93399918fd4436901a2bd134513ee4120b308f499bc1b6a37cbca73d9468",
+    "workbench/web/playwright.config.ts": "d0a0c8b73cab3bad0b0ad5fd553d2611ba0cb610f6774724f4eb7b588c6ddd48",
+    "workbench/web/src/SignalViews.tsx": "d81ef3f7eb0fb843e6c470a0cff8d85a5ecc2e479e3c7f0807b3276f5271353c",
+    "workbench/web/src/main.tsx": "a03e752569fdbe97c7f4e867aede15df91f283c952f4526c86ab06bd5691229f",
+    "workbench/web/src/styles.css": "c954d82056b25bd02598e7a26fa0b159dd5720a39965e8ad11b972817f11b04d",
+    "workbench/web/src/types.ts": "41b05390ab66fe5c4dbdf439479b6b26d7eb6d4cb7b973269fa31bd6bfa8afd1",
+    "workbench/web/src/vite-env.d.ts": "65996936fbb042915f7b74a200fcdde7e410f32a669b1ab9597cfaa4b0faddb5",
+    "workbench/web/tests/server.mjs": "1f61937a435f0476a5efcadb3ca7102f670f2b42150cefcdd31aab16ae99ab20",
+    "workbench/web/tests/workbench.spec.ts": "66ee88936a18a1b018af6a472c97124096e0e243256339a7795d261275c4fc2d",
+    "workbench/web/tsconfig.json": "1ca3582938e9aeb807f3350a3e0046cef280328698b899be027a11d4db5d6fd5",
+    "workbench/web/vite.config.ts": "de02c177559ee6e8e38ff8ab35ebf47a5e24dfa4365e6b1ce1898a989c619c70"
+  },
+  "historical_implementation_commit": "14a307320dc5a1b419974b3a05bfcb7fb21fe313",
+  "superseded_by": "evidence/offline-workbench-enhancements-2026-10-23.json"
+}

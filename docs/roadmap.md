@@ -1,5 +1,13 @@
 # Roadmap und objektive Abnahme
 
+**Neue Offline-Priorität, 23.10.2026:** [Rust-/Web-Werkstatt](../workbench/README.md)
+gemäß [ADR-0013](adr-0013.md): grafische Modulanordnung, Live-I/O und ausschließlich
+reaktive Ausgangsskripte. Nachladbare, versionierte Signalpakete und stabile
+Instanzreferenzen bilden die Grundlage weiterer Modellarbeit. [ADR-0014](adr-0014.md)
+ergänzt Dunkelmodus, Zustandsmodelle, isolierte Szenarien und Beobachtungsaufnahmen. Diese Arbeit
+erteilt keine aktuelle WAGO-/CODESYS-/VM-Freigabe. Native Runtime-, elektrische
+und Diagnoseabnahmen bleiben davon getrennt.
+
 **PWM-Erkundung, 19.10.2026:** [Begrenzter Async-Kanal](pwm-async-exploration-2026-10-19.md): Originalruntime RUN und sieben wechselnde angeforderte PWM-Ausgangsframes **PASS** mit explizit synthetischer UID/Registerantwort, Modellpermit 0. Original-STOP und sieben unveränderte Dateien nach Rücknahme **PASS**. 286 lokale Tests ohne Skip. Original-Moduldiagnose, PWM-Skalierung und Hardwareabgleich bleiben **OFFEN / NOT_RUN**. Die folgenden Meldungen dokumentieren frühere Stände.
 
 **Native Integration, 19.10.2026:** [Analogeingang/-ausgang und digitale Regression](native-integration-2026-10-19.md): virtuelle 750-466/750-550, 750-430/750-530 und 750-1405/750-1504 mit Originalruntime und Originaltreibern **PASS**, Modellpermit 0. Explizite virtuelle Registerkonfiguration gemäß [ADR-0009](adr-0009.md); Hardwareabgleich **NOT_RUN**. PWM-Build/Reopen und Eigenprovider **PASS**, originale PWM-Runtime erreicht mit privatem D-Bus RUN; Frameabnahme **BLOCKED** am Modellfehler nach nicht unterstützter UID-Anfrage. 285 lokale Tests ohne Skip. Die folgenden Meldungen dokumentieren frühere Stände.

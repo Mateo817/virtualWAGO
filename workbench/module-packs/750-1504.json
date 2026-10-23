@@ -1,0 +1,221 @@
+{
+  "schema": 1,
+  "id": "wago.750-1504.standard",
+  "version": "0.1.0",
+  "article": "750-1504",
+  "title": "16 digitale Ausgänge",
+  "family": "do",
+  "description": "Digitale Signale mit getrennten angeforderten und wirksamen Ausgängen.",
+  "evidence": "docs/module-catalog-sources-2026-10-12.md",
+  "assumptions": "Eigenes Offline-Signalmodell; keine native ADI-Projektion, Registerkommunikation oder elektrische Hardwareabnahme. Digitale Pegel sind idealisiert.",
+  "channels": [
+    {
+      "id": "ch1",
+      "label": "Kanal 1",
+      "direction": "output",
+      "kind": "digital",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "initial": 0,
+      "encoding": {
+        "codec": "bit"
+      }
+    },
+    {
+      "id": "ch2",
+      "label": "Kanal 2",
+      "direction": "output",
+      "kind": "digital",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "initial": 0,
+      "encoding": {
+        "codec": "bit"
+      }
+    },
+    {
+      "id": "ch3",
+      "label": "Kanal 3",
+      "direction": "output",
+      "kind": "digital",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "initial": 0,
+      "encoding": {
+        "codec": "bit"
+      }
+    },
+    {
+      "id": "ch4",
+      "label": "Kanal 4",
+      "direction": "output",
+      "kind": "digital",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "initial": 0,
+      "encoding": {
+        "codec": "bit"
+      }
+    },
+    {
+      "id": "ch5",
+      "label": "Kanal 5",
+      "direction": "output",
+      "kind": "digital",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "initial": 0,
+      "encoding": {
+        "codec": "bit"
+      }
+    },
+    {
+      "id": "ch6",
+      "label": "Kanal 6",
+      "direction": "output",
+      "kind": "digital",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "initial": 0,
+      "encoding": {
+        "codec": "bit"
+      }
+    },
+    {
+      "id": "ch7",
+      "label": "Kanal 7",
+      "direction": "output",
+      "kind": "digital",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "initial": 0,
+      "encoding": {
+        "codec": "bit"
+      }
+    },
+    {
+      "id": "ch8",
+      "label": "Kanal 8",
+      "direction": "output",
+      "kind": "digital",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "initial": 0,
+      "encoding": {
+        "codec": "bit"
+      }
+    },
+    {
+      "id": "ch9",
+      "label": "Kanal 9",
+      "direction": "output",
+      "kind": "digital",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "initial": 0,
+      "encoding": {
+        "codec": "bit"
+      }
+    },
+    {
+      "id": "ch10",
+      "label": "Kanal 10",
+      "direction": "output",
+      "kind": "digital",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "initial": 0,
+      "encoding": {
+        "codec": "bit"
+      }
+    },
+    {
+      "id": "ch11",
+      "label": "Kanal 11",
+      "direction": "output",
+      "kind": "digital",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "initial": 0,
+      "encoding": {
+        "codec": "bit"
+      }
+    },
+    {
+      "id": "ch12",
+      "label": "Kanal 12",
+      "direction": "output",
+      "kind": "digital",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "initial": 0,
+      "encoding": {
+        "codec": "bit"
+      }
+    },
+    {
+      "id": "ch13",
+      "label": "Kanal 13",
+      "direction": "output",
+      "kind": "digital",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "initial": 0,
+      "encoding": {
+        "codec": "bit"
+      }
+    },
+    {
+      "id": "ch14",
+      "label": "Kanal 14",
+      "direction": "output",
+      "kind": "digital",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "initial": 0,
+      "encoding": {
+        "codec": "bit"
+      }
+    },
+    {
+      "id": "ch15",
+      "label": "Kanal 15",
+      "direction": "output",
+      "kind": "digital",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "initial": 0,
+      "encoding": {
+        "codec": "bit"
+      }
+    },
+    {
+      "id": "ch16",
+      "label": "Kanal 16",
+      "direction": "output",
+      "kind": "digital",
+      "unit": "",
+      "min": 0,
+      "max": 1,
+      "initial": 0,
+      "encoding": {
+        "codec": "bit"
+      }
+    }
+  ]
+}
