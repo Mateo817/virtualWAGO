@@ -3,7 +3,8 @@
 **Neue Offline-Priorität, 23.10.2026:** [Rust-/Web-Werkstatt](../workbench/README.md)
 gemäß [ADR-0013](adr-0013.md): grafische Modulanordnung, Live-I/O und ausschließlich
 reaktive Ausgangsskripte. Nachladbare, versionierte Signalpakete und stabile
-Instanzreferenzen bilden die Grundlage weiterer Modellarbeit. Diese Arbeit
+Instanzreferenzen bilden die Grundlage weiterer Modellarbeit. [ADR-0014](adr-0014.md)
+ergänzt Dunkelmodus, Zustandsmodelle, isolierte Szenarien und Beobachtungsaufnahmen. Diese Arbeit
 erteilt keine aktuelle WAGO-/CODESYS-/VM-Freigabe. Native Runtime-, elektrische
 und Diagnoseabnahmen bleiben davon getrennt.
 

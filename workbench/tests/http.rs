@@ -21,6 +21,7 @@ fn app() -> axum::Router {
             authority: "127.0.0.1:8787".into(),
             slots: Arc::new(tokio::sync::Semaphore::new(32)),
             viewers: Arc::new(tokio::sync::Semaphore::new(8)),
+            evaluators: Arc::new(tokio::sync::Semaphore::new(1)),
         },
         PathBuf::from("web/dist"),
     )
@@ -184,6 +185,7 @@ async fn failed_persistence_keeps_the_active_configuration() {
             authority: "127.0.0.1:8787".into(),
             slots: Arc::new(tokio::sync::Semaphore::new(32)),
             viewers: Arc::new(tokio::sync::Semaphore::new(8)),
+            evaluators: Arc::new(tokio::sync::Semaphore::new(1)),
         },
         PathBuf::from("web/dist"),
     );
@@ -201,4 +203,122 @@ async fn failed_persistence_keeps_the_active_configuration() {
     assert_eq!(sim.lock().unwrap().generation(), 1);
     assert_eq!(sim.lock().unwrap().project().name, "Meine erste Simulation");
     std::fs::remove_file(dir).unwrap();
+}
+
+#[test]
+fn state_directory_lock_rejects_second_owner_and_releases_without_unlink() {
+    let dir = std::env::temp_dir().join(format!("virtualwago-lock-{}", std::process::id()));
+    let first = api::StateDirectoryLock::acquire(&dir).unwrap();
+    assert!(api::StateDirectoryLock::acquire(&dir).is_err());
+    drop(first);
+    let second = api::StateDirectoryLock::acquire(&dir).unwrap();
+    drop(second);
+    assert!(dir.join(".workbench.lock").is_file());
+    std::fs::remove_dir_all(dir).unwrap();
+}
+#[tokio::test]
+async fn script_validation_returns_line_and_scenario_run_does_not_mutate_live_state() {
+    let app = app();
+    let response = app
+        .clone()
+        .oneshot(request(
+            "POST",
+            "/api/scripts/validate",
+            serde_json::json!({"code":"fn react(o,p,dt,t) {\nlet x = ;\n}","stateful":false}),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(response.status(), StatusCode::OK);
+    let body: serde_json::Value =
+        serde_json::from_slice(&to_bytes(response.into_body(), 1024 * 1024).await.unwrap())
+            .unwrap();
+    assert_eq!(body["valid"], false);
+    assert_eq!(body["diagnostic"]["line"], 2);
+    let mut p = demo_project();
+    p.scenarios=serde_json::from_value(serde_json::json!([{"id":"feedback","name":"Feedback","steps":[{"at_ms":0,"permit":true,"set":[{"signal":{"module":"do-bank","channel":"ch1"},"value":1}],"expect":[{"signal":{"module":"di-bank","channel":"ch1"},"min":1,"max":1,"within_ms":20}]}]}])).unwrap();
+    let response = app
+        .clone()
+        .oneshot(request(
+            "POST",
+            "/api/scenarios/run",
+            serde_json::json!({"project":p,"id":"feedback"}),
+        ))
+        .await
+        .unwrap();
+    assert_eq!(response.status(), StatusCode::OK);
+    let body: serde_json::Value =
+        serde_json::from_slice(&to_bytes(response.into_body(), 1024 * 1024).await.unwrap())
+            .unwrap();
+    assert_eq!(body["passed"], true);
+    let response = app
+        .oneshot(request("GET", "/api/bootstrap", serde_json::Value::Null))
+        .await
+        .unwrap();
+    let body: serde_json::Value =
+        serde_json::from_slice(&to_bytes(response.into_body(), 1024 * 1024).await.unwrap())
+            .unwrap();
+    assert_eq!(body["state"]["time_ms"], 0);
+    assert_eq!(body["state"]["permit"], false);
+}
+
+#[test]
+fn real_services_cannot_share_a_state_directory_and_restart_releases_lock() {
+    use std::{
+        io::{BufRead, BufReader},
+        process::{Child, Command, Stdio},
+        time::{Duration, Instant},
+    };
+    struct Service(Child);
+    impl Drop for Service {
+        fn drop(&mut self) {
+            let _ = self.0.kill();
+            let _ = self.0.wait();
+        }
+    }
+    let dir = std::env::temp_dir().join(format!("virtualwago-process-lock-{}", std::process::id()));
+    std::fs::create_dir(&dir).unwrap();
+    std::fs::write(dir.join("index.html"), "offline test").unwrap();
+    let start = || {
+        Command::new(env!("CARGO_BIN_EXE_virtualwago-workbench"))
+            .args(["--port", "0", "--state-dir"])
+            .arg(&dir)
+            .arg("--assets")
+            .arg(&dir)
+            .stdout(Stdio::piped())
+            .stderr(Stdio::piped())
+            .spawn()
+            .unwrap()
+    };
+    let mut first = Service(start());
+    let mut line = String::new();
+    BufReader::new(first.0.stdout.take().unwrap())
+        .read_line(&mut line)
+        .unwrap();
+    assert!(line.contains("http://127.0.0.1:"));
+    let mut second = Service(start());
+    let deadline = Instant::now() + Duration::from_secs(3);
+    loop {
+        if let Some(status) = second.0.try_wait().unwrap() {
+            assert!(!status.success());
+            break;
+        }
+        assert!(
+            Instant::now() < deadline,
+            "second service must reject the occupied state directory"
+        );
+        std::thread::sleep(Duration::from_millis(10));
+    }
+    let mut error = String::new();
+    std::io::Read::read_to_string(&mut second.0.stderr.take().unwrap(), &mut error).unwrap();
+    assert!(error.contains("bereits belegt"));
+    drop(first);
+    let mut third = Service(start());
+    line.clear();
+    BufReader::new(third.0.stdout.take().unwrap())
+        .read_line(&mut line)
+        .unwrap();
+    assert!(line.contains("http://127.0.0.1:"));
+    drop(third);
+    drop(second);
+    std::fs::remove_dir_all(dir).unwrap();
 }

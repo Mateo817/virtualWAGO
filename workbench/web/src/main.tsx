@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   Activity,
@@ -36,10 +36,17 @@ import type {
   Project,
   SignalRef,
   Snapshot,
+  Diagnostic,
 } from "./types";
 import { clone, key, same } from "./types";
 import "./styles.css";
-import { SignalRow, Trend } from "./SignalViews";
+import { ThemeControl } from "./Theme";
+const ScriptEditor = lazy(() =>
+  import("./ScriptEditor").then((m) => ({ default: m.ScriptEditor })),
+);
+import { ScenarioPanel } from "./ScenarioPanel";
+import { SignalRow } from "./SignalViews";
+import { TracePanel } from "./TracePanel";
 
 const stamp = (ms: number) =>
   `${Math.floor(ms / 60000)
@@ -59,6 +66,13 @@ const feedback =
   "// Wirksamer Ausgang → Sensorsignal\nfn react(output, previous, dt_s, time_s) {\n    if output > 0.5 { 1.0 } else { 0.0 }\n}";
 const lag =
   "// Einfaches träges Reaktionsmodell (eigene Annahme)\nfn react(output, previous, dt_s, time_s) {\n    let target = 4.0 + output * 1.6;\n    let alpha = dt_s / (1.0 + dt_s);\n    previous + (target - previous) * alpha\n}";
+
+function statefulExample(sources: SignalRef[]) {
+  const active = sources.length
+    ? sources.map((s) => `outputs["${key(s)}"] > 0.5`).join(" && ")
+    : "true";
+  return `// Eigene Annahme: digitale Rückmeldung nach 200 ms.\nfn react_state(outputs, previous, state, dt_s, time_s) {\n    if !state.contains("elapsed") { state.elapsed = 0.0; }\n    if ${active} { state.elapsed += dt_s; } else { state.elapsed = 0.0; }\n    #{value: if state.elapsed >= 0.2 { 1.0 } else { 0.0 }, state: state}\n}`;
+}
 
 let serverInstance = "";
 async function api<T>(
@@ -117,10 +131,15 @@ function App() {
   const [baseGeneration, setBaseGeneration] = useState(0);
   const [baseInstance, setBaseInstance] = useState("");
   const [selected, setSelected] = useState("do-bank");
-  const [tab, setTab] = useState<"signals" | "reactions" | "events">("signals");
+  const [tab, setTab] = useState<
+    "signals" | "reactions" | "events" | "scenarios"
+  >("signals");
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState("all");
   const [connected, setConnected] = useState(false);
+  const lastMessage = useRef(0);
+  const [diagnostic, setDiagnostic] = useState<Diagnostic | null>(null);
+  const [validatedCode, setValidatedCode] = useState("");
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
@@ -167,6 +186,30 @@ function App() {
     }
   }
   useEffect(() => {
+    if (!project) return;
+    setSelected((old) =>
+      project.modules.some((m) => m.id === old)
+        ? old
+        : (project.modules[0]?.id ?? ""),
+    );
+    setScriptId((old) =>
+      project.reactions.some((r) => r.id === old)
+        ? old
+        : (project.reactions[0]?.id ?? ""),
+    );
+    const keys = project.modules.flatMap(
+      (m) =>
+        project.packages
+          .find((p) => p.id === m.package)
+          ?.channels.map((c) => `${m.id}/${c.id}`) ?? [],
+    );
+    setWatched((old) => (keys.includes(old) ? old : (keys[0] ?? "")));
+  }, [project]);
+  useEffect(() => {
+    setDiagnostic(null);
+    setValidatedCode("");
+  }, [project?.reactions, scriptId]);
+  useEffect(() => {
     let disposed = false;
     let socket: WebSocket | undefined;
     let timer: ReturnType<typeof setTimeout>;
@@ -181,11 +224,17 @@ function App() {
           `${location.protocol === "https:" ? "wss" : "ws"}://${location.host}/api/stream`,
         );
         socket.onopen = () => {
-          if (!disposed) setConnected(true);
+          lastMessage.current = performance.now();
         };
         socket.onmessage = (event) => {
           if (disposed) return;
           const next = JSON.parse(event.data) as Snapshot;
+          if (next.instance !== serverInstance) {
+            socket?.close();
+            return;
+          }
+          lastMessage.current = performance.now();
+          setConnected(true);
           observe(next);
           if (next.generation !== generation) {
             generation = next.generation;
@@ -198,6 +247,7 @@ function App() {
         };
         socket.onclose = () => {
           if (!disposed) {
+            lastMessage.current = 0;
             setConnected(false);
             timer = setTimeout(connect, 1500);
           }
@@ -206,13 +256,34 @@ function App() {
       } catch (e) {
         if (!disposed) {
           setError(String(e));
+          lastMessage.current = 0;
           setConnected(false);
           timer = setTimeout(connect, 2000);
         }
       }
     }
+    const watchdog = setInterval(() => {
+      if (
+        lastMessage.current &&
+        performance.now() - lastMessage.current > 1500
+      ) {
+        setConnected(false);
+        // Recover an open but silent transport as well as a dead one.
+        if (performance.now() - lastMessage.current > 5000) {
+          lastMessage.current = 0;
+          if (socket) {
+            socket.onmessage = null;
+            socket.onclose = null;
+            socket.onerror = null;
+            socket.close();
+          }
+          timer = setTimeout(connect, 250);
+        }
+      }
+    }, 250);
     void connect();
     return () => {
+      clearInterval(watchdog);
       disposed = true;
       clearTimeout(timer);
       socket?.close();
@@ -262,7 +333,7 @@ function App() {
     }
   }
   async function command(action: string, fields: Record<string, unknown> = {}) {
-    if (!state) return;
+    if (!state || !connected) return;
     await work(async () =>
       observe(
         await api<Snapshot>("command", "POST", {
@@ -383,7 +454,7 @@ function App() {
       .channels.map((c) => ({ m, c, ref: { module: m.id, channel: c.id } })),
   );
   const script = project.reactions.find((r) => r.id === scriptId);
-  const watch = allChannels.find((c) => key(c.ref) === watched);
+
   const packages = project.packages.filter(
     (p) =>
       (filter === "all" ||
@@ -416,6 +487,7 @@ function App() {
           <strong>{active?.name}</strong>
           <span className="tag subtle">Lokal</span>
         </div>
+        <ThemeControl />
         <button
           className="icon-button help-button"
           aria-label="Hilfe öffnen"
@@ -425,7 +497,7 @@ function App() {
         </button>
         <span className={`connection ${connected ? "" : "lost"}`}>
           <i />
-          {connected ? "Kern verbunden" : "Verbindung unterbrochen"}
+          {connected ? "Kern verbunden" : "Live-Daten veraltet"}
         </span>
       </header>
       <div className="workspace-heading">
@@ -899,6 +971,7 @@ function App() {
                 ["signals", Activity, "Live-I/O"],
                 ["reactions", Code2, "Reaktionsskripte"],
                 ["events", Terminal, "Ereignisse"],
+                ["scenarios", Check, "Szenarien"],
               ].map(([id, Icon, label]) => {
                 const I = Icon as typeof Activity;
                 return (
@@ -922,71 +995,56 @@ function App() {
                 Modellzyklus
               </span>
             </div>
-            {tab === "signals" && (
-              <div className="live-content">
-                <div className="signal-table-wrap">
-                  <table className="signal-table">
-                    <thead>
-                      <tr>
-                        <th>Signal</th>
-                        <th>Richtung</th>
-                        <th>Wert / Anforderung</th>
-                        <th>Wirksam</th>
-                        <th>Quelle</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {allChannels
-                        .filter((v) => v.m.id === selected)
-                        .map(({ m, c, ref }) => (
-                          <SignalRow
-                            key={key(ref)}
-                            channel={c}
-                            signal={signals.get(key(ref))}
-                            name={m.label}
-                            disabled={!controls}
-                            onValue={(value) =>
-                              void command("set_signal", { signal: ref, value })
-                            }
-                            onWatch={() => setWatched(key(ref))}
-                          />
-                        ))}
-                    </tbody>
-                  </table>
-                  {!pack?.channels.length && (
-                    <div className="empty-small">
-                      Dieses Modul besitzt keine I/O-Kanäle. Wähle ein
-                      Signalmodul.
-                    </div>
-                  )}
-                </div>
-                <div className="trend">
-                  <div className="trend-title">
-                    <span>Signalverlauf</span>
-                    <select
-                      aria-label="Signal für Verlauf"
-                      value={watched}
-                      onChange={(e) => setWatched(e.target.value)}
-                    >
-                      {allChannels.map((v) => (
-                        <option key={key(v.ref)} value={key(v.ref)}>
-                          {names(v.ref)}
-                        </option>
+            <div className="live-content" hidden={tab !== "signals"}>
+              <div className="signal-table-wrap">
+                <table className="signal-table">
+                  <thead>
+                    <tr>
+                      <th>Signal</th>
+                      <th>Richtung</th>
+                      <th>Wert / Anforderung</th>
+                      <th>Wirksam</th>
+                      <th>Quelle</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {allChannels
+                      .filter((v) => v.m.id === selected)
+                      .map(({ m, c, ref }) => (
+                        <SignalRow
+                          key={key(ref)}
+                          channel={c}
+                          signal={signals.get(key(ref))}
+                          name={m.label}
+                          disabled={!controls}
+                          onValue={(value) =>
+                            void command("set_signal", { signal: ref, value })
+                          }
+                          onWatch={() => setWatched(key(ref))}
+                        />
                       ))}
-                    </select>
+                  </tbody>
+                </table>
+                {!pack?.channels.length && (
+                  <div className="empty-small">
+                    Dieses Modul besitzt keine I/O-Kanäle. Wähle ein
+                    Signalmodul.
                   </div>
-                  <Trend
-                    history={history}
-                    watched={watched}
-                    channel={watch?.c}
-                  />
-                  <div className="trend-footer">
-                    <span>Letzte 10 s Modellzeit</span>
-                    <span>Anzeigeabtastung ≈ 100 ms</span>
-                  </div>
-                </div>
+                )}
               </div>
-            )}
+              <TracePanel
+                history={history}
+                watched={watched}
+                onWatch={setWatched}
+                connected={connected}
+                revision={`${state.instance}/${state.generation}`}
+                channels={allChannels.map((v) => ({
+                  key: key(v.ref),
+                  label: names(v.ref),
+                  channel: v.c,
+                }))}
+              />
+            </div>
             {tab === "reactions" && (
               <div className="reaction-content">
                 <div className="script-list">
@@ -1102,9 +1160,13 @@ function App() {
                           value={script.source ? key(script.source) : ""}
                           onChange={(e) =>
                             edit((d) => {
-                              d.reactions.find(
+                              const r = d.reactions.find(
                                 (r) => r.id === scriptId,
-                              )!.source =
+                              )!;
+                              r.sources = (r.sources ?? []).filter(
+                                (s) => key(s) !== e.target.value,
+                              );
+                              r.source =
                                 allChannels.find(
                                   (v) => key(v.ref) === e.target.value,
                                 )?.ref ?? null;
@@ -1155,16 +1217,35 @@ function App() {
                         disabled={!editing}
                         onChange={(e) =>
                           edit((d) => {
-                            d.reactions.find((r) => r.id === scriptId)!.code =
-                              e.target.value === "lag" ? lag : feedback;
+                            const r = d.reactions.find(
+                              (r) => r.id === scriptId,
+                            )!;
+                            r.code = r.stateful
+                              ? statefulExample([
+                                  ...(r.source ? [r.source] : []),
+                                  ...(r.sources ?? []),
+                                ])
+                              : e.target.value === "lag"
+                                ? lag
+                                : feedback;
                           })
                         }
                       >
                         <option value="" disabled>
                           Beispiel laden
                         </option>
-                        <option value="digital">Digitale Rückmeldung</option>
-                        <option value="lag">Träges Analogmodell</option>
+                        {script.stateful ? (
+                          <option value="state">
+                            Verzögerte digitale Rückmeldung
+                          </option>
+                        ) : (
+                          <>
+                            <option value="digital">
+                              Digitale Rückmeldung
+                            </option>
+                            <option value="lag">Träges Analogmodell</option>
+                          </>
+                        )}
                       </select>
                     </div>
                     <div className="script-file-actions">
@@ -1210,24 +1291,118 @@ function App() {
                         }}
                       />
                     </div>
-                    <textarea
-                      className="code-editor"
-                      aria-label="Reaktionscode"
-                      spellCheck={false}
-                      value={script.code}
-                      disabled={!editing}
-                      maxLength={8192}
-                      onChange={(e) =>
-                        edit((d) => {
-                          d.reactions.find((r) => r.id === scriptId)!.code =
-                            e.target.value;
-                        })
-                      }
-                    />
+                    <div className="script-file-actions">
+                      <label>
+                        <input
+                          type="checkbox"
+                          aria-label="Zustandsbehaftetes Modell"
+                          checked={script.stateful ?? false}
+                          disabled={!editing}
+                          onChange={(e) =>
+                            edit((d) => {
+                              const r = d.reactions.find(
+                                (r) => r.id === scriptId,
+                              )!;
+                              r.stateful = e.target.checked;
+                              r.sources = [];
+                              r.code = e.target.checked
+                                ? statefulExample(r.source ? [r.source] : [])
+                                : feedback;
+                            })
+                          }
+                        />{" "}
+                        Mehrere Quellen / Zustand
+                      </label>
+                      <button
+                        className="button compact"
+                        disabled={!editing}
+                        onClick={() =>
+                          void work(async () => {
+                            const result = await api<{
+                              valid: boolean;
+                              diagnostic: Diagnostic | null;
+                            }>("scripts/validate", "POST", {
+                              code: script.code,
+                              stateful: script.stateful ?? false,
+                            });
+                            setDiagnostic(result.diagnostic);
+                            setValidatedCode(result.valid ? script.code : "");
+                          })
+                        }
+                      >
+                        Syntax prüfen
+                      </button>
+                    </div>
+                    {script.stateful && (
+                      <fieldset className="source-picker">
+                        <legend>
+                          Weitere wirksame Ausgänge (Map-Schlüssel =
+                          Instanz/Kanal)
+                        </legend>
+                        {allChannels
+                          .filter(
+                            (v) =>
+                              v.c.direction === "output" &&
+                              (!script.source || !same(v.ref, script.source)),
+                          )
+                          .map((v) => (
+                            <label key={key(v.ref)}>
+                              <input
+                                type="checkbox"
+                                disabled={!editing}
+                                checked={(script.sources ?? []).some((s) =>
+                                  same(s, v.ref),
+                                )}
+                                onChange={(e) =>
+                                  edit((d) => {
+                                    const r = d.reactions.find(
+                                      (r) => r.id === scriptId,
+                                    )!;
+                                    r.sources = e.target.checked
+                                      ? [...(r.sources ?? []), v.ref]
+                                      : (r.sources ?? []).filter(
+                                          (s) => !same(s, v.ref),
+                                        );
+                                  })
+                                }
+                              />
+                              {names(v.ref)} <code>{key(v.ref)}</code>
+                            </label>
+                          ))}
+                      </fieldset>
+                    )}
+                    {diagnostic && (
+                      <p className="validation-error" role="status">
+                        {diagnostic.line
+                          ? `Zeile ${diagnostic.line}, Spalte ${diagnostic.column ?? 1}: `
+                          : ""}
+                        {diagnostic.message}
+                      </p>
+                    )}
+                    {validatedCode === script.code && (
+                      <p role="status">
+                        Syntax gültig. Laufzeit und Reaktion mit einem Szenario
+                        prüfen.
+                      </p>
+                    )}
+                    <Suspense fallback={<p>Editor laden …</p>}>
+                      <ScriptEditor
+                        code={script.code}
+                        disabled={!editing}
+                        diagnostic={diagnostic}
+                        onChange={(code) =>
+                          edit((d) => {
+                            d.reactions.find((r) => r.id === scriptId)!.code =
+                              code;
+                          })
+                        }
+                      />
+                    </Suspense>
                     <div className="code-footer">
                       <span>
-                        Rhai · Ergebnis = neuer Eingangswert · output =
-                        wirksamer Ausgang
+                        {script.stateful
+                          ? "Rhai · Ergebnis = #{value, state} · outputs = wirksame Ausgänge"
+                          : "Rhai · Ergebnis = neuer Eingangswert · output = wirksamer Ausgang"}
                       </span>
                       <span>20.000 Operationen / Aufruf</span>
                     </div>
@@ -1238,6 +1413,15 @@ function App() {
                   </div>
                 )}
               </div>
+            )}
+            {tab === "scenarios" && (
+              <ScenarioPanel
+                project={project}
+                editing={editing}
+                connected={connected}
+                edit={edit}
+                run={(id) => api("scenarios/run", "POST", { project, id })}
+              />
             )}
             {tab === "events" && (
               <div className="event-list">
@@ -1364,7 +1548,8 @@ function App() {
                       d.reactions = d.reactions.filter(
                         (r) =>
                           r.target.module !== selected &&
-                          r.source?.module !== selected,
+                          r.source?.module !== selected &&
+                          !(r.sources ?? []).some((s) => s.module === selected),
                       );
                     });
                     setSelected(

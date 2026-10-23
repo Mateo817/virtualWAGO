@@ -226,9 +226,11 @@ test("reaction files and self-contained project exports round trip", async ({
       mimeType: "text/plain",
       buffer: Buffer.from(code),
     });
-  await expect(
-    page.getByRole("textbox", { name: "Reaktionscode" }),
-  ).toHaveValue(code);
+  await expect
+    .poll(async () =>
+      page.getByRole("textbox", { name: "Reaktionscode" }).innerText(),
+    )
+    .toBe(code);
   await page.getByRole("button", { name: "Übernehmen", exact: true }).click();
   await expect(page.getByText("Gespeichert", { exact: true })).toBeVisible();
   const [download] = await Promise.all([

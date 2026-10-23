@@ -42,6 +42,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                 .into(),
         );
     }
+    let _directory_lock = api::StateDirectoryLock::acquire(&state_dir)?;
     let project = api::load_project(&state_dir)?.unwrap_or_else(demo_project);
     let simulation = Arc::new(Mutex::new(Simulation::new(project)?));
     let listener =
@@ -53,6 +54,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         authority: address.to_string(),
         slots: Arc::new(tokio::sync::Semaphore::new(32)),
         viewers: Arc::new(tokio::sync::Semaphore::new(8)),
+        evaluators: Arc::new(tokio::sync::Semaphore::new(1)),
     };
     let stop = Arc::new(AtomicBool::new(false));
     let worker_stop = stop.clone();

@@ -4,7 +4,9 @@
 ergänzt eine grafische Klemmenleiste, Live-I/O, versionierte nachladbare
 Modulbeschreibungen und Reaktionsskripte. Er arbeitet ausschließlich mit eigenen
 Signalmodellen; WAGO, CODESYS und VM sind im aktuellen Auftrag nicht freigegeben.
-Architektur: [ADR-0013](docs/adr-0013.md). Erweiterungsstellen und Folgearbeit:
+Architektur: [ADR-0013](docs/adr-0013.md), erweitert durch
+[ADR-0014](docs/adr-0014.md) um Darkmode, Szenarioprüfungen, Zustandsmodelle und
+Signalaufnahmen. Erweiterungsstellen und Folgearbeit:
 [Werkstattübergabe](docs/workbench-handoff.md). Die folgenden Runtime-/Hardware-
 Berichte bleiben historische, getrennte Evidenzstufen.
 

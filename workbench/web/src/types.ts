@@ -33,6 +33,8 @@ export type Reaction = {
   name: string;
   enabled: boolean;
   source: SignalRef | null;
+  sources?: SignalRef[];
+  stateful?: boolean;
   target: SignalRef;
   code: string;
 };
@@ -43,6 +45,7 @@ export type Project = {
   packages: ModulePackage[];
   modules: Instance[];
   reactions: Reaction[];
+  scenarios?: Scenario[];
 };
 export type Signal = {
   signal: SignalRef;
@@ -71,3 +74,39 @@ export type Bootstrap = { project: Project; state: Snapshot };
 export const key = (s: SignalRef) => `${s.module}/${s.channel}`;
 export const same = (a: SignalRef, b: SignalRef) => key(a) === key(b);
 export const clone = <T>(value: T): T => structuredClone(value);
+
+export type Expectation = {
+  signal: SignalRef;
+  min: number;
+  max: number;
+  within_ms: number;
+};
+export type ScenarioStep = {
+  at_ms: number;
+  permit: boolean | null;
+  set: { signal: SignalRef; value: number }[];
+  expect: Expectation[];
+};
+export type Scenario = { id: string; name: string; steps: ScenarioStep[] };
+export type Sample = { time: number; values: Record<string, number> };
+export type ScenarioReport = {
+  id: string;
+  passed: boolean;
+  elapsed_ms: number;
+  fault: string | null;
+  samples: Sample[];
+  assertions: {
+    step: number;
+    signal: SignalRef;
+    min: number;
+    max: number;
+    deadline_ms: number;
+    passed_at_ms: number | null;
+    actual: number;
+  }[];
+};
+export type Diagnostic = {
+  message: string;
+  line: number | null;
+  column: number | null;
+};

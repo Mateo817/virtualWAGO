@@ -32,6 +32,35 @@ pub struct AppState {
     pub authority: String,
     pub slots: Arc<Semaphore>,
     pub viewers: Arc<Semaphore>,
+    pub evaluators: Arc<Semaphore>,
+}
+
+/// Keep this handle alive for the complete service lifetime. Never unlink the
+/// lock file: a second inode would defeat the kernel's cross-process lock.
+pub struct StateDirectoryLock {
+    _file: fs::File,
+}
+impl StateDirectoryLock {
+    pub fn acquire(dir: &Path) -> Result<Self> {
+        fs::create_dir_all(dir).map_err(|e| e.to_string())?;
+        let path = dir.join(".workbench.lock");
+        for p in [dir, path.as_path()] {
+            if fs::symlink_metadata(p).is_ok_and(|m| m.file_type().is_symlink()) {
+                return Err("Projektpfad darf kein symbolischer Link sein".into());
+            }
+        }
+        let file = fs::OpenOptions::new()
+            .read(true)
+            .write(true)
+            .create(true)
+            .truncate(false)
+            .mode(0o600)
+            .open(path)
+            .map_err(|e| e.to_string())?;
+        file.try_lock()
+            .map_err(|e| format!("Projektverzeichnis bereits belegt oder nicht sperrbar: {e}"))?;
+        Ok(Self { _file: file })
+    }
 }
 type ApiResult<T> = std::result::Result<Json<T>, ApiError>;
 pub struct ApiError(pub StatusCode, pub String);
@@ -58,6 +87,8 @@ pub fn router(state: AppState, assets: PathBuf) -> Router {
         .route("/api/command",post(command))
         .route("/api/packages/validate",post(validate_package))
         .route("/api/stream",get(stream))
+        .route("/api/scripts/validate",post(validate_script))
+        .route("/api/scenarios/run",post(run_scenario))
         .fallback_service(ServeDir::new(assets))
         .layer(DefaultBodyLimit::max(MAX_DOCUMENT))
         .layer(SetResponseHeaderLayer::overriding(header::CACHE_CONTROL,header::HeaderValue::from_static("no-store")))
@@ -302,4 +333,56 @@ pub fn load_project(dir: &Path) -> Result<Option<Project>> {
         .map_err(|e| e.to_string())?;
     project.validate()?;
     Ok(Some(project))
+}
+
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ScriptRequest {
+    code: String,
+    stateful: bool,
+}
+async fn validate_script(
+    State(state): State<AppState>,
+    Json(input): Json<ScriptRequest>,
+) -> ApiResult<serde_json::Value> {
+    let slot = state.slots.clone().try_acquire_owned().map_err(|_| {
+        ApiError(
+            StatusCode::SERVICE_UNAVAILABLE,
+            "Auftragsgrenze erreicht".into(),
+        )
+    })?;
+    tokio::task::spawn_blocking(move || {
+        let _slot = slot;
+        let diagnostic = crate::engine::validate_script(&input.code, input.stateful);
+        Ok(Json(
+            json!({"valid":diagnostic.is_none(),"diagnostic":diagnostic}),
+        ))
+    })
+    .await
+    .map_err(|_| lock_error())?
+}
+#[derive(Deserialize)]
+#[serde(deny_unknown_fields)]
+struct ScenarioRequest {
+    project: Project,
+    id: String,
+}
+async fn run_scenario(
+    State(state): State<AppState>,
+    Json(input): Json<ScenarioRequest>,
+) -> ApiResult<crate::scenario::ScenarioReport> {
+    let slot = state.evaluators.clone().try_acquire_owned().map_err(|_| {
+        ApiError(
+            StatusCode::SERVICE_UNAVAILABLE,
+            "Es läuft bereits eine Szenarioprüfung".into(),
+        )
+    })?;
+    tokio::task::spawn_blocking(move || {
+        let _slot = slot;
+        crate::scenario::run(input.project, &input.id)
+            .map(Json)
+            .map_err(bad)
+    })
+    .await
+    .map_err(|_| lock_error())?
 }

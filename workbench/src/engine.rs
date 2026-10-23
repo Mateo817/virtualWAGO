@@ -1,5 +1,5 @@
 use crate::model::*;
-use rhai::{AST, Dynamic, Engine as ScriptEngine, Scope};
+use rhai::{AST, Dynamic, Engine as ScriptEngine, Map, Scope};
 use serde::{Deserialize, Serialize};
 use std::{
     collections::{HashMap, VecDeque},
@@ -85,31 +85,84 @@ fn scripting() -> ScriptEngine {
     e.on_debug(|_, _, _| {});
     e
 }
+#[derive(Debug, Serialize)]
+pub struct ScriptDiagnostic {
+    pub message: String,
+    pub line: Option<usize>,
+    pub column: Option<usize>,
+}
+fn compile_script(code: &str, stateful: bool) -> std::result::Result<AST, ScriptDiagnostic> {
+    if code.is_empty() || code.len() > 8192 {
+        return Err(ScriptDiagnostic {
+            message: "Skript benötigt 1–8192 Byte".into(),
+            line: None,
+            column: None,
+        });
+    }
+    let ast = scripting().compile(code).map_err(|e| ScriptDiagnostic {
+        line: e.position().line(),
+        column: e.position().position(),
+        message: e.to_string(),
+    })?;
+    let (name, count) = if stateful {
+        ("react_state", 5)
+    } else {
+        ("react", 4)
+    };
+    if !ast
+        .iter_functions()
+        .any(|f| f.name == name && f.params.len() == count)
+    {
+        return Err(ScriptDiagnostic {
+            message: format!("fn {name} mit {count} Parametern fehlt"),
+            line: None,
+            column: None,
+        });
+    }
+    Ok(ast.clone_functions_only())
+}
+pub fn validate_script(code: &str, stateful: bool) -> Option<ScriptDiagnostic> {
+    compile_script(code, stateful).err()
+}
 fn compile(project: &Project) -> Result<HashMap<String, AST>> {
     project.validate()?;
-    let e = scripting();
-    let mut compiled = HashMap::new();
-    for r in &project.reactions {
-        let ast = e.compile(&r.code).map_err(|v| format!("{}: {v}", r.name))?;
-        if !ast
-            .iter_functions()
-            .any(|f| f.name == "react" && f.params.len() == 4)
-        {
-            return Err(format!(
-                "{}: fn react(output, previous, dt_s, time_s) fehlt",
-                r.name
-            ));
-        }
-        // Global statements are never evaluated: only the explicitly called function runs.
-        compiled.insert(r.id.clone(), ast.clone_functions_only());
+    project
+        .reactions
+        .iter()
+        .map(|r| {
+            compile_script(&r.code, r.stateful)
+                .map(|ast| (r.id.clone(), ast))
+                .map_err(|e| format!("{}: {}", r.name, e.message))
+        })
+        .collect()
+}
+fn numeric(value: Dynamic) -> Result<f64> {
+    value
+        .clone()
+        .try_cast::<f64>()
+        .or_else(|| value.try_cast::<i64>().map(|v| v as f64))
+        .filter(|v| v.is_finite())
+        .ok_or("Rückgabe muss eine endliche Zahl sein".into())
+}
+fn checked_state(value: Dynamic) -> Result<Map> {
+    let map = value.try_cast::<Map>().ok_or("state muss eine Map sein")?;
+    if map.len() > 16 {
+        return Err("Höchstens 16 numerische Zustandswerte".into());
     }
-    Ok(compiled)
+    for (key, value) in &map {
+        identifier(key)?;
+        if numeric(value.clone())?.abs() > 1e9 {
+            return Err("Zustandswert außerhalb ±1e9".into());
+        }
+    }
+    Ok(map)
 }
 
 pub struct Simulation {
     project: Project,
     compiled: HashMap<String, AST>,
     values: HashMap<SignalRef, f64>,
+    reaction_states: HashMap<String, Map>,
     requested: HashMap<SignalRef, f64>,
     generation: u64,
     sequence: u64,
@@ -132,6 +185,7 @@ impl Simulation {
             project,
             compiled,
             values: HashMap::new(),
+            reaction_states: HashMap::new(),
             requested: HashMap::new(),
             generation: 1,
             sequence: 0,
@@ -149,6 +203,7 @@ impl Simulation {
     }
     fn initialize(&mut self) {
         self.values.clear();
+        self.reaction_states.clear();
         self.requested.clear();
         for m in &self.project.modules {
             let p = self
@@ -384,31 +439,59 @@ impl Simulation {
             for r in self.project.reactions.iter().filter(|r| r.enabled) {
                 let output = r.source.as_ref().map(|s| self.effective(s)).unwrap_or(0.0);
                 let previous = self.values[&r.target];
-                let value: Dynamic = e
-                    .call_fn(
+                let result: Dynamic = if r.stateful {
+                    let mut outputs = Map::new();
+                    for source in r.source.iter().chain(r.sources.iter()) {
+                        outputs.insert(
+                            format!("{}/{}", source.module, source.channel).into(),
+                            Dynamic::from(self.effective(source)),
+                        );
+                    }
+                    let state = self.reaction_states.get(&r.id).cloned().unwrap_or_default();
+                    e.call_fn(
+                        &mut Scope::new(),
+                        &self.compiled[&r.id],
+                        "react_state",
+                        (
+                            outputs,
+                            previous,
+                            state,
+                            self.project.tick_ms as f64 / 1000.,
+                            self.time_ms as f64 / 1000.,
+                        ),
+                    )
+                } else {
+                    e.call_fn(
                         &mut Scope::new(),
                         &self.compiled[&r.id],
                         "react",
                         (
                             output,
                             previous,
-                            self.project.tick_ms as f64 / 1000.0,
-                            self.time_ms as f64 / 1000.0,
+                            self.project.tick_ms as f64 / 1000.,
+                            self.time_ms as f64 / 1000.,
                         ),
                     )
-                    .map_err(|err| format!("{}: {err}", r.name))?;
-                let value = if let Some(v) = value.clone().try_cast::<f64>() {
-                    v
-                } else if let Some(v) = value.try_cast::<i64>() {
-                    v as f64
+                }
+                .map_err(|err| format!("{}: {err}", r.name))?;
+                let (value, state) = if r.stateful {
+                    let mut result = result.try_cast::<Map>().ok_or_else(|| {
+                        format!("{}: Rückgabe muss #{{value, state}} sein", r.name)
+                    })?;
+                    if result.len() != 2 {
+                        return Err(format!("{}: Genau value und state erforderlich", r.name));
+                    }
+                    let value = numeric(result.remove("value").ok_or("value fehlt")?)?;
+                    let state = checked_state(result.remove("state").ok_or("state fehlt")?)?;
+                    (value, Some(state))
                 } else {
-                    return Err(format!("{}: Rückgabe muss eine Zahl sein", r.name));
+                    (numeric(result)?, None)
                 };
                 self.project
                     .channel(&r.target)?
                     .check(value)
                     .map_err(|err| format!("{}: {err}", r.name))?;
-                changes.push((r.target.clone(), value));
+                changes.push((r.target.clone(), value, r.id.clone(), state));
             }
             Ok(())
         })();
@@ -419,8 +502,11 @@ impl Simulation {
             self.event("error", &err);
             return Err(err);
         }
-        for (signal, value) in changes {
+        for (signal, value, id, state) in changes {
             self.values.insert(signal, value);
+            if let Some(state) = state {
+                self.reaction_states.insert(id, state);
+            }
         }
         self.time_ms = next;
         self.tick += 1;

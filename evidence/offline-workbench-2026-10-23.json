@@ -117,5 +117,7 @@
     "workbench/web/tests/workbench.spec.ts": "66ee88936a18a1b018af6a472c97124096e0e243256339a7795d261275c4fc2d",
     "workbench/web/tsconfig.json": "1ca3582938e9aeb807f3350a3e0046cef280328698b899be027a11d4db5d6fd5",
     "workbench/web/vite.config.ts": "de02c177559ee6e8e38ff8ab35ebf47a5e24dfa4365e6b1ce1898a989c619c70"
-  }
+  },
+  "historical_implementation_commit": "14a307320dc5a1b419974b3a05bfcb7fb21fe313",
+  "superseded_by": "evidence/offline-workbench-enhancements-2026-10-23.json"
 }

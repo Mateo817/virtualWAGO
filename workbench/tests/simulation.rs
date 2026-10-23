@@ -68,6 +68,8 @@ fn rejected_reaction_frame_is_atomic_and_latches_fault() {
         name: "Bereichsfehler".into(),
         enabled: true,
         source: None,
+        sources: vec![],
+        stateful: false,
         target: signal("ai-bank", "ch1"),
         code: "fn react(output, previous, dt_s, time_s) { 99.0 }".into(),
     });
@@ -204,6 +206,8 @@ fn custom_data_only_package_and_time_source_run_without_a_new_binary() {
         name: "Temperaturrampe".into(),
         enabled: true,
         source: None,
+        sources: vec![],
+        stateful: false,
         target: signal("temperature", "ch1"),
         code: "fn react(output, previous, dt_s, time_s) { previous + dt_s }".into(),
     });
@@ -265,7 +269,7 @@ fn malformed_or_unsafe_signal_packages_are_rejected() {
 #[test]
 fn analog_reaction_is_deterministic_and_pause_does_not_advance_time() {
     let mut project = demo_project();
-    project.reactions=vec![Reaction{id:"lag".into(),name:"Trägheit".into(),enabled:true,
+    project.reactions=vec![Reaction{sources:vec![],stateful:false,id:"lag".into(),name:"Trägheit".into(),enabled:true,
         source:Some(signal("ao-bank","ch1")),target:signal("ai-bank","ch1"),
         code:"fn react(output, previous, dt_s, time_s) { let target = 4.0 + output * 1.6; previous + (target - previous) * dt_s / (1.0 + dt_s) }".into()}];
     let mut a = Simulation::new(project.clone()).unwrap();

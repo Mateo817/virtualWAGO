@@ -258,6 +258,10 @@ pub struct Reaction {
     pub name: String,
     pub enabled: bool,
     pub source: Option<SignalRef>,
+    #[serde(default)]
+    pub sources: Vec<SignalRef>,
+    #[serde(default)]
+    pub stateful: bool,
     pub target: SignalRef,
     pub code: String,
 }
@@ -271,6 +275,8 @@ pub struct Project {
     pub packages: Vec<ModulePackage>,
     pub modules: Vec<Instance>,
     pub reactions: Vec<Reaction>,
+    #[serde(default)]
+    pub scenarios: Vec<crate::scenario::Scenario>,
 }
 impl Project {
     pub fn channel(&self, signal: &SignalRef) -> Result<&Channel> {
@@ -331,6 +337,7 @@ impl Project {
         if count > 1024 {
             return Err("Höchstens 1024 Kanäle".into());
         }
+        crate::scenario::validate_scenarios(self)?;
         let mut writers = HashSet::new();
         ids.clear();
         for r in &self.reactions {
@@ -346,6 +353,19 @@ impl Project {
                 && self.channel(source)?.direction != Direction::Output
             {
                 return Err("Reaktionsquelle muss ein Ausgang sein".into());
+            }
+            if r.sources.len() + usize::from(r.source.is_some()) > 16
+                || (!r.stateful && !r.sources.is_empty())
+            {
+                return Err(
+                    "Zusätzliche Quellen: höchstens 16, nur für zustandsbehaftete Modelle".into(),
+                );
+            }
+            let mut sources = HashSet::new();
+            for source in r.sources.iter().chain(r.source.iter()) {
+                if self.channel(source)?.direction != Direction::Output || !sources.insert(source) {
+                    return Err("Reaktionsquellen müssen verschiedene Ausgänge sein".into());
+                }
             }
             if r.enabled && !writers.insert(&r.target) {
                 return Err("Mehrere aktive Skripte schreiben denselben Eingang".into());
@@ -395,8 +415,8 @@ pub fn demo_project() -> Project {
     })
     .collect();
     Project { schema:1, name:"Meine erste Simulation".into(), tick_ms:20, packages, modules,
-        reactions:vec![Reaction { id:"valve-feedback".into(), name:"Ventilrückmeldung".into(), enabled:true,
-            source:Some(SignalRef { module:"do-bank".into(), channel:"ch1".into() }),
+        scenarios:vec![], reactions:vec![Reaction { id:"valve-feedback".into(), name:"Ventilrückmeldung".into(), enabled:true,
+            sources:vec![], stateful:false, source:Some(SignalRef { module:"do-bank".into(), channel:"ch1".into() }),
             target:SignalRef { module:"di-bank".into(), channel:"ch1".into() },
             code:"// Wirksamer Ausgang → Rückmeldung am Eingang\nfn react(output, previous, dt_s, time_s) {\n    if output > 0.5 { 1.0 } else { 0.0 }\n}".into() }] }
 }

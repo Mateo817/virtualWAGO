@@ -113,3 +113,71 @@ Projekte, keine Referenzgeräte. Sie testen die gebauten statischen Dateien mit
 dem echten Rustdienst. Die Pythonvergleichsdaten in `tests/fixtures/` stammen aus
 den öffentlichen Modellfunktionen, nicht von Hardware. Die bestehende
 Python-Forschungssuite und ihre CI bleiben getrennt bestehen.
+
+## Farbschema und Datenfrische
+
+Oben rechts **Farbschema → Hell / Dunkel / System** wählen. Die Auswahl wird
+lokal im Browser gespeichert. System folgt der Betriebssystemeinstellung.
+Nach 1,5 Sekunden ohne Snapshot meldet die Oberfläche **Live-Daten veraltet**
+und sperrt die Live-Bedienung. Das ist eine Anzeigeprüfung in Hostzeit, unabhängig
+von der Modellzeit. Bei Wiederverbindung werden keine Testbefehle wiederholt.
+Ein zweiter Dienst mit demselben `--state-dir` wird abgewiesen. Die bestehende
+`.workbench.lock` nicht löschen; die Sperre wird beim Prozessende freigegeben.
+
+## Mehrere Ausgangsgrößen und Modellzustand
+
+Im Skripteditor **Mehrere Quellen / Zustand** aktivieren und die Quellen wählen.
+Die Schlüssel stehen neben den Ausgängen. Jede Reaktion liefert weiterhin genau
+einen Eingang; gekoppelte Zustandsgrößen werden als numerische Map gehalten:
+
+```rust,ignore
+fn react_state(outputs, previous, state, dt_s, time_s) {
+    if !state.contains("elapsed") { state.elapsed = 0.0; }
+    // Beispiel mit den stabilen IDs des Demoprojekts.
+    if outputs["do-bank/ch1"] > 0.5 && outputs["do-bank/ch2"] > 0.5 {
+        state.elapsed += dt_s;
+    } else {
+        state.elapsed = 0.0;
+    }
+    #{value: if state.elapsed >= 0.2 { 1.0 } else { 0.0 }, state: state}
+}
+```
+
+Beide Quellen binden; Freigabe und Werte sind wirksame Größen. Höchstens 16
+Quellen und 16 endliche numerische Zustandswerte (Betrag ≤ 1e9). Der Zustand wird
+atomar mit dem Eingang übernommen und bei Reset/Projektaktivierung gelöscht.
+**Syntax prüfen** zeigt Compilerfehler mit Zeile/Spalte, ohne das Projekt zu
+aktivieren. Syntaxfarben sind eine Darstellungshilfe, der Rustcompiler entscheidet.
+
+## Szenarien
+
+Unter **Szenarien** eine Prüfung hinzufügen. Schritte setzen zu angegebenen
+Modellzeiten Testwerte und optional die Modellfreigabe. Erwartet wird ein
+Eingangsbereich innerhalb einer Frist. Zeiten und Fristen müssen Vielfache des
+Projektzyklus sein; die Frist ist einschließlich. Frist 0 prüft den bisherigen
+Eingang nach der Vorgabe, bevor ein neuer Reaktionstick stattfindet.
+
+**Szenario prüfen** verwendet eine neue isolierte Modellinstanz mit dem aktuellen
+Entwurf. Die aktive Sitzung bleibt unverändert, auch wenn sie läuft. Ein Treffer
+innerhalb des Fensters reicht für PASS; die Prüfung verlangt keine anschließende
+Dauerstabilität. Der Ergebnisexport enthält die vollständige Projektkonfiguration,
+Prüfergebnisse und bis zu acht Eingangsspuren. Grenzen: 16 Szenarien, 64 Schritte
+und 64 Prüfungen je Szenario, 1000 Modellschritte. Eine Prüfung je Dienst zugleich.
+
+## Signalvergleich, Aufnahme und Wiedergabe
+
+Unter **Live-I/O → Weitere Signale vergleichen** bis zu vier Kanäle wählen.
+Jede Kurve ist auf ihren eigenen Messbereich normiert; Legenden zeigen reale
+Werte, Einheiten und Grenzen. **Aufzeichnen** sammelt bis zu 5000 im Browser
+beobachtete Samples. **JSON exportieren** sichert eine wiedergebbare Datei,
+**CSV exportieren** dient Auswertungen. Aufnahme bleibt bei einem Wechsel zum
+Skripttab erhalten. Verbindungslücke, Reset oder Projektwechsel beendet sie.
+Browser-Neuladen verwirft unexportierte Aufnahmen.
+
+**Aufzeichnung laden** und der Positionsregler zeigen gespeicherte Werte.
+Wiedergabe ist reine Anzeige und erzeugt keine Testbefehle. Importgrenze 2 MiB;
+angezeigte Zeit ist Modellzeit, Wiedergabeabstände werden auf 10–1000 ms begrenzt.
+Die Anzeigeabtastung beträgt ungefähr 100 ms: Zwischenzyklen können fehlen.
+Dies ist kein vollständiger Zyklusrekorder.
+
+Die Entscheidungen und Grenzen sind in [ADR-0014](../docs/adr-0014.md) festgehalten.

@@ -44,3 +44,12 @@ Referenz-/Negativfälle, Grenzwerte und passende Projekt-/Skripttests. Stabilit�
 Fehlerverhalten und Zustandserhaltung sind wichtiger als bloße Testzahlen.
 Jeder PASS gilt nur für seinen geprüften Tree/Commit. Self-Review bleibt
 Self-Review; kein unabhängiger Hardware- oder Agentenreview wird daraus abgeleitet.
+
+## Ergänzte Werkzeuge für die Modulqualifikation
+
+[ADR-0014](adr-0014.md) dokumentiert zustandsbehaftete Mehrquellenreaktionen,
+Szenarien und getrennte Beobachtungsaufnahmen. Neue Erkenntnisse möglichst als
+Projekt-Szenario mit positiver Prüfung, Gate-/Negativfall und expliziter Frist
+ablegen. Der Bericht ist Softwaremodellevidence; die Quellen-/Hardwarestufe
+weiter getrennt angeben. Beispielprüfungen: `workbench/tests/workflows.rs`.
+Szenarioläufe verändern die aktive Sitzung nicht.
