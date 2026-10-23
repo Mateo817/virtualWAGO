@@ -1,5 +1,13 @@
 # virtualWAGO
 
+**Offline-Werkstatt, 23.10.2026:** Der neue [Rust-/Web-Produktpfad](workbench/README.md)
+ergänzt eine grafische Klemmenleiste, Live-I/O, versionierte nachladbare
+Modulbeschreibungen und Reaktionsskripte. Er arbeitet ausschließlich mit eigenen
+Signalmodellen; WAGO, CODESYS und VM sind im aktuellen Auftrag nicht freigegeben.
+Architektur: [ADR-0013](docs/adr-0013.md). Erweiterungsstellen und Folgearbeit:
+[Werkstattübergabe](docs/workbench-handoff.md). Die folgenden Runtime-/Hardware-
+Berichte bleiben historische, getrennte Evidenzstufen.
+
 **CAN2/DALI, 20.10.2026:** [Original-CAN-Stack und korrigierte PDO-Zuordnung](docs/can-native-boundary-2026-10-20.md): FW31-Projekt Build/Codegen/Reopen **PASS**. vcan-Linkadapter mit Originalruntime **PASS** im begrenzten Fenster; noch kein virtueller Teilnehmer. Reale Startup-SDOs und sechs zyklische PDO-Ströme **PASS** in der Kontrollkopie. IEC-/DALI-Abnahme **FAIL / OFFEN**: ausbleibende IEC-Protokollierung beziehungsweise Speicherfehler mit aktiven DALI-Bausteinen. Rücknahme aller 83 gesicherten Kopplerwerte und Original-STOP **PASS**. Keine DALI-Adressierung oder Lasttests. Die folgenden Meldungen sind historische Zwischenstände.
 
 **PWM-Erkundung, 19.10.2026:** [Begrenzter Async-Kanal](docs/pwm-async-exploration-2026-10-19.md): Originalruntime RUN und sieben wechselnde angeforderte PWM-Ausgangsframes **PASS** mit explizit synthetischer UID/Registerantwort, Modellpermit 0. Original-STOP und sieben unveränderte Dateien nach Rücknahme **PASS**. 286 lokale Tests ohne Skip. Original-Moduldiagnose, PWM-Skalierung und Hardwareabgleich bleiben **OFFEN / NOT_RUN**. Die folgenden Meldungen dokumentieren frühere Stände.

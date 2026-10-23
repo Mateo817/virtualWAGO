@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "id": "wago.750-600.standard",
+  "version": "0.1.0",
+  "article": "750-600",
+  "title": "Busabschluss",
+  "family": "passive",
+  "description": "Passiver Abschluss ohne erfundenen Prozessdatenkanal.",
+  "evidence": "docs/module-catalog-sources-2026-10-12.md",
+  "assumptions": "Eigenes Offline-Signalmodell; keine native ADI-Projektion, Registerkommunikation oder elektrische Hardwareabnahme. Keine elektronische Busidentität.",
+  "channels": []
+}

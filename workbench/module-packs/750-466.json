@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "id": "wago.750-466.standard",
+  "version": "0.1.0",
+  "article": "750-466",
+  "title": "2 analoge Eingänge",
+  "family": "ai",
+  "description": "Normbereichs-Signalmodell.",
+  "evidence": "docs/module-catalog-sources-2026-10-12.md",
+  "assumptions": "Eigenes Offline-Signalmodell; keine native ADI-Projektion, Registerkommunikation oder elektrische Hardwareabnahme. Normbereich und Quantisierung gemäß bestehendem Pythonmodell; inverse Ausgangsquantisierung ist eine eigene Modellannahme.",
+  "channels": [
+    {
+      "id": "ch1",
+      "label": "Kanal 1",
+      "direction": "input",
+      "kind": "analog",
+      "unit": "mA",
+      "min": 4,
+      "max": 20,
+      "initial": 4,
+      "encoding": {
+        "codec": "ai466_standard"
+      }
+    },
+    {
+      "id": "ch2",
+      "label": "Kanal 2",
+      "direction": "input",
+      "kind": "analog",
+      "unit": "mA",
+      "min": 4,
+      "max": 20,
+      "initial": 4,
+      "encoding": {
+        "codec": "ai466_standard"
+      }
+    }
+  ]
+}
