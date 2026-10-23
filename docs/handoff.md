@@ -1,5 +1,7 @@
 # Lokaler Agent: öffentlicher Übergabevertrag
 
+**Offlinefortsetzung, 23.10.2026:** [Neuer K-Bus-Analyseblock](kbus-kernel-reconstruction-2026-10-23.md) qualifiziert Gerätebaumdekodierung, Kernelentpackung und statische ioctl-/C166-Anschlüsse. Der `0xd0`-Längengegenbefund und die physische C166-Transferzuordnung bleiben offen. Keine Geräte-/VM-Ausführung oder Umschaltfreigabe. Die Sicherung vom 18.10.2026 bleibt unverändert.
+
 **Neuer getrennter Referenzaufbau, 14.10.2026:** Der
 [750-8212-Zwischenstand](reference-8212-2026-10-14.md) bindet read-only einen
 anderen Controller. `Application` blieb RUN; Foto und Offlineprojekt zeigen

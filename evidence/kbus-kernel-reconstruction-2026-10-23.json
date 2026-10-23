@@ -1,0 +1,370 @@
+{
+  "schema": 1,
+  "date": "2026-10-23",
+  "repository": "Mateo817/virtualWAGO",
+  "source_base_commit": "ec4ea6e3ccef391b76c291b44609e86ace3bc9e5",
+  "scope": "Offline static research; selected source/format/vector observations only; no lower-interface replacement implemented",
+  "claim_status": "VERIFIZIERT",
+  "complete_lower_contract_status": "OFFEN",
+  "historical_snapshot": {
+    "path": "analysis/xe164/results/2026-10-18",
+    "evidence_ids": 444,
+    "function_rows": 303,
+    "modified": false
+  },
+  "artifacts": [
+    {
+      "id": "FW31-SD-040901-31",
+      "size": 287309824,
+      "sha256": "49aa85c3801cb9d445bf900462bc235fa0ee9b7bbaf6f282341f05d9c9d7051c"
+    },
+    {
+      "id": "FW31-BOOT-LINUX",
+      "size": 8213856,
+      "sha256": "f6e03d6452e4648cd86f58ff5c869af0ebdcc6e8f3123458c73d6e81ccfede65"
+    },
+    {
+      "id": "DERIVED-FW31-KERNEL-IMAGE",
+      "size": 19239516,
+      "sha256": "dfa54a5a3ea91893bfd2a39add40fee571c0c653ad26e65c22b0c9d2cc9cbe78"
+    },
+    {
+      "id": "FW31-LIBPACKBUS-EXACT",
+      "sha256": "3b7b7ca4fa14e5994552040a7b40b1cfbbf43e0649a4ad9277ece421fd4bc5d6"
+    },
+    {
+      "id": "XE164-COMPOSITE",
+      "size": 17110,
+      "sha256": "5ab9fec0977c26ed4895f8e3d61009f0b371fe46fa9dc76017d6f31eff2f3983",
+      "mapping_status": "HYPOTHESE for physical placement; exact derived byte identity verified"
+    }
+  ],
+  "dtb": {
+    "status": "VERIFIZIERT",
+    "parser": "locally built libfdt 1.7.2; local source archive hash bound in private manifest",
+    "nodes": 4446,
+    "properties": 25934,
+    "fdtget_checks": 80,
+    "fdtdump_checks": 10,
+    "negative_controls": 60,
+    "compatible": "wago,spi-kbus",
+    "kbus_node": "/ocp/interconnect@48000000/segment@0/target-module@30000/spi@0/kbus@0",
+    "node_status": "okay",
+    "spi_parent_status": "okay",
+    "spi_max_frequency_numeric": 10000000,
+    "tty_property_type": "NUL-terminated ASCII string",
+    "files": [
+      {
+        "name": "am335x-pfc-750_8110_8111.dtb",
+        "inode": 14,
+        "size": 72654,
+        "sha256": "9829035aaca4a13bf1489e522246f6fc275f0fc34450818d0f66ac910431887f",
+        "tty_value": "ttyO4",
+        "gpio_property_suffix": "-gpios"
+      },
+      {
+        "name": "am335x-pfc-750_8112.dtb",
+        "inode": 15,
+        "size": 72666,
+        "sha256": "cf782aeb5a14b2b185313db1a89e1b90416a6585790fcaf5e9fec42dc9939391",
+        "tty_value": "ttyO4",
+        "gpio_property_suffix": "-gpios"
+      },
+      {
+        "name": "am335x-pfc-750_8210.dtb",
+        "inode": 16,
+        "size": 76529,
+        "sha256": "aebf8cef6ab9c6e97839875c8acb4c6c36f470c2c6aadc2a80681d3f465e0d0a",
+        "tty_value": "ttyO5",
+        "gpio_property_suffix": "-gpio"
+      },
+      {
+        "name": "am335x-pfc-750_8211.dtb",
+        "inode": 17,
+        "size": 76145,
+        "sha256": "cb3dc462cf8b656c85c541d1d389b3f2c31c5dfb8cac4ac476d8845a2a356ad7",
+        "tty_value": "ttyO5",
+        "gpio_property_suffix": "-gpio"
+      },
+      {
+        "name": "am335x-pfc-750_8212.dtb",
+        "inode": 18,
+        "size": 74741,
+        "sha256": "05b9cd658769a11b39408df8867186e2708ee04007882e16a6e1d8d38865e07d",
+        "tty_value": "ttyO5",
+        "gpio_property_suffix": "-gpio"
+      },
+      {
+        "name": "am335x-pfc-750_8213.dtb",
+        "inode": 19,
+        "size": 74710,
+        "sha256": "ad7e08048ff605a6c56ee73589188d66b1fead457f443b4f8d5e135282d97c56",
+        "tty_value": "ttyO5",
+        "gpio_property_suffix": "-gpio"
+      },
+      {
+        "name": "am335x-pfc-750_8214.dtb",
+        "inode": 20,
+        "size": 74853,
+        "sha256": "6662c0344f5904a338ff45f0ab1f40c72d3d7fd76c7994a1f525b8fa6025080c",
+        "tty_value": "ttyO5",
+        "gpio_property_suffix": "-gpio"
+      },
+      {
+        "name": "am335x-pfc-750_8215.dtb",
+        "inode": 21,
+        "size": 79627,
+        "sha256": "a8089113aa6d2ee0f6a380e8204c1e059c3f9010e4a700bddffc6c28d7118d61",
+        "tty_value": "ttyO5",
+        "gpio_property_suffix": "-gpio"
+      },
+      {
+        "name": "am335x-pfc-750_8216.dtb",
+        "inode": 22,
+        "size": 75688,
+        "sha256": "a1036085ab60b312b86a81c8cc04eaadc2216f19d734f134d3ebfa6959d66b45",
+        "tty_value": "ttyO5",
+        "gpio_property_suffix": "-gpio"
+      },
+      {
+        "name": "am335x-pfc-750_8217.dtb",
+        "inode": 23,
+        "size": 74862,
+        "sha256": "5439d458b0ea6e0caf204d162955bfb3ff3df5369984e4dacb3a7fbdca2ef8ae",
+        "tty_value": "ttyO5",
+        "gpio_property_suffix": "-gpio"
+      }
+    ],
+    "limits": [
+      "active DTB and driver/device binding OFFEN",
+      "phandle/GPIO references are static associations; no physical signal semantics"
+    ]
+  },
+  "kernel_decode": {
+    "status": "VERIFIZIERT",
+    "source_offset_start": "0x488c",
+    "source_offset_end_exclusive": "0x7d552f",
+    "block_count": 74,
+    "trailer_bytes": 49,
+    "header_and_block_checksums": "PASS",
+    "two_decoders_byte_equal": "PASS",
+    "decoders": [
+      "locally built LZO 2.10 safe decoder with source-backed bounded lzop framing",
+      "independent locally built BusyBox 1.37.0 C unlzop"
+    ],
+    "author_negative_controls": 10,
+    "independent_negative_controls": 10,
+    "target_execution": "NOT_RUN",
+    "kernel_release_static": "6.6.94-rt56-w05.08.02"
+  },
+  "symbols": {
+    "status": "VERIFIZIERT",
+    "count": 46282,
+    "markers": 181,
+    "tokens": 256,
+    "static_link_minus_image_offset": "0xc0008000",
+    "method": "exact same-Image reader instruction/data joins and independent name/pointer joins",
+    "kbus_ioctl_image_offset": "0x76a5d4",
+    "kbus_ioctl_static_link_address": "0xc07725d4",
+    "runtime_binding": "OFFEN",
+    "callback_table_role": "HYPOTHESE"
+  },
+  "kernel_requests": {
+    "status": "VERIFIZIERT",
+    "rows": [
+      {
+        "request": "0x40184b01",
+        "argument_copy_bytes": 24,
+        "selected_followup": "kbus_data_txrx"
+      },
+      {
+        "request": "0x401c4b02",
+        "argument_copy_bytes": 28,
+        "selected_followup": "kbus_cmd_txrx"
+      },
+      {
+        "request": "0x40084b03",
+        "argument_copy_bytes": 8,
+        "selected_followup": "local writes then spi_setup"
+      },
+      {
+        "request": "0x40184b04",
+        "argument_copy_bytes": 24,
+        "selected_followup": "kbus_binary_txrx"
+      }
+    ],
+    "userspace_source_evidence_id": "E-XE164-412",
+    "userspace_numeric_join": "first three requests and byte counts only",
+    "fallback_type_byte_checked": false,
+    "fallback_state_writes_before_guards": true,
+    "sync_route": "spi_async followed by wait_for_completion on selected zero-return path",
+    "timeout_units": "OFFEN; no timeout argument at this selected completion wait",
+    "limits": [
+      "copy success/current register/frame/object preservation are explicit requirements",
+      "full UAPI/layout/callback/IRQ/DMA/concurrency contract OFFEN"
+    ]
+  },
+  "xe164_join": {
+    "status": "HYPOTHESE",
+    "c166_command_file_range": [
+      "0x31c4",
+      "0x33a8"
+    ],
+    "local_opcode_and_field_instructions": "VERIFIZIERT; full correspondence depends on current registers/DPP/buffer/path",
+    "reply_relative_offsets": {
+      "status": 2,
+      "count": 4,
+      "payload": 6
+    },
+    "d0_counterexample": {
+      "local_values_status": "VERIFIZIERT",
+      "l3_payload_halfwords": 24,
+      "selected_host_tag": 10,
+      "host_expected_payload_halfwords": 6,
+      "interpretation": "Under a direct shared-buffer interpretation the selected static lengths disagree; no executed mismatch or bug claimed"
+    },
+    "physical_logical_buffer_spi_join": "OFFEN",
+    "source_validation": "169+149 instruction-byte/replay checks plus separate selected raw/ISA review; common C166 semantics, no derivative SFR or CPU execution proof"
+  },
+  "evidence": [
+    {
+      "evidence_id": "E-XE164-445",
+      "package_id": "WP-XE164-440",
+      "status": "VERIFIZIERT",
+      "scope": "Historical source/tool availability revalidated; no valid installed decoder established by this package",
+      "manifest_sha256": "43dee042cc3674562854168909f8dfae6eb92f97afc75546eb58b619543d44eb",
+      "report_sha256": "9a80a67cc1805be37030a7caac2a523f1dbd9799a172e84b4f11ff9135d44416",
+      "validation": "PASS",
+      "review_kind": "author analysis; Root integration Self-Review"
+    },
+    {
+      "evidence_id": "E-XE164-446",
+      "package_id": "WP-XE164-441",
+      "status": "VERIFIZIERT",
+      "scope": "Ten exact static DTB artifacts and raw-string inventory; no property parsing in historical package",
+      "manifest_sha256": "290b551d625f8744a6164e14ca49dea16841cf1def5c7d98fca2e0d128bbeb50",
+      "report_sha256": "d20c8c039005282353c685e589b2c0c10d12da29a770fbe8589b1dc30e9b87af",
+      "validation": "PASS",
+      "review_kind": "author analysis; Root integration Self-Review"
+    },
+    {
+      "evidence_id": "E-XE164-447",
+      "package_id": "WP-XE164-442",
+      "status": "VERIFIZIERT",
+      "scope": "Historical independent inventory/string audit freshly revalidated",
+      "manifest_sha256": "46cdaf94546f9081b67a8dbf15d25e6715c022d1c01418601b5d0d41f81177b3",
+      "report_sha256": "2f00ee88e990e9e33307a720484e636c890ec57c054f0d6eb1f753dd22a1259f",
+      "validation": "PASS",
+      "review_kind": "independent static audit; Root integration Self-Review"
+    },
+    {
+      "evidence_id": "E-XE164-448",
+      "package_id": "WP-XE164-443",
+      "status": "VERIFIZIERT",
+      "scope": "Source-backed libfdt property/node decode; no active tree or hardware claim",
+      "manifest_sha256": "b4cd005054b125607206517fb8b0cf851e5031d816eceef1d7a820c19bf1cf96",
+      "report_sha256": "4551e46752153a9eb6c5c7fd49b25ee99e77d8aeb4f740190a1c1e89105d1e48",
+      "validation": "PASS",
+      "review_kind": "author analysis; Root integration Self-Review"
+    },
+    {
+      "evidence_id": "E-XE164-449",
+      "package_id": "WP-XE164-444",
+      "status": "VERIFIZIERT",
+      "scope": "Exact bounded static lzop/kernel decode, no kernel execution",
+      "manifest_sha256": "a2dc89f68efcd8bd23edfa34cd05167243541252defb974ae196d5bd17e0dc9d",
+      "report_sha256": "232f304835a48fb4112d9e19199db18376565d394aeca3c7098db64b4ad69ff8",
+      "validation": "PASS",
+      "review_kind": "author analysis; Root integration Self-Review"
+    },
+    {
+      "evidence_id": "E-XE164-450",
+      "package_id": "WP-XE164-445",
+      "status": "VERIFIZIERT",
+      "scope": "Same-Image reader-backed symbol decode/static file mapping, no runtime mapping",
+      "manifest_sha256": "6b82b2e80465f51ba047df216d753da02168414cec7efb3f431d076cbeecf30c",
+      "report_sha256": "47cc05c52d60badf19b940e08fbda5dc08766c99045c85d57fc77bc2b0f7f40c",
+      "validation": "PASS",
+      "review_kind": "author analysis; Root integration Self-Review"
+    },
+    {
+      "evidence_id": "E-XE164-451",
+      "package_id": "WP-XE164-446",
+      "status": "VERIFIZIERT",
+      "scope": "Exact numeric ioctl/local copy/helper source vectors; full UAPI open",
+      "manifest_sha256": "c8b6a6cc4e86d42d1ef31b97f4930dee55b6c6bdb189da48a83776d3e61ca136",
+      "report_sha256": "4f05258f8d4cf13436e1ef6b000f04dd089fde279a63fc3f19ea2f69c1c6f5e3",
+      "validation": "PASS",
+      "review_kind": "Root Self-Review"
+    },
+    {
+      "evidence_id": "E-XE164-452",
+      "package_id": "WP-XE164-447",
+      "status": "VERIFIZIERT",
+      "scope": "Independent BusyBox C decode/frame audit of WP444",
+      "manifest_sha256": "e0d8979c304a21d74bb630d918960d6e58ab587b7e44c389961daf1948fc349e",
+      "report_sha256": "8adb570f425c9a113c3ebc60b689ea555fee872f4b8fff4f2d5d55db7fc6888f",
+      "validation": "PASS",
+      "review_kind": "independent static audit; Root integration Self-Review"
+    },
+    {
+      "evidence_id": "E-XE164-453",
+      "package_id": "WP-XE164-448",
+      "status": "VERIFIZIERT",
+      "scope": "Independent689kernel/leaf+160Userspaceword audit confirms4selected kernel vectors,3original numeric joins, initial instrumentation preservation and17selector controls; selected transfer/sync/property positions and final root prose checked.",
+      "limits": "Selected static source only; no full UAPI or runtime claims.",
+      "manifest_sha256": "a36d7ab5696c30d07b46b9eb88e755763770f4bce94afcebc256d44baa086f3b",
+      "report_sha256": "3e82acf15c9c20437c44675bae77d49aa5a43c053f3fbde4f49f306ec006248e",
+      "validation": "PASS",
+      "review_kind": "independent static audit; Root integration Self-Review"
+    },
+    {
+      "evidence_id": "E-XE164-454",
+      "package_id": "WP-XE164-449",
+      "status": "HYPOTHESE",
+      "scope": "Exact169command+149helper/counter instructions and caller edges give11selected opcode values and matching relative request/reply positions. Candidate physical conversation remains conditional. Selected D0 local count24halfwords versus host6 is preserved as a counterexample.",
+      "limits": "Current registers/opaque-call effects/DPP/logical buffer backing/actual SPI/SFR identity remain open; no executed mismatch or bug.",
+      "manifest_sha256": "c4caad68516f01534634940d20adb7bbbf68172d168e4bb295fd386584c24140",
+      "report_sha256": "ea306a1056d9c8f3adbca3675003c9a76ceb3bb20369696a8bb750fe6f966d48",
+      "validation": "PASS",
+      "review_kind": "author analysis; Root integration Self-Review"
+    },
+    {
+      "evidence_id": "E-XE164-455",
+      "package_id": "WP-XE164-450",
+      "status": "VERIFIZIERT",
+      "scope": "Independent raw source plus authoritative common-C166 CMPD1/MOV semantics confirm exact selected opcode/header/caller/helper joins and48byteD0loop/count24 against conditional host12byte/6halfword expectation. Initial validator literalpool metadata mistake corrected before finalPASS.",
+      "limits": "Reproducible same-decoder listings plus selected independent semantics/model only; no full CPU execution, derivative SFR map, runtime or hardware proof.",
+      "manifest_sha256": "7c1f1d8a6c829cc84b3a4a0da8304935e5cc80adf358600df5bb4df63b1a88a6",
+      "report_sha256": "4ab94dbadf172cf306840b82d0308eee783c1832e56e2d0f5df6b257425b7cc6",
+      "validation": "PASS",
+      "review_kind": "independent static audit; Root integration Self-Review"
+    }
+  ],
+  "public_validation": {
+    "snapshot_integrity": "PASS; unchanged historical snapshot only",
+    "unit_tests_run": 233,
+    "unit_tests_passed": 232,
+    "unit_tests_skipped": 1,
+    "skip_reason": "bubblewrap unavailable in local environment; CI provisions bubblewrap",
+    "private_analysis_validation": "separate frozen-package read-only validators; not run in public CI"
+  },
+  "not_run": [
+    "kernel boot",
+    "vendor target-program execution",
+    "VM actions",
+    "target networking",
+    "bus/hardware access"
+  ],
+  "remaining_questions": [
+    "D0 sender/callee context and actual buffer mapping",
+    "C166 numeric transfer registers to physical SPI/DMA/SFR contract",
+    "complete lower UAPI pointer/lifecycle/concurrency/error/time behavior",
+    "actual active kernel/DTB/file-operation/device binding"
+  ],
+  "canonical_private_counts": {
+    "evidence_ids": 455,
+    "function_rows": 314,
+    "columns": 12
+  }
+}
