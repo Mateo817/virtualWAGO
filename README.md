@@ -1,5 +1,9 @@
 # virtualWAGO
 
+**Erweiterter K-Bus-Offlinestand:** [Builder-Modell, Daten- und Codegrenzen, SPI-Aufteilung, Speicherpolicies und Resetverbindungen](docs/kbus-offline-extensions-2026-10-23.md). Die neuen Quellenverträge und unabhängigen Prüfungen erweitern den früheren begrenzten [Hauptpfad-Audit](docs/kbus-decompilation-continuation-2026-10-23.md). Modellkorrekturen bleiben separat nachvollziehbar. Physische Zuordnung, tatsächliche Enginewerte und Hardwareverhalten bleiben offen.
+
+**K-Bus-Offlineanalyse, 23.10.2026:** [Gerätebaum, entpackter Kernel und XE164-Grenze](docs/kbus-kernel-reconstruction-2026-10-23.md): zehn DTBs formatgebunden dekodiert, Kernel mit zwei Decodern bytegleich entpackt, Symbolabbildung und vier ioctl-Zweige gebunden. Gezielter C166-/ARM-Formatabgleich mit konkretem `0xd0`-Längengegenbefund; vollständiger Busvertrag bleibt OFFEN. Keine Ziel-, VM- oder Hardwareausführung.
+
 Forschung zur I/O-Simulation unterhalb des originalen WAGO/CODESYS-I/O-Stacks. Erstes Ziel ist die autorisierte Referenz-WAGO mit ihrer bereits laufenden originalen Runtime, dem nativen I/O-Manager und originalen WAGO-I/O-Treibern; die untere Hardwareanbindung soll erst nach Beleg ihrer Schnittstelle simuliert werden. Eine vollständig virtuelle Steuerung ist ein späteres Ziel. Unabhängiges Forschungsprojekt; keine behauptete Herstellerfreigabe.
 
 **Neuer getrennter Referenzaufbau, 14. Oktober 2026:** Der [read-only gebundene
@@ -64,7 +68,7 @@ Details und Gates: [ADR-0003](docs/adr-0003.md).
 
 ## Stand der Umsetzung
 
-Der neue [Modulkatalog](docs/module-catalog-2026-10-12.md) enthält 14 Standardartikel und neun ausführbare eigene Offlineprofile: Digital mit 2/4/8/16 Kanälen, normale Analogsignale der 750-466 und autonomes PWM Frq der 750-677. Gemischte Bestückungen, Kanalgrenzen und eigene Watchdoglease sind implementiert; die aktuelle lokale Suite umfasst **197 PASS**. Weitere dokumentierte Kandidaten bleiben unimplementiert. Die beiden nativen Digitalprofile sind frisch und getrennt geprüft. Native Analog-/PWM-/Seriellabnahme und Hardwarevergleich **NOT_RUN**; neun Standalone-Modelle bedeuten keine neun native Runtimeprofile. Serielle Schnittstellen und andere PFC200-Ausstattungen stehen in der Roadmap.
+Der neue [Modulkatalog](docs/module-catalog-2026-10-12.md) enthält 14 Standardartikel und neun ausführbare eigene Offlineprofile: Digital mit 2/4/8/16 Kanälen, normale Analogsignale der 750-466 und autonomes PWM Frq der 750-677. Gemischte Bestückungen, Kanalgrenzen und eigene Watchdoglease sind implementiert; die damalige lokale Suite umfasste **197 PASS**. Weitere dokumentierte Kandidaten bleiben unimplementiert. Die beiden nativen Digitalprofile sind frisch und getrennt geprüft. Native Analog-/PWM-/Seriellabnahme und Hardwarevergleich **NOT_RUN**; neun Standalone-Modelle bedeuten keine neun native Runtimeprofile. Serielle Schnittstellen und andere PFC200-Ausstattungen stehen in der Roadmap.
 
 ```sh
 python3 tools/module_catalog.py list

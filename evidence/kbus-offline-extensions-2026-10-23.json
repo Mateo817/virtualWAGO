@@ -1,0 +1,326 @@
+{
+  "schema": 1,
+  "date": "2026-10-23",
+  "repository": "Mateo817/virtualWAGO",
+  "source_base_commit": "e16e8b1badaa6ca28944e954355e48c7906beab1",
+  "scope": "Expanded owner-directed offline source contracts and explicitly own restricted software models; native CPU/vendor/kernel/engine/VM/device execution NOT_RUN",
+  "claim_status": "VERIFIZIERT",
+  "complete_lower_contract_status": "OFFEN",
+  "continuation_status": "CLOSED_SELECTED_EXPANDED_SOURCE_QUESTIONS: independent final capacity review found no further concretely bound offline edge in this chain; complete lower hardware contract remains OFFEN",
+  "historical_snapshot": {
+    "path": "analysis/xe164/results/2026-10-18",
+    "modified": false
+  },
+  "private_canonical": {
+    "evidence_ids": 526,
+    "function_rows": 385,
+    "columns": 12
+  },
+  "new_package_count": 16,
+  "new_evidence": [
+    {
+      "evidence_id": "E-XE164-511",
+      "package": 508,
+      "name": "Alternate SPI transfer splitting and resource ownership",
+      "status": "VERIFIZIERT",
+      "source_scope": "Image760690/7608D8,75D6BC,75B2E8,75ED04,76098C",
+      "claim": "The conditional mode 0x1000 branch splits ordinary stable lengths using the actual 92-byte replacement records and restores list ownership in LIFO order. Early errors retain earlier mutations.",
+      "limits": "Selected maxima 1–32 and lengths 1–4096; valid native objects, allocation/copy/list effects and sequential ownership required. No active mode producer or native execution proved.",
+      "review": "Root Self-Review; no independent worker review.",
+      "next": "Selected source question closed at its declared conditional scope; external current-state/hardware boundary remains open.",
+      "manifest_sha256": "153454886defd2a595907062aa9929138afbcbeac7edf9cc0f8ec3e0df4b357d",
+      "report_sha256": "d984639fda399c85f3b6cd9ee165de9cc8330aae75a056533445da1c160625da",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-512",
+      "package": 509,
+      "name": "Actual allocation-policy and mask producers",
+      "status": "VERIFIZIERT",
+      "source_scope": "Image boot/setup/export/policy writer windows",
+      "claim": "Actual export/setup readers bind allocation/free controls, boot Boolean writers, the BSS zero request and initial/later mask producers.",
+      "limits": "Conditional preserved boot history, not current policy. The bounded census does not exclude computed/module aliases or prove native allocation.",
+      "review": "Author and Root integration Self-Review.",
+      "next": "Selected source question closed at its declared conditional scope; external current-state/hardware boundary remains open.",
+      "manifest_sha256": "6305eb5f87f61c47448353d30e991bee4a58d1f1a486aebb23af1d72dd447f32",
+      "report_sha256": "779d089b13692da2bd72ccbb04ed585c610a9ff22f05cc00c9bab171c4abea53",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-513",
+      "package": 510,
+      "name": "Actual raw C166 builder and independent bit-reference comparison",
+      "status": "VERIFIZIERT",
+      "source_scope": "Composite2E14..31C2,2CD8..2DDA; selected generated programs",
+      "claim": "The restricted raw-instruction interpreter follows the actual builder and emitters: 305 bit-reference comparisons, 445 positions and 88/89 primary branch outcomes. Cursor failure defaults are checked.",
+      "limits": "Explicit SV2, DPP/MD/frame and known-memory premises; selected stable domains. No complete ISA/native conformance. Adjacency, interval bounds and code capacity are separate contracts.",
+      "review": "Author Self-Review; independent WP517 confirms selected outputs and records a separate Carry-state FAIL.",
+      "next": "Selected source question closed at its declared conditional scope; external current-state/hardware boundary remains open.",
+      "manifest_sha256": "7831ca0285003fa390e65d464f9a3b61f7c5ab2b52d7edcd1cd103f60feb8a08",
+      "report_sha256": "21e6a3c86388ee1fbd6f600abed7cac852b2d6d3b7bad25ebd27039a81a90ffa",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-514",
+      "package": 511,
+      "name": "Boot caller, guard, wait/retry and error behavior",
+      "status": "VERIFIZIERT",
+      "source_scope": "libpackbus A470..A888,A8F8..A904,A908..A91C,946C..95D8",
+      "claim": "Actual PIC-bound guard, retry/timeouts, write/read error fallthrough, current-byte testing, fd geometry and outer recovery request are source-bound.",
+      "limits": "Native ABI/current callbacks and state preservation required. The original isolated SP+36 predicate checks only unconditional STR R0; WP516 supplies the stronger actual-store inventory.",
+      "review": "Root Self-Review; independent WP516 critical-path review PASS with the validator qualification retained.",
+      "next": "Selected source question closed at its declared conditional scope; external current-state/hardware boundary remains open.",
+      "manifest_sha256": "7a9e1389bada524c16f975b583bc9c37dc8904cf3ed83070d4a31954a052e76d",
+      "report_sha256": "a63d90fd293f119653b60a73a5f19a3284d2160a7f726f5b8a4d83f0d918ae44",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-515",
+      "package": 512,
+      "name": "Recovery class/device/attribute identity join",
+      "status": "VERIFIZIERT",
+      "source_scope": "Image1004EA0,6CB940,6C6680,6C65B0,7689B4,6C12C4",
+      "claim": "Actual class/device producers, exported globals and reset-attribute consumer conditionally match the library recovery literal.",
+      "limits": "Successful native registration, current object preservation and mounted sysfs topology required. Not every creation result is checked locally; no live file or physical reset proved.",
+      "review": "Root Self-Review.",
+      "next": "Selected source question closed at its declared conditional scope; external current-state/hardware boundary remains open.",
+      "manifest_sha256": "c123dcb7c82e97406dcbe5fcb7847b715bbf048315ef09cf010809705cd4f471",
+      "report_sha256": "c7d21a86e91928a581958e590ad06891fe97a0def023f56dfd36af891102b7c3",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-516",
+      "package": 513,
+      "name": "SV2 JMPA prediction-attribute reference binding",
+      "status": "VERIFIZIERT",
+      "source_scope": "Official C166S V2 ArchitectureOverview V1.1/2006-02 printed49; actual compositeEA91",
+      "claim": "An official public primary reference binds JMPA bit 8 to prediction and preserves the condition interpretation of the actual EA?1 variants.",
+      "limits": "Narrow reference qualification; actual derivative, timing and complete ISA conformance remain unproved. The gated core manual was not acquired.",
+      "review": "Root Self-Review.",
+      "next": "Selected source question closed at its declared conditional scope; external current-state/hardware boundary remains open.",
+      "manifest_sha256": "bd06a1580f243a1c453b646d533bfe0f0f2e573be0d9071a95b0ab49a0cab604",
+      "report_sha256": "75bedb8ad73e0ed8898e6d7a65eeaa4cceb21afd33e0273d82741aaa37cb82a2",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-517",
+      "package": 514,
+      "name": "Conditional Init-on-Free zero extent and immediate handoff",
+      "status": "VERIFIZIERT",
+      "source_scope": "Image2FABE4,2FB030,BD7F40,2FD368,2FA828,2FA3B4",
+      "claim": "Positive captured free policy and accepted preparation request one 4096-byte zero operation per original page before the selected immediate metadata handoff.",
+      "limits": "Valid page/mapping-generation identity, ownership, native zero completion and preservation required. Merged neighbors and arbitrary later allocation history are not proved zero.",
+      "review": "Author and Root integration Self-Review.",
+      "next": "Selected source question closed at its declared conditional scope; external current-state/hardware boundary remains open.",
+      "manifest_sha256": "f4baa6b898817ea2db6fabdb72246ebbe9e5a014d215fcfa6dbbe29698568572",
+      "report_sha256": "641e2c03a9b841591efb48892b1433d17acb32434ff482cdfbfee0c4d9a73a52",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-518",
+      "package": 516,
+      "name": "Independent critical-path review of511",
+      "status": "VERIFIZIERT",
+      "source_scope": "Exact FW31 libpackbus boot/reset/init bodies and2PLTreaders",
+      "claim": "Independent critical-path review confirms WP511 guard/retry/error/recovery conclusions and inventories all 28 actual stores. The original stack-gap source conclusion remains supported.",
+      "limits": "The original isolated predicate weakness is retained separately; it is not a report-level FAIL or a bypass of full hash/replay integrity. Native binding and effects remain premises.",
+      "review": "Independent reviewer of Root WP511; reviewer integrity checks are Self-Review.",
+      "next": "Selected source question closed at its declared conditional scope; external current-state/hardware boundary remains open.",
+      "manifest_sha256": "95fb32739983f9b7760f1ca8fe9a60b3b98bb0ce434a96853130838b64bf0e83",
+      "report_sha256": "51b527cda34101ed73a6bda416789fa79b1b3c5c6a4a4cdb3e0ffce87ff39666",
+      "validation": "PASS",
+      "review_result": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-519",
+      "package": 515,
+      "name": "Fresh-init producer adjacency and grouped builder intervals",
+      "status": "VERIFIZIERT",
+      "source_scope": "Composite13F8,1A06,1AB8..1D14,F38/101A,2EBC..2F32",
+      "claim": "Old bit-7 length rounding, later complete flag replacement and final mode-0 retention can leave a gap even in the supplied fresh single-attempt source-state composition.",
+      "limits": "Compatible supplied observations and successful helper/wait predicates remain premises. Not native initialization, physical reachability or a firmware-defect claim.",
+      "review": "Author Self-Review; independent Root WP518 stage review PASS.",
+      "next": "Selected source question closed at its declared conditional scope; external current-state/hardware boundary remains open.",
+      "manifest_sha256": "2547adccc0fd10dca3faee4b0f467a72fd3c65908693d310b950ddb15439aafc",
+      "report_sha256": "74bd4951feee772893633eab7a9367cac201f4a271ca67e3977fa747dcec71a0",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-520",
+      "package": 518,
+      "name": "Independent review of515 stage composition",
+      "status": "VERIFIZIERT",
+      "source_scope": "Exact composite selectedrounding/flags/init/mux/coalescing windows",
+      "claim": "Independent scan, flag, stage and per-bit equations confirm WP515's conditional adjacency result and supplied fresh composition; 32,766 distance controls pass.",
+      "limits": "Limited independent stage review, not another CPU interpretation or real engine/sample-feasibility proof.",
+      "review": "Independent Root review of WP515; own integrity checks are Self-Review.",
+      "next": "Selected source question closed at its declared conditional scope; external current-state/hardware boundary remains open.",
+      "manifest_sha256": "5634a794e8d96aed44c70f2bf13ce8c3807b51623ce0743355f860e182de75ee",
+      "report_sha256": "07d8b5a8e9d650d878ae11818cc93f396d8ca91980b4fbeb94a2b837a0eabc3e",
+      "validation": "PASS",
+      "review_result": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-521",
+      "package": 517,
+      "name": "Independent raw builder/output review and retained Carry-state FAIL",
+      "status": "VERIFIZIERT",
+      "source_scope": "Exact composite builder/emitter source,private510model and C166/SV2 references",
+      "claim": "Independent byte-oriented decoder/oracle confirms 305 cases and 306 streams. Ten actual AND/OR/BMOV sites have a retained architectural Carry-state FAIL, dead before the selected consumers.",
+      "limits": "PASS for declared outputs and consumed C/Z, not ISA/CPU conformance. A changed-count branch control does not upgrade the stable primary 88/89 result.",
+      "review": "Independent reviewer of WP510; reviewer integrity checks are Self-Review.",
+      "next": "Selected source question closed at its declared conditional scope; external current-state/hardware boundary remains open.",
+      "manifest_sha256": "87213f2c1ba395d787acf298597a1248bece12fd88132a9fee73cf45ea7400c9",
+      "report_sha256": "1477ad24430c99da523cdf4a19dfd247acdd17388374cb0e23e8066288045501",
+      "validation": "PASS",
+      "review_result": "PASS selected outputs; FAIL partial Carry-state conformance"
+    },
+    {
+      "evidence_id": "E-XE164-522",
+      "package": 520,
+      "name": "Separate Carry-clear correction over immutable510",
+      "status": "VERIFIZIERT",
+      "source_scope": "Own explicit correction layer over10actual66/70/76/4Apositions in frozen510",
+      "claim": "A separate immutable correction layer clears Carry for ten actual AND/OR/BMOV sites. Sixty state controls and all 305 original suite findings pass unchanged.",
+      "limits": "Only declared opcode/C/Z/output boundaries corrected; other architectural/context/native premises remain. Original WP510/WP517 FAIL stays recorded.",
+      "review": "Root Self-Review; independent WP521 remediation review PASS.",
+      "next": "Selected source question closed at its declared conditional scope; external current-state/hardware boundary remains open.",
+      "manifest_sha256": "c8dd8f880014cb7dd6a617a49143e86197a77c0a9b1f274a5b2bd7f36d8e2c7d",
+      "report_sha256": "e657fa72d5eb4e2c29b64890e88f5f7b4deceb94baf75f3926760fed05e2c1a6",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-523",
+      "package": 521,
+      "name": "Independent Carry remediation review of520",
+      "status": "VERIFIZIERT",
+      "source_scope": "Exact composite/raw510 boundaries, frozen510/517 and explicitRoot520correction",
+      "claim": "Independent remediation checks pass: 320 state controls, 42 Carry-preserving MOV controls, 12 paired unsupported-state controls and 305 byte/bit output comparisons across 306 streams.",
+      "limits": "Limited correction/output boundary. The complete original findings remain identical, and the original Carry-state FAIL is preserved.",
+      "review": "Independent reviewer of Root WP520; reviewer integrity checks are Self-Review.",
+      "next": "Selected source question closed at its declared conditional scope; external current-state/hardware boundary remains open.",
+      "manifest_sha256": "e46825ae7a69ffe860cbcfcb441e9854576dc9e0f4cc30e9ea311595b58891da",
+      "report_sha256": "da2effb648b529f37177e664214e9e1854a26087d5c649d210ba34953acb3777",
+      "validation": "PASS",
+      "review_result": "PASS correction and selected outputs; original517partialflagFAIL preserved"
+    },
+    {
+      "evidence_id": "E-XE164-524",
+      "package": 519,
+      "name": "Fresh scalar bounds versus grouped interval and stride ownership",
+      "status": "VERIFIZIERT",
+      "source_scope": "Composite154C..1594,1BBC..1CC6,2EDC..2F92;42pins and actualRoot520correctedbuilder",
+      "claim": "Fresh stable even stride and phase bound 1–4 make the low-MDL gate equivalent to the full product <=4096. A final mode-0/flag composition can still cross nominal strides; per-group bounds supply sufficient word separation.",
+      "limits": "Uses the corrected WP520 layer. Supplied observations/helper/context remain premises. The known RAM span is not an allocation boundary; no physical fault is observed.",
+      "review": "Author and Root integration Self-Review.",
+      "next": "Selected source question closed at its declared conditional scope; external current-state/hardware boundary remains open.",
+      "manifest_sha256": "c98f76498dfb8bd034dd2d0bc395d9506ab69a122019dd3ee1d172cd7d64ef20",
+      "report_sha256": "8a9c6025b4704d828f44ccc6e184bfbe5569166dab25963a005e3936cd3a06b8",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-525",
+      "package": 522,
+      "name": "Fresh bounded input does not guarantee emitted-code capacity",
+      "status": "VERIFIZIERT",
+      "source_scope": "Exact composite builder/emitters/count guard, source-compatible250record samples, correctedRoot520model",
+      "claim": "A source-compatible fresh 250-record, M4 composition passes scalar/group-interval gates yet requires 6010 code bytes per complete phase. Actual corrected interpretation reaches the phase-2 cursor guard and returns status 2.",
+      "limits": "Supplied helper/sample/context and prior fill/default preservation required. After-return valid routines/defaults only; no atomic publication, native initialization or physical failure proved.",
+      "review": "Author Self-Review; independent WP523 capacity review PASS.",
+      "next": "Selected source question closed at its declared conditional scope; external current-state/hardware boundary remains open.",
+      "manifest_sha256": "22d3b782e2d291c562846646ecd64b657e47d0c45d75bbff619861dfd8ac26d3",
+      "report_sha256": "d51f5ce778c656218989a9733365e17daa9fe675bf999a2d708db80628a0c50d",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-526",
+      "package": 523,
+      "name": "Independent fresh bounded code-capacity review",
+      "status": "VERIFIZIERT",
+      "source_scope": "Pinned frozen522/519/520 and1251originalrecords/74anchors; independent sample/byte/output references",
+      "claim": "Independent source/sample constraints, emitted-byte construction and output oracle confirm the fresh code-capacity witness, final records and prehistory/status qualifications.",
+      "limits": "The actual guards prevent further code writes. Phase 3 is unchanged, not reset by the builder. No all-time pointer, IRQ/current consumer or real engine-feasibility claim.",
+      "review": "Independent reviewer of WP522; reviewer integrity checks are Self-Review.",
+      "next": "Selected source question closed at its declared conditional scope; external current-state/hardware boundary remains open.",
+      "manifest_sha256": "bfce64a6957748959ba9d59e92f074ba9e94d5ca10b7347b12ef285520ef9045",
+      "report_sha256": "a56cbf29e62244e4c50f6dd391ce19f2f19ba98e27291a6ad9ca41311a0b5cd6",
+      "validation": "PASS",
+      "review_result": "PASS conditional capacity/admission and final-published-effect scope"
+    }
+  ],
+  "source_identities": [
+    {
+      "name": "FW31 libpackbus",
+      "sha256": "3b7b7ca4fa14e5994552040a7b40b1cfbbf43e0649a4ad9277ece421fd4bc5d6"
+    },
+    {
+      "name": "FW31 unpacked Image",
+      "sha256": "dfa54a5a3ea91893bfd2a39add40fee571c0c653ad26e65c22b0c9d2cc9cbe78"
+    },
+    {
+      "name": "Byte-equal C166 composite",
+      "sha256": "5ab9fec0977c26ed4895f8e3d61009f0b371fe46fa9dc76017d6f31eff2f3983"
+    },
+    {
+      "name": "Official public Infineon C166S V2 Architecture Overview V1.1 2006-02",
+      "sha256": "78fcc2ec81a57b9338e9f6656f44c1084618e61c62ca6fdb736f3fd6567be7f8",
+      "url": "https://www.infineon.com/assets/row/public/documents/10/56/c166sv2-ao-0103.pdf"
+    }
+  ],
+  "execution": {
+    "native_cpu": "NOT_RUN",
+    "vendor_firmware": "NOT_RUN",
+    "kernel": "NOT_RUN",
+    "acquisition_engine": "NOT_RUN",
+    "vm": "NOT_RUN",
+    "device": "NOT_RUN",
+    "target_network": "NOT_RUN",
+    "reset": "NOT_RUN",
+    "firmware_loading": "NOT_RUN",
+    "own_software_models": "PASS only in per-package declared scopes"
+  },
+  "verification": {
+    "private_frozen_manifests": "PASS fresh per accepted package; no native execution",
+    "public_snapshot": "PASS 444 IDs / 303 rows / 420 reports / 431 export hashes; historical snapshot unchanged",
+    "local_suite": {
+      "result": "PASS with one explicit skip",
+      "run": 233,
+      "pass": 232,
+      "skip": 1,
+      "skip_reason": "bubblewrap unavailable; protected-file mediation NOT_RUN locally"
+    },
+    "exact_head_ci": "NOT_RUN at document preparation before final commit; use fresh exact-head push/PR checks, checkpoint CI is not transferred",
+    "review": "Self-Review and independent subject-review scopes are separate; complete lower hardware contract remains OPEN",
+    "public_file_review": "PASS Root Self-Review: five explicitly selected own prose/hash files; privacy patterns, identities/counts and diff checked; private/raw/vendor artifacts excluded"
+  },
+  "remaining": {
+    "current_identity": "OFFEN",
+    "core_context_sfr_backing_and_vectors": "OFFEN",
+    "native_mapping_allocation_and_current_policy": "OFFEN",
+    "actual_engine_samples": "OFFEN",
+    "physical_clock_wire_and_signal_effects": "OFFEN"
+  },
+  "claim_scope": "Conditional source contracts and per-package declared own model scopes.",
+  "metadata_semantics": "Readable current summaries refer to immutable package/report hashes; counts are evidence statements and version/scope rows, not unique recovered functions.",
+  "frontier_resolution": {
+    "510_independent_review": "CLOSED by WP517: selected outputs PASS, partial Carry-state conformance FAIL",
+    "511_critical_review": "CLOSED by WP516: PASS with isolated validator coverage qualification",
+    "515_stage_review": "CLOSED by WP518: PASS for conditional composition",
+    "520_remediation_review": "CLOSED by WP521: PASS; original WP517 FAIL unchanged",
+    "519_interval_bounds": "CLOSED at conditional scalar/per-group source scope",
+    "522_code_capacity": "CLOSED by WP522 and independent WP523: fresh compatible capacity witness, guarded status 2",
+    "further_offline_edge": "No additional concretely bound source edge identified by the final review; not a global all-firmware exhaustion claim."
+  },
+  "subject_findings": [
+    {
+      "subject_package": 510,
+      "review_package": 517,
+      "selected_output_result": "PASS",
+      "partial_carry_state_result": "FAIL",
+      "correction_package": 520,
+      "independent_remediation_package": 521,
+      "remediation_result": "PASS",
+      "original_failure_preserved": true
+    }
+  ]
+}
