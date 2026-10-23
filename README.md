@@ -1,6 +1,6 @@
 # virtualWAGO
 
-**Erweiterter K-Bus-Offlinestand:** [Builder-Modell, Descriptorgrenzen, SPI-Aufteilung, Speicherpolicies und Resetverbindungen](docs/kbus-offline-extensions-2026-10-23.md). Die neuen Quellenverträge und unabhängigen Prüfungen erweitern den früheren begrenzten [Hauptpfad-Audit](docs/kbus-decompilation-continuation-2026-10-23.md). Modellkorrekturen bleiben separat nachvollziehbar. Physische Zuordnung, tatsächliche Enginewerte und Hardwareverhalten bleiben offen.
+**Erweiterter K-Bus-Offlinestand:** [Builder-Modell, Daten- und Codegrenzen, SPI-Aufteilung, Speicherpolicies und Resetverbindungen](docs/kbus-offline-extensions-2026-10-23.md). Die neuen Quellenverträge und unabhängigen Prüfungen erweitern den früheren begrenzten [Hauptpfad-Audit](docs/kbus-decompilation-continuation-2026-10-23.md). Modellkorrekturen bleiben separat nachvollziehbar. Physische Zuordnung, tatsächliche Enginewerte und Hardwareverhalten bleiben offen.
 
 **K-Bus-Offlineanalyse, 23.10.2026:** [Gerätebaum, entpackter Kernel und XE164-Grenze](docs/kbus-kernel-reconstruction-2026-10-23.md): zehn DTBs formatgebunden dekodiert, Kernel mit zwei Decodern bytegleich entpackt, Symbolabbildung und vier ioctl-Zweige gebunden. Gezielter C166-/ARM-Formatabgleich mit konkretem `0xd0`-Längengegenbefund; vollständiger Busvertrag bleibt OFFEN. Keine Ziel-, VM- oder Hardwareausführung.
 

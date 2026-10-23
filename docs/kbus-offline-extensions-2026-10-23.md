@@ -1,6 +1,6 @@
 # K-Bus: erweiterte Offlineanalyse vom 23. Oktober 2026
 
-Stand dieses Zwischenstands: **14 neue eingefrorene Pakete; 524 private Evidence-IDs / 383 versionierte Funktionszuordnungen**. Die konkrete Codekapazitätsfrage WP522 und ihre unabhängige Prüfung WP523 laufen weiter.
+Stand des erweiterten Blocks: **16 neue eingefrorene Pakete; 526 private Evidence-IDs / 385 versionierte Funktionszuordnungen**. Die zuletzt identifizierte Codekapazitätsfrage ist einschließlich unabhängiger Prüfung geschlossen.
 
 ## Bezug und Nachweisgrenze
 
@@ -68,7 +68,19 @@ WP516 bestätigt diese kritischen Ketten unabhängig. Der Reviewer inventarisier
 
 WP512 verbindet die äußere Resetanforderung mit den echten Erzeugern von Klasse, Gerät, exportiertem Gerätezeiger und Resetattribut. Erfolgreiche native Registrierung, aktuelle Objektidentität, Sysfs-Mount und Dateierstellung bleiben Voraussetzungen. Nicht jeder Rückgabewert der Erzeugerkette wird lokal geprüft. Aus passenden Quellenidentitäten folgen deshalb weder das aktuelle Vorhandensein der Datei noch ein erfolgreicher physischer Reset.
 
-Die Bereichsanalyse identifiziert eine weitere konkrete Offlinefrage: Kann eine frische, zu den belegten Erzeugern passende Beschreibung trotz zulässiger Anzahl, Skalar- und Intervallgrenzen den 8-KiB-Codebereich ausschöpfen? Der frühere direkte Cursorfehlerfall überschreitet die frische Produktgrenze und beantwortet diese Frage nicht. WP522 und die unabhängige Prüfung WP523 untersuchen deshalb diese zusätzliche Zulässigkeitskante; dieser Zwischenstand erklärt sie ausdrücklich noch nicht für erledigt.
+## Codekapazität bei eingehaltenen Datenbereichsgrenzen
+
+**VERIFIZIERT im erklärten Quellen-/Modellumfang; unabhängiger Review PASS (WP522/WP523).** Ein frischer, zu den belegten Erzeugern passender Quellenzustand kann trotz zulässiger Anzahl, Skalar- und Intervallgrenzen den 8-KiB-Codebereich ausschöpfen. Der frühere direkte Cursorfehlerfall überschreitet die frische Produktgrenze und beantwortet diese Zulässigkeitsfrage nicht.
+
+Der neue bedingte Quellenzustand verwendet 250 Beschreibungen: 125 ausgewählte Gruppen mit je 30 Bit, dazwischen kurze nicht ausgewählte Beschreibungen und zuletzt eine 32-Bit-Beschreibung mit dem belegten Mux-4-Flagmuster. Gemeinsame numerische Flagbeobachtungen und gültige Scantrailer passen zusammen. Die kurzen Beschreibungen ergeben unabhängig vom Wert der ausgewählten 16-Bit-Maskenquelle das angesetzte Flag 0. Der letzte Rundungsschritt erhält die bereits durch acht teilbare Länge 32. Erklärte erfolgreiche Helper-/Wartebedingungen und die übrigen Kontextprämissen bleiben notwendig; eine physische Engineeingabe ist damit nicht nachgewiesen.
+
+Ein Phasenabstand (Stride) von 504 Byte und vier Phasen ergeben nominal 2016 Byte. Alle 125 ausgewählten Gruppen liegen innerhalb der 4032 Bits ihres Stride. Der tatsächliche Builder erzeugt für eine vollständige Phase jedoch `125 × 48 + 10 = 6010` Codebyte. Drei vollständige erzeugte Phasen würden 18030 Byte benötigen. Die Datenbereichsgates liefern deshalb keine Garantie für die getrennte Codekapazität.
+
+Im ausdrücklich eigenen Modell wird Phase 1 vollständig aufgebaut. Phase 2 erreicht die tatsächliche Emissionsgrenze; 957 weitere vierbytegroße Emissionsanforderungen werden abgewiesen. Die Guards verhindern weitere Schreibzugriffe in den erzeugten Code, der Builder kehrt mit Status 2 zurück. Nach dieser Rückkehr steht im fehlgeschlagenen Phasenrecord die voreingestellte Rückkehrroutine; die gespeicherte Position bleibt hinter der vollständigen ersten Routine. Phase 3 wurde beim Abbruch nicht neu aufgebaut. Ihr Default folgt nur aus der ausdrücklich angesetzten vorherigen Initialisierung und deren Erhaltung.
+
+Die Harnesse führen anschließend nur die tatsächlich ausgewählten gültigen Routinen und Defaults in Software aus. Unvollständige Codefragmente werden nicht aufgerufen. Das belegt auch keine tatsächliche zyklische Auswahl bei Fehlerstatus. Aktuelle Phasenpointer werden bereits während des Aufbaus in getrennten Halbwortstores geschrieben. Ein Ausschluss von Zwischenlesern ist damit nicht belegt. Die beschriebene Defaultsicht gilt nach normaler Rückkehr mit den erklärten Erhaltungsbedingungen.
+
+Der bereits in den früheren Paketen 475/476 belegte Initialisierungstail ignoriert den Builder-Rückgabewert. Damit ersetzt Initialisierungsrückgabe 0 weder erfolgreiche Codeerzeugung noch Builderstatus 0. Der neue Fall verbindet diese bekannte Rückgaberegel mit einer zu den Quellenbedingungen passenden Kapazitätsbelastung. Ein beobachteter Gerätefehler oder eine beabsichtigte Hardwaresemantik folgt daraus nicht. Die eingefrorenen Source-/Modellprüfungen und der unabhängige Review bestätigen diesen begrenzten Vertrag. Der Review findet keine weitere konkret gebundene Quellenkante in dieser Erzeuger-/Builderkette; die vollständige Rekonstruktion der Firmware oder Hardwareanbindung bleibt offen.
 
 ## Verifikation und Fortsetzung
 
