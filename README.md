@@ -1,5 +1,7 @@
 # virtualWAGO
 
+**K-Bus-Dekompilierung läuft weiter:** [Neue Quellenbefunde](docs/kbus-decompilation-continuation-2026-10-23.md) zu BMOV/DPP-Korrektur, Descriptorzählung und Hosttabellen sowie Completion, Antwortlängen und begrenzten Wartezeiten. 466 private Evidence-IDs; weitere Offlineaufgaben aktiv.
+
 **K-Bus-Offlineanalyse, 23.10.2026:** [Gerätebaum, entpackter Kernel und XE164-Grenze](docs/kbus-kernel-reconstruction-2026-10-23.md): zehn DTBs formatgebunden dekodiert, Kernel mit zwei Decodern bytegleich entpackt, Symbolabbildung und vier ioctl-Zweige gebunden. Gezielter C166-/ARM-Formatabgleich mit konkretem `0xd0`-Längengegenbefund; vollständiger Busvertrag bleibt OFFEN. Keine Ziel-, VM- oder Hardwareausführung.
 
 Forschung zur I/O-Simulation unterhalb des originalen WAGO/CODESYS-I/O-Stacks. Erstes Ziel ist die autorisierte Referenz-WAGO mit ihrer bereits laufenden originalen Runtime, dem nativen I/O-Manager und originalen WAGO-I/O-Treibern; die untere Hardwareanbindung soll erst nach Beleg ihrer Schnittstelle simuliert werden. Eine vollständig virtuelle Steuerung ist ein späteres Ziel. Unabhängiges Forschungsprojekt; keine behauptete Herstellerfreigabe.

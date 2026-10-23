@@ -1,0 +1,227 @@
+{
+  "schema": 1,
+  "date": "2026-10-23",
+  "repository": "Mateo817/virtualWAGO",
+  "source_base_commit": "ef0b2c3ced8dd1e9ebd83a4e0dccd5c537b6a237",
+  "scope": "Ongoing owner-directed offline static decompilation; no target, VM, controller, vendor-program or target-network execution",
+  "claim_status": "VERIFIZIERT",
+  "complete_lower_contract_status": "OFFEN",
+  "continuation_status": "ACTIVE; meaningful source tasks remain",
+  "historical_snapshot": {
+    "path": "analysis/xe164/results/2026-10-18",
+    "modified": false
+  },
+  "private_canonical": {
+    "evidence_ids": 466,
+    "function_rows": 325,
+    "columns": 12
+  },
+  "new_evidence": [
+    {
+      "evidence_id": "E-XE164-456",
+      "package": 451,
+      "name": "bounded_host_d0_caller_and_count_contract",
+      "status": "VERIFIZIERT",
+      "source_scope": "Exact FW31 libpackbus3b7b7ca4 and retained libc; 8selected directcallers,16fixed rows, D0 count setup",
+      "claim": "Eight local direct SCPU_Command routes give tags1/2/3/5 or initial fixed-table6/7/8/9, no selectedtag10 witness. Exported/indirect/external routes remain open. get_uid14ab0 callsGFD, notD0. Exact countsetup afterencoder and selected callfree/ioctlR7save-restore narrow conditionalexpected6.",
+      "limits": "No global unreachable/unused or D0UID claim; resolver/slowpath/frame/kernel/current-state preservation and actual physical binding open.",
+      "review": "Author source analysis/self-check",
+      "next": "Independent452bitmove/DPP review; actual consumer import paths; RAIL67E6 count join",
+      "manifest_sha256": "54b90d8a8270ae102557c221a44fe67bdc0d6d5aa0b56c5b7609b8814a51d4c8",
+      "report_sha256": "b72d9f878c1abc3639ae22433a8a21b228893c9f2b6d4df1c4758cac02f3f257",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-457",
+      "package": 452,
+      "name": "raw_bmov_semantics_and_conditional_dpp_correction",
+      "status": "VERIFIZIERT",
+      "source_scope": "Pinned composite5ab9fec0; selected transfer/main/startup raw bytes; commonC166manual and installedSLEIGH",
+      "claim": "36RizinBMOV/BMOVN operand displays reverse manual source/destination. InstalledSLEIGH correctdataeffect but olddestination-flag source differs from manual oldsource. Helper writes transformed lowword; under DPP1=2 logical7A06->BA06 and780A->B80A. Startup12records includeF606length48.",
+      "limits": "Supersedes unchanged-pointer reading of E454/E455 (oldWP449/450); opcodefields/D0counts unaffected. CurrentDPP/overrides/indirectwrites/derivative/SFR/hardware remainopen. Independent455 pending.",
+      "review": "Author source/manual/self-check; root raw/manual review",
+      "next": "WP455 independent raw/flags/page audit and WP457actual F606/main producers",
+      "manifest_sha256": "b8f2ed696a3bc17d9d2b52a8678a8eb5625d612729b98fe02a3a8b8025d3ef40",
+      "report_sha256": "f7897955416c7dfab7cfeff623a24642037baf2849ee7b4ba8e504601e812ff4",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-458",
+      "package": 453,
+      "name": "conditional_kernel_fileops_registration_mode_and_controlbyte",
+      "status": "VERIFIZIERT",
+      "source_scope": "ExactImage dfa54a5a; init/cdev/fileops readers, callbackpositions, all10parsedDTBs",
+      "claim": "Registration->cdev+28->file+8c->ops+24 source readers bind ioctl table role conditionally, stronger than pointergroup hypothesis. kbus_write reads oneuserbyte and toggles selected IRQstate. All10DTBs absentrenesas/use-dma-always, presentdma-boost, selectingInfineonISR under source premises.",
+      "limits": "No actual registered device, instance/lifetime/race or fullIRQ/DMA proof. Selectedfields depend on currentobject/register/return preservation.",
+      "review": "Author rawsource/self-check; root reader-matrix review",
+      "next": "WP456OMAP controller callback/wait/PIO/DMA/error paths; lifecycle/class publishers",
+      "manifest_sha256": "1ad3b9d91c84edcc0502248ef9258ba215ee360e3cdf2709993f07847d3e58a0",
+      "report_sha256": "cc34dcd8c7ba5a3639bb07a5e289172975b61c80110e762b79047d2c07ea391f",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-459",
+      "package": 454,
+      "name": "selected_host_init_and_bound_fw31_configuration",
+      "status": "VERIFIZIERT",
+      "source_scope": "ExactFW31ELF; libpackbus_open108c4/RAILtest125dc initcallers; inode800XML1254B SHAc840da67",
+      "claim": "Selected maincaller suppliesinit0, testcallerinit1. Helper zero branch reachesboot; nonzero skipsboot under current-state preservation. GetMode reads stateword, nothardwareID. ExactFW31XML inode800 extractedreadonly and parsed; no explicitMCUchoice among its selectedkeys.",
+      "limits": "No loaded firmware/MCU identity or os_conf precedence. Opaque calls/currentr5 and dynamicPLT targets explicit; static strings not executed.",
+      "review": "Root Self-Review",
+      "next": "Actual consumer imports/count routing and source-backed kernel/C166 frontier; no wholelibc exploration",
+      "manifest_sha256": "9cb44a0b1228af5eb6b9b6687a75e47770f02189427e5bb9bc2798450db6399d",
+      "report_sha256": "3b09cd5d8aca4db741a748802a8f71a4ed1d871838fb6535b8ce75891d20f872",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-460",
+      "package": 458,
+      "name": "exact_fw31_regular_file_scpu_symbol_census",
+      "status": "VERIFIZIERT",
+      "source_scope": "ExactSDimage49aa85c3 + WP145inventory16badcba;3058regularfiles/803ELFmagic, exactinodes",
+      "claim": "Fresh readonlycensus of all3058regularfiles finds SCPU_Command/encoders/Reply literalnames only in exactlibpackbus; positive Dynsymdefinitions/internalJUMP_SLOT rows verified. No other ordinary literalnamed consumer in this population.",
+      "limits": "Not global unreachable/unused; compressedmembers, computedstrings/pointers, externalfiles/processes/indirectpublication/runtime resolver and activeimage remainoutside.",
+      "review": "Root Self-Review; separate per-inode/hash replay by the same Root, no independent reviewer and positive readelf checks",
+      "next": "HostRAIL6..9 tableloop count binding to C16667E6 and remaining actual controller/C166state; no speculativeD0consumer",
+      "manifest_sha256": "eafd67a9f75b8921dceb967c3fff968998f1c70b9784e51adfbc1057fdd7865b",
+      "report_sha256": "1a92f6bb9b782fd27fffc606e38e6dcc1338a6a20589cb8f9de0084cf710c45c",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-461",
+      "package": 455,
+      "name": "independent_bmov_dpp_lookup_premise_audit",
+      "status": "VERIFIZIERT",
+      "source_scope": "Exactcomposite5ab9fec0,36bitmoves,28startupdefs,12records; commonmanual/SLEIGH sources",
+      "claim": "Independent rawfield/manual audit confirms36BMOV/BMOVN operand corrections and oldsource-vs-oldtarget flags discrepancy. Required narrower BA/B8 premise: indirectFE00+index lookup itself uses DPP3, so currentDPP3=3/backinglookup identity required in addition toDPP1=2.",
+      "limits": "Supersedes stronger DPP1-only interpretation of E457/WP452 prose; modelvector alreadycontained3. No derivative/SFR/hardware or wholepath CPU proof.",
+      "review": "Actual independent source/manual review of WP452; Root integration Self-Review",
+      "next": "Current DPP/override/CP effects and corrected main/sourcebuffer producers",
+      "manifest_sha256": "f051c2cc3514119bb8d4d12ecef7fdfbee5a431ece5cb523c3b76a5de782d109",
+      "report_sha256": "25903d4e246a3918bca1cca2db4dfe641fadf9b141f30413f395bf712ae85245",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-462",
+      "package": 457,
+      "name": "c166_counter_record_producers_buffers_and_main_states",
+      "status": "VERIFIZIERT",
+      "source_scope": "Exactcomposite;3c38initializer,2216/2238records,22e4predicate,369cstates,31c4buffers,13f8countwriter",
+      "claim": "Maininit3634->3c38 produces4x12B F606records, then27selected calls use weighted wrapping accumulators/threshold masks. D0 snapshots workingrecords, no UID inference. ExplicitRL1zero clears adjacent508B request/reply regions. Corrected5sample helper gives4of5predicate. Sixmainstate targets and67E6init/store1590 bound.",
+      "limits": "Actual physicalsampling/pins/timing/externalproducer/currentDPP/overrides and pathfeasibility open; syntheticmodels source/math only.",
+      "review": "Author rawsource/manual/self-check; Root source/branch/table review",
+      "next": "WP46113f8marker/countscan and3e76/3cc4 effects; host459RAILjoin; remainingexchange/ISR/DPP",
+      "manifest_sha256": "91053ae5dcb180688d5b72c2396a4907360b73cda391973cd89f0bb31599a1b3",
+      "report_sha256": "d3517e16d30450c38c7ce558888353f8dd9b33042451abd724280cd16b92d14c",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-463",
+      "package": 456,
+      "name": "FW31 actual SPI queue/OMAP timeout/header and mutable tail",
+      "status": "VERIFIZIERT",
+      "source_scope": "FW31 Image queue75d620..7621c0/OMAP763800..766e58/KBus768b54..76b11c",
+      "claim": "Conditional actual controller hooks join queued message, current transfer, status/length and upper completion. Selected state+18 wait converts nonnegative numeric n to ceil(n/10) ticks at HZ100. Command header gate validates opcode/complement pairs and only clamps following length downward. Parsed ten DTB property branches select normal DMA and separate4096B buffers.",
+      "limits": "Static current-object/list/callback/property/preservation premises; no total transaction deadline or live DTB binding. PIO, DMA engine/lifetime and global ownership remain separate tasks. Target execution NOT_RUN.",
+      "review": "Author Self-Review; Root read full report, raw-model scope and final validator; no independent review",
+      "next": "WP460 abort/remove/lifetime; root463 PIO/bitwidth/clock; parameter/global publication",
+      "manifest_sha256": "0cfe2bee03ed6d206baa6dc292c38be2fda3a0ee9c10d051e844d5effc3c4740",
+      "report_sha256": "c05aa77c21ef3ceaa4c482c9e37f5fb1f3cde042a5c95960259edde28325e066",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-464",
+      "package": 459,
+      "name": "C0 RAIL count bridge and sixteen metadata table scatter",
+      "status": "VERIFIZIERT",
+      "source_scope": "libpackbus 117ec..122a0/89a8..89d0/1eed0..1ef90; C1663284..333e",
+      "claim": "C0 copies nine halfwords from logical67E6 into host status atbase+36C8, whose first halfword the count getter mirrors/reloads. Tags6..9 use2*N+6 receive bytes andN expected halfwords; immutable sixteen-row table scatters into56B rows, N<=250 fits14000B region. Signed32 size*mux guard retained.",
+      "limits": "Selected same-message/current-memory/getter/frame/DPP/transport premises; separate count calls are not immutable snapshots. No physical inventory claim; D0fixed6 remains distinct.",
+      "review": "Author Self-Review; Root read full report and source bridge qualifications, fresh final validator; no independent review",
+      "next": "WP464 C4helpers411E/4192; exact join toWP461 size/bit writers; current state",
+      "manifest_sha256": "b259c4530ed474465e98fd35cc5d0f227b0c38bf5aec6f5d8966117b7269f173",
+      "report_sha256": "91dfb3bcdd7a858637e2ef73b2c521e83abaa7df5bb2d68f1702df223ec2497f",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-465",
+      "package": 461,
+      "name": "C166 marker scan descriptor count/size and acquisition request",
+      "status": "VERIFIZIERT",
+      "source_scope": "C16613f8..163a/3cc4/3e76/3e2e/3cae",
+      "claim": "Scan recognizes10 two-bit start cells, six-byte descriptor stride with250limit, then exact alignedFF00AA55 trailer. Publishes count at67E6 and byte size2*ceil(markerbit/16) at67E8 before full trailer validation. Selected failures retain prior/published state;251cleanup aliases67E6/67E8. Acquisition programs2048units through8*254+16 chunks.",
+      "limits": "Common ISA/register and currentDPP/lookup/wordstream/descriptor/state premises. Actual hardware engine, transfer width, derivative SFR names, samples and timing OPEN. Physical inventory not proved.",
+      "review": "Author Self-Review; Root read full report and explicit failure/zero-count qualifications, fresh final validator; no independent review",
+      "next": "WP465 flags/length consumers1A06 and163A/1738/183A; init/reaching states; WP464 C4",
+      "manifest_sha256": "60b9a631226c9f11fb533a99f882523a466a3284180dcfc2c00290b7827c642d",
+      "report_sha256": "c42465dedef52fae65f67a253b31218486209403b5e3d5c551baa1623606a04c",
+      "validation": "PASS"
+    },
+    {
+      "evidence_id": "E-XE164-466",
+      "package": 463,
+      "name": "Selected PIO width readers, byte effects and raw time-budget branches",
+      "status": "VERIFIZIERT",
+      "source_scope": "FW31Image763800..763e7c/764a1c..765740/768a08..60/769cc0..d24",
+      "claim": "PIO consumes current channel-state width, with selected CPU byte/halfword/word strides1/2/4. Raw status polls use numeric100tick deadlines with equality/final reread and wrap; supplemental Ghidra removes these timeout branches, so raw source governs. Device16bit default and command8bit transfer declarations are separate actual writers.",
+      "limits": "Source-only current state/MMIO/time progress/callback and valid length premises; no proved transfer-override join, physical wire width/order or total transaction deadline. Clock-helper/source and selected delay bindings remain separate. Target NOT_RUN.",
+      "review": "Root author Self-Review; REA/objdump source checks; no independent review",
+      "next": "Worker next parameter/width/speed/setup join and clock source; selected delay functions; C166 current context",
+      "manifest_sha256": "4eb899c479cbf8496325aa16305137884c20444a81dbf532b86971e7fddad2c8",
+      "report_sha256": "509a1b4d710a8fce2b7bc78d6e5838452be7d0d2a66c8357f826a42c62ed8881",
+      "validation": "PASS"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": "FW31-SD-040901-31",
+      "size": 287309824,
+      "sha256": "49aa85c3801cb9d445bf900462bc235fa0ee9b7bbaf6f282341f05d9c9d7051c"
+    },
+    {
+      "id": "FW31-BOOT-LINUX",
+      "size": 8213856,
+      "sha256": "f6e03d6452e4648cd86f58ff5c869af0ebdcc6e8f3123458c73d6e81ccfede65"
+    },
+    {
+      "id": "DERIVED-FW31-KERNEL-IMAGE",
+      "size": 19239516,
+      "sha256": "dfa54a5a3ea91893bfd2a39add40fee571c0c653ad26e65c22b0c9d2cc9cbe78"
+    },
+    {
+      "id": "FW31-LIBPACKBUS-EXACT",
+      "sha256": "3b7b7ca4fa14e5994552040a7b40b1cfbbf43e0649a4ad9277ece421fd4bc5d6"
+    },
+    {
+      "id": "XE164-COMPOSITE",
+      "size": 17110,
+      "sha256": "5ab9fec0977c26ed4895f8e3d61009f0b371fe46fa9dc76017d6f31eff2f3983",
+      "mapping_status": "HYPOTHESE for physical placement; exact derived byte identity verified"
+    },
+    {
+      "id": "FW31-LIBC-EXACT",
+      "size": 1434296,
+      "sha256": "dc47ee066e2c2d73ff9186440787543c3020711611f09002b6ab187d97d9dfa2"
+    },
+    {
+      "id": "FW31-KBUSCONF-EXACT",
+      "size": 1254,
+      "sha256": "c840da670a32255f20000621a5cc00b5a5fe8731c6e8b9f916d34b45b1195ca2"
+    }
+  ],
+  "tests": {
+    "static_source_validators": "PASS on each frozen package manifest",
+    "private_independent_review": "PASS WP455 reviews WP452 BMOV/DPP; DPP3 qualification retained",
+    "target_execution": "NOT_RUN",
+    "physical_hardware": "NOT_RUN",
+    "repository_tests": "NOT_RUN on upcoming commit; exact-commit CI tracked in PR",
+    "self_review": "Other packages: author Self-Review plus Root integration Self-Review; no invented independent reviews"
+  },
+  "remaining": [
+    "C4 numeric payload/alignment contracts",
+    "Descriptor flags/checks and selected init/reaching state",
+    "OMAP DMA abort/remove/devres lifetime",
+    "Transfer width/speed override and clock source; mutable threshold",
+    "Actual loaded firmware/runtime/DTB/device identity and physical signal timing"
+  ]
+}
