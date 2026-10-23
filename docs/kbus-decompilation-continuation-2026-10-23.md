@@ -1,9 +1,10 @@
 # Fortgesetzte K-Bus-Dekompilierung
 
 Fortsetzung nach dem [ersten Kernel-/XE164-Block](kbus-kernel-reconstruction-2026-10-23.md).
-Die Analyse läuft auf Eigentümerauftrag weiter, solange sinnvolle Aufgaben
-mit den bereitgestellten Offlineartefakten möglich sind. Die folgenden
-Ergebnisse sind statische, versionsgebundene Befunde. Vollständiger K-Bus,
+Die bereitgestellten Offlineartefakte wurden auf Eigentümerauftrag bis zum
+Abschluss der konkret belegten Quellenaufgaben untersucht. Der abschließende
+Audit identifiziert im untersuchten Umfang keine weitere solche Aufgabe.
+Die Ergebnisse sind statische, versionsgebundene Befunde. Vollständiger K-Bus,
 aktive Firmware-/Gerätebindung und physisches Verhalten bleiben **OFFEN**.
 Keine Geräte-, VM-, Zielnetzwerk- oder Herstellerprogrammausführung.
 
@@ -155,22 +156,160 @@ Der ergänzende Ghidra-Pseudocode entfernt mehrere dieser Zweige als
 unerreichbar. Für diesen Befund gelten daher die erhaltenen Rohinstruktionen.
 Steht die Zeitquelle, ist daraus keine reale Sekundengrenze ableitbar.
 
-Der Gerätedefault schreibt 16 Bit, die Command-Transferobjekte fordern 8 Bit
-an. Der PIO-Helfer liest eine aktuelle Kanalzustandsbreite. Deren vollständiger
-Override-/Setupanschluss ist noch in Arbeit; CPU-Zugriffsbreite und
-physisches Drahtformat werden bis dahin nicht gleichgesetzt.
+Der tatsächliche `SPI_Open`-Pfad fordert 16 Bit, Modus 1 und numerisch
+20.000.000 an. Die Konfigurationsroute schreibt die Gerätebreite; der belegte
+OMAP-Setupanschluss übernimmt sie in den vom PIO-Helfer gelesenen Kanalzustand.
+Die getrennte 8-Bit-Metadatenangabe im Command-Transfer überschreibt dieses
+Gerätefeld dort nicht. Der bedingte Zustand Kanalbreite 16 / Transfermetadaten 8
+ist deshalb quellkonsistent. CPU-Zugriffsbreite, numerische Konfiguration und
+physisches Drahtformat bleiben getrennte Nachweisstufen.
+
+Der Takteingang stammt aus einem aktuellen Getter oder dem ausgewählten
+48.000.000-Fallback. Die folgende Ganzzahldivision ist inzwischen aus den
+Instruktionen belegt; ihre erste Summe verwendet 32-Bit-Wraparound. Das
+Rechenbeispiel 48.000.000 / angefordert 20.000.000 ergibt intern 16.000.000.
+Es ist keine Messung. Die DMA-Schwelle bleibt ein veränderlicher Parameter.
+
+## DMA, Freigabe und aktuelle Transferlängen
+
+**VERIFIZIERT, bedingt statisch:** Tatsächliche Methodenschreibstellen binden
+Konfiguration, SG-Vorbereitung, Submit und Issue an den ausgewählten EDMA-Pfad.
+Gemappte und ursprüngliche SG-Eintragszahlen werden an verschiedenen Stellen
+verwendet. Der Breitenwert 16 ergibt hier numerisch zwei Byte pro Einheit;
+gespeicherte SG-Länge und daraus abgeleitete Parameterfelder bleiben getrennt.
+RX-Klone enthalten Metadaten, keine eigenen Kopien des Nutzdatenpuffers.
+Ist der Quotient einer einzelnen SG-Länge durch die Einheit 0, schreibt der
+Helfer einen besonderen Parameterwert. Die frühere allgemeine
+Quotientenformulierung wurde deshalb um diesen Fall ergänzt. Eine große
+Gesamttransferlänge beweist keine entsprechende Mindestlänge jedes SG-Eintrags.
+
+Die spätere Freigabe fragt die DMA-Eignung mit der **dann aktuellen**
+Transferlänge erneut ab. Der Antwortheader kann diese Länge zwischen Mapping
+und Freigabe verkleinern. Bei einem Teilfehler bereinigt der Mapper außerdem
+den aktuellen TX-Teil, ohne lokal alle vorherigen Transfers zurückzurollen.
+Die erhaltenen Zustandsbeispiele zeigen diese Bedingungen; sie sind keine
+ausgeführten Speicherlecks, Fehler oder Race-Nachweise.
+
+Abbruch, Synchronisation, Tasklet-Callback und verwaltete Ressourcenfreigabe
+sind bis zu ihren tatsächlichen Methoden-/Objektlesern angeschlossen. Ein
+Completion-Signal beweist weiterhin nicht, dass kein Callback mehr folgt oder
+dass jede beliebige Teardown-Verschachtelung sicher ist.
+
+## Kopier- und Fehlerrouten der ioctl-Familie
+
+Die Binary-Route und der generische Defaultzweig löschen die aktuelle
+K-Bus-Zuordnung im SPI-Objekt bereits **vor** der Anforderungskopie.
+Konfiguration, gerahmte Daten und gerahmte Commands schreiben dagegen die
+erfasste Zuordnung vor ihrer jeweiligen Kopie zurück. Eine spätere
+Kopierfehlermeldung beweist daher keinen unveränderten Modus. Nach der Kopie
+neu geladene globale Objekte benötigen weiterhin ihre Identitätsprämisse.
+
+Die Rückgaben unterscheiden sich: Der Binary-Pfad kann auch bei negativem
+Sync-Ergebnis eine RX-Kopie über die angeforderte Länge versuchen. Der
+generische Nachrichtenpfad überspringt RX bei negativem Ergebnis; jedes
+nichtnegative Ergebnis kann dagegen die volle aktuelle Anforderungslänge
+kopieren. Sein abschließender Erfolgscount stammt aus der angeforderten Summe,
+deren Addition 32-Bit-Wraparound verwendet. Ein lokaler Nullpuffer-Grenzvektor
+bleibt ausdrücklich ein bedingtes Quellenmodell, kein beobachteter Angriff
+oder Hardwarefehler.
+
+Auch die beiden einfachen Byte-Exporte und ihr 250-Byte-Discardbereich sind
+belegt. Der erneute vollständige Dateizensus bindet keinen gewöhnlichen
+benannten Verbraucher. Die Puffergröße allein beweist daher keinen erreichten
+Überlauf. Die separat gebundene Reset-Sysfs-Route wurde ausschließlich statisch
+untersucht; kein Reset wurde ausgelöst.
+
+## C166: Payload, Prüfungen und erzeugte Kopierroutinen
+
+Die C4-Payloadhelfer, drei Descriptorprüfungen, Längen-/Mux-Gates und der
+vollständige zyklische Pfad sind jetzt mit ihren tatsächlichen Aufrufern
+ausgearbeitet. Prüfgröße in Byte und programmierte Transferanzahl sind an
+mehreren Stellen numerisch gleich, ohne dass dies die Einheit des Engines
+beweist. Teilweise veröffentlichte Zustände, nicht geprüfte Hilferrückgaben,
+erneute Größenlesevorgänge und die Lowword-Multiplikationsgrenze bleiben im
+Vertrag erhalten. Ein Initialisierungsreturn 0 beweist deshalb nicht den
+Erfolg aller abschließenden Helfer.
+
+Die erzeugten Kopierroutinen laden aus dem Basispuffer und schreiben in den
+phasenabhängigen Zielbereich. Die tatsächlichen Stackargumente und der
+Far-Aufruf über eine `RETS`-Sequenz sind belegt. Die frühere umgekehrte
+Richtungsbeschreibung wurde nach einem unabhängigen **FAIL** korrigiert und
+separat erfolgreich nachgeprüft. Das ist keine ausgeführte generierte Firmware.
+
+## Startup, Sprungzeilen und Registerproduzenten
+
+Der Startcode übergibt tatsächlich 128 an den Relokationshelfer. Dieser liest
+die Sprungzeilen bei numerisch `E0:0200`, schreibt sie nach `E0:0000` und passt
+121 Selbstverweise auf die jeweilige neue Zeilenadresse an. Die sieben anderen
+Ziele bleiben erhalten. Das schließt die Software-Verlegung; physische
+Interruptauswahl und IRQ-Nummern folgen daraus nicht.
+
+Weitere Initialisierer liefern nun die festen Gegenstellen der beiden
+Transferregisterpaare und die Präfixwörter aus aktuellem Kurzregisterwert und
+Literal `DEAD`. Die Counterkonfiguration, zwei Register-Schreibprotokolle und
+die beiden numerischen Divider-Aufrufe sind getrennt belegt. Ihre Zahlen
+ergeben keine gemessenen Baudraten oder Zeitdomänen.
+
+Der Loader verarbeitet einen 16-Bit-Zähler, eine XOR-Summe und Wiederholung
+bei Abweichung. Seine Polls besitzen keinen lokalen Timeout und verwenden
+teilweise geerbte Registerzeiger. Der Far-Übergang setzt konkrete DPP-Werte,
+bevor das Hauptprogramm beginnt. Das ist kein unveränderlicher DPP-Nachweis
+für jeden späteren Aufruf.
+
+Die zuvor nur strukturell erfasste Startup-Registerhierarchie ist vollständig
+durch ihre tatsächlichen direkten Helfer verfolgt. Ein Nichtnullstatus führt
+unter stabilen Registerbedingungen in eine Schleife ohne erneute Prüfung;
+der Restore setzt einzelne Felder zurück und verknüpft ein anderes mit einer
+Maske. Die echte Tabelle bei `0414` ist an ihren Leser gebunden. Der A0-Zweig
+kann außerdem ein RAM-Flag setzen, das die Hauptschleife unter einer weiteren
+Bitbedingung später zur Software-Resetinstruktion führt. Quellenkette und
+physisch wirksamer Reset bleiben getrennt; diese Analyse führt sie nicht aus.
+
+Der ausgewählte Divider liefert den belegten Quotienten, überschreibt aber
+im High-Divisor-Zweig R11 nach einem zwischenzeitlichen Rückladen erneut.
+Die frühere Erhaltungsaussage war falsch. Der zweite tatsächliche
+Setup-Aufruf setzt R11 ausdrücklich neu auf 0; die ausgewählten numerischen
+Setup-Ergebnisse benötigen die falsche Erhaltungsannahme nicht.
+
+## Korrekturen und Reviewgeschichte
+
+Die eingefrorenen Originalpakete und ihre damaligen Validatorergebnisse
+bleiben erhalten. Vier unabhängige Befunde werden ausdrücklich fortgeführt:
+
+| Ursprünglicher Befund | Korrektur | Nachprüfung |
+|---|---|---|
+| Generierte Kopierrichtung in WP470, übernommen in WP471: **FAIL** WP474 | WP478: Basispuffer → Phasenziel | **PASS** WP480 |
+| Fehlende Konfigurations-Reassoziation in WP479: **FAIL** WP484 | WP486: tatsächlicher Store vor Kopie | **PASS** WP489 |
+| R11-Erhaltung in WP488, übernommen in WP487: **FAIL** WP495 | WP497: tatsächlicher Return-Footprint | **PASS** WP498 |
+| Allgemeine SG-Parameterformel in WP490: **FAIL** WP501 | WP506: eigener Fall für Quotient 0 | **PASS** WP507 |
+
+Ein erfolgreicher eigener Validator ersetzt keine Prüfung einer Aussage,
+die sein Modell nicht abdeckt. Eigene Quellen-/Modellprüfungen bleiben als
+**Self-Review** gekennzeichnet. Die genannten unabhängigen Reviews stammen
+von tatsächlich getrennten Workern.
 
 ## Prüfstand und weitere Arbeit
 
-Der private kanonische Stand dieses Zwischenstands enthält 466 eindeutige
-Evidence-IDs und 325 Funktionszuordnungen. Alle elf neu aufgenommenen Pakete
-besitzen unveränderte Manifeste und frisch ausgeführte schreibgeschützte
-Validatoren: **PASS**. Die BMOV-/DPP-Korrektur wurde von einem zweiten
-tatsächlichen Worker unabhängig geprüft. Die übrigen neuen Befunde sind als
-**Self-Review** samt Root-Integrationsprüfung gekennzeichnet.
+Der private kanonische Stand enthält 510 eindeutige Evidence-IDs und 369
+Funktionszuordnungen mit zwölf Spalten. Diese Fortsetzung umfasst 55
+eingefrorene Pakete mit frisch ausgeführten schreibgeschützten Validatoren:
+**PASS**. Mehrere Einträge können dieselbe Routine unter verschiedenen
+Versionen, Fragen oder Reviewgrenzen betreffen. Der historische öffentliche
+Snapshot vom 18.10.2026 bleibt unverändert.
 
-Aktiv bleiben Descriptorflags/-checks, C4-Payloadhelfer, DMA-Abbruch und
-Ressourcenfreigabe, Transferbreiten-/Taktübernahme sowie die aktuellen
-C166-CP-/DPP-Zustände. Eigene mathematische Modelle und Validatoren sind
-Quellenprüfungen, keine ausgeführte Firmware. Ein Teilblocker bei
-Hardwareidentität stoppt diese unabhängige Analyse nicht.
+Der Abschlussaudit gleicht 58 historische C166-Adresseinträge, 91 numerische
+Navigationsziele mit 319 Kandidaten-Aufruffeldern und 21 konkrete
+Datenwirkungsfragen gegen die Quellenpakete ab. Die Navigationszahlen sind
+kein vollständiger Kontrollfluss- oder Codebesitznachweis. Der unabhängige
+Audit WP505 ließ die damals noch zugewiesenen Aufgaben ausdrücklich aktiv;
+WP504 gleicht deren endgültige Ergebnisse und Korrekturen anschließend ab.
+Danach ist im untersuchten Umfang keine weitere konkret belegte, autorisierte
+Offline-Dekompilierungsaufgabe identifiziert.
+
+Repositorytests und CI werden an den tatsächlichen Commit beziehungsweise
+dessen Baum gebunden; die Ergebnisse stehen beim Draft-PR 11. Eigene
+mathematische Modelle bleiben Quellenprüfungen. Tatsächlich geladene Firmware,
+aktuelle native Objekte und Policies, Derivat-/SFR-Zuordnung, physischer
+Speicher, Interruptauswahl, Drahtformat, Takt und Hardwareverhalten bleiben
+**OFFEN / NOT_RUN**. Neue passende Artefakte oder eine separat autorisierte
+zielkonkrete Beobachtung können neue Quellenfragen eröffnen.

@@ -1,6 +1,6 @@
 # XE164/C166-Analyse: Arbeits- und Übergabestruktur
 
-**Laufende Fortsetzung:** [Descriptor-/Host-/Kernelverträge und Decoderkorrektur](../../docs/kbus-decompilation-continuation-2026-10-23.md), mit [Evidence](../../evidence/kbus-decompilation-continuation-2026-10-23.json). Zwischenstand: 466 private Evidence-IDs / 325 Funktionszuordnungen; sinnvolle Offlinearbeit läuft weiter.
+**Geprüfter Offlinestand:** [Host-/Kernel-/C166-Verträge und Decoderkorrekturen](../../docs/kbus-decompilation-continuation-2026-10-23.md), mit [Evidence](../../evidence/kbus-decompilation-continuation-2026-10-23.json). 510 private Evidence-IDs / 369 Funktionszuordnungen. Der abschließende Quellen-Audit hat nach den Korrekturen keine weitere konkrete Offlineaufgabe identifiziert; Hardwarevertrag und physische Zuordnung bleiben offen. Der historische Snapshot bleibt unverändert.
 
 **Fortsetzung, 23.10.2026:** [Gebundene Gerätebaum-, Kernel- und XE164-Analyse](../../docs/kbus-kernel-reconstruction-2026-10-23.md) mit [separater Evidence](../../evidence/kbus-kernel-reconstruction-2026-10-23.json). Die historische Ergebnissicherung unter `results/2026-10-18/` bleibt unverändert.
 

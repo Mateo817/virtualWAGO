@@ -1,6 +1,6 @@
 # virtualWAGO
 
-**K-Bus-Dekompilierung läuft weiter:** [Neue Quellenbefunde](docs/kbus-decompilation-continuation-2026-10-23.md) zu BMOV/DPP-Korrektur, Descriptorzählung und Hosttabellen sowie Completion, Antwortlängen und begrenzten Wartezeiten. 466 private Evidence-IDs; weitere Offlineaufgaben aktiv.
+**Geprüfter K-Bus-Offlinestand:** [Host-, Kernel- und C166-Verträge](docs/kbus-decompilation-continuation-2026-10-23.md) einschließlich Startup, zyklischem Austausch, Kopier-/Fehlerrouten und DMA. 510 private Evidence-IDs / 369 Funktionszuordnungen; vier Reviewbefunde korrigiert und unabhängig nachgeprüft. Der Abschlussaudit identifiziert keine weitere konkrete Quellenaufgabe im untersuchten Umfang. Physische Zuordnung und Hardwareverhalten bleiben offen.
 
 **K-Bus-Offlineanalyse, 23.10.2026:** [Gerätebaum, entpackter Kernel und XE164-Grenze](docs/kbus-kernel-reconstruction-2026-10-23.md): zehn DTBs formatgebunden dekodiert, Kernel mit zwei Decodern bytegleich entpackt, Symbolabbildung und vier ioctl-Zweige gebunden. Gezielter C166-/ARM-Formatabgleich mit konkretem `0xd0`-Längengegenbefund; vollständiger Busvertrag bleibt OFFEN. Keine Ziel-, VM- oder Hardwareausführung.
 

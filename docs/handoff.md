@@ -1,6 +1,6 @@
 # Lokaler Agent: öffentlicher Übergabevertrag
 
-**Laufende Dekompilierung, 23.10.2026:** [Fortgesetzte Quellenanalyse](kbus-decompilation-continuation-2026-10-23.md) bindet BMOV/DPP-Korrektur, Descriptorzählung/Hostanschluss, Completion/Header und einzelne Wartebudgets. Stand 466 private Evidence-IDs / 325 Zuordnungen. Descriptorchecks, C4, DMA-Lifetime und aktuelle Transfer-/C166-Kontexte bleiben in Arbeit. Keine Hardware-/VM-Ausführung, kein Merge.
+**Geprüfter Dekompilierungsstand, 23.10.2026:** [Quellenanalyse und Abschlussaudit](kbus-decompilation-continuation-2026-10-23.md) binden Startup/Loader, Descriptor-/C4-/Zykluspfade, erzeugte Kopien, Host-/ioctl-Verträge sowie PIO/DMA und Lifecycle. Stand 510 private Evidence-IDs / 369 Zuordnungen. Vier historische Review-FAILs bleiben erhalten; ihre Korrekturen besitzen separate unabhängige PASS-Reviews. Nach Abschluss aller zugewiesenen Quellenaufgaben wurde im untersuchten Umfang keine weitere konkrete Aufgabe identifiziert. Der tatsächliche Hardwarevertrag bleibt offen; keine Geräte-/VM-Ausführung. Draft-PR 11 enthält die öffentlichen Prose-/Hashmetadaten, die Herstellerartefakte bleiben privat.
 
 **Offlinefortsetzung, 23.10.2026:** [Neuer K-Bus-Analyseblock](kbus-kernel-reconstruction-2026-10-23.md) qualifiziert Gerätebaumdekodierung, Kernelentpackung und statische ioctl-/C166-Anschlüsse. Der `0xd0`-Längengegenbefund und die physische C166-Transferzuordnung bleiben offen. Keine Geräte-/VM-Ausführung oder Umschaltfreigabe. Die Sicherung vom 18.10.2026 bleibt unverändert.
 
