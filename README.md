@@ -126,8 +126,11 @@ Der öffentliche IPC-Transporttest benötigt zusätzlich einen nativen C-Compile
 
 Die Python- und Werkstatt-Workflows prüfen Pull Requests und Pushes auf `main`.
 Ein Push auf einen Entwicklungsbranch löst keinen zusätzlichen identischen Lauf
-aus; ohne offenen PR ist ein manueller Workflowstart weiterhin möglich. Die
-bestehenden Pfadfilter des Werkstatt-Workflows bleiben erhalten. Neuere Stände
+aus. Für einen manuellen Workflowstart muss die Workflowdefinition bereits im
+Standardbranch vorhanden sein ([GitHub-Dokumentation](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/manually-run-a-workflow)).
+Solange die Werkstatt nur auf Entwicklungsbranches liegt, erfolgt ihre
+automatische Prüfung über offene PRs. Die bestehenden Pfadfilter des
+Werkstatt-Workflows bleiben erhalten. Neuere Stände
 desselben PRs ersetzen dessen ältere Läufe, getrennt nach Workflow. Laufende
 Main- und manuelle Prüfungen werden durch diese Regel nicht abgebrochen.
 Testbefehle, Python-Matrix, Werkstatt-Build und Browserprüfung bleiben vollständig.
