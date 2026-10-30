@@ -122,6 +122,17 @@ python3 tools/closed_loop_demo.py
 
 Der öffentliche IPC-Transporttest benötigt zusätzlich einen nativen C-Compiler und wird ohne ihn übersprungen. Die private ARM-Adapterqualifikation benötigt authentische Herstellerheader; sie bleibt außerhalb der CI. Python 3.11+ und Standardbibliothek genügen für den Modellkern; ELF-Audit benötigt Linux und Binutils. `tools/reference_netns.py` zeigt standardmäßig nur einen bereinigten Plan. Seine aktive Nutzung braucht die private Zielrichtlinie und die in der Werkzeugdokumentation genannten Linux-Werkzeuge.
 
+## Hardwarefreie CI
+
+Die Python- und Werkstatt-Workflows prüfen Pull Requests und Pushes auf `main`.
+Ein Push auf einen Entwicklungsbranch löst keinen zusätzlichen identischen Lauf
+aus; ohne offenen PR ist ein manueller Workflowstart weiterhin möglich. Die
+bestehenden Pfadfilter des Werkstatt-Workflows bleiben erhalten. Neuere Stände
+desselben PRs ersetzen dessen ältere Läufe, getrennt nach Workflow. Laufende
+Main- und manuelle Prüfungen werden durch diese Regel nicht abgebrochen.
+Testbefehle, Python-Matrix, Werkstatt-Build und Browserprüfung bleiben vollständig.
+Ein abgebrochener älterer Lauf ist kein Prüfnachweis für den neuesten Stand.
+
 ## Vertraulichkeit
 
 Das Repository ist öffentlich. Keine Passwörter, konkreten privaten Geräteadressen, Firmwarekopien, Lizenzcontainer, privaten Projektarchive oder unbereinigten Referenztraces veröffentlichen. Vollständige Unterlagen und Gerätezuordnung bleiben im privaten Übergabepaket. Ein Klon allein erteilt keine Hardwarefreigabe; ohne lokale Zielrichtlinie sind Netzwerkaktionen gesperrt.
