@@ -2,6 +2,7 @@ name: Offline Rust workbench
 
 on:
   push:
+    branches: [main]
     paths: ['workbench/**', '.github/workflows/workbench.yml']
   pull_request:
     paths: ['workbench/**', '.github/workflows/workbench.yml']
@@ -9,6 +10,10 @@ on:
 
 permissions:
   contents: read
+
+concurrency:
+  group: offline-workbench-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   offline-workbench:
